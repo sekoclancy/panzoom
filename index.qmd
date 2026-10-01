@@ -1,0 +1,88 @@
+---
+title: "Panzoom"
+subtitle: "A full-screen pan/zoom viewer for Quarto figures"
+format:
+  html:
+    lightbox: true
+filters:
+  - panzoom
+panzoom:
+  max-zoom: 6
+---
+
+Panzoom opens figures in a full-screen viewer: scroll to zoom toward the
+cursor, drag to pan, double-click or `0` to reset, Esc to close. It works
+next to Quarto's built-in lightbox: marked figures get the viewer, every other
+figure keeps the lightbox. Source and documentation:
+<https://github.com/sekoclancy/panzoom>.
+
+```bash
+quarto add sekoclancy/panzoom
+```
+
+## Chunk output
+
+Mark a code cell with `#| panzoom: true`. Click the figure to open it, scroll
+to zoom toward the cursor, drag to pan, double-click to reset, Esc to close.
+
+```{r}
+#| panzoom: true
+#| fig-width: 12
+#| fig-height: 4
+image(volcano, col = hcl.colors(100, "Viridis"), asp = 1 / 3)
+```
+
+## Cross-referenced figure
+
+Labeled figures work too (@fig-volcano). Options under `#| panzoom:` override
+the document's settings for one cell: this figure zooms to 10 instead of the
+page's 6, and hides the hint.
+
+```{r}
+#| label: fig-volcano
+#| fig-cap: "Maunga Whau volcano."
+#| panzoom:
+#|   max-zoom: 10
+#|   hint: false
+filled.contour(volcano, color.palette = terrain.colors)
+```
+
+## Markdown image
+
+```{r}
+#| include: false
+png("volcano.png", width = 1600, height = 1100)
+persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
+invisible(dev.off())
+```
+
+![A markdown image with the `.panzoom` class.](volcano.png){.panzoom}
+
+## Untouched figure
+
+Without the option, Quarto's own lightbox still handles the figure.
+
+```{r}
+contour(volcano)
+```
+
+## Opting out
+
+Inside a `.panzoom` div, `.nopanzoom` leaves one image alone. For a whole
+cell, use `#| panzoom: false`.
+
+::: {.panzoom}
+![Opted out.](volcano.png){.nopanzoom width=40%}
+:::
+
+## Test pages
+
+The same 12 lightbox situations (galleries, subfigures, captions with math,
+images in links, margin images, ...) rendered three ways:
+
+- [A: Quarto lightbox reference](tests/pages/a-lightbox.html): Quarto's
+  built-in lightbox alone.
+- [C: panzoom `match: auto`](tests/pages/c-panzoom-auto.html): panzoom picks
+  the images itself.
+- [D: explicit marking](tests/pages/d-panzoom-selective.html): images marked
+  with `.panzoom` or `#| classes: panzoom`.

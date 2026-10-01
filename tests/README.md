@@ -1,0 +1,227 @@
+# Tests
+
+These tests check that the panzoom extension does the right thing in a real
+web browser: that the right images open the pan/zoom viewer, that the rest
+still open Quarto's own lightbox, and that the viewer zooms, pans and closes
+the way it should.
+
+## What is being tested
+
+**The extension.** `panzoom` (in `../_extensions/sekoclancy/panzoom/`) is a Quarto filter
+that opens figures in a full-screen pan/zoom viewer, alongside Quarto's
+built-in lightbox (GLightbox). The Lua filter decides which images get the
+viewer; the JavaScript is the viewer itself. See `../README.md` for how to use
+it.
+
+**The test cases.** The test pages contain 12 numbered cases (`## 1.` to
+`## 12.`), one situation each: a gallery, subfigures, math in a caption, an
+image inside a link, a margin image, and so on.
+
+- Cases 1, 2 and 6–8 come from the example document of
+  [quarto-ext/lightbox](https://github.com/quarto-ext/lightbox) (MIT,
+  © Posit Software), the extension that became Quarto's built-in lightbox in
+  Quarto 1.4, and from the
+  [Quarto lightbox docs](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
+- The other cases were written for this project to cover what those examples
+  don't.
+- The photos in `../images/` are the ones quarto-ext/lightbox uses. They
+  are from Unsplash, under the [Unsplash license](https://unsplash.com/license):
+  [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps),
+  [Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU),
+  [Gingerbread House](https://unsplash.com/photos/HQEtvlNzUyA),
+  [Edgartown Light](https://unsplash.com/photos/f59MyOfLpi8),
+  [Edgartown Sailboat](https://unsplash.com/photos/IiLiz7XpQpI).
+
+The same 12 cases are rendered three ways:
+
+| Page | What it is | Panzoom filter | Lightbox |
+|---|---|---|---|
+| `a-lightbox` | **Reference.** What Quarto's own lightbox does with each case. No panzoom markers at all. | off | `match: auto` |
+| `c-panzoom-auto` | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
+| `d-panzoom-selective` | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
+
+Each page starts with a note saying what it should show, has a **</> Code**
+button that shows its full source, and shows each R chunk with its options.
+They are published with the example at
+<https://sekoclancy.github.io/panzoom/>.
+
+## How browser testing works here
+
+If you haven't used these tools before:
+
+- **Headless Chrome** is the normal Chrome browser running without a window.
+  It loads pages, runs their JavaScript and lays them out exactly as Chrome on
+  your desktop would; it just doesn't draw them on a screen. That lets it run
+  on a server with no display.
+- **[Puppeteer](https://pptr.dev/)** is a Node.js library that remote-controls
+  Chrome: open a page, move and click the mouse, scroll the wheel, press keys,
+  read anything from the page, and take screenshots. We use `puppeteer-core`,
+  the variant that doesn't download its own Chrome and instead uses the one
+  Quarto installs.
+- **`browser.mjs`** is our script. It does what you would do by hand: open
+  each page, click every image, see what opened, try zooming and dragging,
+  press Esc. Instead of you watching, it reads the result from the page (for
+  example "is the viewer's overlay showing?", "how far did the image move?")
+  and writes it to a report. It also saves a screenshot of every click, so you
+  can look at what it saw.
+
+These are **behavior checks with screenshots for a human to look at**, not
+pixel-by-pixel image comparisons. Nothing compares a screenshot to a saved
+"correct" one.
+
+## Folder layout
+
+```
+panzoom/                   the repo: a Quarto project (_quarto.yml)
+├── _extensions/sekoclancy/panzoom/   the extension under test
+├── index.qmd              the example (site front page)
+├── images/                photos used by the test pages
+├── docs/                  rendered site (git-ignored)
+└── tests/
+    ├── README.md          this file
+    ├── package.json       Node project: dependency (puppeteer-core) and npm scripts
+    ├── package-lock.json  exact dependency versions
+    ├── render.sh          renders the project into ../docs/
+    ├── browser.mjs        the browser checks
+    ├── pages/             a-lightbox.qmd, c-panzoom-auto.qmd, d-panzoom-selective.qmd
+    ├── node_modules/      installed by npm (git-ignored)
+    └── results/           test output (git-ignored)
+```
+
+Because the repo root is a Quarto project, the pages find the extension in
+the root `_extensions/` folder, and `quarto render` puts them in
+`../docs/tests/pages/`.
+
+## One-time setup
+
+You need Quarto (1.9 or later), R (the pages have R chunks), and Node.js.
+
+```bash
+# 1. A Chrome for the tests to drive (about 115 MB, in ~/.local/share/quarto/)
+quarto install chrome-headless-shell
+
+# 2. The Node dependency (from tests/)
+cd tests
+npm install
+```
+
+To use a different Chrome or Chromium, set `CHROME=/path/to/chrome` when
+running the tests.
+
+## Running the tests
+
+From `tests/`:
+
+```bash
+npm run render   # render the project into ../docs/
+npm test         # click through the test pages in headless Chrome
+```
+
+Render again whenever you change the extension or a page; `npm test` only
+checks the HTML that is already there. To render or check a single page
+(render paths are relative to the repo root):
+
+```bash
+./render.sh tests/pages/d-panzoom-selective.qmd
+node browser.mjs ../docs/tests/pages/d-panzoom-selective.html
+```
+
+`browser.mjs` starts a small web server for `docs/` and points Chrome at
+it, the way GitHub Pages serves the site. Pages can't simply be opened as
+files: Quarto's main script is a JavaScript module, and browsers refuse to
+load modules from `file://` addresses.
+
+`npm test` prints one line per page:
+
+```
+c-panzoom-auto: 18 images, {"panzoom":11,"glightbox":4,"nothing":3}, 0 console errors, isolation ok -> results/c-panzoom-auto/report.md
+```
+
+That is: how many images it clicked, what each click opened, how many
+JavaScript errors the page logged, and whether the viewer isolation check
+passed (below).
+
+## Reading the results
+
+Each page gets a folder in `results/`:
+
+- **`report.md`**: one table row per image, then the isolation check.
+- **`cNN-M.png`**: a screenshot taken right after clicking image M of case NN.
+  Open a few to see what the viewer or lightbox looked like.
+- **`results.json`**: the same data, for scripts.
+
+Report columns:
+
+| Column | Meaning |
+|---|---|
+| Classes | The image's CSS classes. `panzoom nolightbox` means the filter marked it. |
+| Wrapper | `a.lightbox`: Quarto's lightbox link wraps it. `a[href]`: an ordinary link. `none`: no link. |
+| Opened | What a click did: **panzoom** (our viewer), **glightbox** (Quarto's lightbox), **navigation** (followed a link; the test stops it before it leaves), or **nothing**. |
+| Details | For GLightbox: the slide's title, description and how many slides its gallery has. |
+| Zoom× | Five wheel-scroll steps zoomed the image this many times its fitted size. |
+| Drag px | A 170 px mouse drag moved the image this far. |
+| Reset | Pressing `0` returned to the fitted size. |
+| Esc / Bg click | Esc, and a click on the dark background, closed the viewer. |
+
+**Viewer isolation.** With the viewer open, the test adds key listeners to the
+page (the way another extension would), presses the keys other extensions use
+(arrows, `PageUp`/`PageDown`, `f`, `t`, `p`, `d`, `l`, `s`, `/`, Enter, Space),
+and checks that none of them reached the page, that Ctrl+key still does, and
+that a fixed button at z-index 10000 stays underneath the viewer. This guards
+against keys acting on the page behind the viewer (for example focus-mode's
+arrow keys switching pages).
+
+**What to expect.** A on its own shows what Quarto does; compare each case in
+C and D against it. The notes at the top of each page list the intended
+differences. A few cases do "nothing" on purpose: case 8 (`lightbox: false`),
+case 9 in A and C (a Quarto bug drops the link around a captioned image), case
+11 in A and C (inline images aren't automatic), and in D every image that
+isn't marked, since D has no lightbox.
+
+## Checking by hand
+
+From the repo root, run
+
+```bash
+quarto preview
+```
+
+It renders the project, starts a local web server and opens the front page
+in your browser; the test pages are linked at the bottom. It re-renders when
+you save a file. (Opening the HTML files from `docs/` directly doesn't work,
+for the module reason above.) The published copies at
+<https://sekoclancy.github.io/panzoom/> work too, once published.
+
+Things the automated checks can't judge:
+
+- whether zooming feels smooth on a mouse wheel and on a trackpad pinch,
+- touch devices (one-finger pan, two-finger pinch zoom),
+- how sharp images look when zoomed in,
+- anything about appearance: colors, the hint text, the close button.
+
+## Adding a case
+
+Add a `## N. Title {#cN}` section to all three pages (A without panzoom
+markers, D with them, C with A's markup), then `npm run render && npm test`.
+The script finds cases by the `## N.` headings.
+
+## Limitations
+
+- Headless Chrome doesn't count as a device with a mouse and hover, so CSS
+  that checks `(hover: hover)` or `(pointer: fine)` treats it as a touch
+  device.
+- No touch or pinch input is simulated.
+- Tests only run Chrome, not Firefox or Safari.
+
+## Troubleshooting
+
+- **R errors when rendering** (for example about `renv`): `render.sh` sets
+  `R_PROFILE_USER=/dev/null` so a personal `~/.Rprofile` doesn't run. If you
+  render or preview by hand, do the same.
+- **Console errors about CORS or `file://`**: the page was opened as a file.
+  Use `quarto preview` or the test script, which serve it over HTTP.
+- **`Failed to launch the browser process`**: Chrome isn't where the script
+  looks. Run `quarto install chrome-headless-shell`, or set `CHROME=`.
+- **`... is not inside .../docs`**: `browser.mjs` only checks pages from
+  `docs/`. Render first, and pass paths like
+  `../docs/tests/pages/d-panzoom-selective.html`.

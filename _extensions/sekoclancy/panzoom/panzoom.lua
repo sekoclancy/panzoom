@@ -1,0 +1,184 @@
+-- panzoom: full-screen pan/zoom viewer for figures.
+--
+-- Images get the viewer when they:
+--   * sit inside a code cell with `#| panzoom: true` (or per-cell options,
+--     `#| panzoom: { max-zoom: 6, hint: false }`), or inside a `.panzoom` div
+--     or cell (`#| classes: panzoom`), including labeled figures and
+--     subfigure layouts,
+--   * carry the class themselves (`![](x.png){.panzoom}`), or
+--   * are block images (figures, or alone in a paragraph) in a document with
+--     `panzoom: { match: auto }` -- the same images Quarto's auto lightbox takes.
+-- `.nopanzoom` opts a single image out, `#| panzoom: false` a whole cell.
+-- Images inside links are always left
+-- alone, so the link keeps working.
+--
+-- Every marked image also gets `.nolightbox`, so Quarto's built-in GLightbox
+-- leaves it alone -- no need for `#| lightbox: false` on the chunk.
+--
+-- In auto mode, an explicit lightbox request wins: images with `.lightbox`,
+-- `.nolightbox`, or inside a cell with `#| lightbox:` options (or
+-- `#| lightbox: false`) are left to Quarto. Conversely, a cell marked for
+-- panzoom (`#| panzoom:` or `classes: panzoom`) has its `#| lightbox:`
+-- options removed, because Quarto would otherwise add `.lightbox` to its
+-- images, and that beats `.nolightbox`.
+
+if not quarto.doc.is_format("html:js") then return {} end
+
+local match_auto = false
+
+local function has(classes, name)
+  return classes ~= nil and classes:includes(name)
+end
+
+local function mark(img)
+  if has(img.classes, "nopanzoom") then return nil end
+  img.classes = img.classes:filter(function(c) return c ~= "lightbox" end)
+  if not has(img.classes, "panzoom") then img.classes:insert("panzoom") end
+  if not has(img.classes, "nolightbox") then img.classes:insert("nolightbox") end
+  return img
+end
+
+-- Images that auto mode leaves to Quarto's lightbox.
+local function wants_lightbox(img)
+  return has(img.classes, "lightbox") or has(img.classes, "nolightbox")
+end
+
+-- A paragraph holding nothing but one image: a block image, as Quarto's
+-- lightbox sees it (`discoverFigure`).
+local function sole_image(block)
+  if (block.t == "Para" or block.t == "Plain") and #block.content == 1
+      and block.content[1].t == "Image" then
+    return block.content[1]
+  end
+end
+
+-- Walks `el` and marks every image in it, except those inside links.
+-- `attrs` (optional) are per-cell options, copied onto each marked image.
+local function mark_all(el, attrs)
+  return el:walk({
+    traverse = "topdown",
+    Link = function() return nil, false end,
+    Image = function(img)
+      img = mark(img)
+      if img and attrs then
+        for k, v in pairs(attrs) do img.attributes[k] = v end
+      end
+      return img
+    end,
+  })
+end
+
+-- Reads a cell's `#| panzoom:` option. Quarto passes it as an attribute:
+-- "true"/"false", or JSON for the nested form. Returns false to opt the cell
+-- out, otherwise true plus the per-image data attributes for its options.
+local function cell_option(el)
+  local value = el.attributes["panzoom"]
+  if value == nil then return nil end
+  el.attributes["panzoom"] = nil
+  if value == "false" then return false end
+  local attrs = {}
+  if value:sub(1, 1) == "{" then
+    local cfg = quarto.json.decode(value)
+    if cfg["max-zoom"] ~= nil then
+      attrs["data-panzoom-max-zoom"] = tostring(cfg["max-zoom"])
+    end
+    if cfg.hint ~= nil then
+      attrs["data-panzoom-hint"] = tostring(cfg.hint)
+    end
+  end
+  return true, attrs
+end
+
+-- Reads the `panzoom:` metadata block and attaches the JS/CSS.
+local function setup(meta)
+  local options = {}
+  local cfg = meta.panzoom
+  if cfg ~= nil and pandoc.utils.type(cfg) == "table" then
+    if cfg.match ~= nil then
+      match_auto = pandoc.utils.stringify(cfg.match) == "auto"
+    end
+    if cfg["max-zoom"] ~= nil then
+      options.maxZoom = tonumber(pandoc.utils.stringify(cfg["max-zoom"]))
+    end
+    if cfg.hint ~= nil then
+      options.hint = cfg.hint ~= false
+    end
+  end
+
+  quarto.doc.add_html_dependency({
+    name = "panzoom",
+    version = "0.1.0",
+    -- Panzoom (https://github.com/timmywil/panzoom), then the viewer
+    scripts = { "panzoom.min.js", "panzoom.js" },
+    stylesheets = { "panzoom.css" },
+  })
+  quarto.doc.include_text(
+    "in-header",
+    "<script>window.PANZOOM_OPTIONS = " .. quarto.json.encode(options) .. ";</script>"
+  )
+end
+
+-- Handles a `.panzoom` container (div, code cell, or a labeled figure that
+-- Quarto has already turned into a FloatRefTarget). In auto mode, also stops
+-- at cells that carry their own `#| lightbox:` setting.
+local function container(el)
+  local on, attrs = cell_option(el)
+  if on == false then return el, false end
+  if on or has(el.classes, "panzoom") then
+    el.attributes["lightbox"] = nil
+    -- A FloatRefTarget is a Quarto custom node without :walk(); its content
+    -- is ordinary Pandoc AST (nested subfigures are plain Divs inside it).
+    if el.walk then
+      el = mark_all(el, attrs)
+    else
+      el.content = mark_all(el.content, attrs)
+    end
+    return el, false
+  end
+  if match_auto and el.attributes["lightbox"] ~= nil then
+    return nil, false
+  end
+end
+
+return {
+  { Meta = setup },
+  {
+    traverse = "topdown",
+    Div = container,
+    FloatRefTarget = container,
+    Link = function()
+      return nil, false
+    end,
+    Para = function(para)
+      local img = sole_image(para)
+      if img and match_auto and not wants_lightbox(img) then
+        mark(img)
+        return para, false
+      end
+    end,
+    Plain = function(plain)
+      local img = sole_image(plain)
+      if img and match_auto and not wants_lightbox(img) then
+        mark(img)
+        return plain, false
+      end
+    end,
+    Figure = function(fig)
+      if match_auto then
+        return fig:walk({
+          traverse = "topdown",
+          Link = function() return nil, false end,
+          Image = function(img)
+            if not wants_lightbox(img) then return mark(img) end
+          end,
+        }), false
+      end
+    end,
+    -- Inline images, and block images outside auto mode: explicit class only.
+    Image = function(img)
+      if has(img.classes, "panzoom") then
+        return mark(img)
+      end
+    end,
+  },
+}
