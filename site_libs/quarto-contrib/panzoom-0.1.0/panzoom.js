@@ -1,9 +1,12 @@
 /*
-  panzoom: full-screen pan/zoom viewer for `.panzoom` images.
+  panzoom: full-screen pan/zoom viewer for `.panzoom` images, built on
+  Panzoom (https://github.com/timmywil/panzoom; panzoom.min.js, loaded first
+  as the global `Panzoom`).
 
-  Click image -> overlay. Wheel / trackpad pinch zooms toward the cursor, drag
-  pans (pointer capture, so the drag survives the cursor leaving the image),
-  double-click or 0 resets to fit, +/- zoom, Esc / x / background click closes.
+  Panzoom does the panning and zooming: drag (or one-finger drag) pans,
+  two-finger pinch zooms. This file adds the viewer around it: click image ->
+  overlay, wheel / trackpad pinch zooms toward the cursor, double-click or 0
+  resets to fit, +/- zoom, Esc / x / background click closes.
 
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
   the document's `panzoom:` metadata): { maxZoom: 4, hint: true }. A cell's
@@ -13,9 +16,7 @@
 (function () {
   var SELECTOR = ".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)";
 
-  var overlay, img;
-  var s = 1, x = 0, y = 0, minS = 1, maxS = 4;  // scale = screen px per image px
-  var drag = null, raf = 0, opts;
+  var overlay, img, pz = null, opts, press = null;
 
   // Document-wide options, overridden by the clicked image's data attributes.
   function options(el) {
@@ -29,30 +30,28 @@
     };
   }
 
-  function render() {
-    raf = 0;
-    img.style.transform = "translate(" + x + "px," + y + "px) scale(" + s + ")";
-  }
-  function schedule() { if (!raf) raf = requestAnimationFrame(render); }
-
+  // Centers the image at its natural size and (re)starts Panzoom scaled to
+  // fit the screen. Scale = screen px per image px, so max-zoom applies as is.
   function fit() {
     var vw = overlay.clientWidth, vh = overlay.clientHeight;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
-    s = minS = Math.min(vw / w, vh / h) * 0.95;
-    maxS = Math.max(opts.maxZoom, minS);
-    x = (vw - w * s) / 2;
-    y = (vh - h * s) / 2;
-    schedule();
+    var s = Math.min(vw / w, vh / h) * 0.95;
+    img.style.left = (vw - w) / 2 + "px";
+    img.style.top = (vh - h) / 2 + "px";
+    if (pz) pz.destroy();
+    pz = Panzoom(img, {
+      canvas: true,             // drag anywhere on the overlay, not just the image
+      cursor: "grab",
+      startScale: s,
+      minScale: s,
+      maxScale: Math.max(opts.maxZoom, s)
+    });
   }
 
   // Zoom by `factor`, keeping the image point under (px, py) fixed on screen.
   function zoomAt(factor, px, py) {
-    var s2 = Math.min(maxS, Math.max(minS, s * factor));
-    x = px - (px - x) * (s2 / s);
-    y = py - (py - y) * (s2 / s);
-    s = s2;
-    schedule();
+    if (pz) pz.zoomToPoint(pz.getScale() * factor, { clientX: px, clientY: py });
   }
 
   function open(src, alt, o) {
@@ -70,7 +69,8 @@
   function close() {
     overlay.classList.remove("open");
     document.documentElement.style.overflow = "";
-    drag = null;
+    if (pz) { pz.destroy(); pz = null; }
+    press = null;
   }
 
   function build() {
@@ -80,13 +80,15 @@
     overlay.setAttribute("aria-modal", "true");
     overlay.innerHTML =
       '<img alt="" draggable="false">' +
-      '<button class="panzoom-close" aria-label="Close">&times;</button>' +
+      '<button class="panzoom-close panzoom-exclude" aria-label="Close">&times;</button>' +
       '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
       'double-click to reset &middot; Esc to close</div>';
     document.body.appendChild(overlay);
     img = overlay.querySelector("img");
     overlay.querySelector(".panzoom-close").addEventListener("click", close);
 
+    // Panzoom's own zoomWithWheel takes a fixed step per event, which makes
+    // trackpad pinch (many small events) far too fast; scale by the delta.
     overlay.addEventListener("wheel", function (e) {
       e.preventDefault();
       var dy = e.deltaY * (e.deltaMode === 1 ? 16 : 1);
@@ -94,32 +96,23 @@
       zoomAt(Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015)), e.clientX, e.clientY);
     }, { passive: false });
 
+    // A press and release on the background without moving closes the
+    // viewer; Panzoom handles the drag itself.
     overlay.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest(".panzoom-close")) return;
-      overlay.setPointerCapture(e.pointerId);
-      drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, x0: x, y0: y,
-               moved: false, onImg: e.target === img };
+      press = { id: e.pointerId, sx: e.clientX, sy: e.clientY, onImg: e.target === img };
       overlay.classList.add("dragging");
     });
-    overlay.addEventListener("pointermove", function (e) {
-      if (!drag || e.pointerId !== drag.id) return;
-      var dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
-      if (Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true;
-      x = drag.x0 + dx;
-      y = drag.y0 + dy;
-      schedule();
-    });
-    function endDrag(e) {
-      if (!drag || e.pointerId !== drag.id) return;
-      var clickedBackground = !drag.moved && !drag.onImg;
-      drag = null;
+    document.addEventListener("pointerup", function (e) {
+      if (!press || e.pointerId !== press.id) return;
+      var moved = Math.abs(e.clientX - press.sx) + Math.abs(e.clientY - press.sy) > 3;
+      var clickedBackground = !moved && !press.onImg;
+      press = null;
       overlay.classList.remove("dragging");
-      if (clickedBackground && e.type === "pointerup") close();
-    }
-    overlay.addEventListener("pointerup", endDrag);
-    overlay.addEventListener("pointercancel", endDrag);
+      if (clickedBackground) close();
+    });
 
-    overlay.addEventListener("dblclick", fit);
+    overlay.addEventListener("dblclick", function () { if (pz) pz.reset(); });
     window.addEventListener("resize", function () {
       if (overlay.classList.contains("open")) fit();
     });
@@ -139,7 +132,7 @@
     if (e.type !== "keydown") return;
     var cx = overlay.clientWidth / 2, cy = overlay.clientHeight / 2;
     if (e.key === "Escape") close();
-    else if (e.key === "0") fit();
+    else if (e.key === "0") { if (pz) pz.reset(); }
     else if (e.key === "+" || e.key === "=") zoomAt(1.25, cx, cy);
     else if (e.key === "-") zoomAt(0.8, cx, cy);
   }
