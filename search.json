@@ -1,0 +1,345 @@
+[
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html",
+    "href": "tests/pages/d-panzoom-selective.html",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis page tests the panzoom extension. The panzoom filter is on, and the images marked with .panzoom or #| classes: panzoom should open the pan/zoom viewer. The document has no lightbox: key, so Quarto’s lightbox only applies where a case asks for it (the #| lightbox: cell options in cases 6 and 7). Case 6’s first chunk has both on purpose: panzoom should win, and its #| lightbox: options are dropped, so it doesn’t join GLightbox’s gallery. Case 9’s link should still work (images inside links are left alone).\nCompare each case with the same numbered case in a-lightbox, which renders the same cases with Quarto’s lightbox alone."
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c1",
+    "href": "tests/pages/d-panzoom-selective.html#c1",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "1. Single image, markdown description, desc-position left",
+    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark"
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c2",
+    "href": "tests/pages/d-panzoom-selective.html#c2",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "2. Gallery via group=, custom layout",
+    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse"
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c3",
+    "href": "tests/pages/d-panzoom-selective.html#c3",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "3. Math in caption and description",
+    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)"
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c4",
+    "href": "tests/pages/d-panzoom-selective.html#c4",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "4. Markdown subfigures with cross-ref",
+    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c5",
+    "href": "tests/pages/d-panzoom-selective.html#c5",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "5. R subfigures (fig-subcap, layout-ncol)",
+    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\n#| classes: panzoom\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c6",
+    "href": "tests/pages/d-panzoom-selective.html#c6",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "6. R chunks with lightbox cell options (group + description)",
+    "text": "6. R chunks with lightbox cell options (group + description)\nThis one also has classes: panzoom (conflict test).\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| classes: panzoom\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nThis one has only the lightbox options.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c7",
+    "href": "tests/pages/d-panzoom-selective.html#c7",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "7. Multi-plot cell, list-valued options",
+    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| classes: panzoom\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c8",
+    "href": "tests/pages/d-panzoom-selective.html#c8",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "8. lightbox: false on a chunk",
+    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c9",
+    "href": "tests/pages/d-panzoom-selective.html#c9",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "9. Image inside a link",
+    "text": "9. Image inside a link\n\n\n\nLinked image"
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c10",
+    "href": "tests/pages/d-panzoom-selective.html#c10",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "10. Margin image",
+    "text": "10. Margin image\n\n\n\n\nMargin image"
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c11",
+    "href": "tests/pages/d-panzoom-selective.html#c11",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "11. Inline image in text",
+    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#c12",
+    "href": "tests/pages/d-panzoom-selective.html#c12",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "12. Plain R chunk figure, no options",
+    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
+  },
+  {
+    "objectID": "tests/pages/d-panzoom-selective.html#credits",
+    "href": "tests/pages/d-panzoom-selective.html#credits",
+    "title": "D: panzoom filter, no document lightbox key (selective mode)",
+    "section": "Credits",
+    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nWe see our cars data above"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html",
+    "href": "tests/pages/a-lightbox.html",
+    "title": "A: Quarto lightbox reference",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis is the reference: the same 12 cases as d-panzoom-selective, rendered with Quarto’s built-in lightbox only. The panzoom filter is not loaded and no image carries a panzoom marker. Every block image gets the lightbox via lightbox: match: auto, with effect: fade, desc-position: right, loop: true and css-class: my-lb set to exercise those options.\nCompare each case with the same numbered case in d-panzoom-selective."
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c1",
+    "href": "tests/pages/a-lightbox.html#c1",
+    "title": "A: Quarto lightbox reference",
+    "section": "1. Single image, markdown description, desc-position left",
+    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c2",
+    "href": "tests/pages/a-lightbox.html#c2",
+    "title": "A: Quarto lightbox reference",
+    "section": "2. Gallery via group=, custom layout",
+    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c3",
+    "href": "tests/pages/a-lightbox.html#c3",
+    "title": "A: Quarto lightbox reference",
+    "section": "3. Math in caption and description",
+    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c4",
+    "href": "tests/pages/a-lightbox.html#c4",
+    "title": "A: Quarto lightbox reference",
+    "section": "4. Markdown subfigures with cross-ref",
+    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c5",
+    "href": "tests/pages/a-lightbox.html#c5",
+    "title": "A: Quarto lightbox reference",
+    "section": "5. R subfigures (fig-subcap, layout-ncol)",
+    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c6",
+    "href": "tests/pages/a-lightbox.html#c6",
+    "title": "A: Quarto lightbox reference",
+    "section": "6. R chunks with lightbox cell options (group + description)",
+    "text": "6. R chunks with lightbox cell options (group + description)\nThis chunk sets a lightbox group and description.\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nSo does this one, in the same group.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c7",
+    "href": "tests/pages/a-lightbox.html#c7",
+    "title": "A: Quarto lightbox reference",
+    "section": "7. Multi-plot cell, list-valued options",
+    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c8",
+    "href": "tests/pages/a-lightbox.html#c8",
+    "title": "A: Quarto lightbox reference",
+    "section": "8. lightbox: false on a chunk",
+    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c9",
+    "href": "tests/pages/a-lightbox.html#c9",
+    "title": "A: Quarto lightbox reference",
+    "section": "9. Image inside a link",
+    "text": "9. Image inside a link\n\n\n\nLinked image"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c10",
+    "href": "tests/pages/a-lightbox.html#c10",
+    "title": "A: Quarto lightbox reference",
+    "section": "10. Margin image",
+    "text": "10. Margin image\n\n\n\n\nMargin image"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c11",
+    "href": "tests/pages/a-lightbox.html#c11",
+    "title": "A: Quarto lightbox reference",
+    "section": "11. Inline image in text",
+    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c12",
+    "href": "tests/pages/a-lightbox.html#c12",
+    "title": "A: Quarto lightbox reference",
+    "section": "12. Plain R chunk figure, no options",
+    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#credits",
+    "href": "tests/pages/a-lightbox.html#credits",
+    "title": "A: Quarto lightbox reference",
+    "section": "Credits",
+    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nChilmark has some of the best beaches. credit: Chilmark Beach\n\n\nThe waves break off Aquinnah.\n\n\nGingerbread cottages.\n\n\nEdgartown Lighthouse.\n\n\nDescription with math \\(\\int_0^1 x^2\\,dx = 1/3\\)\n\n\nThis is 1 to 10 plot\n\n\nWe see our cars data above\n\n\nDescription for first graph\n\n\nDescription for second graph"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Panzoom",
+    "section": "",
+    "text": "Panzoom opens figures in a full-screen viewer: scroll to zoom toward the cursor, drag to pan, double-click or 0 to reset, Esc to close. It works next to Quarto’s built-in lightbox: marked figures get the viewer, every other figure keeps the lightbox. Source and documentation: https://github.com/sekoclancy/panzoom."
+  },
+  {
+    "objectID": "index.html#chunk-output",
+    "href": "index.html#chunk-output",
+    "title": "Panzoom",
+    "section": "Chunk output",
+    "text": "Chunk output\nMark a code cell with #| panzoom: true. Click the figure to open it, scroll to zoom toward the cursor, drag to pan, double-click to reset, Esc to close.\n\nimage(volcano, col = hcl.colors(100, \"Viridis\"), asp = 1 / 3)"
+  },
+  {
+    "objectID": "index.html#cross-referenced-figure",
+    "href": "index.html#cross-referenced-figure",
+    "title": "Panzoom",
+    "section": "Cross-referenced figure",
+    "text": "Cross-referenced figure\nLabeled figures work too (Figure 1). Options under #| panzoom: override the document’s settings for one cell: this figure zooms to 10 instead of the page’s 6, and hides the hint.\n\nfilled.contour(volcano, color.palette = terrain.colors)\n\n\n\n\n\n\n\nFigure 1: Maunga Whau volcano."
+  },
+  {
+    "objectID": "index.html#markdown-image",
+    "href": "index.html#markdown-image",
+    "title": "Panzoom",
+    "section": "Markdown image",
+    "text": "Markdown image\n\n\n\nA markdown image with the .panzoom class."
+  },
+  {
+    "objectID": "index.html#untouched-figure",
+    "href": "index.html#untouched-figure",
+    "title": "Panzoom",
+    "section": "Untouched figure",
+    "text": "Untouched figure\nWithout the option, Quarto’s own lightbox still handles the figure.\n\ncontour(volcano)"
+  },
+  {
+    "objectID": "index.html#opting-out",
+    "href": "index.html#opting-out",
+    "title": "Panzoom",
+    "section": "Opting out",
+    "text": "Opting out\nInside a .panzoom div, .nopanzoom leaves one image alone. For a whole cell, use #| panzoom: false.\n\n\n\n\nOpted out."
+  },
+  {
+    "objectID": "index.html#test-pages",
+    "href": "index.html#test-pages",
+    "title": "Panzoom",
+    "section": "Test pages",
+    "text": "Test pages\nThe same 12 lightbox situations (galleries, subfigures, captions with math, images in links, margin images, …) rendered three ways:\n\nA: Quarto lightbox reference: Quarto’s built-in lightbox alone.\nC: panzoom match: auto: panzoom picks the images itself.\nD: explicit marking: images marked with .panzoom or #| classes: panzoom."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html",
+    "href": "tests/pages/c-panzoom-auto.html",
+    "title": "C: panzoom match: auto",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis page tests panzoom’s match: auto mode. The markup is identical to a-lightbox (no panzoom markers at all); both panzoom: match: auto and lightbox: match: auto are on. Panzoom should take every image that Quarto’s auto lightbox would take, except where a case asks for something explicit:\n\ncases 6 and 7 set #| lightbox: options, so they stay with GLightbox;\ncase 8 sets #| lightbox: false, so it gets neither;\ncase 9 (image inside a link) and case 11 (inline image) are skipped, as Quarto’s auto mode skips them.\n\nCompare each case with the same numbered case in a-lightbox."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c1",
+    "href": "tests/pages/c-panzoom-auto.html#c1",
+    "title": "C: panzoom match: auto",
+    "section": "1. Single image, markdown description, desc-position left",
+    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c2",
+    "href": "tests/pages/c-panzoom-auto.html#c2",
+    "title": "C: panzoom match: auto",
+    "section": "2. Gallery via group=, custom layout",
+    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c3",
+    "href": "tests/pages/c-panzoom-auto.html#c3",
+    "title": "C: panzoom match: auto",
+    "section": "3. Math in caption and description",
+    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c4",
+    "href": "tests/pages/c-panzoom-auto.html#c4",
+    "title": "C: panzoom match: auto",
+    "section": "4. Markdown subfigures with cross-ref",
+    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c5",
+    "href": "tests/pages/c-panzoom-auto.html#c5",
+    "title": "C: panzoom match: auto",
+    "section": "5. R subfigures (fig-subcap, layout-ncol)",
+    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c6",
+    "href": "tests/pages/c-panzoom-auto.html#c6",
+    "title": "C: panzoom match: auto",
+    "section": "6. R chunks with lightbox cell options (group + description)",
+    "text": "6. R chunks with lightbox cell options (group + description)\nThis chunk sets a lightbox group and description.\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nSo does this one, in the same group.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c7",
+    "href": "tests/pages/c-panzoom-auto.html#c7",
+    "title": "C: panzoom match: auto",
+    "section": "7. Multi-plot cell, list-valued options",
+    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c8",
+    "href": "tests/pages/c-panzoom-auto.html#c8",
+    "title": "C: panzoom match: auto",
+    "section": "8. lightbox: false on a chunk",
+    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c9",
+    "href": "tests/pages/c-panzoom-auto.html#c9",
+    "title": "C: panzoom match: auto",
+    "section": "9. Image inside a link",
+    "text": "9. Image inside a link\n\n\n\nLinked image"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c10",
+    "href": "tests/pages/c-panzoom-auto.html#c10",
+    "title": "C: panzoom match: auto",
+    "section": "10. Margin image",
+    "text": "10. Margin image\n\n\n\n\nMargin image"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c11",
+    "href": "tests/pages/c-panzoom-auto.html#c11",
+    "title": "C: panzoom match: auto",
+    "section": "11. Inline image in text",
+    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c12",
+    "href": "tests/pages/c-panzoom-auto.html#c12",
+    "title": "C: panzoom match: auto",
+    "section": "12. Plain R chunk figure, no options",
+    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#credits",
+    "href": "tests/pages/c-panzoom-auto.html#credits",
+    "title": "C: panzoom match: auto",
+    "section": "Credits",
+    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nThis is 1 to 10 plot\n\n\nWe see our cars data above\n\n\nDescription for first graph\n\n\nDescription for second graph"
+  }
+]
