@@ -192,7 +192,17 @@ Enter and with Esc, and return focus to the image afterwards.
 actually opened them: Details shows `opens: ...`, and the summary line
 says `fit ok` or `FIT FAILED`. On a gallery of images that open wider than
 the screen, the test also checks that `→` pans along the image and
-`PageDown` switches to the next one (`wide gallery ok`).
+`PageDown` switches to the next one, and on a gallery of tall strips that
+`→` neither switches nor moves the strip (`large galleries ok`).
+
+**Shift+scroll.** Cases with a `shift-scroll` attribute (`x`, `y`, `none`,
+or `zoomed-x` for "after zooming in"; page E) are checked for which way
+Shift+scroll moved the image (`shift-scroll ok`).
+
+**Containment.** On the first single collage, `→` must stop at its right
+end, `←` at its left end, and `↑`/`↓` must not move it; on the first single
+image shown whole, arrow keys and a drag must not move it
+(`containment ok`). In galleries, `←` on the first image must do nothing.
 
 **Gallery navigation.** On the first image that opens whole as `1 / N` in a
 panzoom gallery, the test steps forward and back with `PageDown`/`PageUp`,

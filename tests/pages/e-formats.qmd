@@ -23,6 +23,11 @@ test checks. By default (`fit: auto`) very wide figures open at screen
 height from the left end, very tall ones at screen width from the top, and
 everything else whole.
 
+Cases with a `shift-scroll` attribute say which way Shift+scroll should
+move the image: `x` (sideways), `y` (up and down) or `none` (it fits, so
+it stays put); `zoomed-x` means sideways after zooming in until the image
+extends past the screen both ways.
+
 webp comes from ragg's `agg_webp` device: knitr has no built-in webp
 device, and `agg_webp` needs `units = "in"` because knitr passes sizes in
 inches.
@@ -43,7 +48,7 @@ collage <- function(n = 20) {
 }
 ```
 
-## 1. Wide collage, png (100 × 5 in) {#c1 expect-fit="height"}
+## 1. Wide collage, png (100 × 5 in) {#c1 expect-fit="height" shift-scroll="x"}
 
 ```{r}
 #| panzoom: true
@@ -77,7 +82,7 @@ collage()
 collage()
 ```
 
-## 4. webp plot {#c4 expect-fit="contain"}
+## 4. webp plot {#c4 expect-fit="contain" shift-scroll="none"}
 
 ```{r}
 #| panzoom: true
@@ -137,7 +142,7 @@ per side; this case records what happens.
 collage()
 ```
 
-## 9. Wide collage with `fit: contain` {#c9 expect-fit="contain"}
+## 9. Wide collage with `fit: contain` {#c9 expect-fit="contain" shift-scroll="none"}
 
 The override: the whole collage, as a strip.
 
@@ -162,7 +167,7 @@ Wide, but readable whole: the size rule leaves it alone.
 collage(4)
 ```
 
-## 11. Tall strip (4 × 60 in) {#c11 expect-fit="width"}
+## 11. Tall strip (4 × 60 in) {#c11 expect-fit="width" shift-scroll="y"}
 
 ```{r}
 #| panzoom: true
@@ -189,4 +194,40 @@ buttons switch collages.
 #|   - "Second collage."
 collage()
 collage(25)
+```
+
+## 13. Large poster (24 × 18 in) {#c13 expect-fit="contain" shift-scroll="zoomed-x"}
+
+Opens whole; zoomed in, it extends past the screen both ways, and
+Shift+scroll moves sideways.
+
+```{r}
+#| panzoom: true
+#| fig-width: 24
+#| fig-height: 18
+#| fig-cap: "A 24 × 18 inch poster of 48 panels."
+set.seed(3)
+par(mfrow = c(6, 8), mar = c(2, 2, 2, 1))
+for (i in 1:48) plot(cumsum(rnorm(100)), type = "l", main = paste("Panel", i), xlab = "", ylab = "")
+```
+
+## 14. Gallery of two tall strips {#c14 expect-fit="width"}
+
+Each strip opens at screen width and extends downwards: Left/Right do
+nothing (there is nowhere to go sideways) rather than switch strips;
+PageDown, PageUp and the buttons switch.
+
+```{r}
+#| panzoom:
+#|   group: strips
+#| fig-width: 4
+#| fig-height: 60
+#| fig-cap:
+#|   - "First strip."
+#|   - "Second strip."
+for (k in 1:2) {
+  set.seed(10 + k)
+  par(mfrow = c(15, 1), mar = c(2, 3, 2, 1))
+  for (i in 1:15) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
+}
 ```

@@ -5,8 +5,9 @@ test pages comparing panzoom with Quarto's lightbox).
 
 A [Quarto](https://quarto.org) filter extension for HTML formats that opens
 figures in a full-screen pan/zoom viewer: scroll (or trackpad pinch) to zoom
-toward the cursor, drag to pan, double-click or `0` to reset, `+`/`-` to zoom,
-`Esc` or a background click to close.
+toward the cursor, drag or Shift+scroll to pan, double-click or `0` to reset,
+`+`/`-` to zoom, `Esc` or a background click to close. The image stays on
+screen: panning stops at its edges.
 
 It works from the keyboard too: marked images can be reached with `Tab` and
 opened with `Enter` or `Space`, the arrow keys pan, and closing returns focus
@@ -179,8 +180,13 @@ timeline_plot
 ```
 ````
 
-In a gallery, `←`/`→` and swipes pan an image that is wider than the
-screen; use `PageUp`/`PageDown` or the ‹ › buttons to change images.
+Shift+scroll (or a sideways trackpad swipe) pans along the direction the
+figure extends past the screen: sideways for a collage, up and down for a
+tall figure, sideways when zoomed in both ways.
+
+In a gallery, `←`/`→` and swipes pan an image that is larger than the
+screen (or do nothing, if it fits sideways); use `PageUp`/`PageDown` or the
+‹ › buttons to change images.
 
 ## Notes
 

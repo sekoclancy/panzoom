@@ -14,8 +14,13 @@
 
   Galleries: images with the same group are stepped through with the
   prev/next buttons, PageUp/PageDown, Left/Right or a horizontal swipe
-  (the last two only while the image fits the screen width; when it is
-  wider, they pan). The group
+  (the last two only while the image fits the screen; when it is larger in
+  either direction, they pan).
+
+  Panning: drag, arrow keys, Shift+wheel or sideways trackpad scrolling
+  (along the direction the image extends past the screen; sideways if
+  both). The image is kept on screen: centered in a direction where it
+  fits, and stopping at its ends where it doesn't. The group
   is `data-panzoom-group` (cell option), else `data-group` (`group="..."` on
   a markdown image, as for Quarto's lightbox), else `data-ref-parent`
   (subfigures of one figure, as Quarto's lightbox groups them).
@@ -45,7 +50,7 @@
   var FITS = ["auto", "contain", "height", "width"];
 
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption;
-  var pz = null, opts, press = null, returnFocus = null;
+  var pz = null, opts, press = null, returnFocus = null, margin = 0;
   var gallery = [], index = 0;
 
   // Document-wide options, overridden by the image's data attributes.
@@ -118,12 +123,12 @@
   // center at screen point (cx, cy) takes a pan of ((cx - w/2) / s,
   // (cy - h/2) / s).
   function fit() {
-    var vw = overlay.clientWidth, vh = overlay.clientHeight - footer.offsetHeight;
+    var a = area(), vw = a.w, vh = a.h;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
     var whole = Math.min(vw / w, vh / h) * 0.95;
     var mode = fitMode(w, h, vw, vh, whole);
-    var margin = 0.025 * Math.min(vw, vh);
+    margin = 0.025 * Math.min(vw, vh);
     var s = whole, cx = vw / 2, cy = vh / 2;
     if (mode === "height") {
       s = (vh - 2 * margin) / h;
@@ -133,7 +138,9 @@
       if (h * s > vh) cy = margin + h * s / 2;      // start at the top
     }
     img.dataset.fit = mode;
-    if (pz) pz.destroy();
+    // Clear `pz` first: Panzoom fires change events while it starts up, and
+    // contain() must not act on the old, destroyed instance.
+    if (pz) { pz.destroy(); pz = null; }
     pz = Panzoom(img, {
       canvas: true,             // drag anywhere on the overlay, not just the image
       cursor: "grab",
@@ -145,10 +152,43 @@
     });
   }
 
-  // Whether the image is wider than the screen, so that Left/Right and
-  // horizontal drags pan it rather than switch gallery images.
-  function overflowsX() {
-    return !!pz && img.naturalWidth * pz.getScale() > overlay.clientWidth + 1;
+  // The space the image is shown in: the overlay above the caption.
+  function area() {
+    return { w: overlay.clientWidth, h: overlay.clientHeight - footer.offsetHeight };
+  }
+
+  // Which ways the image is larger than that space (zoomed in, or a wide or
+  // tall figure opened at screen height or width). In either case Left/Right
+  // and horizontal drags pan rather than switch gallery images.
+  function overflow() {
+    var a = area(), s = pz ? pz.getScale() : 0;
+    var x = img.naturalWidth * s > a.w + 1, y = img.naturalHeight * s > a.h + 1;
+    return { x: x, y: y, any: x || y };
+  }
+
+  // Keeps the image on screen, one axis at a time: where it is smaller than
+  // the space it stays centered; where it is larger, its edges stop at the
+  // screen edges (less the opening margin), so panning ends at the image's
+  // ends. `t` is Panzoom's pan along the axis (unscaled px, see fit()), `n`
+  // the image size and `avail` the space, both along the axis.
+  function containAxis(t, s, n, avail) {
+    var size = n * s;
+    if (size <= avail) return (avail - n) / (2 * s);
+    var c = n / 2 + s * t;                             // image center on screen
+    c = Math.min(margin + size / 2, Math.max(avail - margin - size / 2, c));
+    return (c - n / 2) / s;
+  }
+
+  // Runs after every Panzoom change (drag, pinch, zoom, pan, reset), before
+  // the browser paints, and moves the image back inside if needed.
+  function contain() {
+    if (!pz) return;
+    var a = area(), s = pz.getScale(), p = pz.getPan();
+    var x = containAxis(p.x, s, img.naturalWidth, a.w);
+    var y = containAxis(p.y, s, img.naturalHeight, a.h);
+    if (Math.abs(x - p.x) > 1e-6 || Math.abs(y - p.y) > 1e-6) {
+      pz.pan(x, y, { animate: false, force: true, silent: true });
+    }
   }
 
   // Zoom by `factor`, keeping the image point under (px, py) fixed on screen.
@@ -169,12 +209,17 @@
     if (pz) pz.reset({ animate: false });
   }
 
-  // Pan the view by a fraction of the screen: the image moves the other way.
+  // Pan the view by (dx, dy) screen px: the image moves the other way.
   // Panzoom's translate is in unscaled px, so divide by the scale.
-  function panBy(fx, fy) {
+  function panPx(dx, dy) {
     if (!pz) return;
     var s = pz.getScale();
-    pz.pan(-fx * overlay.clientWidth / s, -fy * overlay.clientHeight / s, { relative: true });
+    pz.pan(-dx / s, -dy / s, { relative: true });
+  }
+
+  // Pan the view by a fraction of the screen.
+  function panBy(fx, fy) {
+    panPx(fx * overlay.clientWidth, fy * overlay.clientHeight);
   }
 
   // Shows gallery image `i`, fitted to the screen.
@@ -272,6 +317,7 @@
     footer = overlay.querySelector(".panzoom-footer");
     caption = overlay.querySelector(".panzoom-caption");
     closeBtn.addEventListener("click", close);
+    img.addEventListener("panzoomchange", contain);
     prevBtn.addEventListener("click", function () { step(-1); });
     nextBtn.addEventListener("click", function () { step(1); });
     // A link in the caption (e.g. a cross-reference) leaves the viewer.
@@ -282,20 +328,30 @@
     // Panzoom's own zoomWithWheel takes a fixed step per event, which makes
     // trackpad pinch (many small events) far too fast; scale by the delta.
     // Over the caption, the wheel scrolls a long caption instead.
+    // Shift+wheel, and sideways trackpad scrolling, pan instead: along the
+    // one direction the image extends past the screen, or sideways when it
+    // extends both ways (or neither, when containment keeps it still).
     overlay.addEventListener("wheel", function (e) {
       if (footer.contains(e.target)) return;
       e.preventDefault();
-      var dy = e.deltaY * (e.deltaMode === 1 ? 16 : 1);
+      var unit = e.deltaMode === 1 ? 16 : 1;
+      if (!e.ctrlKey && (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))) {
+        // Some browsers turn Shift+wheel into deltaX, others keep deltaY.
+        var d = (e.deltaX || e.deltaY) * unit, o = overflow();
+        if (o.y && !o.x) panPx(0, d); else panPx(d, 0);
+        return;
+      }
+      var dy = e.deltaY * unit;
       // ctrlKey = trackpad pinch (small deltas), so it gets a higher gain
       zoomAt(Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015)), e.clientX, e.clientY);
     }, { passive: false });
 
     // Panzoom handles the drag itself. A press and release on the background
     // without moving closes the viewer; a horizontal swipe switches images
-    // unless the image is wider than the screen (then the drag pans it).
+    // unless the image is larger than the screen (then the drag pans it).
     overlay.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest(".panzoom-exclude")) return;
-      press = { id: e.pointerId, sx: e.clientX, sy: e.clientY, onImg: e.target === img, pans: overflowsX() };
+      press = { id: e.pointerId, sx: e.clientX, sy: e.clientY, onImg: e.target === img, pans: overflow().any };
       overlay.classList.add("dragging");
     });
     document.addEventListener("pointerup", function (e) {
@@ -307,7 +363,7 @@
       press = null;
       overlay.classList.remove("dragging");
       if (clickedBackground) close();
-      else if (swipe && !step(dx < 0 ? 1 : -1)) resetView();
+      else if (swipe) step(dx < 0 ? 1 : -1);
     });
 
     overlay.addEventListener("dblclick", function (e) {
@@ -345,8 +401,11 @@
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
     else if (e.key === "PageUp") step(-1);
     else if (e.key === "PageDown") step(1);
-    else if (e.key === "ArrowLeft") { if (overflowsX() || !step(-1)) panBy(-0.1, 0); }
-    else if (e.key === "ArrowRight") { if (overflowsX() || !step(1)) panBy(0.1, 0); }
+    // Left/Right pan while the image is larger than the screen (doing
+    // nothing if it fits sideways); otherwise they switch gallery images
+    // (doing nothing at either end without `loop`).
+    else if (e.key === "ArrowLeft") { if (overflow().any) panBy(-0.1, 0); else step(-1); }
+    else if (e.key === "ArrowRight") { if (overflow().any) panBy(0.1, 0); else step(1); }
     else if (e.key === "ArrowUp") panBy(0, -0.1);
     else if (e.key === "ArrowDown") panBy(0, 0.1);
     else if (e.key === "0") resetView();

@@ -116,6 +116,15 @@ async function closeAll(page) {
   await sleep(200);
 }
 
+// Open the viewer on a result's image, from a closed viewer.
+async function openImage(page, r) {
+  const handle = await page.$(`img[data-test-idx="${r.idx}"]`);
+  await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
+  await sleep(150);
+  await handle.click();
+  await sleep(600);
+}
+
 async function exercisePanzoom(page) {
   const out = {};
   const cx = VIEWPORT.width / 2, cy = VIEWPORT.height / 2;
@@ -290,6 +299,13 @@ async function checkGallery(page, handle) {
   const n = +m[2];
   out.start = first;
   out.size = n;
+  // Left on the first image (no loop): nothing happens, not even a nudge.
+  const t0 = await viewerTransform(page);
+  await page.keyboard.press("ArrowLeft");
+  await sleep(100);
+  const tl = await viewerTransform(page);
+  out.leftAtStartStill = (await counter()) === first && !!(t0 && tl) &&
+    Math.abs(tl.x - t0.x) < 0.5 && Math.abs(tl.y - t0.y) < 0.5;
   await page.keyboard.press("PageDown");
   await sleep(100);
   out.pageDown = await counter();
@@ -330,7 +346,8 @@ async function checkGallery(page, handle) {
   await closeAll(page);
   out.ok = out.pageDown === `${+m[1] + 1} / ${n}` && out.pageUpBack &&
     out.arrowNext === out.pageDown && out.arrowBack && out.buttonNext === out.pageDown &&
-    out.swipeNext === out.pageDown && out.zoomedArrowPans && out.prevDisabledAtStart !== false;
+    out.swipeNext === out.pageDown && out.zoomedArrowPans && out.prevDisabledAtStart !== false &&
+    out.leftAtStartStill;
   return out;
 }
 
@@ -387,6 +404,7 @@ async function checkPage(browser, base, file) {
         out.push({
           idx, case: +m[1], caseTitle: m[2], n: i + 1,
           expectFit: sec.dataset.expectFit || null,
+          shiftScroll: sec.dataset.shiftScroll || null,
           classes: img.className,
           wrapper: link ? (link.classList.contains("lightbox") ? "a.lightbox" : "a[href]") : "none",
           gallery: link?.dataset.gallery || null,
@@ -456,16 +474,15 @@ async function checkPage(browser, base, file) {
     gallery.image = `${firstInGallery.case}. ${firstInGallery.caseTitle} (img ${firstInGallery.n})`;
   }
 
-  // A gallery of images wider than the screen: Left/Right pan, PageDown
-  // switches.
-  let wideGallery = null;
-  const firstWide = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === "height");
-  if (firstWide) {
-    const handle = await page.$(`img[data-test-idx="${firstWide.idx}"]`);
-    await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
-    await sleep(150);
-    await handle.click();
-    await sleep(600);
+  // Galleries of images that open larger than the screen: Left/Right pan
+  // (a collage, opened at screen height) or do nothing (a tall strip,
+  // opened at screen width: nowhere to go sideways), never switch;
+  // PageDown switches.
+  const overflowGalleries = [];
+  for (const fit of ["height", "width"]) {
+    const first = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === fit);
+    if (!first) continue;
+    await openImage(page, first);
     const t0 = await viewerTransform(page);
     await page.keyboard.press("ArrowRight");
     await sleep(100);
@@ -474,20 +491,99 @@ async function checkPage(browser, base, file) {
     await page.keyboard.press("PageDown");
     await sleep(600);
     const s2 = await state(page);
-    wideGallery = {
-      image: `${firstWide.case}. ${firstWide.caseTitle} (img ${firstWide.n})`,
-      arrowPans: !!(t0 && t1 && t1.x < t0.x - 1) && s1.counter === firstWide.counter,
-      pageDownSwitches: s2.counter === firstWide.counter.replace(/^1 /, "2 "),
+    const moved = t0 && t1 ? t0.x - t1.x : null;
+    const g = {
+      fit, image: `${first.case}. ${first.caseTitle} (img ${first.n})`,
+      arrowKeepsImage: s1.counter === first.counter,
+      arrowMoves: fit === "height" ? moved > 1 : Math.abs(moved) < 0.5,
+      pageDownSwitches: s2.counter === first.counter.replace(/^1 /, "2 "),
       nextFit: s2.fit,
     };
-    wideGallery.ok = wideGallery.arrowPans && wideGallery.pageDownSwitches;
+    g.ok = g.arrowKeepsImage && g.arrowMoves && g.pageDownSwitches;
+    overflowGalleries.push(g);
+    await closeAll(page);
+  }
+
+  // Containment: a collage stops at both ends and can't move up or down; an
+  // image shown whole can't be moved at all.
+  let containment = null;
+  const collage = results.find((r) => r.opened === "panzoom" && r.fit === "height" && (r.counter || "1 / 1") === "1 / 1");
+  const whole = results.find((r) => r.opened === "panzoom" && r.fit === "contain" && (r.counter || "1 / 1") === "1 / 1");
+  if (collage || whole) containment = {};
+  if (collage) {
+    const c = (containment.collage = { image: `${collage.case}. ${collage.caseTitle}` });
+    await openImage(page, collage);
+    const edges = () => page.evaluate(() => {
+      const o = document.querySelector(".panzoom-overlay");
+      const f = o.querySelector(".panzoom-footer").offsetHeight;
+      const r = o.querySelector("img").getBoundingClientRect();
+      const m = 0.025 * Math.min(o.clientWidth, o.clientHeight - f);
+      return { left: r.left, right: r.right, top: r.top, w: o.clientWidth, m };
+    });
+    for (let i = 0; i < 200; i++) await page.keyboard.press("ArrowRight");
+    await sleep(100);
+    const end = await edges();
+    for (let i = 0; i < 20; i++) await page.keyboard.press("ArrowRight");
+    await sleep(100);
+    const past = await edges();
+    c.stopsAtRightEnd = Math.abs(end.right - (end.w - end.m)) < 2 && Math.abs(past.right - end.right) < 0.5;
+    for (let i = 0; i < 250; i++) await page.keyboard.press("ArrowLeft");
+    await sleep(100);
+    const start = await edges();
+    c.stopsAtLeftEnd = Math.abs(start.left - start.m) < 2;
+    await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("ArrowDown");
+    await sleep(100);
+    c.heldVertically = Math.abs((await edges()).top - start.top) < 0.5;
+    await closeAll(page);
+  }
+  if (whole) {
+    const w = (containment.whole = { image: `${whole.case}. ${whole.caseTitle}` });
+    await openImage(page, whole);
+    const t0 = await viewerTransform(page);
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("ArrowDown");
+    const cx = VIEWPORT.width / 2, cy = VIEWPORT.height / 2;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+    await page.mouse.move(cx + 150, cy + 80, { steps: 8 });
+    await page.mouse.up();
+    await sleep(100);
+    const t1 = await viewerTransform(page);
+    w.stays = !!(t0 && t1) && Math.abs(t1.x - t0.x) < 0.5 && Math.abs(t1.y - t0.y) < 0.5;
+    await closeAll(page);
+  }
+  if (containment) {
+    containment.ok = (!containment.collage || (containment.collage.stopsAtRightEnd &&
+      containment.collage.stopsAtLeftEnd && containment.collage.heldVertically)) &&
+      (!containment.whole || containment.whole.stays);
+  }
+
+  // Shift+scroll: which way it moves the image, for cases that say.
+  for (const r of results.filter((r) => r.opened === "panzoom" && r.shiftScroll)) {
+    await openImage(page, r);
+    if (r.shiftScroll.startsWith("zoomed-")) {
+      for (let i = 0; i < 4; i++) await page.keyboard.press("+");
+      await sleep(100);
+    }
+    const t0 = await viewerTransform(page);
+    await page.mouse.move(VIEWPORT.width / 2, VIEWPORT.height / 2);
+    await page.keyboard.down("Shift");
+    await page.mouse.wheel({ deltaY: 300 });
+    await page.keyboard.up("Shift");
+    await sleep(150);
+    const t1 = await viewerTransform(page);
+    const dx = Math.abs(t1.x - t0.x), dy = Math.abs(t1.y - t0.y);
+    r.shiftScrolled = t1.s !== t0.s ? "zoomed" : dx > 1 && dy < 0.5 ? "x" : dy > 1 && dx < 0.5 ? "y" :
+      dx < 0.5 && dy < 0.5 ? "none" : "both";
+    r.shiftScrollOk = r.shiftScrolled === r.shiftScroll.replace(/^zoomed-/, "");
     await closeAll(page);
   }
 
   await page.close();
-  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery, wideGallery }, null, 2));
-  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery, wideGallery));
-  return { name, outDir, errors, results, isolation, gallery, wideGallery };
+  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery, overflowGalleries, containment }, null, 2));
+  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery, overflowGalleries, containment));
+  return { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment };
 }
 
 function isolationOk(iso) {
@@ -503,7 +599,7 @@ function fitOk(r) {
   return !r.expectFit || r.fit === r.expectFit;
 }
 
-function report(file, errors, results, isolation, gallery, wideGallery) {
+function report(file, errors, results, isolation, gallery, overflowGalleries, containment) {
   const yn = (v) => (v === undefined || v === null ? "" : v === true ? "yes" : v === false ? "NO" : String(v));
   const lines = [
     `# ${path.basename(file)}`, "",
@@ -516,7 +612,8 @@ function report(file, errors, results, isolation, gallery, wideGallery) {
     const details = r.opened === "glightbox"
       ? `title: ${r.title || "—"}; desc: ${r.description || "—"}; slides: ${r.slides}`
       : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}; ${r.size}; ` +
-        `opens: ${r.fit || "—"}` + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "")
+        `opens: ${r.fit || "—"}` + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "") +
+        (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "")
       : r.opened === "navigation" ? r.navigatedTo : "";
     lines.push(`| ${r.case}. ${r.caseTitle} | ${r.n} | \`${r.classes}\` | ${r.wrapper} | **${r.opened}** | ` +
       `${details.replace(/\|/g, "\\|")} | ${yn(r.wheelZoom)} | ${yn(r.anchorDrift)} | ${yn(r.dragMoved)} | ${yn(r.resetOk)} | ` +
@@ -554,14 +651,28 @@ function report(file, errors, results, isolation, gallery, wideGallery) {
       `- Previous disabled on the first image: ${yes(gallery.prevDisabledAtStart)}`,
       `- All as expected: ${yes(gallery.ok)}`);
   }
-  lines.push("", "## Gallery of wide images", "");
-  if (!wideGallery) lines.push("No gallery of images opening at screen height on this page; skipped.");
-  else {
+  lines.push("", "## Galleries of images larger than the screen", "");
+  if (!overflowGalleries.length) lines.push("None on this page; skipped.");
+  for (const g of overflowGalleries) {
     const yes = (v) => (v ? "yes" : "**NO**");
     lines.push(
-      `Opened on case ${wideGallery.image}.`, "",
-      `- Right arrow pans along the image (no switch): ${yes(wideGallery.arrowPans)}`,
-      `- PageDown switches to the next image: ${yes(wideGallery.pageDownSwitches)} (opens: ${wideGallery.nextFit})`);
+      `Opened on case ${g.image} (opens at screen ${g.fit}).`, "",
+      `- Right arrow keeps the same image: ${yes(g.arrowKeepsImage)}`,
+      `- ...and ${g.fit === "height" ? "pans along it" : "doesn't move it (nowhere to go sideways)"}: ${yes(g.arrowMoves)}`,
+      `- PageDown switches to the next image: ${yes(g.pageDownSwitches)} (opens: ${g.nextFit})`, "");
+  }
+  lines.push("", "## Containment", "");
+  if (!containment) lines.push("No suitable image on this page; skipped.");
+  else {
+    const yes = (v) => (v ? "yes" : "**NO**");
+    if (containment.collage) lines.push(
+      `Collage, case ${containment.collage.image}:`, "",
+      `- Right arrow stops at the right end: ${yes(containment.collage.stopsAtRightEnd)}`,
+      `- Left arrow stops at the left end: ${yes(containment.collage.stopsAtLeftEnd)}`,
+      `- Up/Down don't move it (it fits vertically): ${yes(containment.collage.heldVertically)}`, "");
+    if (containment.whole) lines.push(
+      `Image shown whole, case ${containment.whole.image}:`, "",
+      `- Arrow keys and a drag don't move it: ${yes(containment.whole.stays)}`);
   }
   return lines.join("\n") + "\n";
 }
@@ -581,7 +692,7 @@ const browser = await puppeteer.launch({
 });
 try {
   for (const file of PAGES) {
-    const { name, outDir, errors, results, isolation, gallery, wideGallery } = await checkPage(browser, base, file);
+    const { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment } = await checkPage(browser, base, file);
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
     const iso = isolation
       ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
@@ -589,7 +700,12 @@ try {
     const gal = gallery ? (gallery.ok ? "gallery ok" : "GALLERY FAILED") : "gallery n/a";
     const fits = results.filter((r) => r.expectFit && r.opened === "panzoom");
     const fit = fits.length ? (fits.every(fitOk) ? "fit ok" : "FIT FAILED") : "fit n/a";
-    const wide = wideGallery ? (wideGallery.ok ? "wide gallery ok" : "WIDE GALLERY FAILED") : "";
+    const extra = [];
+    if (overflowGalleries.length) extra.push(overflowGalleries.every((g) => g.ok) ? "large galleries ok" : "LARGE GALLERIES FAILED");
+    if (containment) extra.push(containment.ok ? "containment ok" : "CONTAINMENT FAILED");
+    const shift = results.filter((r) => r.shiftScroll && r.opened === "panzoom");
+    if (shift.length) extra.push(shift.every((r) => r.shiftScrollOk) ? "shift-scroll ok" : "SHIFT-SCROLL FAILED");
+    const wide = extra.join(", ");
     console.log(`${name}: ${results.length} images, ${JSON.stringify(counts)}, ` +
       `${errors.length} console errors, ${iso}, ${gal}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
   }
