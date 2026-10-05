@@ -124,8 +124,9 @@ the parent figure's caption below it. Turn captions off with
 `caption: false` (for the document or one cell).
 
 Images in the same group form a gallery: step through them with the
-‹ › buttons, `←`/`→` (when not zoomed in; zoomed in, they pan),
-`PageUp`/`PageDown`, or a horizontal swipe. Groups work like Quarto's
+‹ › buttons, `PageUp`/`PageDown`, `←`/`→` or a horizontal swipe (the last
+two pan instead while the image is wider than the screen). Groups work
+like Quarto's
 lightbox:
 
 - subfigures of one figure are a gallery automatically,
@@ -150,10 +151,36 @@ panzoom:
   hint: true      # show the controls hint at the bottom (default true)
   caption: true   # show the figure caption in the viewer (default true)
   loop: false     # in a gallery, wrap from the last image to the first (default false)
+  fit: auto       # how the viewer opens an image (default auto, see below)
 ```
 
-`max-zoom`, `hint` and `caption` can also be set per cell under
+`max-zoom`, `hint`, `caption` and `fit` can also be set per cell under
 `#| panzoom:`, along with `group`.
+
+### Very wide or tall figures
+
+With `fit: auto`, the viewer opens most images whole. A figure so wide
+that it would show less than a quarter of the screen tall, such as a
+collage of many panels (`fig-width: 100`, `fig-height: 5`), opens filling
+the screen height instead, at its left end; drag or use `←`/`→` to move
+along it. A very tall figure opens filling the screen width, at its top.
+Zooming out still shows the whole figure.
+
+Override it per figure with `fit: contain` (always open whole), `fit:
+height` or `fit: width`:
+
+````markdown
+```{r}
+#| panzoom:
+#|   fit: contain
+#| fig-width: 16
+#| fig-height: 2
+timeline_plot
+```
+````
+
+In a gallery, `←`/`→` and swipes pan an image that is wider than the
+screen; use `PageUp`/`PageDown` or the ‹ › buttons to change images.
 
 ## Notes
 

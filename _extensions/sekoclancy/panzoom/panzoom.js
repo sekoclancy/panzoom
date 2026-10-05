@@ -13,8 +13,9 @@
   typeset math come through.
 
   Galleries: images with the same group are stepped through with the
-  prev/next buttons, PageUp/PageDown, Left/Right (when not zoomed in;
-  zoomed in, they pan) or a horizontal swipe (when not zoomed in). The group
+  prev/next buttons, PageUp/PageDown, Left/Right or a horizontal swipe
+  (the last two only while the image fits the screen width; when it is
+  wider, they pan). The group
   is `data-panzoom-group` (cell option), else `data-group` (`group="..."` on
   a markdown image, as for Quarto's lightbox), else `data-ref-parent`
   (subfigures of one figure, as Quarto's lightbox groups them).
@@ -23,18 +24,28 @@
   The open viewer takes focus, keeps Tab inside it, and gives focus back to
   what had it before when it closes.
 
+  Fit: by default (`fit: auto`) the viewer opens on the whole image, unless
+  that would show it too thin to read (a wide collage shorter than a quarter
+  of the screen height, or a tall strip narrower than a quarter of its
+  width): then it fills the screen height from the left end (or the width
+  from the top). `fit: contain | height | width` forces one of these.
+  Zooming out always goes down to the whole image.
+
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
   the document's `panzoom:` metadata): { maxZoom: 4, hint: true,
-  caption: true, loop: false }. A cell's `#| panzoom:` options override
-  maxZoom, hint and caption per image, via `data-panzoom-max-zoom`,
-  `data-panzoom-hint` and `data-panzoom-caption` on the <img>.
+  caption: true, loop: false, fit: "auto" }. A cell's `#| panzoom:` options
+  override maxZoom, hint, caption and fit per image, via
+  `data-panzoom-max-zoom`, `data-panzoom-hint`, `data-panzoom-caption` and
+  `data-panzoom-fit` on the <img>.
 */
 (function () {
   var SELECTOR = ".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)";
   var SWIPE = 50;  // px of horizontal drag that switches images
+  var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
+  var FITS = ["auto", "contain", "height", "width"];
 
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption;
-  var pz = null, fitScale = 1, opts, press = null, returnFocus = null;
+  var pz = null, opts, press = null, returnFocus = null;
   var gallery = [], index = 0;
 
   // Document-wide options, overridden by the image's data attributes.
@@ -45,7 +56,9 @@
       return v !== undefined ? v !== "false" && v !== false : dflt;
     };
     var maxZoom = d.panzoomMaxZoom !== undefined ? Number(d.panzoomMaxZoom) : o.maxZoom;
+    var fit = d.panzoomFit !== undefined ? d.panzoomFit : o.fit;
     return {
+      fit: FITS.indexOf(fit) >= 0 ? fit : "auto",
       maxZoom: typeof maxZoom === "number" && maxZoom > 0 ? maxZoom : 4,
       hint: flag(d.panzoomHint, flag(o.hint, true)),
       caption: flag(d.panzoomCaption, flag(o.caption, true)),
@@ -85,34 +98,67 @@
     });
   }
 
-  // Centers the image at its natural size and (re)starts Panzoom scaled to
-  // fit the space above the caption. Scale = screen px per image px, so
-  // max-zoom applies as is.
+  // Which way to open the image (see the header): "contain", "height" or
+  // "width". `s` is the whole-image scale, (vw, vh) the space for it.
+  function fitMode(w, h, vw, vh, s) {
+    if (opts.fit !== "auto") return opts.fit;
+    if (h * s < THIN * vh) return "height";
+    if (w * s < THIN * vw) return "width";
+    return "contain";
+  }
+
+  // (Re)starts Panzoom at the opening view (see fitMode), with zoom-out
+  // limited to the whole image. Scale = screen px per image px, so max-zoom
+  // applies as is.
+  //
+  // The image box stays at the overlay's top-left corner and is placed by
+  // Panzoom's own pan: zoomToPoint assumes that box position, and zooms away
+  // from the cursor if the box is moved with left/top. Panzoom scales around
+  // the image center and its translate is in unscaled px, so putting the
+  // center at screen point (cx, cy) takes a pan of ((cx - w/2) / s,
+  // (cy - h/2) / s).
   function fit() {
     var vw = overlay.clientWidth, vh = overlay.clientHeight - footer.offsetHeight;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
-    var s = Math.min(vw / w, vh / h) * 0.95;
-    fitScale = s;
-    img.style.left = (vw - w) / 2 + "px";
-    img.style.top = (vh - h) / 2 + "px";
+    var whole = Math.min(vw / w, vh / h) * 0.95;
+    var mode = fitMode(w, h, vw, vh, whole);
+    var margin = 0.025 * Math.min(vw, vh);
+    var s = whole, cx = vw / 2, cy = vh / 2;
+    if (mode === "height") {
+      s = (vh - 2 * margin) / h;
+      if (w * s > vw) cx = margin + w * s / 2;      // start at the left end
+    } else if (mode === "width") {
+      s = (vw - 2 * margin) / w;
+      if (h * s > vh) cy = margin + h * s / 2;      // start at the top
+    }
+    img.dataset.fit = mode;
     if (pz) pz.destroy();
     pz = Panzoom(img, {
       canvas: true,             // drag anywhere on the overlay, not just the image
       cursor: "grab",
       startScale: s,
-      minScale: s,
+      startX: (cx - w / 2) / s,
+      startY: (cy - h / 2) / s,
+      minScale: Math.min(whole, s),
       maxScale: Math.max(opts.maxZoom, s)
     });
   }
 
-  function zoomedIn() {
-    return pz && pz.getScale() > fitScale * 1.001;
+  // Whether the image is wider than the screen, so that Left/Right and
+  // horizontal drags pan it rather than switch gallery images.
+  function overflowsX() {
+    return !!pz && img.naturalWidth * pz.getScale() > overlay.clientWidth + 1;
   }
 
   // Zoom by `factor`, keeping the image point under (px, py) fixed on screen.
+  // Clamp to the zoom limits here: Panzoom computes the fixed point for the
+  // scale it is asked for, so asking past a limit makes the image drift.
   function zoomAt(factor, px, py) {
-    if (pz) pz.zoomToPoint(pz.getScale() * factor, { clientX: px, clientY: py });
+    if (!pz) return;
+    var o = pz.getOptions();
+    var s = Math.min(o.maxScale, Math.max(o.minScale, pz.getScale() * factor));
+    pz.zoomToPoint(s, { clientX: px, clientY: py });
   }
 
   // Pan the view by a fraction of the screen: the image moves the other way.
@@ -140,9 +186,13 @@
     overlay.setAttribute("aria-label", "Image viewer" + (many ? ", image " + (i + 1) + " of " + n : ""));
     if (pz) { pz.destroy(); pz = null; }
     img.style.transform = "";
+    delete img.dataset.fit;
     img.alt = el.alt || "";
     img.onload = fit;
     img.src = el.currentSrc || el.src;
+    // Vector images stay sharp when zoomed only if the browser may redraw
+    // them at the new scale (see panzoom.css).
+    img.classList.toggle("panzoom-vector", /\.svg([?#]|$)/i.test(img.src) || /^data:image\/svg/i.test(img.src));
     if (img.complete && img.naturalWidth) fit();
   }
 
@@ -203,7 +253,7 @@
       '<div class="panzoom-caption"></div>' +
       '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
       'double-click to reset &middot; Esc to close' +
-      '<span class="panzoom-hint-gallery"> &middot; &larr;/&rarr; for other images</span></div>' +
+      '<span class="panzoom-hint-gallery"> &middot; PageUp/PageDown for other images</span></div>' +
       '</div>';
     document.body.appendChild(overlay);
     img = overlay.querySelector("img");
@@ -233,11 +283,11 @@
     }, { passive: false });
 
     // Panzoom handles the drag itself. A press and release on the background
-    // without moving closes the viewer; a horizontal swipe while not zoomed
-    // in switches images.
+    // without moving closes the viewer; a horizontal swipe switches images
+    // unless the image is wider than the screen (then the drag pans it).
     overlay.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest(".panzoom-exclude")) return;
-      press = { id: e.pointerId, sx: e.clientX, sy: e.clientY, onImg: e.target === img, zoomed: zoomedIn() };
+      press = { id: e.pointerId, sx: e.clientX, sy: e.clientY, onImg: e.target === img, pans: overflowsX() };
       overlay.classList.add("dragging");
     });
     document.addEventListener("pointerup", function (e) {
@@ -245,7 +295,7 @@
       var dx = e.clientX - press.sx, dy = e.clientY - press.sy;
       var moved = Math.abs(dx) + Math.abs(dy) > 3;
       var clickedBackground = !moved && !press.onImg;
-      var swipe = !press.zoomed && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
+      var swipe = !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
       press = null;
       overlay.classList.remove("dragging");
       if (clickedBackground) close();
@@ -265,10 +315,13 @@
   // page shortcuts (e.g. focus-mode's arrows, Quarto search on keyup) never
   // see them. Only a window-capture listener registered before this one
   // can still run first, so register at script load, not on first open.
-  // Browser shortcuts with Ctrl/Cmd/Alt pass through.
+  // Browser shortcuts with Ctrl/Cmd/Alt, and function keys, pass through.
   function onKey(e) {
     if (!overlay || !overlay.classList.contains("open")) return;
     if (e.ctrlKey || e.metaKey || e.altKey) return;
+    // Function keys are browser features (F5 reload, F3 find, F7 caret
+    // browsing), not page shortcuts, so they pass through too.
+    if (/^F\d{1,2}$/.test(e.key)) return;
     e.stopImmediatePropagation();
     e.preventDefault();
     if (e.type !== "keydown") return;
@@ -284,8 +337,8 @@
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
     else if (e.key === "PageUp") step(-1);
     else if (e.key === "PageDown") step(1);
-    else if (e.key === "ArrowLeft") { if (zoomedIn() || !step(-1)) panBy(-0.1, 0); }
-    else if (e.key === "ArrowRight") { if (zoomedIn() || !step(1)) panBy(0.1, 0); }
+    else if (e.key === "ArrowLeft") { if (overflowsX() || !step(-1)) panBy(-0.1, 0); }
+    else if (e.key === "ArrowRight") { if (overflowsX() || !step(1)) panBy(0.1, 0); }
     else if (e.key === "ArrowUp") panBy(0, -0.1);
     else if (e.key === "ArrowDown") panBy(0, 0.1);
     else if (e.key === "0") { if (pz) pz.reset(); }

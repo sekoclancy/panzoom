@@ -10,9 +10,10 @@
 --     `panzoom: { match: auto }` -- the same images Quarto's auto lightbox takes.
 -- `.nopanzoom` opts a single image out, `#| panzoom: false` a whole cell.
 --
--- Cell options (`max-zoom`, `hint`, `caption`, `group`) become
+-- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`) become
 -- `data-panzoom-*` attributes on the cell's images; document options
--- (`max-zoom`, `hint`, `caption`, `loop`) go to `window.PANZOOM_OPTIONS`.
+-- (`max-zoom`, `hint`, `caption`, `loop`, `fit`) go to
+-- `window.PANZOOM_OPTIONS`.
 -- Captions and galleries are built in panzoom.js from the rendered page.
 -- Images inside links are always left
 -- alone, so the link keeps working.
@@ -96,6 +97,9 @@ local function cell_option(el)
     if cfg.group ~= nil then
       attrs["data-panzoom-group"] = tostring(cfg.group)
     end
+    if cfg.fit ~= nil then
+      attrs["data-panzoom-fit"] = tostring(cfg.fit)
+    end
   end
   return true, attrs
 end
@@ -119,6 +123,9 @@ local function setup(meta)
     end
     if cfg.loop ~= nil then
       options.loop = cfg.loop == true
+    end
+    if cfg.fit ~= nil then
+      options.fit = pandoc.utils.stringify(cfg.fit)
     end
   end
 
