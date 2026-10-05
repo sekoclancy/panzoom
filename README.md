@@ -114,12 +114,29 @@ git branch gh-pages $(git commit-tree $(git hash-object -t tree /dev/null) -m "I
 git push origin gh-pages
 ```
 
-`tests/` renders the same 12 figure cases three ways: with Quarto's lightbox
-alone (the reference), with `match: auto`, and with explicitly marked images.
-A headless Chrome script clicks every image on each page and reports which
-viewer opened, then checks that the viewer zooms, pans and closes, saving a
-screenshot of each step for review. See `tests/README.md` to set it up and
-run it.
+## Testing
+
+**Tools:**
+
+- [Quarto](https://quarto.org) 1.9+ and R, to render the test pages (they
+  have R chunks, some taken from the quarto-ext/lightbox examples).
+- [Node.js](https://nodejs.org) with
+  [puppeteer-core](https://pptr.dev/), to drive the browser.
+- Headless Chrome, installed with `quarto install chrome-headless-shell`
+  (or any Chrome/Chromium via `CHROME=`).
+
+**How we test:** the same 12 figure cases (galleries, subfigures, math in
+captions, linked, margin and inline images, R chunks with cell options) are
+rendered three ways: with Quarto's lightbox alone as the reference, with
+`match: auto`, and with explicitly marked images. A script serves the
+rendered site locally, clicks every image on each page and records which
+viewer opened (panzoom, Quarto's lightbox, or nothing). For the panzoom
+viewer, it then checks zoom, pan, reset and closing, and that key presses
+don't reach the page behind it. It writes a report per page and a
+screenshot of each step for a person to review; nothing is compared
+pixel by pixel.
+
+See `tests/README.md` for setup and running the tests.
 
 ## License
 
