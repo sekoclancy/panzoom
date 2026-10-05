@@ -161,11 +161,13 @@ panzoom:
 
 ### Very wide or tall figures
 
-With `fit: auto`, the viewer opens most images whole. A figure so wide
-that it would show less than a quarter of the screen tall, such as a
-collage of many panels (`fig-width: 100`, `fig-height: 5`), opens filling
-the screen height instead, at its left end; drag or use `←`/`→` to move
-along it. A very tall figure opens filling the screen width, at its top.
+With `fit: auto`, the viewer opens most images whole. A strip, at least 3
+times wider than tall, that would show less than a quarter of the screen
+tall, such as a collage of many panels (`fig-width: 100`, `fig-height: 5`),
+opens filling the screen height instead, at its left end; drag or use
+`←`/`→` to move along it. A strip at least 3 times taller than wide opens
+filling the screen width, at its top. Ordinary photos and plots, portrait
+or landscape, always open whole.
 Zooming out still shows the whole figure.
 
 Override it per figure with `fit: contain` (always open whole), `fit:

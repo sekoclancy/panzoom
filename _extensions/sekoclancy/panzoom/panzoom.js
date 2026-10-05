@@ -30,10 +30,11 @@
   what had it before when it closes.
 
   Fit: by default (`fit: auto`) the viewer opens on the whole image, unless
-  that would show it too thin to read (a wide collage shorter than a quarter
-  of the screen height, or a tall strip narrower than a quarter of its
-  width): then it fills the screen height from the left end (or the width
-  from the top). `fit: contain | height | width` forces one of these.
+  it is a strip (at least 3 times wider than tall, or taller than wide) that
+  would show too thin to read (shorter than a quarter of the screen height,
+  or narrower than a quarter of its width): then it fills the screen height
+  from the left end (or the width from the top). The shape condition keeps
+  ordinary portrait photos whole on wide screens. `fit: contain | height | width` forces one of these.
   Zooming out always goes down to the whole image.
 
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
@@ -49,6 +50,7 @@
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
   var BOUNCE = 40;  // px a key or scroll pan overshoots an image's end
   var STRETCH = 80; // px a drag can pull an image past its end, at most
+  var STRIP = 3;    // ...but only for images at least this many times wider than tall (or vice versa)
   var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
 
@@ -126,8 +128,8 @@
   // "width". `s` is the whole-image scale, (vw, vh) the space for it.
   function fitMode(w, h, vw, vh, s) {
     if (opts.fit !== "auto") return opts.fit;
-    if (h * s < THIN * vh) return "height";
-    if (w * s < THIN * vw) return "width";
+    if (w >= STRIP * h && h * s < THIN * vh) return "height";
+    if (h >= STRIP * w && w * s < THIN * vw) return "width";
     return "contain";
   }
 

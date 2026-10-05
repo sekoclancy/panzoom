@@ -605,6 +605,21 @@ async function checkPage(browser, base, file) {
     await closeAll(page);
   }
 
+  // The opening view on a wide screen (2560 px): the size rule must still
+  // only pick out strips.
+  const fitCases = results.filter((r) => r.opened === "panzoom" && r.expectFit);
+  if (fitCases.length) {
+    await page.setViewport({ width: 2560, height: 1000 });
+    await sleep(300);
+    for (const r of fitCases) {
+      await openImage(page, r);
+      r.wideFit = (await state(page)).fit;
+      await closeAll(page);
+    }
+    await page.setViewport(VIEWPORT);
+    await sleep(300);
+  }
+
   await page.close();
   fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery, overflowGalleries, containment }, null, 2));
   fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery, overflowGalleries, containment));
@@ -621,8 +636,9 @@ function keyboardOk(iso) {
 }
 
 function fitOk(r) {
-  return !r.expectFit || r.fit === r.expectFit;
+  return !r.expectFit || (r.fit === r.expectFit && (r.wideFit === undefined || r.wideFit === r.expectFit));
 }
+
 
 function report(file, errors, results, isolation, gallery, overflowGalleries, containment) {
   const yn = (v) => (v === undefined || v === null ? "" : v === true ? "yes" : v === false ? "NO" : String(v));
@@ -637,7 +653,7 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
     const details = r.opened === "glightbox"
       ? `title: ${r.title || "—"}; desc: ${r.description || "—"}; slides: ${r.slides}`
       : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}; ${r.size}; ` +
-        `opens: ${r.fit || "—"}` + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "") +
+        `opens: ${r.fit || "—"}` + (r.wideFit !== undefined ? `, ${r.wideFit} at 2560 px` : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "")
       : r.opened === "navigation" ? r.navigatedTo : "";
     lines.push(`| ${r.case}. ${r.caseTitle} | ${r.n} | \`${r.classes}\` | ${r.wrapper} | **${r.opened}** | ` +

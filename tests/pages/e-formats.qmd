@@ -246,3 +246,10 @@ PDF viewer (case 7), whichever device wrote it.
 filled.contour(volcano, color.palette = terrain.colors,
                plot.title = title(main = "µ = 5, α = 0.05"))
 ```
+
+## 16. Portrait photo {#c16 expect-fit="contain"}
+
+An ordinary 9:16 photo is not a strip: it opens whole, on any screen width
+(the test also checks this in a 2560 px wide window).
+
+![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30%}
