@@ -29,6 +29,35 @@ quarto add sekoclancy/panzoom
 This will install the extension under the `_extensions` subdirectory.
 If you're using version control, you will want to check in this directory.
 
+### Development Tools
+
+Only needed to run the browser tests (see [Testing](#testing)), not to use
+the extension. They also need [Node.js](https://nodejs.org) 22.12 or later.
+
+#### Chrome Headless Shell
+
+The browser the tests drive, installed with the Quarto CLI into
+`~/.local/share/quarto/chrome-headless-shell/` (about 115 MB):
+
+```bash
+quarto install chrome-headless-shell
+```
+
+To use a different Chrome or Chromium instead, set `CHROME=/path/to/chrome`
+when running the tests.
+
+#### Puppeteer
+
+The Node.js library that controls Chrome. `tests/package.json` lists
+`puppeteer-core` (the variant that uses an existing Chrome instead of
+downloading its own), and `tests/package-lock.json` pins its version. From
+the repo root:
+
+```bash
+cd tests
+npm install
+```
+
 ## Usage
 
 Turn the filter on:
