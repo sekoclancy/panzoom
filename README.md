@@ -125,6 +125,23 @@ The viewer shows the figure's caption under the image, including its
 the parent figure's caption below it. Turn captions off with
 `caption: false` (for the document or one cell).
 
+A description, written in Markdown (with math, links, emphasis), is shown
+under the caption, as for Quarto's lightbox:
+
+```markdown
+![Beach](beach.jpg){.panzoom description="The best beaches. **Credit:** [Unsplash](https://unsplash.com)"}
+```
+
+or for all of a cell's plots:
+
+````markdown
+```{r}
+#| panzoom:
+#|   description: "Pressure rises with temperature, $p \propto e^{-1/T}$."
+plot(pressure)
+```
+````
+
 Images in the same group form a gallery: step through them with the
 ‹ › buttons, `PageUp`/`PageDown`, `←`/`→` or a horizontal swipe (the last
 two pan instead while the image is wider than the screen). Groups work

@@ -192,7 +192,11 @@ Enter and with Esc, and return focus to the image afterwards.
 actually opened them, in the normal 1280 px window and again in a 2560 px
 wide one (the size rule depends on the screen): Details shows
 `opens: ..., ... at 2560 px`, and the summary line says `fit ok` or
-`FIT FAILED`. On a gallery of images that open wider than
+`FIT FAILED`.
+
+**Descriptions.** Every image with a `description` must show it under the
+caption in the viewer, with any math typeset (`descriptions ok`; cases 1
+and 3 on pages C and D). On a gallery of images that open wider than
 the screen, the test also checks that `→` pans along the image and
 `PageDown` switches to the next one, and on a gallery of tall strips that
 `→` neither switches nor moves the strip (`large galleries ok`).

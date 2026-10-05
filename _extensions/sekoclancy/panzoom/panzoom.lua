@@ -10,7 +10,8 @@
 --     `panzoom: { match: auto }` -- the same images Quarto's auto lightbox takes.
 -- `.nopanzoom` opts a single image out, `#| panzoom: false` a whole cell.
 --
--- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`) become
+-- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`,
+-- `description`) become
 -- `data-panzoom-*` attributes on the cell's images; document options
 -- (`max-zoom`, `hint`, `caption`, `loop`, `fit`) go to
 -- `window.PANZOOM_OPTIONS`.
@@ -36,8 +37,21 @@ local function has(classes, name)
   return classes ~= nil and classes:includes(name)
 end
 
+-- Markdown to HTML, for descriptions. Math stays as \( \) for the page's
+-- MathJax (or KaTeX) to typeset in the viewer.
+local function markdown_html(text)
+  local doc = pandoc.read(text, "markdown")
+  return pandoc.write(doc, "html", { html_math_method = "mathjax", wrap_text = "none" })
+end
+
 local function mark(img)
   if has(img.classes, "nopanzoom") then return nil end
+  -- `description="..."` (as for Quarto's lightbox), shown under the caption.
+  local desc = img.attributes["description"]
+  if desc ~= nil and desc ~= "" then
+    img.attributes["data-panzoom-description"] = markdown_html(desc)
+    img.attributes["description"] = nil
+  end
   img.classes = img.classes:filter(function(c) return c ~= "lightbox" end)
   if not has(img.classes, "panzoom") then img.classes:insert("panzoom") end
   if not has(img.classes, "nolightbox") then img.classes:insert("nolightbox") end
@@ -99,6 +113,9 @@ local function cell_option(el)
     end
     if cfg.fit ~= nil then
       attrs["data-panzoom-fit"] = tostring(cfg.fit)
+    end
+    if type(cfg.description) == "string" and cfg.description ~= "" then
+      attrs["data-panzoom-description"] = markdown_html(cfg.description)
     end
   end
   return true, attrs

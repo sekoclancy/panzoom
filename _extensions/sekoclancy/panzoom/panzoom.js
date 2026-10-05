@@ -10,7 +10,9 @@
 
   Captions: the viewer shows the image's figure caption, taken from the
   rendered page (the nearest <figcaption>), so "Figure N:" prefixes and
-  typeset math come through.
+  typeset math come through. Below it, the image's description
+  (`data-panzoom-description`: HTML that panzoom.lua made from the
+  `description` attribute or cell option), with its math typeset on show.
 
   Galleries: images with the same group are stepped through with the
   prev/next buttons, PageUp/PageDown, Left/Right or a horizontal swipe
@@ -48,13 +50,13 @@
   var SELECTOR = ".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)";
   var SWIPE = 50;  // px of horizontal drag that switches images
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
+  var STRIP = 3;    // ...but only for images at least this many times wider than tall (or vice versa)
   var BOUNCE = 40;  // px a key or scroll pan overshoots an image's end
   var STRETCH = 80; // px a drag can pull an image past its end, at most
-  var STRIP = 3;    // ...but only for images at least this many times wider than tall (or vice versa)
   var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
 
-  var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption;
+  var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption, desc;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
   var bouncing = false, bounceTimer = null;
   var gallery = [], index = 0;
@@ -319,6 +321,13 @@
     counter.textContent = (i + 1) + " / " + n;
     caption.innerHTML = opts.caption ? captionOf(el) : "";
     caption.hidden = !caption.innerHTML;
+    desc.innerHTML = opts.caption ? el.dataset.panzoomDescription || "" : "";
+    desc.hidden = !desc.innerHTML;
+    // Typeset the description's math, as Quarto's lightbox does (the caption
+    // is copied already typeset).
+    if (!desc.hidden && window.Quarto && typeof window.Quarto.typesetMath === "function") {
+      window.Quarto.typesetMath(desc);
+    }
     overlay.querySelector(".panzoom-hint").hidden = !opts.hint;
     overlay.querySelector(".panzoom-hint-gallery").hidden = !many;
     overlay.setAttribute("aria-label", "Image viewer" + (many ? ", image " + (i + 1) + " of " + n : ""));
@@ -391,6 +400,7 @@
       '<button class="panzoom-next panzoom-exclude" aria-label="Next image">&rsaquo;</button>' +
       '<div class="panzoom-footer panzoom-exclude">' +
       '<div class="panzoom-caption"></div>' +
+      '<div class="panzoom-description"></div>' +
       '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
       'double-click to reset &middot; Esc to close' +
       '<span class="panzoom-hint-gallery"> &middot; PageUp/PageDown for other images</span></div>' +
@@ -403,12 +413,14 @@
     counter = overlay.querySelector(".panzoom-counter");
     footer = overlay.querySelector(".panzoom-footer");
     caption = overlay.querySelector(".panzoom-caption");
+    desc = overlay.querySelector(".panzoom-description");
     closeBtn.addEventListener("click", close);
     img.addEventListener("panzoomchange", contain);
     prevBtn.addEventListener("click", function () { step(-1); });
     nextBtn.addEventListener("click", function () { step(1); });
-    // A link in the caption (e.g. a cross-reference) leaves the viewer.
-    caption.addEventListener("click", function (e) {
+    // A link in the caption or description (e.g. a cross-reference) leaves
+    // the viewer.
+    footer.addEventListener("click", function (e) {
       if (e.target.closest("a[href]")) close();
     });
 
