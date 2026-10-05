@@ -231,3 +231,18 @@ for (k in 1:2) {
   for (i in 1:15) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
 }
 ```
+
+## 15. png + cairo_pdf (dev: [png, cairo_pdf]) {#c15 expect-fit="contain"}
+
+Like case 6, with the cairo PDF device, which embeds fonts and handles
+Unicode (µ, Greek letters) and transparency better than `pdf`. The page
+shows the png either way; a PDF figure only ever appears as the browser's
+PDF viewer (case 7), whichever device wrote it.
+
+```{r}
+#| panzoom: true
+#| dev: !expr c("png", "cairo_pdf")
+#| fig-cap: "png shown, cairo_pdf written alongside (µ = 5, α = 0.05)."
+filled.contour(volcano, color.palette = terrain.colors,
+               plot.title = title(main = "µ = 5, α = 0.05"))
+```
