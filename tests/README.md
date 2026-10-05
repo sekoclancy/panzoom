@@ -169,7 +169,7 @@ Report columns:
 | Zoom× | Five wheel-scroll steps zoomed the image this many times its fitted size. |
 | Anchor px | Those steps were taken with the mouse over a point 30% across and 60% down the image. Zooming toward the cursor keeps that point under it; this is how far it drifted (a few px of rounding is normal). |
 | Drag px | A 170 px mouse drag moved the image this far. |
-| Reset | Pressing `0` returned to the fitted size. |
+| Reset | Pressing `0` returned to the opening view at once (checked 20 ms later, so an animated reset fails). |
 | Esc / Bg click | Esc, and a click on the dark background, closed the viewer. |
 
 **Viewer isolation.** With the viewer open, the test adds key listeners to the

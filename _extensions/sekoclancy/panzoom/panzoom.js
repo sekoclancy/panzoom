@@ -161,6 +161,14 @@
     pz.zoomToPoint(s, { clientX: px, clientY: py });
   }
 
+  // Back to the opening view, without Panzoom's default animation: it
+  // transitions scale and (unscaled) translate separately, and when the
+  // opening scale is tiny (a whole collage) the translate is huge, so the
+  // image flies far off-screen mid-animation and snaps back.
+  function resetView() {
+    if (pz) pz.reset({ animate: false });
+  }
+
   // Pan the view by a fraction of the screen: the image moves the other way.
   // Panzoom's translate is in unscaled px, so divide by the scale.
   function panBy(fx, fy) {
@@ -299,11 +307,11 @@
       press = null;
       overlay.classList.remove("dragging");
       if (clickedBackground) close();
-      else if (swipe && !step(dx < 0 ? 1 : -1) && pz) pz.reset();
+      else if (swipe && !step(dx < 0 ? 1 : -1)) resetView();
     });
 
     overlay.addEventListener("dblclick", function (e) {
-      if (pz && !e.target.closest(".panzoom-exclude")) pz.reset();
+      if (!e.target.closest(".panzoom-exclude")) resetView();
     });
     window.addEventListener("resize", function () {
       if (overlay.classList.contains("open")) fit();
@@ -341,7 +349,7 @@
     else if (e.key === "ArrowRight") { if (overflowsX() || !step(1)) panBy(0.1, 0); }
     else if (e.key === "ArrowUp") panBy(0, -0.1);
     else if (e.key === "ArrowDown") panBy(0, 0.1);
-    else if (e.key === "0") { if (pz) pz.reset(); }
+    else if (e.key === "0") resetView();
     else if (e.key === "+" || e.key === "=") zoomAt(1.25, cx, cy);
     else if (e.key === "-") zoomAt(0.8, cx, cy);
   }

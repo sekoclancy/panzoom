@@ -156,9 +156,13 @@ async function exercisePanzoom(page) {
   out.closedByDrag = (await state(page)).opened !== "panzoom";
 
   if (!out.closedByDrag) {
+    // Reset is instant: right after `0` the view is back where it opened
+    // (an animated reset would still be mid-way).
     await page.keyboard.press("0");
-    await sleep(100);
-    out.resetOk = (await viewerTransform(page))?.s === fit?.s;
+    await sleep(20);
+    const back = await viewerTransform(page);
+    out.resetOk = fit ? !!(back && back.s === fit.s &&
+      Math.abs(back.x - fit.x) < 1 && Math.abs(back.y - fit.y) < 1) : null;  // null: no image loaded
     await page.keyboard.press("Escape");
     await sleep(100);
     out.escCloses = (await state(page)).opened !== "panzoom";
