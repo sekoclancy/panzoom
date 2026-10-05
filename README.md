@@ -40,8 +40,11 @@ The browser the tests drive, installed with the Quarto CLI into
 `~/.local/share/quarto/chrome-headless-shell/` (about 115 MB):
 
 ```bash
-quarto install chrome-headless-shell
+quarto install chrome-headless-shell --no-prompt
 ```
+
+`--no-prompt` skips the confirmation, so the command also works in a
+non-interactive shell (a script, CI, or an agent).
 
 To use a different Chrome or Chromium instead, set `CHROME=/path/to/chrome`
 when running the tests.
@@ -155,8 +158,9 @@ git push origin gh-pages
   have R chunks, some taken from the quarto-ext/lightbox examples).
 - [Node.js](https://nodejs.org) with
   [puppeteer-core](https://pptr.dev/), to drive the browser.
-- Headless Chrome, installed with `quarto install chrome-headless-shell`
-  (or any Chrome/Chromium via `CHROME=`).
+- Headless Chrome, installed with
+  `quarto install chrome-headless-shell --no-prompt` (or any Chrome/Chromium
+  via `CHROME=`).
 
 **How we test:** the same 12 figure cases (galleries, subfigures, math in
 captions, linked, margin and inline images, R chunks with cell options) are

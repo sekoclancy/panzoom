@@ -21,8 +21,9 @@
   Output: results/<page>/report.md, results/<page>/results.json and one
   screenshot per image (results/<page>/<case>-<n>.png).
 
-  Chrome: Quarto's `chrome-headless-shell` (`quarto install chrome-headless-shell`),
-  or set CHROME=/path/to/chrome.
+  Chrome: Quarto's `chrome-headless-shell`
+  (`quarto install chrome-headless-shell --no-prompt`), or set
+  CHROME=/path/to/chrome.
 */
 import fs from "node:fs";
 import http from "node:http";

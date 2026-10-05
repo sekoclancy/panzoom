@@ -98,7 +98,7 @@ You need Quarto (1.9 or later), R (the pages have R chunks), and Node.js.
 
 ```bash
 # 1. A Chrome for the tests to drive (about 115 MB, in ~/.local/share/quarto/)
-quarto install chrome-headless-shell
+quarto install chrome-headless-shell --no-prompt
 
 # 2. The Node dependency (from tests/)
 cd tests
@@ -228,7 +228,7 @@ The script finds cases by the `## N.` headings.
 - **Console errors about CORS or `file://`**: the page was opened as a file.
   Use `quarto preview` or the test script, which serve it over HTTP.
 - **`Failed to launch the browser process`**: Chrome isn't where the script
-  looks. Run `quarto install chrome-headless-shell`, or set `CHROME=`.
+  looks. Run `quarto install chrome-headless-shell --no-prompt`, or set `CHROME=`.
 - **`... is not inside .../docs`**: `browser.mjs` only checks pages from
   `docs/`. Render first, and pass paths like
   `../docs/tests/pages/d-panzoom-selective.html`.
