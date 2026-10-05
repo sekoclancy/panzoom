@@ -182,6 +182,69 @@ async function checkIsolation(page, box) {
   return out;
 }
 
+// Keyboard access: the image is a focusable button that opens on Enter and
+// Space; the viewer takes focus, keeps Tab inside, pans with the arrows, and
+// gives focus back to the image when it closes.
+async function checkKeyboard(page, handle) {
+  const out = {};
+  const focusState = () => page.evaluate(() => {
+    const a = document.activeElement;
+    return {
+      inViewer: !!(a && a.closest(".panzoom-overlay")),
+      onClose: !!(a && a.classList.contains("panzoom-close")),
+      onImage: !!(a && a.dataset.testIdx !== undefined),
+    };
+  });
+  out.focusable = await handle.evaluate((el) => el.tabIndex === 0 && el.getAttribute("role") === "button");
+  await handle.focus();
+  await page.keyboard.press("Enter");
+  await sleep(300);
+  out.enterOpens = (await state(page)).opened === "panzoom";
+  if (!out.enterOpens) return out;
+  out.focusMovesIn = (await focusState()).inViewer;
+
+  await page.keyboard.press("+");
+  await page.keyboard.press("+");
+  await sleep(100);
+  const before = await viewerTransform(page);
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("ArrowDown");
+  await sleep(100);
+  const after = await viewerTransform(page);
+  out.arrowsPan = !!(before && after && after.x < before.x - 1 && after.y < before.y - 1);
+
+  for (let i = 0; i < 3; i++) await page.keyboard.press("Tab");
+  await page.keyboard.down("Shift");
+  await page.keyboard.press("Tab");
+  await page.keyboard.up("Shift");
+  out.tabTrapped = (await focusState()).onClose;
+
+  await page.keyboard.press("Enter");
+  await sleep(200);
+  out.closeButtonCloses = (await state(page)).opened !== "panzoom";
+  out.focusReturns = (await focusState()).onImage;
+
+  await page.keyboard.press(" ");
+  await sleep(300);
+  out.spaceOpens = (await state(page)).opened === "panzoom";
+  await page.keyboard.press("Escape");
+  await sleep(200);
+  out.escReturnsFocus = (await state(page)).opened !== "panzoom" && (await focusState()).onImage;
+  return out;
+}
+
+const KEYBOARD_CHECKS = [
+  ["focusable", "Image is focusable and a button"],
+  ["enterOpens", "Enter on the image opens the viewer"],
+  ["focusMovesIn", "Focus moves into the viewer"],
+  ["arrowsPan", "Arrow keys pan"],
+  ["tabTrapped", "Tab and Shift+Tab stay in the viewer"],
+  ["closeButtonCloses", "Enter on the close button closes"],
+  ["focusReturns", "Focus returns to the image"],
+  ["spaceOpens", "Space on the image opens the viewer"],
+  ["escReturnsFocus", "Esc closes and returns focus"],
+];
+
 async function checkPage(browser, base, file) {
   const name = path.basename(file, ".html");
   const outDir = path.join(HERE, "results", name);
@@ -277,6 +340,7 @@ async function checkPage(browser, base, file) {
     await sleep(150);
     isolation = await checkIsolation(page, await handle.boundingBox());
     isolation.image = `${first.case}. ${first.caseTitle} (img ${first.n})`;
+    isolation.keyboard = await checkKeyboard(page, handle);
   }
 
   await page.close();
@@ -287,6 +351,10 @@ async function checkPage(browser, base, file) {
 
 function isolationOk(iso) {
   return iso.opened && iso.leaked.length === 0 && iso.stillOpen && iso.modifierPasses && iso.widgetBelow && iso.escCloses;
+}
+
+function keyboardOk(iso) {
+  return KEYBOARD_CHECKS.every(([k]) => iso.keyboard?.[k] === true);
 }
 
 function report(file, errors, results, isolation) {
@@ -318,7 +386,10 @@ function report(file, errors, results, isolation) {
       `- Viewer still open after them: ${yes(isolation.stillOpen)}`,
       `- Ctrl+key still reaches the page: ${yes(isolation.modifierPasses)}`,
       `- A fixed widget at z-index 10000 stays below the viewer: ${yes(isolation.widgetBelow)}`,
-      `- Esc closes: ${yes(isolation.escCloses)}`);
+      `- Esc closes: ${yes(isolation.escCloses)}`,
+      "", "## Keyboard access", "",
+      `On the same image.`, "",
+      ...KEYBOARD_CHECKS.map(([k, label]) => `- ${label}: ${yes(isolation.keyboard?.[k])}`));
   }
   return lines.join("\n") + "\n";
 }
@@ -340,7 +411,9 @@ try {
   for (const file of PAGES) {
     const { name, outDir, errors, results, isolation } = await checkPage(browser, base, file);
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
-    const iso = isolation ? (isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED") : "isolation n/a";
+    const iso = isolation
+      ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
+      : "isolation n/a, keyboard n/a";
     console.log(`${name}: ${results.length} images, ${JSON.stringify(counts)}, ` +
       `${errors.length} console errors, ${iso} -> ${path.relative(process.cwd(), outDir)}/report.md`);
   }

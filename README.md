@@ -5,6 +5,10 @@ figures in a full-screen pan/zoom viewer: scroll (or trackpad pinch) to zoom
 toward the cursor, drag to pan, double-click or `0` to reset, `+`/`-` to zoom,
 `Esc` or a background click to close.
 
+It works from the keyboard too: marked images can be reached with `Tab` and
+opened with `Enter` or `Space`, the arrow keys pan, and closing returns focus
+to the image.
+
 It works alongside Quarto's built-in
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html)
 and attempts to mimic its functionality.
@@ -131,10 +135,10 @@ rendered three ways: with Quarto's lightbox alone as the reference, with
 `match: auto`, and with explicitly marked images. A script serves the
 rendered site locally, clicks every image on each page and records which
 viewer opened (panzoom, Quarto's lightbox, or nothing). For the panzoom
-viewer, it then checks zoom, pan, reset and closing, and that key presses
-don't reach the page behind it. It writes a report per page and a
-screenshot of each step for a person to review; nothing is compared
-pixel by pixel.
+viewer, it then checks zoom, pan, reset and closing, that key presses
+don't reach the page behind it, and that it works from the keyboard alone.
+It writes a report per page and a screenshot of each step for a person to
+review; nothing is compared pixel by pixel.
 
 See `tests/README.md` for setup and running the tests.
 

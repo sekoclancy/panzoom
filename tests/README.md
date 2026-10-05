@@ -138,14 +138,15 @@ c-panzoom-auto: 18 images, {"panzoom":11,"glightbox":4,"nothing":3}, 0 console e
 ```
 
 That is: how many images it clicked, what each click opened, how many
-JavaScript errors the page logged, and whether the viewer isolation check
-passed (below).
+JavaScript errors the page logged, and whether the viewer isolation and
+keyboard checks passed (below).
 
 ## Reading the results
 
 Each page gets a folder in `results/`:
 
-- **`report.md`**: one table row per image, then the isolation check.
+- **`report.md`**: one table row per image, then the isolation and keyboard
+  checks.
 - **`cNN-M.png`**: a screenshot taken right after clicking image M of case NN.
   Open a few to see what the viewer or lightbox looked like.
 - **`results.json`**: the same data, for scripts.
@@ -170,6 +171,12 @@ and checks that none of them reached the page, that Ctrl+key still does, and
 that a fixed button at z-index 10000 stays underneath the viewer. This guards
 against keys acting on the page behind the viewer (for example focus-mode's
 arrow keys switching pages).
+
+**Keyboard access.** On the same image, the test opens the viewer with the
+keyboard only: the image must be focusable and announced as a button, open
+on Enter and on Space, move focus into the viewer, pan with the arrow keys,
+keep Tab and Shift+Tab inside the viewer, close from the close button with
+Enter and with Esc, and return focus to the image afterwards.
 
 **What to expect.** A on its own shows what Quarto does; compare each case in
 C and D against it. The notes at the top of each page list the intended

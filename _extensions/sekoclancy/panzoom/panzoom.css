@@ -2,6 +2,10 @@
 img.panzoom:not(.nopanzoom) {
   cursor: zoom-in;
 }
+.panzoom img:not(.nopanzoom):focus-visible,
+img.panzoom:not(.nopanzoom):focus-visible {
+  outline: 3px solid #2780e3; outline-offset: 2px;
+}
 
 .panzoom-overlay {
   position: fixed; inset: 0; z-index: 100000; display: none;
@@ -21,6 +25,8 @@ img.panzoom:not(.nopanzoom) {
   cursor: pointer;
 }
 .panzoom-close:hover { color: #fff; }
+.panzoom-close:focus-visible { color: #fff; outline: 2px solid #fff; outline-offset: 2px; }
+.panzoom-overlay:focus { outline: none; }
 
 .panzoom-hint {
   position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
