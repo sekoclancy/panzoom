@@ -47,10 +47,14 @@
   var SELECTOR = ".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)";
   var SWIPE = 50;  // px of horizontal drag that switches images
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
+  var BOUNCE = 40;  // px a key or scroll pan overshoots an image's end
+  var STRETCH = 80; // px a drag can pull an image past its end, at most
+  var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
 
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
+  var bouncing = false, bounceTimer = null;
   var gallery = [], index = 0;
 
   // Document-wide options, overridden by the image's data attributes.
@@ -138,6 +142,7 @@
   // center at screen point (cx, cy) takes a pan of ((cx - w/2) / s,
   // (cy - h/2) / s).
   function fit() {
+    stopBounce();
     var a = area(), vw = a.w, vh = a.h;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
@@ -194,16 +199,63 @@
     return (c - n / 2) / s;
   }
 
+  // The contained pan for (x, y) at scale s.
+  function contained(x, y, s) {
+    var a = area();
+    return { x: containAxis(x, s, img.naturalWidth, a.w), y: containAxis(y, s, img.naturalHeight, a.h) };
+  }
+
+  // How far a drag `over` px past an image's end shows: it follows with
+  // growing resistance, never more than STRETCH px.
+  function stretch(over) {
+    return (over < 0 ? -1 : 1) * STRETCH * (1 - Math.exp(-Math.abs(over) / (2 * STRETCH)));
+  }
+
   // Runs after every Panzoom change (drag, pinch, zoom, pan, reset), before
-  // the browser paints, and moves the image back inside if needed.
+  // the browser paints, and moves the image back inside if needed. During a
+  // drag the image may go past its ends with resistance (stretch()); it
+  // springs back when released (settle()). Not during a bounce: that
+  // animation goes past the end on purpose.
   function contain() {
-    if (!pz) return;
-    var a = area(), s = pz.getScale(), p = pz.getPan();
-    var x = containAxis(p.x, s, img.naturalWidth, a.w);
-    var y = containAxis(p.y, s, img.naturalHeight, a.h);
+    if (!pz || bouncing) return;
+    var s = pz.getScale(), p = pz.getPan(), c = contained(p.x, p.y, s);
+    var x = c.x, y = c.y;
+    if (press) {
+      x += stretch((p.x - c.x) * s) / s;
+      y += stretch((p.y - c.y) * s) / s;
+    }
     if (Math.abs(x - p.x) > 1e-6 || Math.abs(y - p.y) > 1e-6) {
       pz.pan(x, y, { animate: false, force: true, silent: true });
     }
+  }
+
+  // Animated pan to (x, y), then `then`. Only a pan at a fixed scale is
+  // animated, so the image slides straight (see resetView()).
+  function slideTo(x, y, ms, easing, then) {
+    bouncing = true;
+    pz.pan(x, y, { animate: true, duration: ms, easing: easing, force: true });
+    bounceTimer = setTimeout(function () {
+      bounceTimer = null;
+      if (then) then(); else bouncing = false;
+    }, ms);
+  }
+
+  // Ends a bounce or spring-back early (a new pan, zoom, drag or image),
+  // leaving the image where it belongs.
+  function stopBounce() {
+    if (bounceTimer) clearTimeout(bounceTimer);
+    bounceTimer = null;
+    if (!bouncing) return;
+    bouncing = false;
+    contain();
+  }
+
+  // After a drag: slide back inside if it was pulled past an end.
+  function settle() {
+    if (!pz) return;
+    var s = pz.getScale(), p = pz.getPan(), c = contained(p.x, p.y, s);
+    if (Math.abs(c.x - p.x) * s < 0.5 && Math.abs(c.y - p.y) * s < 0.5) return;
+    slideTo(c.x, c.y, BACK, "ease-out");
   }
 
   // Zoom by `factor`, keeping the image point under (px, py) fixed on screen.
@@ -211,6 +263,7 @@
   // scale it is asked for, so asking past a limit makes the image drift.
   function zoomAt(factor, px, py) {
     if (!pz) return;
+    stopBounce();
     var o = pz.getOptions();
     var s = Math.min(o.maxScale, Math.max(o.minScale, pz.getScale() * factor));
     pz.zoomToPoint(s, { clientX: px, clientY: py });
@@ -221,15 +274,29 @@
   // opening scale is tiny (a whole collage) the translate is huge, so the
   // image flies far off-screen mid-animation and snaps back.
   function resetView() {
+    stopBounce();
     if (pz) pz.reset({ animate: false });
   }
 
   // Pan the view by (dx, dy) screen px: the image moves the other way.
-  // Panzoom's translate is in unscaled px, so divide by the scale.
+  // Panzoom's translate is in unscaled px, so divide by the scale. A pan
+  // that runs into an end of the image (where it is larger than the
+  // screen) goes up to BOUNCE px past it and slides back, to show the end.
   function panPx(dx, dy) {
     if (!pz) return;
-    var s = pz.getScale();
-    pz.pan(-dx / s, -dy / s, { relative: true });
+    stopBounce();
+    var s = pz.getScale(), p = pz.getPan(), o = overflow();
+    var tx = p.x - dx / s, ty = p.y - dy / s, c = contained(tx, ty, s);
+    var ex = o.x ? (tx - c.x) * s : 0, ey = o.y ? (ty - c.y) * s : 0;  // px past the end
+    if (Math.abs(ex) < 0.5 && Math.abs(ey) < 0.5) {
+      pz.pan(c.x, c.y, { animate: false, force: true });
+      return;
+    }
+    var bx = (ex < 0 ? -1 : 1) * Math.min(BOUNCE, Math.abs(ex));
+    var by = (ey < 0 ? -1 : 1) * Math.min(BOUNCE, Math.abs(ey));
+    slideTo(c.x + bx / s, c.y + by / s, OUT, "ease-out", function () {
+      slideTo(c.x, c.y, BACK, "ease-in-out");
+    });
   }
 
   // Pan the view by a fraction of the screen.
@@ -239,6 +306,7 @@
 
   // Shows gallery image `i`, fitted to the screen.
   function show(i) {
+    stopBounce();
     var el = gallery[i];
     index = i;
     opts = options(el);
@@ -288,6 +356,7 @@
   }
 
   function close() {
+    stopBounce();
     overlay.classList.remove("open");
     document.documentElement.style.overflow = "";
     if (pz) { pz.destroy(); pz = null; }
@@ -367,6 +436,7 @@
     // unless the image is larger than the screen (then the drag pans it).
     overlay.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest(".panzoom-exclude")) return;
+      stopBounce();
       press = { id: e.pointerId, sx: e.clientX, sy: e.clientY, onImg: e.target === img, pans: overflow().any };
       overlay.classList.add("dragging");
     });
@@ -379,7 +449,7 @@
       press = null;
       overlay.classList.remove("dragging");
       if (clickedBackground) close();
-      else if (swipe) step(dx < 0 ? 1 : -1);
+      else if (!(swipe && step(dx < 0 ? 1 : -1))) settle();
     });
 
     overlay.addEventListener("dblclick", function (e) {

@@ -522,17 +522,39 @@ async function checkPage(browser, base, file) {
       const m = 0.025 * Math.min(o.clientWidth, o.clientHeight - f);
       return { left: r.left, right: r.right, top: r.top, w: o.clientWidth, m };
     });
+    // (Waits of 600 ms let an end-of-image bounce finish: 120 + 200 ms.)
     for (let i = 0; i < 200; i++) await page.keyboard.press("ArrowRight");
-    await sleep(100);
+    await sleep(600);
     const end = await edges();
     for (let i = 0; i < 20; i++) await page.keyboard.press("ArrowRight");
-    await sleep(100);
+    await sleep(600);
     const past = await edges();
     c.stopsAtRightEnd = Math.abs(end.right - (end.w - end.m)) < 2 && Math.abs(past.right - end.right) < 0.5;
+    // At the end, a key press goes a little past it (up to 40 px) and back.
+    await page.keyboard.press("ArrowRight");
+    await sleep(90);
+    const out = await edges();
+    await sleep(600);
+    const back = await edges();
+    c.bounceOut = Math.round(end.right - out.right);
+    c.bounces = c.bounceOut > 5 && c.bounceOut <= 41 && Math.abs(back.right - end.right) < 0.5;
     for (let i = 0; i < 250; i++) await page.keyboard.press("ArrowLeft");
-    await sleep(100);
+    await sleep(600);
     const start = await edges();
     c.stopsAtLeftEnd = Math.abs(start.left - start.m) < 2;
+    // Dragging past the left end: follows with resistance (at most 80 px),
+    // springs back on release.
+    const cx = VIEWPORT.width / 2, cy = VIEWPORT.height / 2;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+    await page.mouse.move(cx + 300, cy, { steps: 10 });
+    await sleep(50);
+    const pulled = await edges();
+    await page.mouse.up();
+    await sleep(600);
+    const released = await edges();
+    c.stretch = Math.round(pulled.left - start.left);
+    c.stretches = c.stretch > 5 && c.stretch <= 81 && Math.abs(released.left - start.left) < 0.5;
     await page.keyboard.press("ArrowUp");
     await page.keyboard.press("ArrowDown");
     await sleep(100);
@@ -550,14 +572,15 @@ async function checkPage(browser, base, file) {
     await page.mouse.down();
     await page.mouse.move(cx + 150, cy + 80, { steps: 8 });
     await page.mouse.up();
-    await sleep(100);
+    await sleep(600);  // a drag stretches it, then it springs back
     const t1 = await viewerTransform(page);
     w.stays = !!(t0 && t1) && Math.abs(t1.x - t0.x) < 0.5 && Math.abs(t1.y - t0.y) < 0.5;
     await closeAll(page);
   }
   if (containment) {
     containment.ok = (!containment.collage || (containment.collage.stopsAtRightEnd &&
-      containment.collage.stopsAtLeftEnd && containment.collage.heldVertically)) &&
+      containment.collage.stopsAtLeftEnd && containment.collage.heldVertically &&
+      containment.collage.bounces && containment.collage.stretches)) &&
       (!containment.whole || containment.whole.stays);
   }
 
@@ -671,10 +694,12 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
       `Collage, case ${containment.collage.image}:`, "",
       `- Right arrow stops at the right end: ${yes(containment.collage.stopsAtRightEnd)}`,
       `- Left arrow stops at the left end: ${yes(containment.collage.stopsAtLeftEnd)}`,
-      `- Up/Down don't move it (it fits vertically): ${yes(containment.collage.heldVertically)}`, "");
+      `- Up/Down don't move it (it fits vertically): ${yes(containment.collage.heldVertically)}`,
+      `- A key press at the end bounces ${containment.collage.bounceOut} px past it and back: ${yes(containment.collage.bounces)}`,
+      `- A drag past the end stretches ${containment.collage.stretch} px and springs back: ${yes(containment.collage.stretches)}`, "");
     if (containment.whole) lines.push(
       `Image shown whole, case ${containment.whole.image}:`, "",
-      `- Arrow keys and a drag don't move it: ${yes(containment.whole.stays)}`);
+      `- Arrow keys don't move it, and after a drag it springs back: ${yes(containment.whole.stays)}`);
   }
   return lines.join("\n") + "\n";
 }

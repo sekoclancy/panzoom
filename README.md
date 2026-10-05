@@ -7,7 +7,8 @@ A [Quarto](https://quarto.org) filter extension for HTML formats that opens
 figures in a full-screen pan/zoom viewer: scroll (or trackpad pinch) to zoom
 toward the cursor, drag or Shift+scroll to pan, double-click or `0` to reset,
 `+`/`-` to zoom, `Esc` or a background click to close. The image stays on
-screen: panning stops at its edges.
+screen: panning stops at its edges, with a small bounce (or, when dragging,
+a stretch that springs back) to show you've reached one.
 
 It works from the keyboard too: marked images can be reached with `Tab` and
 opened with `Enter` or `Space`, the arrow keys pan, and closing returns focus

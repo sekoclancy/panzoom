@@ -200,7 +200,9 @@ or `zoomed-x` for "after zooming in"; page E) are checked for which way
 Shift+scroll moved the image (`shift-scroll ok`).
 
 **Containment.** On the first single collage, `→` must stop at its right
-end, `←` at its left end, and `↑`/`↓` must not move it; on the first single
+end, `←` at its left end, and `↑`/`↓` must not move it; one more `→` at the
+end must bounce up to 40 px past it and back, and a 300 px drag past the
+left end must stretch at most 80 px and spring back on release; on the first single
 image shown whole, arrow keys and a drag must not move it
 (`containment ok`). In galleries, `←` on the first image must do nothing.
 
