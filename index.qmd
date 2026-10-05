@@ -58,6 +58,33 @@ invisible(dev.off())
 
 ![A markdown image with the `.panzoom` class.](volcano.png){.panzoom}
 
+## Captions and galleries
+
+The viewer shows the figure's caption. Plots with the same `group` form a
+gallery: use the ‹ › buttons, `←`/`→` or a swipe to step through them.
+Subfigures of one figure are a gallery automatically.
+
+```{r}
+#| panzoom:
+#|   group: volcano-views
+#| fig-cap:
+#|   - "Volcano heights as an image."
+#|   - "The same data as a perspective plot."
+#| layout-ncol: 2
+image(volcano, col = hcl.colors(100, "Viridis"))
+persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
+```
+
+```{r}
+#| label: fig-volcano-sub
+#| fig-cap: "Two views of Maunga Whau, as subfigures."
+#| fig-subcap: ["Contours", "Filled contours"]
+#| layout-ncol: 2
+#| panzoom: true
+contour(volcano)
+image(volcano)
+```
+
 ## Untouched figure
 
 Without the option, Quarto's own lightbox still handles the figure.

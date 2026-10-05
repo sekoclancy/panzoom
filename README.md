@@ -116,6 +116,31 @@ well.
 
 `#| panzoom:` overrides `#| lightbox:` options.
 
+### Captions and galleries
+
+The viewer shows the figure's caption under the image, including its
+"Figure N:" prefix and any math. A subfigure shows its own caption with
+the parent figure's caption below it. Turn captions off with
+`caption: false` (for the document or one cell).
+
+Images in the same group form a gallery: step through them with the
+‹ › buttons, `←`/`→` (when not zoomed in; zoomed in, they pan),
+`PageUp`/`PageDown`, or a horizontal swipe. Groups work like Quarto's
+lightbox:
+
+- subfigures of one figure are a gallery automatically,
+- `group="name"` on markdown images,
+- `group: name` in a cell's `#| panzoom:` options (all of the cell's plots).
+
+````markdown
+```{r}
+#| panzoom:
+#|   group: pressure
+plot(pressure)
+plot(pressure, log = "y")
+```
+````
+
 ## Options
 
 ```yaml
@@ -123,7 +148,12 @@ panzoom:
   match: auto     # give block images the viewer (default: only marked images)
   max-zoom: 4     # maximum zoom, in screen px per image px (default 4)
   hint: true      # show the controls hint at the bottom (default true)
+  caption: true   # show the figure caption in the viewer (default true)
+  loop: false     # in a gallery, wrap from the last image to the first (default false)
 ```
+
+`max-zoom`, `hint` and `caption` can also be set per cell under
+`#| panzoom:`, along with `group`.
 
 ## Notes
 

@@ -78,7 +78,15 @@ async function state(page) {
   return page.evaluate(() => {
     const pz = document.querySelector(".panzoom-overlay.open");
     const glb = document.querySelector(".glightbox-container");
-    if (pz) return { opened: "panzoom" };
+    if (pz) {
+      const counter = pz.querySelector(".panzoom-counter");
+      const caption = pz.querySelector(".panzoom-caption");
+      return {
+        opened: "panzoom",
+        caption: caption.hidden ? "" : caption.textContent.trim().replace(/\s+/g, " "),
+        counter: counter.hidden ? "" : counter.textContent,
+      };
+    }
     if (glb) {
       const slide = glb.querySelector(".gslide.current");
       const text = (sel) => slide?.querySelector(sel)?.textContent.trim() || "";
@@ -218,8 +226,9 @@ async function checkKeyboard(page, handle) {
   await page.keyboard.down("Shift");
   await page.keyboard.press("Tab");
   await page.keyboard.up("Shift");
-  out.tabTrapped = (await focusState()).onClose;
+  out.tabTrapped = (await focusState()).inViewer;
 
+  await page.evaluate(() => document.querySelector(".panzoom-close").focus());
   await page.keyboard.press("Enter");
   await sleep(200);
   out.closeButtonCloses = (await state(page)).opened !== "panzoom";
@@ -231,6 +240,62 @@ async function checkKeyboard(page, handle) {
   await page.keyboard.press("Escape");
   await sleep(200);
   out.escReturnsFocus = (await state(page)).opened !== "panzoom" && (await focusState()).onImage;
+  return out;
+}
+
+// Gallery navigation, on the first image whose viewer shows a counter.
+async function checkGallery(page, handle) {
+  const out = {};
+  const counter = async () => (await state(page)).counter;
+  await handle.click();
+  await sleep(300);
+  const first = await counter();
+  const m = /^(\d+) \/ (\d+)$/.exec(first || "");
+  if (!m) return out;
+  const n = +m[2];
+  out.start = first;
+  out.size = n;
+  await page.keyboard.press("PageDown");
+  await sleep(100);
+  out.pageDown = await counter();
+  await page.keyboard.press("PageUp");
+  await sleep(100);
+  out.pageUpBack = (await counter()) === first;
+  await page.keyboard.press("ArrowRight");
+  await sleep(100);
+  out.arrowNext = await counter();
+  await page.keyboard.press("ArrowLeft");
+  await sleep(100);
+  out.arrowBack = (await counter()) === first;
+  await page.click(".panzoom-next");
+  await sleep(100);
+  out.buttonNext = await counter();
+  await page.click(".panzoom-prev");
+  await sleep(100);
+  // Swipe left on the background: next image.
+  const cx = VIEWPORT.width / 2, cy = VIEWPORT.height / 2;
+  await page.mouse.move(cx + 120, cy);
+  await page.mouse.down();
+  await page.mouse.move(cx - 120, cy, { steps: 8 });
+  await page.mouse.up();
+  await sleep(150);
+  out.swipeNext = await counter();
+  await page.keyboard.press("PageUp");
+  await sleep(100);
+  // Zoomed in, Right pans instead of switching.
+  await page.keyboard.press("+");
+  await page.keyboard.press("+");
+  await sleep(100);
+  await page.keyboard.press("ArrowRight");
+  await sleep(100);
+  out.zoomedArrowPans = (await counter()) === first;
+  // Without loop, the first image has no previous one.
+  out.prevDisabledAtStart = m[1] === "1"
+    ? await page.$eval(".panzoom-prev", (b) => b.disabled) : null;
+  await closeAll(page);
+  out.ok = out.pageDown === `${+m[1] + 1} / ${n}` && out.pageUpBack &&
+    out.arrowNext === out.pageDown && out.arrowBack && out.buttonNext === out.pageDown &&
+    out.swipeNext === out.pageDown && out.zoomedArrowPans && out.prevDisabledAtStart !== false;
   return out;
 }
 
@@ -344,10 +409,21 @@ async function checkPage(browser, base, file) {
     isolation.keyboard = await checkKeyboard(page, handle);
   }
 
+  // Gallery navigation, on the first image that opened with a counter.
+  let gallery = null;
+  const firstInGallery = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || ""));
+  if (firstInGallery) {
+    const handle = await page.$(`img[data-test-idx="${firstInGallery.idx}"]`);
+    await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
+    await sleep(150);
+    gallery = await checkGallery(page, handle);
+    gallery.image = `${firstInGallery.case}. ${firstInGallery.caseTitle} (img ${firstInGallery.n})`;
+  }
+
   await page.close();
-  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation }, null, 2));
-  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation));
-  return { name, outDir, errors, results, isolation };
+  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery }, null, 2));
+  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery));
+  return { name, outDir, errors, results, isolation, gallery };
 }
 
 function isolationOk(iso) {
@@ -358,7 +434,7 @@ function keyboardOk(iso) {
   return KEYBOARD_CHECKS.every(([k]) => iso.keyboard?.[k] === true);
 }
 
-function report(file, errors, results, isolation) {
+function report(file, errors, results, isolation, gallery) {
   const yn = (v) => (v === undefined || v === null ? "" : v === true ? "yes" : v === false ? "NO" : String(v));
   const lines = [
     `# ${path.basename(file)}`, "",
@@ -370,6 +446,7 @@ function report(file, errors, results, isolation) {
   for (const r of results) {
     const details = r.opened === "glightbox"
       ? `title: ${r.title || "—"}; desc: ${r.description || "—"}; slides: ${r.slides}`
+      : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}`
       : r.opened === "navigation" ? r.navigatedTo : "";
     lines.push(`| ${r.case}. ${r.caseTitle} | ${r.n} | \`${r.classes}\` | ${r.wrapper} | **${r.opened}** | ` +
       `${details.replace(/\|/g, "\\|")} | ${yn(r.wheelZoom)} | ${yn(r.dragMoved)} | ${yn(r.resetOk)} | ` +
@@ -392,6 +469,20 @@ function report(file, errors, results, isolation) {
       `On the same image.`, "",
       ...KEYBOARD_CHECKS.map(([k, label]) => `- ${label}: ${yes(isolation.keyboard?.[k])}`));
   }
+  lines.push("", "## Gallery navigation", "");
+  if (!gallery) lines.push("No panzoom gallery on this page; skipped.");
+  else {
+    const yes = (v) => (v ? "yes" : "**NO**");
+    lines.push(
+      `Opened on case ${gallery.image}: ${gallery.start}.`, "",
+      `- PageDown: ${gallery.pageDown}; PageUp goes back: ${yes(gallery.pageUpBack)}`,
+      `- Right arrow (not zoomed): ${gallery.arrowNext}; Left goes back: ${yes(gallery.arrowBack)}`,
+      `- Next button: ${gallery.buttonNext}`,
+      `- Swipe left: ${gallery.swipeNext}`,
+      `- Zoomed in, Right pans instead: ${yes(gallery.zoomedArrowPans)}`,
+      `- Previous disabled on the first image: ${yes(gallery.prevDisabledAtStart)}`,
+      `- All as expected: ${yes(gallery.ok)}`);
+  }
   return lines.join("\n") + "\n";
 }
 
@@ -410,13 +501,14 @@ const browser = await puppeteer.launch({
 });
 try {
   for (const file of PAGES) {
-    const { name, outDir, errors, results, isolation } = await checkPage(browser, base, file);
+    const { name, outDir, errors, results, isolation, gallery } = await checkPage(browser, base, file);
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
     const iso = isolation
       ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
       : "isolation n/a, keyboard n/a";
+    const gal = gallery ? (gallery.ok ? "gallery ok" : "GALLERY FAILED") : "gallery n/a";
     console.log(`${name}: ${results.length} images, ${JSON.stringify(counts)}, ` +
-      `${errors.length} console errors, ${iso} -> ${path.relative(process.cwd(), outDir)}/report.md`);
+      `${errors.length} console errors, ${iso}, ${gal} -> ${path.relative(process.cwd(), outDir)}/report.md`);
   }
 } finally {
   await browser.close();

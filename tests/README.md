@@ -138,15 +138,15 @@ c-panzoom-auto: 18 images, {"panzoom":11,"glightbox":4,"nothing":3}, 0 console e
 ```
 
 That is: how many images it clicked, what each click opened, how many
-JavaScript errors the page logged, and whether the viewer isolation and
-keyboard checks passed (below).
+JavaScript errors the page logged, and whether the viewer isolation,
+keyboard and gallery checks passed (below).
 
 ## Reading the results
 
 Each page gets a folder in `results/`:
 
-- **`report.md`**: one table row per image, then the isolation and keyboard
-  checks.
+- **`report.md`**: one table row per image, then the isolation, keyboard
+  and gallery checks.
 - **`cNN-M.png`**: a screenshot taken right after clicking image M of case NN.
   Open a few to see what the viewer or lightbox looked like.
 - **`results.json`**: the same data, for scripts.
@@ -158,7 +158,7 @@ Report columns:
 | Classes | The image's CSS classes. `panzoom nolightbox` means the filter marked it. |
 | Wrapper | `a.lightbox`: Quarto's lightbox link wraps it. `a[href]`: an ordinary link. `none`: no link. |
 | Opened | What a click did: **panzoom** (our viewer), **glightbox** (Quarto's lightbox), **navigation** (followed a link; the test stops it before it leaves), or **nothing**. |
-| Details | For GLightbox: the slide's title, description and how many slides its gallery has. |
+| Details | For GLightbox: the slide's title, description and how many slides its gallery has. For panzoom: the caption shown in the viewer and the gallery position (`2 / 3`). |
 | Zoom× | Five wheel-scroll steps zoomed the image this many times its fitted size. |
 | Drag px | A 170 px mouse drag moved the image this far. |
 | Reset | Pressing `0` returned to the fitted size. |
@@ -177,6 +177,12 @@ keyboard only: the image must be focusable and announced as a button, open
 on Enter and on Space, move focus into the viewer, pan with the arrow keys,
 keep Tab and Shift+Tab inside the viewer, close from the close button with
 Enter and with Esc, and return focus to the image afterwards.
+
+**Gallery navigation.** On the first image that opens as `1 / N` in a
+panzoom gallery, the test steps forward and back with `PageDown`/`PageUp`,
+`→`/`←`, the next/previous buttons and a swipe, checks that `→` pans
+instead when zoomed in, and that "previous" is disabled on the first image
+(no `loop`).
 
 **What to expect.** A on its own shows what Quarto does; compare each case in
 C and D against it. The notes at the top of each page list the intended
