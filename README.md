@@ -211,8 +211,9 @@ git push origin gh-pages
 
 **Tools:**
 
-- [Quarto](https://quarto.org) 1.9+ and R, to render the test pages (they
-  have R chunks, some taken from the quarto-ext/lightbox examples).
+- [Quarto](https://quarto.org) 1.9+ and R with the ragg package, to render
+  the test pages (they have R chunks, some taken from the quarto-ext/lightbox
+  examples; ragg makes the webp figures).
 - [Node.js](https://nodejs.org) with
   [puppeteer-core](https://pptr.dev/), to drive the browser.
 - Headless Chrome, installed with

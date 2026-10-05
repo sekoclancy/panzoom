@@ -38,7 +38,7 @@ const CHROME = process.env.CHROME || path.join(os.homedir(),
   ".local/share/quarto/chrome-headless-shell/chrome-headless-shell-linux64/chrome-headless-shell");
 const PAGES = process.argv.length > 2
   ? process.argv.slice(2).map((p) => path.resolve(p))
-  : ["a-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html"]
+  : ["a-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html"]
       .map((p) => path.join(ROOT, "docs", "tests", "pages", p));
 const VIEWPORT = { width: 1280, height: 900 };
 const SITE = path.join(ROOT, "docs");
@@ -81,9 +81,14 @@ async function state(page) {
     if (pz) {
       const counter = pz.querySelector(".panzoom-counter");
       const caption = pz.querySelector(".panzoom-caption");
+      const img = pz.querySelector("img");
+      const r = img.getBoundingClientRect();
       return {
+        size: `${img.naturalWidth}×${img.naturalHeight} px, shown ${Math.round(r.width)}×${Math.round(r.height)}` +
+          (img.classList.contains("panzoom-vector") ? `, vector (will-change: ${getComputedStyle(img).willChange})` : ""),
         opened: "panzoom",
         caption: caption.hidden ? "" : caption.textContent.trim().replace(/\s+/g, " "),
+        fit: img.dataset.fit || "",
         counter: counter.hidden ? "" : counter.textContent,
       };
     }
@@ -117,11 +122,29 @@ async function exercisePanzoom(page) {
   const fit = await viewerTransform(page);
   out.fitScale = fit?.s ?? null;
 
-  await page.mouse.move(cx, cy);
+  // Wheel-zoom at an off-center point of the image (30% across, 60% down,
+  // kept on screen). Zooming toward the cursor means that image point stays
+  // under the cursor; Anchor px is how far it drifted.
+  const imageRect = () => page.evaluate(() => {
+    const r = document.querySelector(".panzoom-overlay img").getBoundingClientRect();
+    return { left: r.left, top: r.top, width: r.width, height: r.height };
+  });
+  const r0 = await imageRect();
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const px = clamp(r0.left + 0.3 * r0.width, 20, VIEWPORT.width - 20);
+  const py = clamp(r0.top + 0.6 * r0.height, 20, VIEWPORT.height - 120);
+  const frac = (r) => [(px - r.left) / r.width, (py - r.top) / r.height];
+  const f0 = frac(r0);
+  await page.mouse.move(px, py);
   for (let i = 0; i < 5; i++) { await page.mouse.wheel({ deltaY: -200 }); await sleep(30); }
   await sleep(100);
   const zoomed = await viewerTransform(page);
   out.wheelZoom = fit && zoomed ? +(zoomed.s / fit.s).toFixed(2) : null;
+  const r1 = await imageRect();
+  const f1 = frac(r1);
+  out.anchorDrift = r0.width > 0
+    ? Math.round(Math.hypot((f1[0] - f0[0]) * r1.width, (f1[1] - f0[1]) * r1.height)) : null;
+  await page.mouse.move(cx, cy);
 
   await page.mouse.down();
   await page.mouse.move(cx + 150, cy + 80, { steps: 8 });
@@ -177,6 +200,14 @@ async function checkIsolation(page, box) {
   await page.keyboard.press("k");
   await page.keyboard.up("Control");
   out.modifierPasses = (await page.evaluate(() => window.__leaked.splice(0))).length > 0;
+
+  // Function keys are browser features and pass through (not F5: it would
+  // reload the page).
+  await page.keyboard.press("F3");
+  await page.keyboard.press("F9");
+  const fkeys = await page.evaluate(() => window.__leaked.splice(0));
+  out.functionKeysPass = ["F3", "F9"].every((k) => fkeys.some((l) => l.startsWith(`keydown "${k}"`)));
+  out.stillOpenAfterFKeys = (await state(page)).opened === "panzoom";
 
   out.widgetBelow = await page.evaluate(() => {
     const r = document.getElementById("test-fixed-widget").getBoundingClientRect();
@@ -351,6 +382,7 @@ async function checkPage(browser, base, file) {
         const link = img.closest("a");
         out.push({
           idx, case: +m[1], caseTitle: m[2], n: i + 1,
+          expectFit: sec.dataset.expectFit || null,
           classes: img.className,
           wrapper: link ? (link.classList.contains("lightbox") ? "a.lightbox" : "a[href]") : "none",
           gallery: link?.dataset.gallery || null,
@@ -411,7 +443,7 @@ async function checkPage(browser, base, file) {
 
   // Gallery navigation, on the first image that opened with a counter.
   let gallery = null;
-  const firstInGallery = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || ""));
+  const firstInGallery = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === "contain");
   if (firstInGallery) {
     const handle = await page.$(`img[data-test-idx="${firstInGallery.idx}"]`);
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
@@ -420,36 +452,70 @@ async function checkPage(browser, base, file) {
     gallery.image = `${firstInGallery.case}. ${firstInGallery.caseTitle} (img ${firstInGallery.n})`;
   }
 
+  // A gallery of images wider than the screen: Left/Right pan, PageDown
+  // switches.
+  let wideGallery = null;
+  const firstWide = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === "height");
+  if (firstWide) {
+    const handle = await page.$(`img[data-test-idx="${firstWide.idx}"]`);
+    await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
+    await sleep(150);
+    await handle.click();
+    await sleep(600);
+    const t0 = await viewerTransform(page);
+    await page.keyboard.press("ArrowRight");
+    await sleep(100);
+    const t1 = await viewerTransform(page);
+    const s1 = await state(page);
+    await page.keyboard.press("PageDown");
+    await sleep(600);
+    const s2 = await state(page);
+    wideGallery = {
+      image: `${firstWide.case}. ${firstWide.caseTitle} (img ${firstWide.n})`,
+      arrowPans: !!(t0 && t1 && t1.x < t0.x - 1) && s1.counter === firstWide.counter,
+      pageDownSwitches: s2.counter === firstWide.counter.replace(/^1 /, "2 "),
+      nextFit: s2.fit,
+    };
+    wideGallery.ok = wideGallery.arrowPans && wideGallery.pageDownSwitches;
+    await closeAll(page);
+  }
+
   await page.close();
-  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery }, null, 2));
-  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery));
-  return { name, outDir, errors, results, isolation, gallery };
+  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery, wideGallery }, null, 2));
+  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery, wideGallery));
+  return { name, outDir, errors, results, isolation, gallery, wideGallery };
 }
 
 function isolationOk(iso) {
-  return iso.opened && iso.leaked.length === 0 && iso.stillOpen && iso.modifierPasses && iso.widgetBelow && iso.escCloses;
+  return iso.opened && iso.leaked.length === 0 && iso.stillOpen && iso.modifierPasses &&
+    iso.functionKeysPass && iso.stillOpenAfterFKeys && iso.widgetBelow && iso.escCloses;
 }
 
 function keyboardOk(iso) {
   return KEYBOARD_CHECKS.every(([k]) => iso.keyboard?.[k] === true);
 }
 
-function report(file, errors, results, isolation, gallery) {
+function fitOk(r) {
+  return !r.expectFit || r.fit === r.expectFit;
+}
+
+function report(file, errors, results, isolation, gallery, wideGallery) {
   const yn = (v) => (v === undefined || v === null ? "" : v === true ? "yes" : v === false ? "NO" : String(v));
   const lines = [
     `# ${path.basename(file)}`, "",
     `Console errors: ${errors.length ? "" : "none"}`,
     ...errors.map((e) => `- \`${e}\``), "",
-    "| Case | Img | Classes | Wrapper | Opened | Details | Zoom× | Drag px | Reset | Esc | Bg click |",
-    "|---|---|---|---|---|---|---|---|---|---|---|",
+    "| Case | Img | Classes | Wrapper | Opened | Details | Zoom× | Anchor px | Drag px | Reset | Esc | Bg click |",
+    "|---|---|---|---|---|---|---|---|---|---|---|---|",
   ];
   for (const r of results) {
     const details = r.opened === "glightbox"
       ? `title: ${r.title || "—"}; desc: ${r.description || "—"}; slides: ${r.slides}`
-      : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}`
+      : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}; ${r.size}; ` +
+        `opens: ${r.fit || "—"}` + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "")
       : r.opened === "navigation" ? r.navigatedTo : "";
     lines.push(`| ${r.case}. ${r.caseTitle} | ${r.n} | \`${r.classes}\` | ${r.wrapper} | **${r.opened}** | ` +
-      `${details.replace(/\|/g, "\\|")} | ${yn(r.wheelZoom)} | ${yn(r.dragMoved)} | ${yn(r.resetOk)} | ` +
+      `${details.replace(/\|/g, "\\|")} | ${yn(r.wheelZoom)} | ${yn(r.anchorDrift)} | ${yn(r.dragMoved)} | ${yn(r.resetOk)} | ` +
       `${yn(r.escCloses)} | ${yn(r.backgroundCloses)} |`);
   }
   lines.push("", "## Viewer isolation", "");
@@ -463,6 +529,7 @@ function report(file, errors, results, isolation, gallery) {
         (isolation.leaked?.length ? ` (leaked: ${isolation.leaked.map((l) => `\`${l}\``).join(", ")})` : ""),
       `- Viewer still open after them: ${yes(isolation.stillOpen)}`,
       `- Ctrl+key still reaches the page: ${yes(isolation.modifierPasses)}`,
+      `- F3 and F9 reach the page, viewer stays open: ${yes(isolation.functionKeysPass && isolation.stillOpenAfterFKeys)}`,
       `- A fixed widget at z-index 10000 stays below the viewer: ${yes(isolation.widgetBelow)}`,
       `- Esc closes: ${yes(isolation.escCloses)}`,
       "", "## Keyboard access", "",
@@ -483,6 +550,15 @@ function report(file, errors, results, isolation, gallery) {
       `- Previous disabled on the first image: ${yes(gallery.prevDisabledAtStart)}`,
       `- All as expected: ${yes(gallery.ok)}`);
   }
+  lines.push("", "## Gallery of wide images", "");
+  if (!wideGallery) lines.push("No gallery of images opening at screen height on this page; skipped.");
+  else {
+    const yes = (v) => (v ? "yes" : "**NO**");
+    lines.push(
+      `Opened on case ${wideGallery.image}.`, "",
+      `- Right arrow pans along the image (no switch): ${yes(wideGallery.arrowPans)}`,
+      `- PageDown switches to the next image: ${yes(wideGallery.pageDownSwitches)} (opens: ${wideGallery.nextFit})`);
+  }
   return lines.join("\n") + "\n";
 }
 
@@ -501,14 +577,17 @@ const browser = await puppeteer.launch({
 });
 try {
   for (const file of PAGES) {
-    const { name, outDir, errors, results, isolation, gallery } = await checkPage(browser, base, file);
+    const { name, outDir, errors, results, isolation, gallery, wideGallery } = await checkPage(browser, base, file);
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
     const iso = isolation
       ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
       : "isolation n/a, keyboard n/a";
     const gal = gallery ? (gallery.ok ? "gallery ok" : "GALLERY FAILED") : "gallery n/a";
+    const fits = results.filter((r) => r.expectFit && r.opened === "panzoom");
+    const fit = fits.length ? (fits.every(fitOk) ? "fit ok" : "FIT FAILED") : "fit n/a";
+    const wide = wideGallery ? (wideGallery.ok ? "wide gallery ok" : "WIDE GALLERY FAILED") : "";
     console.log(`${name}: ${results.length} images, ${JSON.stringify(counts)}, ` +
-      `${errors.length} console errors, ${iso}, ${gal} -> ${path.relative(process.cwd(), outDir)}/report.md`);
+      `${errors.length} console errors, ${iso}, ${gal}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
   }
 } finally {
   await browser.close();

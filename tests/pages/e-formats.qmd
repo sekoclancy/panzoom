@@ -1,0 +1,192 @@
+---
+title: "E: image formats and very wide figures"
+execute:
+  echo: fenced
+format:
+  html:
+    code-tools: true
+filters:
+  - panzoom
+---
+
+::: {.callout-note}
+## About this page
+
+This page **tests the panzoom extension** with the knitr graphics devices
+and figure shapes used in practice: very wide collages (100 × 5 inches),
+and webp, svg and pdf output. Every figure is marked with `#| panzoom: true`
+and should open the pan/zoom viewer, except where a case says otherwise.
+
+Cases with an expected opening view say so in their heading's
+`expect-fit` attribute (`contain`, `height` or `width`), which the browser
+test checks. By default (`fit: auto`) very wide figures open at screen
+height from the left end, very tall ones at screen width from the top, and
+everything else whole.
+
+webp comes from ragg's `agg_webp` device: knitr has no built-in webp
+device, and `agg_webp` needs `units = "in"` because knitr passes sizes in
+inches.
+:::
+
+```{r}
+#| include: false
+library(ragg)
+
+# A collage: `n` panels side by side, like a wide patchwork figure.
+collage <- function(n = 20) {
+  set.seed(1)
+  par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
+  for (i in seq_len(n)) {
+    plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i),
+         xlab = "", ylab = "", col = hcl.colors(n)[i], lwd = 2)
+  }
+}
+```
+
+## 1. Wide collage, png (100 × 5 in) {#c1 expect-fit="height"}
+
+```{r}
+#| panzoom: true
+#| fig-width: 100
+#| fig-height: 5
+#| fig-cap: "A 100 × 5 inch collage of 20 panels (png)."
+collage()
+```
+
+## 2. Wide collage, webp (100 × 5 in) {#c2 expect-fit="height"}
+
+```{r}
+#| panzoom: true
+#| fig-width: 100
+#| fig-height: 5
+#| dev: agg_webp
+#| fig-ext: webp
+#| dev.args: !expr list(units = "in", res = 96)
+#| fig-cap: "The same collage as webp."
+collage()
+```
+
+## 3. Wide collage, svg (100 × 5 in) {#c3 expect-fit="height"}
+
+```{r}
+#| panzoom: true
+#| fig-width: 100
+#| fig-height: 5
+#| dev: svg
+#| fig-cap: "The same collage as svg."
+collage()
+```
+
+## 4. webp plot {#c4 expect-fit="contain"}
+
+```{r}
+#| panzoom: true
+#| dev: agg_webp
+#| fig-ext: webp
+#| dev.args: !expr list(units = "in", res = 96)
+#| fig-cap: "A standard-size plot as webp."
+filled.contour(volcano, color.palette = terrain.colors)
+```
+
+## 5. svg plot {#c5 expect-fit="contain"}
+
+```{r}
+#| panzoom: true
+#| dev: svg
+#| fig-cap: "A standard-size plot as svg."
+filled.contour(volcano, color.palette = terrain.colors)
+```
+
+## 6. png + pdf (dev: [png, pdf]) {#c6 expect-fit="contain"}
+
+Both files are written; the page shows the png.
+
+```{r}
+#| panzoom: true
+#| dev: !expr c("png", "pdf")
+#| fig-cap: "png shown, pdf written alongside."
+filled.contour(volcano, color.palette = terrain.colors)
+```
+
+## 7. pdf only {#c7}
+
+With only the pdf device, the HTML page has no bitmap to show; this case
+records what the browser and panzoom do with it.
+
+```{r}
+#| panzoom: true
+#| dev: pdf
+#| fig-cap: "pdf only."
+filled.contour(volcano, color.palette = terrain.colors)
+```
+
+## 8. Wide collage, webp at 2× resolution (100 × 5 in) {#c8}
+
+At 192 dpi the collage is 19,200 px wide, beyond webp's limit of 16,383 px
+per side; this case records what happens.
+
+```{r}
+#| panzoom: true
+#| fig-width: 100
+#| fig-height: 5
+#| dev: agg_webp
+#| fig-ext: webp
+#| dev.args: !expr list(units = "in", res = 192)
+#| fig-cap: "The collage as webp at 192 dpi."
+#| error: true
+collage()
+```
+
+## 9. Wide collage with `fit: contain` {#c9 expect-fit="contain"}
+
+The override: the whole collage, as a strip.
+
+```{r}
+#| panzoom:
+#|   fit: contain
+#| fig-width: 100
+#| fig-height: 5
+#| fig-cap: "The collage, forced to open whole."
+collage()
+```
+
+## 10. Moderately wide figure (16 × 4 in) {#c10 expect-fit="contain"}
+
+Wide, but readable whole: the size rule leaves it alone.
+
+```{r}
+#| panzoom: true
+#| fig-width: 16
+#| fig-height: 4
+#| fig-cap: "A 4:1 figure."
+collage(4)
+```
+
+## 11. Tall strip (4 × 60 in) {#c11 expect-fit="width"}
+
+```{r}
+#| panzoom: true
+#| fig-width: 4
+#| fig-height: 60
+#| fig-cap: "A tall strip of 15 panels."
+set.seed(2)
+par(mfrow = c(15, 1), mar = c(2, 3, 2, 1))
+for (i in 1:15) plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+```
+
+## 12. Gallery of two collages {#c12 expect-fit="height"}
+
+Left/Right and drags pan along the collage; PageDown, PageUp and the
+buttons switch collages.
+
+```{r}
+#| panzoom:
+#|   group: collages
+#| fig-width: 100
+#| fig-height: 5
+#| fig-cap:
+#|   - "First collage."
+#|   - "Second collage."
+collage()
+collage(25)
+```

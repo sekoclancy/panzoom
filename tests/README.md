@@ -40,6 +40,12 @@ The same 12 cases are rendered three ways:
 | `c-panzoom-auto` | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
 | `d-panzoom-selective` | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
 
+A fourth page has its own 8 cases:
+
+| Page | What it is | Panzoom filter | Lightbox |
+|---|---|---|---|
+| `e-formats` | **Formats and shapes.** Very wide collages (100 × 5 in) as png, webp and svg; standard plots as webp, svg, png + pdf and pdf only; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
+
 Each page starts with a note saying what it should show, has a **</> Code**
 button that shows its full source, and shows each R chunk with its options.
 They are published with the example at
@@ -83,7 +89,7 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── package-lock.json  exact dependency versions
     ├── render.sh          renders the project into ../docs/
     ├── browser.mjs        the browser checks
-    ├── pages/             a-lightbox.qmd, c-panzoom-auto.qmd, d-panzoom-selective.qmd
+    ├── pages/             a-lightbox.qmd, c-panzoom-auto.qmd, d-panzoom-selective.qmd, e-formats.qmd
     ├── node_modules/      installed by npm (git-ignored)
     └── results/           test output (git-ignored)
 ```
@@ -94,7 +100,8 @@ the root `_extensions/` folder, and `quarto render` puts them in
 
 ## One-time setup
 
-You need Quarto (1.9 or later), R (the pages have R chunks), and Node.js.
+You need Quarto (1.9 or later), R with the ragg package (the pages have R
+chunks; page E uses ragg for webp), and Node.js.
 
 ```bash
 # 1. A Chrome for the tests to drive (about 115 MB, in ~/.local/share/quarto/)
@@ -160,6 +167,7 @@ Report columns:
 | Opened | What a click did: **panzoom** (our viewer), **glightbox** (Quarto's lightbox), **navigation** (followed a link; the test stops it before it leaves), or **nothing**. |
 | Details | For GLightbox: the slide's title, description and how many slides its gallery has. For panzoom: the caption shown in the viewer and the gallery position (`2 / 3`). |
 | Zoom× | Five wheel-scroll steps zoomed the image this many times its fitted size. |
+| Anchor px | Those steps were taken with the mouse over a point 30% across and 60% down the image. Zooming toward the cursor keeps that point under it; this is how far it drifted (a few px of rounding is normal). |
 | Drag px | A 170 px mouse drag moved the image this far. |
 | Reset | Pressing `0` returned to the fitted size. |
 | Esc / Bg click | Esc, and a click on the dark background, closed the viewer. |
@@ -167,7 +175,8 @@ Report columns:
 **Viewer isolation.** With the viewer open, the test adds key listeners to the
 page (the way another extension would), presses the keys other extensions use
 (arrows, `PageUp`/`PageDown`, `f`, `t`, `p`, `d`, `l`, `s`, `/`, Enter, Space),
-and checks that none of them reached the page, that Ctrl+key still does, and
+and checks that none of them reached the page, that Ctrl+key and function
+keys (F3, F9) still do, and
 that a fixed button at z-index 10000 stays underneath the viewer. This guards
 against keys acting on the page behind the viewer (for example focus-mode's
 arrow keys switching pages).
@@ -178,7 +187,14 @@ on Enter and on Space, move focus into the viewer, pan with the arrow keys,
 keep Tab and Shift+Tab inside the viewer, close from the close button with
 Enter and with Esc, and return focus to the image afterwards.
 
-**Gallery navigation.** On the first image that opens as `1 / N` in a
+**Opening view.** Cases whose heading has an `expect-fit` attribute
+(`contain`, `height` or `width`; page E) are checked against how the viewer
+actually opened them: Details shows `opens: ...`, and the summary line
+says `fit ok` or `FIT FAILED`. On a gallery of images that open wider than
+the screen, the test also checks that `→` pans along the image and
+`PageDown` switches to the next one (`wide gallery ok`).
+
+**Gallery navigation.** On the first image that opens whole as `1 / N` in a
 panzoom gallery, the test steps forward and back with `PageDown`/`PageUp`,
 `→`/`←`, the next/previous buttons and a swipe, checks that `→` pans
 instead when zoomed in, and that "previous" is disabled on the first image
