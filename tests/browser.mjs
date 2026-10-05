@@ -85,10 +85,12 @@ async function state(page) {
       const r = img.getBoundingClientRect();
       return {
         size: `${img.naturalWidth}×${img.naturalHeight} px, shown ${Math.round(r.width)}×${Math.round(r.height)}` +
-          (img.classList.contains("panzoom-vector") ? `, vector (will-change: ${getComputedStyle(img).willChange})` : ""),
+          (img.classList.contains("panzoom-vector") ? `, vector (will-change: ${getComputedStyle(img).willChange})` : "") +
+          `, on ${getComputedStyle(img).backgroundColor}`,
         opened: "panzoom",
         caption: caption.hidden ? "" : caption.textContent.trim().replace(/\s+/g, " "),
         fit: img.dataset.fit || "",
+        backdrop: getComputedStyle(img).backgroundColor,
         counter: counter.hidden ? "" : counter.textContent,
       };
     }
@@ -701,6 +703,9 @@ try {
     const fits = results.filter((r) => r.expectFit && r.opened === "panzoom");
     const fit = fits.length ? (fits.every(fitOk) ? "fit ok" : "FIT FAILED") : "fit n/a";
     const extra = [];
+    // Every image is shown on an opaque backdrop (transparent plots stay readable).
+    const opened = results.filter((r) => r.opened === "panzoom");
+    if (opened.length) extra.push(opened.every((r) => /^rgb\(/.test(r.backdrop || "")) ? "backdrop ok" : "BACKDROP FAILED");
     if (overflowGalleries.length) extra.push(overflowGalleries.every((g) => g.ok) ? "large galleries ok" : "LARGE GALLERIES FAILED");
     if (containment) extra.push(containment.ok ? "containment ok" : "CONTAINMENT FAILED");
     const shift = results.filter((r) => r.shiftScroll && r.opened === "panzoom");

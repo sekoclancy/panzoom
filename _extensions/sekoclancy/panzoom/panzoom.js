@@ -89,6 +89,21 @@
     return html;
   }
 
+  // The colour behind `el` on the page: the first non-transparent background
+  // among it and its ancestors (the page, a callout, a dark theme), else
+  // white. The viewer shows the image on it, so a transparent plot (e.g.
+  // knitr's `dev: [png, pdf]`) keeps its dark labels readable on the dark
+  // overlay, and looks as it does on the page.
+  function backdropOf(el) {
+    for (var n = el; n && n.nodeType === 1; n = n.parentElement) {
+      // Only an opaque colour counts: a translucent tint shows what's behind.
+      var bg = getComputedStyle(n).backgroundColor;
+      var m = /^rgba\(.*,\s*([\d.]+)\)$/.exec(bg);
+      if (/^rgb\(/.test(bg) || (m && +m[1] >= 1)) return bg;
+    }
+    return "#fff";
+  }
+
   function groupOf(el) {
     var d = el.dataset;
     return d.panzoomGroup || d.group || d.refParent || null;
@@ -241,6 +256,7 @@
     img.style.transform = "";
     delete img.dataset.fit;
     img.alt = el.alt || "";
+    img.style.backgroundColor = backdropOf(el);
     img.onload = fit;
     img.src = el.currentSrc || el.src;
     // Vector images stay sharp when zoomed only if the browser may redraw
