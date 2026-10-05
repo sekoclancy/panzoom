@@ -1,5 +1,8 @@
 # Panzoom
 
+**Live demo:** <https://sekoclancy.github.io/panzoom/> (the example, plus
+test pages comparing panzoom with Quarto's lightbox).
+
 A [Quarto](https://quarto.org) filter extension for HTML formats that opens
 figures in a full-screen pan/zoom viewer: scroll (or trackpad pinch) to zoom
 toward the cursor, drag to pan, double-click or `0` to reset, `+`/`-` to zoom,
@@ -25,9 +28,6 @@ quarto add sekoclancy/panzoom
 
 This will install the extension under the `_extensions` subdirectory.
 If you're using version control, you will want to check in this directory.
-
-**Live demo:** <https://sekoclancy.github.io/panzoom/> (the example, plus
-test pages comparing panzoom with Quarto's lightbox).
 
 ## Usage
 
