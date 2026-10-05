@@ -18,17 +18,55 @@ img.panzoom:not(.nopanzoom):focus-visible {
   max-width: none; max-height: none; will-change: transform; cursor: grab;
 }
 .panzoom-overlay.dragging img { cursor: grabbing; }
+/* will-change keeps panning large bitmaps smooth, but makes the browser
+   scale one cached bitmap of an svg, which blurs it when zoomed in. */
+.panzoom-overlay img.panzoom-vector { will-change: auto; }
 
 .panzoom-close {
   position: absolute; top: 10px; right: 14px; z-index: 1;
-  border: 0; background: none; color: #ddd; font-size: 2rem; line-height: 1;
+  border: 0; border-radius: 4px; padding: 0.1em 0.35em;
+  background: rgba(0, 0, 0, 0.6); color: #eee; font-size: 2rem; line-height: 1;
   cursor: pointer;
 }
-.panzoom-close:hover { color: #fff; }
+.panzoom-close:hover { color: #fff; background: rgba(0, 0, 0, 0.7); }
 .panzoom-close:focus-visible { color: #fff; outline: 2px solid #fff; outline-offset: 2px; }
 .panzoom-overlay:focus { outline: none; }
 
+.panzoom-overlay [hidden] { display: none !important; }
+
+.panzoom-prev, .panzoom-next {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 1;
+  border: 0; border-radius: 4px; padding: 0.2em 0.45em;
+  background: rgba(0, 0, 0, 0.6); color: #eee;
+  font-size: 2.5rem; line-height: 1; cursor: pointer;
+}
+.panzoom-prev { left: 10px; }
+.panzoom-next { right: 10px; }
+.panzoom-prev:hover, .panzoom-next:hover { color: #fff; background: rgba(0, 0, 0, 0.6); }
+.panzoom-prev:disabled, .panzoom-next:disabled { opacity: 0.3; cursor: default; }
+.panzoom-prev:focus-visible, .panzoom-next:focus-visible {
+  color: #fff; outline: 2px solid #fff; outline-offset: 2px;
+}
+
+.panzoom-counter {
+  position: absolute; top: 14px; left: 16px; z-index: 1;
+  border-radius: 4px; padding: 0.15em 0.5em;
+  background: rgba(0, 0, 0, 0.6); color: #eee; font-size: 0.9rem;
+}
+
+/* Caption and hint, below the image (fit() leaves room for this). */
+.panzoom-footer {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  padding: 0.5rem 1rem 0.6rem; text-align: center;
+  background: rgb(15, 15, 15);
+}
+.panzoom-caption {
+  max-width: 60rem; max-height: 25vh; margin: 0 auto 0.3rem; overflow-y: auto;
+  color: #eee; font-size: 0.95rem; line-height: 1.4;
+  user-select: text; -webkit-user-select: text; cursor: auto;
+}
+.panzoom-caption a { color: #9ec5fe; }
+.panzoom-caption-parent { margin-top: 0.2rem; color: #bbb; font-size: 0.85rem; }
 .panzoom-hint {
-  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-  color: #aaa; font-size: 0.8rem; pointer-events: none; white-space: nowrap;
+  color: #aaa; font-size: 0.8rem; pointer-events: none;
 }

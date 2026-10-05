@@ -171,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="fig-volcano" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-volcano-1.png" class="panzoom nolightbox img-fluid figure-img" data-panzoom-hint="false" data-panzoom-max-zoom="10" width="672">
+<img src="index_files/figure-html/fig-volcano-1.png" class="panzoom nolightbox img-fluid figure-img" data-panzoom-max-zoom="10" data-panzoom-hint="false" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Maunga Whau volcano.
@@ -190,15 +190,78 @@ Figure&nbsp;1: Maunga Whau volcano.
 </figure>
 </div>
 </section>
+<section id="captions-and-galleries" class="level2">
+<h2 class="anchored" data-anchor-id="captions-and-galleries">Captions and galleries</h2>
+<p>The viewer shows the figure’s caption. Plots with the same <code>group</code> form a gallery: use the ‹ › buttons, <code>←</code>/<code>→</code> or a swipe to step through them. Subfigures of one figure are a gallery automatically.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(volcano, <span class="at">theta =</span> <span class="dv">135</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">"green3"</span>, <span class="at">shade =</span> <span class="fl">0.5</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="panzoom nolightbox img-fluid figure-img" data-panzoom-group="volcano-views" width="672"></p>
+<figcaption>Volcano heights as an image.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-2.png" class="panzoom nolightbox img-fluid figure-img" data-panzoom-group="volcano-views" width="672"></p>
+<figcaption>The same data as a perspective plot.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-volcano-sub" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-volcano-sub-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-volcano-sub" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-volcano-sub-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-volcano-sub-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-volcano-sub-1.png" class="panzoom nolightbox img-fluid figure-img" data-ref-parent="fig-volcano-sub" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-volcano-sub-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Contours
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-volcano-sub" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-volcano-sub-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-volcano-sub-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-volcano-sub-2.png" class="panzoom nolightbox img-fluid figure-img" data-ref-parent="fig-volcano-sub" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-volcano-sub-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Filled contours
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-volcano-sub-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Two views of Maunga Whau, as subfigures.
+</figcaption>
+</figure>
+</div>
+</section>
 <section id="untouched-figure" class="level2">
 <h2 class="anchored" data-anchor-id="untouched-figure">Untouched figure</h2>
 <p>Without the option, Quarto’s own lightbox still handles the figure.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="index_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></a></p>
+<p><a href="index_files/figure-html/unnamed-chunk-4-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
@@ -223,6 +286,10 @@ Figure&nbsp;1: Maunga Whau volcano.
 <li><a href="tests/pages/a-lightbox.html">A: Quarto lightbox reference</a>: Quarto’s built-in lightbox alone.</li>
 <li><a href="tests/pages/c-panzoom-auto.html">C: panzoom <code>match: auto</code></a>: panzoom picks the images itself.</li>
 <li><a href="tests/pages/d-panzoom-selective.html">D: explicit marking</a>: images marked with <code>.panzoom</code> or <code>#| classes: panzoom</code>.</li>
+</ul>
+<p>And one page of its own:</p>
+<ul>
+<li><a href="tests/pages/e-formats.html">E: formats and wide figures</a>: 100 × 5 inch collages, and webp, svg and pdf output.</li>
 </ul>
 
 
