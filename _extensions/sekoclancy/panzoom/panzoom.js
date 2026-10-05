@@ -150,15 +150,18 @@
     var a = area(), vw = a.w, vh = a.h;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
-    var whole = Math.min(vw / w, vh / h) * 0.95;
+    // No opening view enlarges an image past its real size (1 image px per
+    // CSS px), as with Quarto's lightbox: a small image opens at its own size
+    // and can still be zoomed in up to max-zoom.
+    var whole = Math.min(vw / w, vh / h, 1 / 0.95) * 0.95;
     var mode = fitMode(w, h, vw, vh, whole);
     margin = 0.025 * Math.min(vw, vh);
     var s = whole, cx = vw / 2, cy = vh / 2;
     if (mode === "height") {
-      s = (vh - 2 * margin) / h;
+      s = Math.min((vh - 2 * margin) / h, 1);
       if (w * s > vw) cx = margin + w * s / 2;      // start at the left end
     } else if (mode === "width") {
-      s = (vw - 2 * margin) / w;
+      s = Math.min((vw - 2 * margin) / w, 1);
       if (h * s > vh) cy = margin + h * s / 2;      // start at the top
     }
     img.dataset.fit = mode;

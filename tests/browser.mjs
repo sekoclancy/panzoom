@@ -412,6 +412,7 @@ async function checkPage(browser, base, file) {
           idx, case: +m[1], caseTitle: m[2], n: i + 1,
           expectFit: sec.dataset.expectFit || null,
           shiftScroll: sec.dataset.shiftScroll || null,
+          expectScale: sec.dataset.expectScale ? +sec.dataset.expectScale : null,
           hasDescription: !!img.dataset.panzoomDescription,
           descriptionHasMath: /class="math/.test(img.dataset.panzoomDescription || ""),
           classes: img.className,
@@ -642,6 +643,13 @@ function keyboardOk(iso) {
   return KEYBOARD_CHECKS.every(([k]) => iso.keyboard?.[k] === true);
 }
 
+// An image expected to open at a given scale (1 = real size) does, and
+// still zooms in from there.
+function scaleOk(r) {
+  return r.expectScale === null || r.expectScale === undefined ||
+    (r.fitScale !== null && Math.abs(r.fitScale - r.expectScale) < 0.001 && r.wheelZoom > 1);
+}
+
 function fitOk(r) {
   return !r.expectFit || (r.fit === r.expectFit && (r.wideFit === undefined || r.wideFit === r.expectFit));
 }
@@ -665,6 +673,7 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
       ? `title: ${r.title || "—"}; desc: ${r.description || "—"}; slides: ${r.slides}`
       : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}; ${r.size}; ` +
         `opens: ${r.fit || "—"}` + (r.wideFit !== undefined ? `, ${r.wideFit} at 2560 px` : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "") +
+        (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "") +
         (r.description ? `; description: ${r.description}` + (r.descriptionMath ? " (math typeset)" : "") : "")
       : r.opened === "navigation" ? r.navigatedTo : "";
@@ -759,6 +768,8 @@ try {
     // Every image is shown on an opaque backdrop (transparent plots stay readable).
     const opened = results.filter((r) => r.opened === "panzoom");
     if (opened.length) extra.push(opened.every((r) => /^rgb\(/.test(r.backdrop || "")) ? "backdrop ok" : "BACKDROP FAILED");
+    const scaled = opened.filter((r) => r.expectScale);
+    if (scaled.length) extra.push(scaled.every(scaleOk) ? "real size ok" : "REAL SIZE FAILED");
     const described = opened.filter((r) => r.hasDescription);
     if (described.length) extra.push(described.every(descriptionOk) ? "descriptions ok" : "DESCRIPTIONS FAILED");
     if (overflowGalleries.length) extra.push(overflowGalleries.every((g) => g.ok) ? "large galleries ok" : "LARGE GALLERIES FAILED");

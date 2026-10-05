@@ -28,6 +28,10 @@ move the image: `x` (sideways), `y` (up and down) or `none` (it fits, so
 it stays put); `zoomed-x` means sideways after zooming in until the image
 extends past the screen both ways.
 
+Cases with `expect-scale="1"` are smaller than the screen and must open
+at their real size (1 image pixel per screen pixel), not enlarged, and
+still zoom in.
+
 webp comes from ragg's `agg_webp` device: knitr has no built-in webp
 device, and `agg_webp` needs `units = "in"` because knitr passes sizes in
 inches.
@@ -82,7 +86,7 @@ collage()
 collage()
 ```
 
-## 4. webp plot {#c4 expect-fit="contain" shift-scroll="none"}
+## 4. webp plot {#c4 expect-fit="contain" shift-scroll="none" expect-scale="1"}
 
 ```{r}
 #| panzoom: true
@@ -93,7 +97,7 @@ collage()
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 5. svg plot {#c5 expect-fit="contain"}
+## 5. svg plot {#c5 expect-fit="contain" expect-scale="1"}
 
 ```{r}
 #| panzoom: true
@@ -253,3 +257,17 @@ An ordinary 9:16 photo is not a strip: it opens whole, on any screen width
 (the test also checks this in a 2560 px wide window).
 
 ![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30%}
+
+## 17. Small plot (288 × 192 px) {#c17 expect-fit="contain" expect-scale="1"}
+
+Opens at its real size, centered, rather than enlarged to fill the
+screen; scroll still zooms in (up to `max-zoom`).
+
+```{r}
+#| panzoom: true
+#| fig-width: 3
+#| fig-height: 2
+#| fig-dpi: 48
+#| fig-cap: "A small plot."
+plot(pressure)
+```

@@ -184,7 +184,9 @@ tall, such as a collage of many panels (`fig-width: 100`, `fig-height: 5`),
 opens filling the screen height instead, at its left end; drag or use
 `←`/`→` to move along it. A strip at least 3 times taller than wide opens
 filling the screen width, at its top. Ordinary photos and plots, portrait
-or landscape, always open whole.
+or landscape, always open whole. No image is enlarged past its real size
+when it opens (as with Quarto's lightbox): a small image opens at its own
+size, and scrolling still zooms it in, up to `max-zoom`.
 Zooming out still shows the whole figure.
 
 Override it per figure with `fit: contain` (always open whole), `fit:
