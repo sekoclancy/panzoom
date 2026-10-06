@@ -11,11 +11,13 @@ panzoom:
   max-zoom: 6
 ---
 
-Panzoom opens figures in a full-screen viewer: scroll to zoom toward the
-cursor, drag to pan, double-click or `0` to reset, Esc to close. It works
-next to Quarto's built-in lightbox: marked figures get the viewer, every other
-figure keeps the lightbox. Source and documentation:
-<https://github.com/sekoclancy/panzoom>.
+This is a [Quarto](https://quarto.org) extension that opens figures in a
+full-screen viewer, built on [Panzoom](https://github.com/timmywil/panzoom):
+scroll to zoom toward the cursor, drag to pan, double-click or `0` to reset,
+Esc to close. It attempts to match, and extend, the feature set of Quarto's
+built-in
+[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
+Source and documentation: <https://github.com/sekoclancy/panzoom>.
 
 ```bash
 quarto add sekoclancy/panzoom
