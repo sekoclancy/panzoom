@@ -1,7 +1,5 @@
 ---
 title: "B: panzoom on marked images, Quarto's lightbox on for the rest"
-execute:
-  echo: fenced
 format:
   html:
     code-tools: true

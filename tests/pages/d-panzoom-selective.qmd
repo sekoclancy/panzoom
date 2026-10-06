@@ -1,7 +1,5 @@
 ---
 title: "D: panzoom filter, no document lightbox key (selective mode)"
-execute:
-  echo: fenced
 format:
   html:
     code-tools: true

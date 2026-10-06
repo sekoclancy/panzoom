@@ -1,7 +1,5 @@
 ---
 title: "E: image formats and very wide figures"
-execute:
-  echo: fenced
 format:
   html:
     code-tools: true

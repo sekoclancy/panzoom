@@ -1,7 +1,5 @@
 ---
 title: "C: panzoom match: auto"
-execute:
-  echo: fenced
 format:
   html:
     code-tools: true

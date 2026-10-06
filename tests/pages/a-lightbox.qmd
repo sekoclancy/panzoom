@@ -1,7 +1,5 @@
 ---
 title: "A: Quarto lightbox reference"
-execute:
-  echo: fenced
 format:
   html:
     code-tools: true
