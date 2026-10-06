@@ -4,15 +4,16 @@
 
 A [Quarto](https://quarto.org) filter extension for HTML formats that opens
 figures in a full-screen pan/zoom viewer, built on
-[Panzoom](https://github.com/timmywil/panzoom): scroll (or trackpad pinch) to zoom
-toward the cursor, drag or Shift+scroll to pan, double-click or `0` to reset,
-`+`/`-` to zoom, `Esc` or a background click to close. The image stays on
-screen: panning stops at its edges, with a small bounce (or, when dragging,
-a stretch that springs back) to show you've reached one.
+[Panzoom](https://github.com/timmywil/panzoom): scroll (or trackpad pinch)
+to zoom toward the cursor, drag or <kbd>Shift</kbd>+scroll to pan,
+double-click or <kbd>0</kbd> to reset, <kbd>+</kbd>/<kbd>-</kbd> to zoom,
+<kbd>Esc</kbd> or a background click to close. The image stays on screen:
+panning stops at its edges, with a small bounce (or, when dragging, a
+stretch that springs back) to show you've reached one.
 
-It works from the keyboard too: marked images can be reached with `Tab` and
-opened with `Enter` or `Space`, the arrow keys pan, and closing returns focus
-to the image.
+It works from the keyboard too: marked images can be reached with
+<kbd>Tab</kbd> and opened with <kbd>Enter</kbd> or <kbd>Space</kbd>, the
+arrow keys pan, and closing returns focus to the image.
 
 It attempts to match, and extend, the feature set of Quarto's built-in
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
@@ -22,14 +23,14 @@ It attempts to match, and extend, the feature set of Quarto's built-in
 - **Zoom:** scroll or pinch toward the cursor, in steps up to `max-zoom`,
   instead of one click between fit and real size (which the lightbox turns
   off on screens 768 px wide or less).
-- **Pan:** drag, arrow keys or Shift+scroll at any zoom; the image stops at
-  its edges with a bounce.
+- **Pan:** drag, arrow keys or <kbd>Shift</kbd>+scroll at any zoom; the
+  image stops at its edges with a bounce.
 - **Captions:** math is typeset (the lightbox shows raw TeX); a subfigure
   shows its own caption with the parent figure's caption below.
 - **Very wide or tall figures:** open at screen height (or width), at the
   spot you clicked.
-- **Galleries:** `←`/`→` pan an image larger than the screen;
-  `PageUp`/`PageDown` change image.
+- **Galleries:** <kbd>←</kbd>/<kbd>→</kbd> pan an image larger than the
+  screen; <kbd>PageUp</kbd>/<kbd>PageDown</kbd> change image.
 - **Layouts:** figures in Quarto layouts (`layout-ncol`, `layout-nrow`,
   layout divs) open one at a time; subfigures form a gallery.
 - **Linked images:** an image inside a link keeps its link.
@@ -147,11 +148,10 @@ plot(pressure)
 ```
 ````
 
-Images in the same group form a gallery: step through them with the
-‹ › buttons, `PageUp`/`PageDown`, `←`/`→` or a horizontal swipe (the last
-two pan instead while the image is wider than the screen). Groups work
-like Quarto's
-lightbox:
+Images in the same group form a gallery: step through them with the ‹ ›
+buttons, <kbd>PageUp</kbd>/<kbd>PageDown</kbd>, <kbd>←</kbd>/<kbd>→</kbd> or
+a horizontal swipe (the last two pan instead while the image is wider than
+the screen). Groups work like Quarto's lightbox:
 
 - subfigures of one figure are a gallery automatically,
 - `group="name"` on markdown images,
@@ -171,20 +171,19 @@ plot(pressure, log = "y")
 With `fit: auto`, the viewer opens most images whole. A strip, at least 3
 times wider than tall, that would show less than a quarter of the screen
 tall, such as a collage of many panels (`fig-width: 100`, `fig-height: 5`),
-opens filling the screen height instead; drag or use `←`/`→` to move
-along it. A strip at least 3 times taller than wide opens
-filling the screen width, at its top. Ordinary photos and plots, portrait
-or landscape, always open whole. No image is enlarged past its real size
-when it opens (as with Quarto's lightbox): a small image opens at its own
-size, and scrolling still zooms it in, up to `max-zoom`.
+opens filling the screen height instead; drag or use
+<kbd>←</kbd>/<kbd>→</kbd> to move along it. A strip at least 3 times taller
+than wide opens filling the screen width, at its top. Ordinary photos and
+plots, portrait or landscape, always open whole. No image is enlarged past
+its real size when it opens (as with Quarto's lightbox): a small image opens
+at its own size, and scrolling still zooms it in, up to `max-zoom`.
 
 **Focal point.** Where you click a strip on the page is its focal point:
 click panel 12 of a 20-panel collage and the viewer opens with panel 12 in
-the middle of the screen (or flush with the end, near either end). `0` and
-double-click return to it. Opened from the keyboard, a strip
-starts at its left end (or top). Ordinary images open whole wherever you
-click.
-Zooming out still shows the whole figure.
+the middle of the screen (or flush with the end, near either end).
+<kbd>0</kbd> and double-click return to it. Opened from the keyboard, a
+strip starts at its left end (or top). Ordinary images open whole wherever
+you click. Zooming out still shows the whole figure.
 
 Override it per figure with `fit: contain` (always open whole), `fit:
 height` or `fit: width`:
@@ -201,13 +200,13 @@ for (i in 1:12) plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i))
 ```
 ````
 
-Shift+scroll (or a sideways trackpad swipe) pans along the direction the
-figure extends past the screen: sideways for a collage, up and down for a
-tall figure, sideways when zoomed in both ways.
+<kbd>Shift</kbd>+scroll (or a sideways trackpad swipe) pans along the
+direction the figure extends past the screen: sideways for a collage, up and
+down for a tall figure, sideways when zoomed in both ways.
 
-In a gallery, `←`/`→` and swipes pan an image that is larger than the
-screen (or do nothing, if it fits sideways); use `PageUp`/`PageDown` or the
-‹ › buttons to change images.
+In a gallery, <kbd>←</kbd>/<kbd>→</kbd> and swipes pan an image that is
+larger than the screen (or do nothing, if it fits sideways); use
+<kbd>PageUp</kbd>/<kbd>PageDown</kbd> or the ‹ › buttons to change images.
 
 ## Development
 
