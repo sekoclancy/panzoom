@@ -38,7 +38,7 @@ const CHROME = process.env.CHROME || path.join(os.homedir(),
   ".local/share/quarto/chrome-headless-shell/chrome-headless-shell-linux64/chrome-headless-shell");
 const PAGES = process.argv.length > 2
   ? process.argv.slice(2).map((p) => path.resolve(p))
-  : ["a-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html"]
+  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html"]
       .map((p) => path.join(ROOT, "docs", "tests", "pages", p));
 const VIEWPORT = { width: 1280, height: 900 };
 const SITE = path.join(ROOT, "docs");

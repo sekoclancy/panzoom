@@ -20,6 +20,8 @@ website:
         menu:
           - href: tests/pages/a-lightbox.qmd
             text: "A: Quarto lightbox reference"
+          - href: tests/pages/b-panzoom-lightbox.qmd
+            text: "B: marked images + lightbox"
           - href: tests/pages/c-panzoom-auto.qmd
             text: "C: match: auto"
           - href: tests/pages/d-panzoom-selective.qmd

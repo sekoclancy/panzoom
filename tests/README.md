@@ -32,11 +32,12 @@ image inside a link, a margin image, and so on.
   [Edgartown Light](https://unsplash.com/photos/f59MyOfLpi8),
   [Edgartown Sailboat](https://unsplash.com/photos/IiLiz7XpQpI).
 
-The same 12 cases are rendered three ways:
+The same 12 cases are rendered four ways:
 
 | Page | What it is | Panzoom filter | Lightbox |
 |---|---|---|---|
 | `a-lightbox` | **Reference.** What Quarto's own lightbox does with each case. No panzoom markers at all. | off | `match: auto` |
+| `b-panzoom-lightbox` | **The usual setup.** Images marked with `.panzoom` or `#\| classes: panzoom`; Quarto's lightbox on for the rest. Same markup as D. | on | `true` |
 | `c-panzoom-auto` | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
 | `d-panzoom-selective` | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
 
@@ -89,7 +90,8 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── package-lock.json  exact dependency versions
     ├── render.sh          renders the project into ../docs/
     ├── browser.mjs        the browser checks
-    ├── pages/             a-lightbox.qmd, c-panzoom-auto.qmd, d-panzoom-selective.qmd, e-formats.qmd
+    ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
+    │                      d-panzoom-selective.qmd, e-formats.qmd
     ├── node_modules/      installed by npm (git-ignored)
     └── results/           test output (git-ignored)
 ```
@@ -226,7 +228,8 @@ instead when zoomed in, and that "previous" is disabled on the first image
 (no `loop`).
 
 **What to expect.** A on its own shows what Quarto does; compare each case in
-C and D against it. The notes at the top of each page list the intended
+B, C and D against it. B should match A except for the marked images,
+which open panzoom. The notes at the top of each page list the intended
 differences. A few cases do "nothing" on purpose: case 8 (`lightbox: false`),
 case 9 in A and C (a Quarto bug drops the link around a captioned image), case
 11 in A and C (inline images aren't automatic), and in D every image that

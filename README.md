@@ -257,8 +257,9 @@ git push origin gh-pages
 
 **How we test:** the same 12 figure cases (galleries, subfigures, math in
 captions, linked, margin and inline images, R chunks with cell options) are
-rendered three ways: with Quarto's lightbox alone as the reference, with
-`match: auto`, and with explicitly marked images. A script serves the
+rendered four ways: with Quarto's lightbox alone as the reference,
+explicitly marked images with the lightbox on for the rest, `match: auto`,
+and explicitly marked images with no lightbox. A script serves the
 rendered site locally, clicks every image on each page and records which
 viewer opened (panzoom, Quarto's lightbox, or nothing). For the panzoom
 viewer, it then checks zoom, pan, reset and closing, that key presses

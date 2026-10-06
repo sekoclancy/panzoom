@@ -1,0 +1,145 @@
+---
+title: "B: panzoom on marked images, Quarto's lightbox on for the rest"
+execute:
+  echo: fenced
+format:
+  html:
+    code-tools: true
+    lightbox: true
+filters:
+  - panzoom
+---
+
+::: {.callout-note}
+## About this page
+
+This page **tests the usual setup**: Quarto's lightbox is on for the
+document (`lightbox: true`), and only some images are marked for panzoom,
+with `.panzoom` or `#| classes: panzoom`. The markup is the same as in
+[`d-panzoom-selective`](d-panzoom-selective.html), which has no lightbox.
+
+The marked images should open the pan/zoom viewer; every other image
+should open Quarto's lightbox, as in [`a-lightbox`](a-lightbox.html).
+Case 6's first chunk has both `classes: panzoom` and `#| lightbox:` options
+on purpose: panzoom should win, so it doesn't join GLightbox's gallery.
+Case 8 (`#| lightbox: false`) gets neither. Case 9's link should still work
+(images inside links are left alone).
+:::
+
+## 1. Single image, markdown description, desc-position left {#c1}
+
+![Beach in Chilmark](../../images/mv-0.jpg){.panzoom description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left"}
+
+## 2. Gallery via group=, custom layout {#c2}
+
+::: {layout="[[1, 1], [1]]"}
+![Aquinnah](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah."}
+
+![Oak Bluffs](../../images/mv-3.jpg){.panzoom group="elsewhere" description="Gingerbread cottages."}
+
+![Vineyard lighthouse](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse."}
+:::
+
+## 3. Math in caption and description {#c3}
+
+![Caption with math $e^{i\pi}+1=0$](../../images/mv-4.jpg){.panzoom description="Description with math $\\int_0^1 x^2\\,dx = 1/3$"}
+
+## 4. Markdown subfigures with cross-ref {#c4}
+
+::: {#fig-md-sub layout-ncol=2}
+![Sub A](../../images/mv-1.jpg){#fig-md-a .panzoom}
+
+![Sub B](../../images/mv-2.jpg){#fig-md-b .panzoom}
+
+Two markdown subfigures (see @fig-md-a).
+:::
+
+## 5. R subfigures (fig-subcap, layout-ncol) {#c5}
+
+```{r}
+#| label: fig-r-sub
+#| fig-cap: "Two R subfigures."
+#| fig-subcap: ["Pressure", "Cars"]
+#| layout-ncol: 2
+#| classes: panzoom
+plot(pressure)
+plot(cars)
+```
+
+## 6. R chunks with lightbox cell options (group + description) {#c6}
+
+This one also has `classes: panzoom` (conflict test).
+
+```{r}
+#| fig-cap: Simple demo R plot
+#| classes: panzoom
+#| lightbox:
+#|   group: r-graph
+#|   description: This is 1 to 10 plot
+plot(1:10, rnorm(10))
+```
+
+This one has only the lightbox options.
+
+```{r}
+#| fig-cap: Plot about cars data
+#| lightbox:
+#|   group: r-graph
+#|   description: We see our cars data above
+plot(cars)
+```
+
+## 7. Multi-plot cell, list-valued options {#c7}
+
+```{r}
+#| classes: panzoom
+#| fig-cap:
+#|   - Caption for first plot
+#|   - Caption for second plot
+#| lightbox:
+#|   group: cars
+#|   description:
+#|     - Description for first graph
+#|     - Description for second graph
+plot(mtcars)
+plot(cars)
+```
+
+## 8. lightbox: false on a chunk {#c8}
+
+```{r}
+#| fig-cap: mtcars, lightbox false
+#| lightbox: false
+plot(mtcars)
+```
+
+## 9. Image inside a link {#c9}
+
+[![Linked image](../../images/mv-4.jpg){.panzoom width=30%}](https://quarto.org)
+
+## 10. Margin image {#c10}
+
+![Margin image](../../images/mv-3.jpg){.panzoom .column-margin}
+
+## 11. Inline image in text {#c11}
+
+Some text with an inline image ![](../../images/mv-2.jpg){.panzoom width=60px} in the middle.
+
+## 12. Plain R chunk figure, no options {#c12}
+
+```{r}
+#| label: fig-plain
+#| fig-cap: A plain cross-referenced R figure.
+image(volcano)
+```
+
+## Credits
+
+The images in this example were used under the [Unsplash
+license](https://unsplash.com/license), view originals below:
+
+-   [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)
+-   [Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU)
+-   [Gingerbread House](https://unsplash.com/photos/HQEtvlNzUyA)
+-   [Edgartown Light](https://unsplash.com/photos/f59MyOfLpi8)
+-   [Edgartown Sailboat](https://unsplash.com/photos/IiLiz7XpQpI)

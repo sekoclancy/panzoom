@@ -105,10 +105,12 @@ cell, use `#| panzoom: false`.
 ## Test pages
 
 The same 12 lightbox situations (galleries, subfigures, captions with math,
-images in links, margin images, ...) rendered three ways:
+images in links, margin images, ...) rendered four ways:
 
 - [A: Quarto lightbox reference](tests/pages/a-lightbox.html): Quarto's
   built-in lightbox alone.
+- [B: marked images + lightbox](tests/pages/b-panzoom-lightbox.html): the
+  usual setup, `lightbox: true` with some images marked for panzoom.
 - [C: panzoom `match: auto`](tests/pages/c-panzoom-auto.html): panzoom picks
   the images itself.
 - [D: explicit marking](tests/pages/d-panzoom-selective.html): images marked
