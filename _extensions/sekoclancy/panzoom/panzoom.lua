@@ -32,6 +32,8 @@
 if not quarto.doc.is_format("html:js") then return {} end
 
 local match_auto = false
+-- Whether any description has math (see the last filter pass).
+local needs_math = false
 
 local function has(classes, name)
   return classes ~= nil and classes:includes(name)
@@ -41,6 +43,7 @@ end
 -- MathJax (or KaTeX) to typeset in the viewer.
 local function markdown_html(text)
   local doc = pandoc.read(text, "markdown")
+  doc:walk({ Math = function() needs_math = true end })
   return pandoc.write(doc, "html", { html_math_method = "mathjax", wrap_text = "none" })
 end
 
@@ -289,6 +292,20 @@ return {
     Image = function(img)
       if has(img.classes, "panzoom") then
         return mark(img)
+      end
+    end,
+  },
+  -- A description's math is typeset by the page's MathJax (or KaTeX), but
+  -- Quarto only loads it when the page itself has math. The descriptions
+  -- live in image attributes, which it doesn't see, so add a hidden empty
+  -- math element when one of them has math.
+  {
+    Pandoc = function(doc)
+      if needs_math then
+        doc.blocks:insert(pandoc.Div(
+          { pandoc.Plain({ pandoc.Math("InlineMath", "") }) },
+          pandoc.Attr("", { "panzoom-math" }, { style = "display:none" })))
+        return doc
       end
     end,
   },
