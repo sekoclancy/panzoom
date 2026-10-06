@@ -10,6 +10,8 @@ project:
 
 execute:
   echo: fenced
+  # Re-run a page's R code only when that page's source changes.
+  freeze: auto
 
 website:
   title: "panzoom"
