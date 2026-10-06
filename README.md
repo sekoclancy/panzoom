@@ -78,7 +78,8 @@ npm install
 
 ## Usage
 
-Turn the filter on:
+Turn the filter on for one document in its YAML header, or for every page
+of a Quarto project (website, book) in `_quarto.yml`:
 
 ```yaml
 filters:
