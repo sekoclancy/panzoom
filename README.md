@@ -148,10 +148,11 @@ plot(pressure)
 ```
 ````
 
-Images in the same group form a gallery: step through them with the ‹ ›
-buttons, <kbd>PageUp</kbd>/<kbd>PageDown</kbd>, <kbd>←</kbd>/<kbd>→</kbd> or
-a horizontal swipe (the last two pan instead while the image is wider than
-the screen). Groups work like Quarto's lightbox:
+Images in the same group form a gallery: step through them with the
+on-screen ‹ › buttons, <kbd>PageUp</kbd>/<kbd>PageDown</kbd>,
+<kbd>←</kbd>/<kbd>→</kbd> or a horizontal swipe (the last two pan instead
+while the image is wider than the screen). Groups work like Quarto's
+lightbox:
 
 - subfigures of one figure are a gallery automatically,
 - `group="name"` on markdown images,
@@ -206,7 +207,8 @@ down for a tall figure, sideways when zoomed in both ways.
 
 In a gallery, <kbd>←</kbd>/<kbd>→</kbd> and swipes pan an image that is
 larger than the screen (or do nothing, if it fits sideways); use
-<kbd>PageUp</kbd>/<kbd>PageDown</kbd> or the ‹ › buttons to change images.
+<kbd>PageUp</kbd>/<kbd>PageDown</kbd> or the on-screen ‹ › buttons to
+change images.
 
 ## Development
 
