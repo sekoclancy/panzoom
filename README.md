@@ -92,7 +92,7 @@ Options, all optional, go under `panzoom:` in the same place:
 
 ```yaml
 panzoom:
-  match: auto     # auto gives all block images; unset, only marked images (default unset)
+  match: auto     # auto: all block images; omit this parameter for only marked images (default)
   max-zoom: 4     # number: screen px per image px (default 4)
   hint: true      # boolean: show the controls hint at the bottom (default true)
   caption: true   # boolean: show the figure caption in the viewer (default true)
