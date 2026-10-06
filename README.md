@@ -132,6 +132,13 @@ plot(pressure)
 ![Caption](figure.png){.panzoom}
 ```
 
+This also works for an image inside a line of text, which `match: auto`
+skips:
+
+```markdown
+Some text with an inline image ![](image.jpg){.panzoom width=60px} in the middle.
+```
+
 **Any block:** wrap it in a div.
 
 ```markdown
