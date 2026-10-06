@@ -233,7 +233,7 @@ screen (or do nothing, if it fits sideways); use `PageUp`/`PageDown` or the
 
 ## Notes
 
-See `index.qmd` for example uses.
+See the [live example](https://sekoclancy.github.io/panzoom/) for example uses.
 
 ## Development
 
