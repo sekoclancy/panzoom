@@ -31,6 +31,8 @@ It attempts to match, and extend, the feature set of Quarto's built-in
   spot you clicked.
 - **Galleries:** `←`/`→` pan an image larger than the screen;
   `PageUp`/`PageDown` change image.
+- **Layouts:** figures in Quarto layouts (`layout-ncol`, `layout-nrow`,
+  layout divs) open one at a time; subfigures form a gallery.
 - **Linked images:** an image inside a link keeps its link.
 
 ## Installation
