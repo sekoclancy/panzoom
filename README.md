@@ -18,6 +18,21 @@ to the image.
 It attempts to match, and extend, the feature set of Quarto's built-in
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 
+## Features
+
+- **Zoom:** scroll or pinch toward the cursor, in steps up to `max-zoom`,
+  instead of one click between fit and real size (which the lightbox turns
+  off on screens 768 px wide or less).
+- **Pan:** drag, arrow keys or Shift+scroll at any zoom; the image stops at
+  its edges with a bounce.
+- **Captions:** math is typeset (the lightbox shows raw TeX); a subfigure
+  shows its own caption with the parent figure's caption below.
+- **Very wide or tall figures:** open at screen height (or width), at the
+  spot you clicked.
+- **Galleries:** `←`/`→` pan an image larger than the screen;
+  `PageUp`/`PageDown` change image.
+- **Linked images:** an image inside a link keeps its link.
+
 ## Installation
 
 You can install this extension using the Quarto CLI:
