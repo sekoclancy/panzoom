@@ -50,6 +50,15 @@ collage <- function(n = 12) {
          xlab = "", ylab = "", col = hcl.colors(n)[i], lwd = 2)
   }
 }
+
+# A tall strip: `n` rows stacked, like a tall patchwork figure.
+strip <- function(seed = 2, n = 8) {
+  set.seed(seed)
+  par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))
+  for (i in seq_len(n)) {
+    plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+  }
+}
 ```
 
 ## 1. Wide collage, png (25 × 2 in) {#c1 expect-fit="height" shift-scroll="x"}
@@ -271,3 +280,55 @@ screen; scroll still zooms in (up to `max-zoom`).
 #| fig-cap: "A small plot."
 plot(pressure)
 ```
+
+## 18. Two collages stacked (layout-nrow: 2) {#c18 expect-fit="height"}
+
+Subfigures in a layout: each opens on its own at screen height, and the
+two form a gallery.
+
+```{r}
+#| label: fig-collage-rows
+#| panzoom: true
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "Two collages, stacked."
+#| fig-subcap: ["First collage", "Second collage"]
+#| layout-nrow: 2
+collage()
+collage(15)
+```
+
+## 19. Two tall strips side by side (layout-ncol: 2) {#c19 expect-fit="width"}
+
+```{r}
+#| label: fig-strip-cols
+#| panzoom: true
+#| fig-width: 4
+#| fig-height: 15
+#| fig-cap: "Two tall strips, side by side."
+#| fig-subcap: ["First strip", "Second strip"]
+#| layout-ncol: 2
+strip(2)
+strip(3)
+```
+
+## 20. Tall strips in a layout div {#c20 expect-fit="width"}
+
+A `.panzoom` div with a layout, around two separate code cells: each
+strip opens on its own (no gallery: they are not subfigures).
+
+::: {.panzoom layout-ncol="2"}
+
+```{r}
+#| fig-width: 4
+#| fig-height: 15
+strip(4)
+```
+
+```{r}
+#| fig-width: 4
+#| fig-height: 15
+strip(5)
+```
+
+:::
