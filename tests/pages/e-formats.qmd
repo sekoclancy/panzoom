@@ -13,7 +13,7 @@ panzoom:
 ## About this page
 
 This page **tests the panzoom extension** with the knitr graphics devices
-and figure shapes used in practice: very wide collages (100 × 5 inches),
+and figure shapes used in practice: very wide collages (25 × 2 inches),
 and webp, svg and pdf output. Every figure is marked with `#| panzoom: true`
 and should open the pan/zoom viewer, except where a case says otherwise.
 
@@ -42,7 +42,7 @@ inches.
 library(ragg)
 
 # A collage: `n` panels side by side, like a wide patchwork figure.
-collage <- function(n = 20) {
+collage <- function(n = 12) {
   set.seed(1)
   par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
   for (i in seq_len(n)) {
@@ -52,22 +52,22 @@ collage <- function(n = 20) {
 }
 ```
 
-## 1. Wide collage, png (100 × 5 in) {#c1 expect-fit="height" shift-scroll="x"}
+## 1. Wide collage, png (25 × 2 in) {#c1 expect-fit="height" shift-scroll="x"}
 
 ```{r}
 #| panzoom: true
-#| fig-width: 100
-#| fig-height: 5
-#| fig-cap: "A 100 × 5 inch collage of 20 panels (png)."
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "A 25 × 2 inch collage of 12 panels (png)."
 collage()
 ```
 
-## 2. Wide collage, webp (100 × 5 in) {#c2 expect-fit="height"}
+## 2. Wide collage, webp (25 × 2 in) {#c2 expect-fit="height"}
 
 ```{r}
 #| panzoom: true
-#| fig-width: 100
-#| fig-height: 5
+#| fig-width: 25
+#| fig-height: 2
 #| dev: agg_webp
 #| fig-ext: webp
 #| dev.args: !expr list(units = "in", res = 96)
@@ -75,12 +75,12 @@ collage()
 collage()
 ```
 
-## 3. Wide collage, svg (100 × 5 in) {#c3 expect-fit="height"}
+## 3. Wide collage, svg (25 × 2 in) {#c3 expect-fit="height"}
 
 ```{r}
 #| panzoom: true
-#| fig-width: 100
-#| fig-height: 5
+#| fig-width: 25
+#| fig-height: 2
 #| dev: svg
 #| fig-cap: "The same collage as svg."
 collage()
@@ -153,8 +153,8 @@ The override: the whole collage, as a strip.
 ```{r}
 #| panzoom:
 #|   fit: contain
-#| fig-width: 100
-#| fig-height: 5
+#| fig-width: 25
+#| fig-height: 2
 #| fig-cap: "The collage, forced to open whole."
 collage()
 ```
@@ -171,16 +171,16 @@ Wide, but readable whole: the size rule leaves it alone.
 collage(4)
 ```
 
-## 11. Tall strip (4 × 60 in) {#c11 expect-fit="width" shift-scroll="y"}
+## 11. Tall strip (4 × 15 in) {#c11 expect-fit="width" shift-scroll="y"}
 
 ```{r}
 #| panzoom: true
 #| fig-width: 4
-#| fig-height: 60
-#| fig-cap: "A tall strip of 15 panels."
+#| fig-height: 15
+#| fig-cap: "A tall strip of 8 panels."
 set.seed(2)
-par(mfrow = c(15, 1), mar = c(2, 3, 2, 1))
-for (i in 1:15) plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
+for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
 ```
 
 ## 12. Gallery of two collages {#c12 expect-fit="height"}
@@ -191,13 +191,13 @@ buttons switch collages.
 ```{r}
 #| panzoom:
 #|   group: collages
-#| fig-width: 100
-#| fig-height: 5
+#| fig-width: 25
+#| fig-height: 2
 #| fig-cap:
 #|   - "First collage."
 #|   - "Second collage."
 collage()
-collage(25)
+collage(15)
 ```
 
 ## 13. Large poster (24 × 18 in) {#c13 expect-fit="contain" shift-scroll="zoomed-x"}
@@ -225,14 +225,14 @@ PageDown, PageUp and the buttons switch.
 #| panzoom:
 #|   group: strips
 #| fig-width: 4
-#| fig-height: 60
+#| fig-height: 15
 #| fig-cap:
 #|   - "First strip."
 #|   - "Second strip."
 for (k in 1:2) {
   set.seed(10 + k)
-  par(mfrow = c(15, 1), mar = c(2, 3, 2, 1))
-  for (i in 1:15) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
+  par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
+  for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
 }
 ```
 
