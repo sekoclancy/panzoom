@@ -111,6 +111,43 @@ end
 -- Reads a cell's `#| panzoom:` option. Quarto passes it as an attribute:
 -- "true"/"false", or JSON for the nested form. Returns false to opt the cell
 -- out, otherwise true plus the per-image data attributes for its options.
+-- Reads the `#| panzoom: { ... }` attribute. It looks like JSON, but
+-- knitr/Quarto (1.9) write string values unescaped: a description with a
+-- quote or a backslash (`$\theta$`) is invalid JSON, or decodes to the
+-- wrong text (`\t` becomes a tab). So split it at the `,"key":`
+-- boundaries ourselves and keep strings exactly as written.
+local function parse_options(value)
+  local body = value:match("^%s*{(.*)}%s*$")
+  if body == nil then return {} end
+  local starts = {}
+  local pos = 1
+  while true do
+    local s, e, key = body:find('"([%w_%-]+)"%s*:', pos)
+    if s == nil then break end
+    -- a key starts the body or follows a comma
+    local before = body:sub(1, s - 1):match("(%S?)%s*$")
+    if s == 1 or before == "," then
+      table.insert(starts, { s = s, e = e, key = key })
+    end
+    pos = e + 1
+  end
+  local cfg = {}
+  for i, k in ipairs(starts) do
+    local stop = starts[i + 1] and starts[i + 1].s - 1 or #body
+    local raw = body:sub(k.e + 1, stop):gsub("^%s+", ""):gsub("[%s,]+$", "")
+    if raw:sub(1, 1) == '"' and raw:sub(-1) == '"' and #raw >= 2 then
+      cfg[k.key] = raw:sub(2, -2)
+    elseif raw == "true" or raw == "false" then
+      cfg[k.key] = raw == "true"
+    elseif tonumber(raw) ~= nil then
+      cfg[k.key] = tonumber(raw)
+    else
+      cfg[k.key] = raw
+    end
+  end
+  return cfg
+end
+
 local function cell_option(el)
   local value = el.attributes["panzoom"]
   if value == nil then return nil end
@@ -118,7 +155,7 @@ local function cell_option(el)
   if value == "false" then return false end
   local attrs = {}
   if value:sub(1, 1) == "{" then
-    local cfg = quarto.json.decode(value)
+    local cfg = parse_options(value)
     if cfg["max-zoom"] ~= nil then
       attrs["data-panzoom-max-zoom"] = tostring(cfg["max-zoom"])
     end
