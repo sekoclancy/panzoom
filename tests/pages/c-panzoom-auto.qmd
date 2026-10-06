@@ -9,6 +9,7 @@ filters:
   - panzoom
 panzoom:
   match: auto
+  hint: false
 lightbox:
   match: auto
   effect: fade

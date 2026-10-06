@@ -8,6 +8,8 @@ format:
     lightbox: true
 filters:
   - panzoom
+panzoom:
+  hint: false
 ---
 
 ::: {.callout-note}
