@@ -133,7 +133,9 @@ images in links, margin images, ...) rendered four ways:
 - [D: explicit marking](tests/pages/d-panzoom-selective.html): images marked
   with `.panzoom` or `#| classes: panzoom`.
 
-And one page of its own:
+And pages of their own:
 
-- [E: formats and wide figures](tests/pages/e-formats.html): 100 × 5 inch
-  collages, and webp, svg and pdf output.
+- [E: formats and wide figures](tests/pages/e-formats.html): 25 × 2 inch
+  collages, tall strips, and webp, svg and pdf output.
+- [F: options](tests/pages/f-options.html): opting out, and the per-cell
+  `caption`, `hint`, `max-zoom`, `description`, `fit` and `loop` options.

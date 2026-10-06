@@ -39,7 +39,7 @@ const CHROME = process.env.CHROME || path.join(os.homedir(),
   ".local/share/quarto/chrome-headless-shell/chrome-headless-shell-linux64/chrome-headless-shell");
 const PAGES = process.argv.length > 2
   ? process.argv.slice(2).map((p) => path.resolve(p))
-  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html"]
+  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html"]
       .map((p) => path.join(ROOT, "docs", "tests", "pages", p));
 const VIEWPORT = { width: 1280, height: 900 };
 const SITE = path.join(ROOT, "docs");
@@ -91,6 +91,11 @@ async function state(page) {
         opened: "panzoom",
         caption: caption.hidden ? "" : caption.textContent.trim().replace(/\s+/g, " "),
         fit: img.dataset.fit || "",
+        hintShown: !pz.querySelector(".panzoom-hint").hidden,
+        // Whether the image opened larger than the screen, sideways (overX)
+        // or up and down (overY): a strip to scroll along.
+        overX: r.width > pz.clientWidth + 1,
+        overY: r.height > pz.clientHeight - pz.querySelector(".panzoom-footer").offsetHeight + 1,
         backdrop: getComputedStyle(img).backgroundColor,
         description: (() => {
           const d = pz.querySelector(".panzoom-description");
@@ -317,13 +322,22 @@ async function checkGallery(page, handle) {
   const n = +m[2];
   out.start = first;
   out.size = n;
-  // Left on the first image (no loop): nothing happens, not even a nudge.
+  // Left on the first image: without `loop`, nothing happens, not even a
+  // nudge; with `loop`, it goes to the last image (and back with Right).
+  out.loop = await page.evaluate(() => !!(window.PANZOOM_OPTIONS || {}).loop);
   const t0 = await viewerTransform(page);
   await page.keyboard.press("ArrowLeft");
   await sleep(100);
   const tl = await viewerTransform(page);
-  out.leftAtStartStill = (await counter()) === first && !!(t0 && tl) &&
-    Math.abs(tl.x - t0.x) < 0.5 && Math.abs(tl.y - t0.y) < 0.5;
+  if (out.loop) {
+    out.leftAtStartWraps = (await counter()) === `${n} / ${n}`;
+    await page.keyboard.press("ArrowRight");
+    await sleep(100);
+    out.leftAtStartStill = out.leftAtStartWraps && (await counter()) === first;
+  } else {
+    out.leftAtStartStill = (await counter()) === first && !!(t0 && tl) &&
+      Math.abs(tl.x - t0.x) < 0.5 && Math.abs(tl.y - t0.y) < 0.5;
+  }
   await page.keyboard.press("PageDown");
   await sleep(100);
   out.pageDown = await counter();
@@ -359,8 +373,10 @@ async function checkGallery(page, handle) {
   await sleep(100);
   out.zoomedArrowPans = (await counter()) === first;
   // Without loop, the first image has no previous one.
+  // Without loop, the first image has no previous one; with loop it does.
   out.prevDisabledAtStart = m[1] === "1"
     ? await page.$eval(".panzoom-prev", (b) => b.disabled) : null;
+  if (out.loop && out.prevDisabledAtStart !== null) out.prevDisabledAtStart = !out.prevDisabledAtStart;
   await closeAll(page);
   out.ok = out.pageDown === `${+m[1] + 1} / ${n}` && out.pageUpBack &&
     out.arrowNext === out.pageDown && out.arrowBack && out.buttonNext === out.pageDown &&
@@ -424,6 +440,11 @@ async function checkPage(browser, base, file) {
           expectFit: sec.dataset.expectFit || null,
           shiftScroll: sec.dataset.shiftScroll || null,
           expectScale: sec.dataset.expectScale ? +sec.dataset.expectScale : null,
+          // Option checks (page F): on the image itself, or on its case.
+          expectOpen: img.dataset.expectOpen || sec.dataset.expectOpen || null,
+          expectCaption: sec.dataset.expectCaption || null,
+          expectHint: sec.dataset.expectHint || null,
+          expectMaxZoom: sec.dataset.expectMaxZoom ? +sec.dataset.expectMaxZoom : null,
           hasDescription: !!img.dataset.panzoomDescription,
           descriptionHasMath: /class="math/.test(img.dataset.panzoomDescription || ""),
           classes: img.className,
@@ -501,7 +522,8 @@ async function checkPage(browser, base, file) {
   // PageDown switches.
   const overflowGalleries = [];
   for (const fit of ["height", "width"]) {
-    const first = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === fit);
+    const first = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === fit &&
+      (fit === "height" ? r.overX : r.overY));
     if (!first) continue;
     await openImage(page, first);
     const t0 = await viewerTransform(page);
@@ -528,7 +550,7 @@ async function checkPage(browser, base, file) {
   // Containment: a collage stops at both ends and can't move up or down; an
   // image shown whole can't be moved at all.
   let containment = null;
-  const collage = results.find((r) => r.opened === "panzoom" && r.fit === "height" && (r.counter || "1 / 1") === "1 / 1");
+  const collage = results.find((r) => r.opened === "panzoom" && r.fit === "height" && r.overX && (r.counter || "1 / 1") === "1 / 1");
   const whole = results.find((r) => r.opened === "panzoom" && r.fit === "contain" && (r.counter || "1 / 1") === "1 / 1");
   if (collage || whole) containment = {};
   if (collage) {
@@ -644,8 +666,8 @@ async function checkPage(browser, base, file) {
     await page.mouse.click(b.x + fx * b.width, b.y + fy * b.height);
     await sleep(600);
   };
-  const strip = results.find((r) => r.opened === "panzoom" && r.fit === "height" && (r.counter || "1 / 1") === "1 / 1");
-  const tall = results.find((r) => r.opened === "panzoom" && r.fit === "width" && (r.counter || "1 / 1") === "1 / 1");
+  const strip = results.find((r) => r.opened === "panzoom" && r.fit === "height" && r.overX && (r.counter || "1 / 1") === "1 / 1");
+  const tall = results.find((r) => r.opened === "panzoom" && r.fit === "width" && r.overY && (r.counter || "1 / 1") === "1 / 1");
   if (strip || tall) clickOpen = {};
   if (strip) {
     const c = (clickOpen.collage = { image: `${strip.case}. ${strip.caseTitle}` });
@@ -678,6 +700,16 @@ async function checkPage(browser, base, file) {
     c.ok = Math.abs(c.middle - 0.5) < 0.01;
   }
   if (clickOpen) clickOpen.ok = (!clickOpen.collage || clickOpen.collage.ok) && (!clickOpen.tall || clickOpen.tall.ok);
+
+  // max-zoom: zooming in as far as possible stops at the cell's limit.
+  for (const r of results.filter((r) => r.opened === "panzoom" && r.expectMaxZoom)) {
+    await openImage(page, r);
+    await page.mouse.move(VIEWPORT.width / 2, VIEWPORT.height / 2);
+    for (let i = 0; i < 30; i++) { await page.mouse.wheel({ deltaY: -200 }); await sleep(20); }
+    await sleep(200);
+    r.maxScaleReached = (await viewerTransform(page))?.s ?? null;
+    await closeAll(page);
+  }
 
   // The opening view on a wide screen (2560 px): the size rule must still
   // only pick out strips.
@@ -720,6 +752,19 @@ function fitOk(r) {
   return !r.expectFit || (r.fit === r.expectFit && (r.wideFit === undefined || r.wideFit === r.expectFit));
 }
 
+// Option expectations (page F): what opened, whether the caption and hint
+// show, and where zooming stops.
+function optionsOk(r) {
+  if (r.expectOpen && r.opened !== r.expectOpen) return false;
+  if (r.expectCaption === "none" && r.caption) return false;
+  if (r.expectHint && r.hintShown !== (r.expectHint === "shown")) return false;
+  if (r.expectMaxZoom && !(Math.abs((r.maxScaleReached ?? 0) - r.expectMaxZoom) < 0.01)) return false;
+  return true;
+}
+function hasOptionChecks(r) {
+  return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom);
+}
+
 // An image with a description shows it in the viewer, with any math typeset.
 function descriptionOk(r) {
   return !r.hasDescription || (!!r.description && (!r.descriptionHasMath || r.descriptionMath));
@@ -741,7 +786,9 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
         `opens: ${r.fit || "—"}` + (r.wideFit !== undefined ? `, ${r.wideFit} at 2560 px` : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "") +
         (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "") +
-        (r.description ? `; description: ${r.description}` + (r.descriptionMath ? " (math typeset)" : "") : "")
+        (r.description ? `; description: ${r.description}` + (r.descriptionMath ? " (math typeset)" : "") : "") +
+        (r.opened === "panzoom" ? `; hint ${r.hintShown ? "shown" : "hidden"}` : "") +
+        (r.maxScaleReached ? `; zoom stops at ${+r.maxScaleReached.toFixed(3)}` : "")
       : r.opened === "navigation" ? r.navigatedTo : "";
     lines.push(`| ${r.case}. ${r.caseTitle} | ${r.n} | \`${r.classes}\` | ${r.wrapper} | **${r.opened}** | ` +
       `${details.replace(/\|/g, "\\|")} | ${yn(r.wheelZoom)} | ${yn(r.anchorDrift)} | ${yn(r.dragMoved)} | ${yn(r.resetOk)} | ` +
@@ -776,7 +823,7 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
       `- Next button: ${gallery.buttonNext}`,
       `- Swipe left: ${gallery.swipeNext}`,
       `- Zoomed in, Right pans instead: ${yes(gallery.zoomedArrowPans)}`,
-      `- Previous disabled on the first image: ${yes(gallery.prevDisabledAtStart)}`,
+      `- On the first image, "previous" is ${gallery.loop ? "enabled (loop) and Left wraps to the last" : "disabled (no loop)"}: ${yes(gallery.prevDisabledAtStart && gallery.leftAtStartStill)}`,
       `- All as expected: ${yes(gallery.ok)}`);
   }
   lines.push("", "## Galleries of images larger than the screen", "");
@@ -788,6 +835,26 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
       `- Right arrow keeps the same image: ${yes(g.arrowKeepsImage)}`,
       `- ...and ${g.fit === "height" ? "pans along it" : "doesn't move it (nowhere to go sideways)"}: ${yes(g.arrowMoves)}`,
       `- PageDown switches to the next image: ${yes(g.pageDownSwitches)} (opens: ${g.nextFit})`, "");
+  }
+  const optioned = results.filter(hasOptionChecks);
+  if (optioned.length) {
+    const yes = (v) => (v ? "yes" : "**NO**");
+    lines.push("", "## Options", "");
+    for (const r of optioned) {
+      const want = [
+        r.expectOpen && `opens ${r.expectOpen}`,
+        r.expectCaption && `caption ${r.expectCaption}`,
+        r.expectHint && `hint ${r.expectHint}`,
+        r.expectMaxZoom && `zoom stops at ${r.expectMaxZoom}`,
+      ].filter(Boolean).join(", ");
+      const got = [
+        `opened ${r.opened}`,
+        r.expectCaption && `caption ${r.caption ? `"${r.caption}"` : "none"}`,
+        r.expectHint && `hint ${r.hintShown ? "shown" : "hidden"}`,
+        r.expectMaxZoom && `zoom stopped at ${r.maxScaleReached === null || r.maxScaleReached === undefined ? "?" : +r.maxScaleReached.toFixed(3)}`,
+      ].filter(Boolean).join(", ");
+      lines.push(`- ${r.case}. ${r.caseTitle} (img ${r.n}): expected ${want}; ${got}: ${yes(optionsOk(r))}`);
+    }
   }
   lines.push("", "## Focal point (opens where clicked)", "");
   if (!clickOpen) lines.push("No single strip on this page; skipped.");
@@ -857,6 +924,8 @@ try {
     if (opened.length) extra.push(opened.every((r) => /^rgb\(/.test(r.backdrop || "")) ? "backdrop ok" : "BACKDROP FAILED");
     const scaled = opened.filter((r) => r.expectScale);
     if (scaled.length) extra.push(scaled.every(scaleOk) ? "real size ok" : "REAL SIZE FAILED");
+    const optioned = results.filter(hasOptionChecks);
+    if (optioned.length) extra.push(optioned.every(optionsOk) ? "options ok" : "OPTIONS FAILED");
     const described = opened.filter((r) => r.hasDescription);
     if (described.length) extra.push(described.every(descriptionOk) ? "descriptions ok" : "DESCRIPTIONS FAILED");
     if (overflowGalleries.length) extra.push(overflowGalleries.every((g) => g.ok) ? "large galleries ok" : "LARGE GALLERIES FAILED");

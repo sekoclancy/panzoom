@@ -41,11 +41,12 @@ The same 12 cases are rendered four ways:
 | `c-panzoom-auto` | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
 | `d-panzoom-selective` | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
 
-A fourth page has its own 8 cases:
+Two more pages have cases of their own:
 
 | Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
-| `e-formats` | **Formats and shapes.** Very wide collages (100 × 5 in) as png, webp and svg; standard plots as webp, svg, png + pdf and pdf only; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
+| `e-formats` | **Formats and shapes.** Very wide collages (25 × 2 in) and tall strips (4 × 15 in), also in layouts, as png, webp and svg; standard plots as webp, svg, png + pdf and pdf only; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
+| `f-options` | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `caption`, `hint`, `max-zoom`, `description` and `fit` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
 
 Each page starts with a note saying what it should show, has a **</> Code**
 button that shows its full source, and shows each R chunk with its options.
@@ -90,7 +91,7 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── package-lock.json  exact dependency versions
     ├── browser.mjs        the browser checks
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
-    │                      d-panzoom-selective.qmd, e-formats.qmd
+    │                      d-panzoom-selective.qmd, e-formats.qmd, f-options.qmd
     ├── node_modules/      installed by npm (git-ignored)
     └── results/           test output (git-ignored)
 ```
@@ -198,6 +199,13 @@ middle of the screen, `0` must return there after panning, a click at 97%
 must open flush with the right end, and opening with Enter must start at
 the left end; on the first single tall strip, a click at 50% down must open
 with that point in the middle (`focal point ok`).
+
+**Options.** Cases with `expect-open` (`panzoom` or `nothing`),
+`expect-caption="none"`, `expect-hint` (`shown` or `hidden`) or
+`expect-max-zoom` (page F) are checked: what opened, whether the caption
+and hint show in the viewer, and where zooming in stops (`options ok`).
+With the page's `loop: true`, the gallery check expects `←` on the first
+image to wrap to the last.
 
 **Descriptions.** Every image with a `description` must show it under the
 caption in the viewer, with any math typeset (`descriptions ok`; cases 1

@@ -33,6 +33,8 @@ website:
             text: "D: explicit marking"
           - href: tests/pages/e-formats.qmd
             text: "E: formats and wide figures"
+          - href: tests/pages/f-options.qmd
+            text: "F: options"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom
