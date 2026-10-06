@@ -15,9 +15,8 @@ It works from the keyboard too: marked images can be reached with `Tab` and
 opened with `Enter` or `Space`, the arrow keys pan, and closing returns focus
 to the image.
 
-It works alongside Quarto's built-in
-[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html)
-and attempts to mimic its functionality.
+It attempts to match, and extend, the feature set of Quarto's built-in
+[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 
 ## Installation
 
