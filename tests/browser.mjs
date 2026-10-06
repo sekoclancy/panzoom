@@ -267,12 +267,22 @@ async function checkKeyboard(page, handle) {
   await page.keyboard.press("+");
   await page.keyboard.press("+");
   await sleep(100);
+  // The arrows pan in each direction the image is larger than the screen
+  // (in a direction where it fits, containment holds it still).
+  const over = await page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay");
+    const r = o.querySelector("img").getBoundingClientRect();
+    const h = o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight;
+    return { x: r.width > o.clientWidth + 1, y: r.height > h + 1 };
+  });
   const before = await viewerTransform(page);
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowDown");
-  await sleep(100);
+  await sleep(600);  // past an end, a pan bounces and settles
   const after = await viewerTransform(page);
-  out.arrowsPan = !!(before && after && after.x < before.x - 1 && after.y < before.y - 1);
+  const movedX = before && after && after.x < before.x - 1;
+  const movedY = before && after && after.y < before.y - 1;
+  out.arrowsPan = (over.x || over.y) && (!over.x || !!movedX) && (!over.y || !!movedY);
 
   for (let i = 0; i < 3; i++) await page.keyboard.press("Tab");
   await page.keyboard.down("Shift");
