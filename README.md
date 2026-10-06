@@ -181,12 +181,19 @@ panzoom:
 With `fit: auto`, the viewer opens most images whole. A strip, at least 3
 times wider than tall, that would show less than a quarter of the screen
 tall, such as a collage of many panels (`fig-width: 100`, `fig-height: 5`),
-opens filling the screen height instead, at its left end; drag or use
-`←`/`→` to move along it. A strip at least 3 times taller than wide opens
+opens filling the screen height instead; drag or use `←`/`→` to move
+along it. A strip at least 3 times taller than wide opens
 filling the screen width, at its top. Ordinary photos and plots, portrait
 or landscape, always open whole. No image is enlarged past its real size
 when it opens (as with Quarto's lightbox): a small image opens at its own
 size, and scrolling still zooms it in, up to `max-zoom`.
+
+**Focal point.** Where you click a strip on the page is its focal point:
+click panel 12 of a 20-panel collage and the viewer opens with panel 12 in
+the middle of the screen (or flush with the end, near either end). `0` and
+double-click return to it. Opened from the keyboard, a strip
+starts at its left end (or top). Ordinary images open whole wherever you
+click.
 Zooming out still shows the whole figure.
 
 Override it per figure with `fit: contain` (always open whole), `fit:

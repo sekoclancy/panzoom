@@ -194,6 +194,13 @@ wide one (the size rule depends on the screen): Details shows
 `opens: ..., ... at 2560 px`, and the summary line says `fit ok` or
 `FIT FAILED`.
 
+**Focal point.** On the first single collage, a click at 50%
+across the figure on the page must open the viewer with that point in the
+middle of the screen, `0` must return there after panning, a click at 97%
+must open flush with the right end, and opening with Enter must start at
+the left end; on the first single tall strip, a click at 50% down must open
+with that point in the middle (`focal point ok`).
+
 **Descriptions.** Every image with a `description` must show it under the
 caption in the viewer, with any math typeset (`descriptions ok`; cases 1
 and 3 on pages C and D). On a gallery of images that open wider than

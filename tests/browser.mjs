@@ -613,6 +613,61 @@ async function checkPage(browser, base, file) {
     await closeAll(page);
   }
 
+  // Clicking a strip on the page opens it at the clicked spot; `0` returns
+  // there; opening from the keyboard starts at the left end (or top).
+  let clickOpen = null;
+  const viewAt = () => page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay");
+    const f = o.querySelector(".panzoom-footer").offsetHeight;
+    const r = o.querySelector("img").getBoundingClientRect();
+    const w = o.clientWidth, h = o.clientHeight - f, m = 0.025 * Math.min(w, h);
+    // the image fractions at the middle of the screen, and the edges
+    return { fx: (w / 2 - r.left) / r.width, fy: (h / 2 - r.top) / r.height,
+      left: r.left, right: r.right, top: r.top, w, m };
+  });
+  const clickAt = async (r, fx, fy) => {
+    const handle = await page.$(`img[data-test-idx="${r.idx}"]`);
+    await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
+    await sleep(150);
+    const b = await handle.boundingBox();
+    await page.mouse.click(b.x + fx * b.width, b.y + fy * b.height);
+    await sleep(600);
+  };
+  const strip = results.find((r) => r.opened === "panzoom" && r.fit === "height" && (r.counter || "1 / 1") === "1 / 1");
+  const tall = results.find((r) => r.opened === "panzoom" && r.fit === "width" && (r.counter || "1 / 1") === "1 / 1");
+  if (strip || tall) clickOpen = {};
+  if (strip) {
+    const c = (clickOpen.collage = { image: `${strip.case}. ${strip.caseTitle}` });
+    await clickAt(strip, 0.5, 0.5);
+    const mid = await viewAt();
+    c.middle = +mid.fx.toFixed(3);
+    for (let i = 0; i < 5; i++) await page.keyboard.press("ArrowRight");
+    await sleep(600);
+    await page.keyboard.press("0");
+    await sleep(50);
+    c.resetBack = Math.abs((await viewAt()).left - mid.left) < 0.5;
+    await closeAll(page);
+    await clickAt(strip, 0.97, 0.5);
+    const end = await viewAt();
+    c.rightFlush = Math.abs(end.right - (end.w - end.m)) < 2;
+    await closeAll(page);
+    const handle = await page.$(`img[data-test-idx="${strip.idx}"]`);
+    await handle.focus();
+    await page.keyboard.press("Enter");
+    await sleep(600);
+    c.keyboardLeft = Math.abs((await viewAt()).left - end.m) < 2;
+    await closeAll(page);
+    c.ok = Math.abs(c.middle - 0.5) < 0.01 && c.resetBack && c.rightFlush && c.keyboardLeft;
+  }
+  if (tall) {
+    const c = (clickOpen.tall = { image: `${tall.case}. ${tall.caseTitle}` });
+    await clickAt(tall, 0.5, 0.5);
+    c.middle = +(await viewAt()).fy.toFixed(3);
+    await closeAll(page);
+    c.ok = Math.abs(c.middle - 0.5) < 0.01;
+  }
+  if (clickOpen) clickOpen.ok = (!clickOpen.collage || clickOpen.collage.ok) && (!clickOpen.tall || clickOpen.tall.ok);
+
   // The opening view on a wide screen (2560 px): the size rule must still
   // only pick out strips.
   const fitCases = results.filter((r) => r.opened === "panzoom" && r.expectFit);
@@ -629,9 +684,9 @@ async function checkPage(browser, base, file) {
   }
 
   await page.close();
-  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery, overflowGalleries, containment }, null, 2));
-  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery, overflowGalleries, containment));
-  return { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment };
+  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen }, null, 2));
+  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen));
+  return { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen };
 }
 
 function isolationOk(iso) {
@@ -659,7 +714,7 @@ function descriptionOk(r) {
   return !r.hasDescription || (!!r.description && (!r.descriptionHasMath || r.descriptionMath));
 }
 
-function report(file, errors, results, isolation, gallery, overflowGalleries, containment) {
+function report(file, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen) {
   const yn = (v) => (v === undefined || v === null ? "" : v === true ? "yes" : v === false ? "NO" : String(v));
   const lines = [
     `# ${path.basename(file)}`, "",
@@ -723,6 +778,20 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
       `- ...and ${g.fit === "height" ? "pans along it" : "doesn't move it (nowhere to go sideways)"}: ${yes(g.arrowMoves)}`,
       `- PageDown switches to the next image: ${yes(g.pageDownSwitches)} (opens: ${g.nextFit})`, "");
   }
+  lines.push("", "## Focal point (opens where clicked)", "");
+  if (!clickOpen) lines.push("No single strip on this page; skipped.");
+  else {
+    const yes = (v) => (v ? "yes" : "**NO**");
+    if (clickOpen.collage) lines.push(
+      `Collage, case ${clickOpen.collage.image}:`, "",
+      `- Clicked at 50% across, opens with ${(clickOpen.collage.middle * 100).toFixed(1)}% across in the middle: ${yes(Math.abs(clickOpen.collage.middle - 0.5) < 0.01)}`,
+      `- After panning, \`0\` returns to the clicked view: ${yes(clickOpen.collage.resetBack)}`,
+      `- Clicked at 97% across, opens flush with the right end: ${yes(clickOpen.collage.rightFlush)}`,
+      `- Opened with Enter, starts at the left end: ${yes(clickOpen.collage.keyboardLeft)}`, "");
+    if (clickOpen.tall) lines.push(
+      `Tall strip, case ${clickOpen.tall.image}:`, "",
+      `- Clicked at 50% down, opens with ${(clickOpen.tall.middle * 100).toFixed(1)}% down in the middle: ${yes(clickOpen.tall.ok)}`, "");
+  }
   lines.push("", "## Containment", "");
   if (!containment) lines.push("No suitable image on this page; skipped.");
   else {
@@ -756,7 +825,7 @@ const browser = await puppeteer.launch({
 });
 try {
   for (const file of PAGES) {
-    const { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment } = await checkPage(browser, base, file);
+    const { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen } = await checkPage(browser, base, file);
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
     const iso = isolation
       ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
@@ -774,6 +843,7 @@ try {
     if (described.length) extra.push(described.every(descriptionOk) ? "descriptions ok" : "DESCRIPTIONS FAILED");
     if (overflowGalleries.length) extra.push(overflowGalleries.every((g) => g.ok) ? "large galleries ok" : "LARGE GALLERIES FAILED");
     if (containment) extra.push(containment.ok ? "containment ok" : "CONTAINMENT FAILED");
+    if (clickOpen) extra.push(clickOpen.ok ? "focal point ok" : "FOCAL POINT FAILED");
     const shift = results.filter((r) => r.shiftScroll && r.opened === "panzoom");
     if (shift.length) extra.push(shift.every((r) => r.shiftScrollOk) ? "shift-scroll ok" : "SHIFT-SCROLL FAILED");
     const wide = extra.join(", ");

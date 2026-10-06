@@ -37,7 +37,10 @@
   or narrower than a quarter of its width): then it fills the screen height
   from the left end (or the width from the top). The shape condition keeps
   ordinary portrait photos whole on wide screens. `fit: contain | height | width` forces one of these.
-  Zooming out always goes down to the whole image.
+  Zooming out always goes down to the whole image. A strip clicked on the
+  page opens with the clicked spot (its focal point) in the middle (as far as its ends
+  allow); opened from the keyboard, at its left end (or top). Reset (0,
+  double-click) returns to the opening view.
 
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
   the document's `panzoom:` metadata): { maxZoom: 4, hint: true,
@@ -59,6 +62,10 @@
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption, desc;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
   var bouncing = false, bounceTimer = null;
+  // The focal point: where the image was clicked on the page, as fractions
+  // of its width and height ({ el, fx, fy }), or null (opened from the
+  // keyboard).
+  var clicked = null;
   var gallery = [], index = 0;
 
   // Document-wide options, overridden by the image's data attributes.
@@ -157,12 +164,16 @@
     var mode = fitMode(w, h, vw, vh, whole);
     margin = 0.025 * Math.min(vw, vh);
     var s = whole, cx = vw / 2, cy = vh / 2;
+    // A strip starts at its left end (or top), or, if it was clicked on the
+    // page, with the clicked spot in the middle of the screen (as far as
+    // its ends allow).
+    var at = clicked && clicked.el === gallery[index] ? clicked : null;
     if (mode === "height") {
       s = Math.min((vh - 2 * margin) / h, 1);
-      if (w * s > vw) cx = margin + w * s / 2;      // start at the left end
+      if (w * s > vw) cx = at ? vw / 2 + (0.5 - at.fx) * w * s : margin + w * s / 2;
     } else if (mode === "width") {
       s = Math.min((vw - 2 * margin) / w, 1);
-      if (h * s > vh) cy = margin + h * s / 2;      // start at the top
+      if (h * s > vh) cy = at ? vh / 2 + (0.5 - at.fy) * h * s : margin + h * s / 2;
     }
     img.dataset.fit = mode;
     // Clear `pz` first: Panzoom fires change events while it starts up, and
@@ -172,8 +183,9 @@
       canvas: true,             // drag anywhere on the overlay, not just the image
       cursor: "grab",
       startScale: s,
-      startX: (cx - w / 2) / s,
-      startY: (cy - h / 2) / s,
+      // The opening view is also where reset (0, double-click) returns.
+      startX: containAxis((cx - w / 2) / s, s, w, vw),
+      startY: containAxis((cy - h / 2) / s, s, h, vh),
       minScale: Math.min(whole, s),
       maxScale: Math.max(opts.maxZoom, s)
     });
@@ -359,8 +371,9 @@
     return true;
   }
 
-  function open(el) {
+  function open(el, point) {
     if (!overlay) build();
+    clicked = point ? { el: el, fx: point.fx, fy: point.fy } : null;
     returnFocus = document.activeElement;
     gallery = galleryOf(el);
     overlay.classList.add("open");
@@ -538,7 +551,12 @@
     if (!t) return;
     e.preventDefault();
     e.stopPropagation();
-    open(t);
+    var r = t.getBoundingClientRect();
+    var frac = function (v) { return Math.min(1, Math.max(0, v)); };
+    open(t, r.width && r.height ? {
+      fx: frac((e.clientX - r.left) / r.width),
+      fy: frac((e.clientY - r.top) / r.height)
+    } : null);
   }, true);
 
   // Enter or Space on a focused marked image opens it, like a button.
