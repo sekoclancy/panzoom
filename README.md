@@ -282,7 +282,3 @@ It writes a report per page and a screenshot of each step for a person to
 review; nothing is compared pixel by pixel.
 
 See `tests/README.md` for setup and running the tests.
-
-## License
-
-[MIT](LICENSE).
