@@ -832,11 +832,18 @@ const base = `http://127.0.0.1:${server.address().port}/`;
 const browser = await puppeteer.launch({
   executablePath: CHROME,
   headless: true,
-  args: ["--no-sandbox", "--disable-gpu", "--hide-scrollbars"],
+  // The pages are checked in parallel, one tab each. Chrome normally slows
+  // timers in background tabs, which would distort the viewer's timed
+  // animations (the bounce) that the checks measure; turn that off.
+  args: ["--no-sandbox", "--disable-gpu", "--hide-scrollbars",
+    "--disable-background-timer-throttling", "--disable-renderer-backgrounding",
+    "--disable-backgrounding-occluded-windows"],
 });
 try {
-  for (const file of PAGES) {
-    const { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen } = await checkPage(browser, base, file);
+  // Start every page at once; report them in order as they finish.
+  const runs = PAGES.map((file) => checkPage(browser, base, file));
+  for (const run of runs) {
+    const { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen } = await run;
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
     const iso = isolation
       ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
