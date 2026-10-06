@@ -46,38 +46,6 @@ quarto add sekoclancy/panzoom
 This will install the extension under the `_extensions` subdirectory.
 If you're using version control, you will want to check in this directory.
 
-### Development Tools
-
-Only needed to run the browser tests (see [Testing](#testing)), not to use
-the extension. They also need [Node.js](https://nodejs.org) 22.12 or later.
-
-#### Chrome Headless Shell
-
-The browser the tests drive, installed with the Quarto CLI into
-`~/.local/share/quarto/chrome-headless-shell/` (about 115 MB):
-
-```bash
-quarto install chrome-headless-shell --no-prompt
-```
-
-`--no-prompt` skips the confirmation, so the command also works in a
-non-interactive shell (a script, CI, or an agent).
-
-To use a different Chrome or Chromium instead, set `CHROME=/path/to/chrome`
-when running the tests.
-
-#### Puppeteer
-
-The Node.js library that controls Chrome. `tests/package.json` lists
-`puppeteer-core` (the variant that uses an existing Chrome instead of
-downloading its own), and `tests/package-lock.json` pins its version. From
-the repo root:
-
-```bash
-cd tests
-npm install
-```
-
 ## Usage
 
 Turn the filter on for one document in its YAML header, or for every page
@@ -265,18 +233,42 @@ git branch gh-pages $(git commit-tree $(git hash-object -t tree /dev/null) -m "I
 git push origin gh-pages
 ```
 
-## Testing
+### Tools
 
-**Tools:**
+Only needed to run the browser tests (see [Testing](#testing)), not to use
+the extension. They also need [Node.js](https://nodejs.org) 22.12 or later.
+Rendering the test pages needs [Quarto](https://quarto.org) 1.9+ and R
+with the ragg package (they have R chunks, some taken from the
+quarto-ext/lightbox examples; ragg makes the webp figures).
 
-- [Quarto](https://quarto.org) 1.9+ and R with the ragg package, to render
-  the test pages (they have R chunks, some taken from the quarto-ext/lightbox
-  examples; ragg makes the webp figures).
-- [Node.js](https://nodejs.org) with
-  [puppeteer-core](https://pptr.dev/), to drive the browser.
-- Headless Chrome, installed with
-  `quarto install chrome-headless-shell --no-prompt` (or any Chrome/Chromium
-  via `CHROME=`).
+#### Chrome Headless Shell
+
+The browser the tests drive, installed with the Quarto CLI into
+`~/.local/share/quarto/chrome-headless-shell/` (about 115 MB):
+
+```bash
+quarto install chrome-headless-shell --no-prompt
+```
+
+`--no-prompt` skips the confirmation, so the command also works in a
+non-interactive shell (a script, CI, or an agent).
+
+To use a different Chrome or Chromium instead, set `CHROME=/path/to/chrome`
+when running the tests.
+
+#### Puppeteer
+
+The Node.js library that controls Chrome. `tests/package.json` lists
+`puppeteer-core` (the variant that uses an existing Chrome instead of
+downloading its own), and `tests/package-lock.json` pins its version. From
+the repo root:
+
+```bash
+cd tests
+npm install
+```
+
+### Testing
 
 **How we test:** the same 12 figure cases (galleries, subfigures, math in
 captions, linked, margin and inline images, R chunks with cell options) are
