@@ -272,9 +272,6 @@ The script finds cases by the `## N.` headings.
 
 ## Troubleshooting
 
-- **R errors when rendering** (for example about `renv`): `render.sh` sets
-  `R_PROFILE_USER=/dev/null` so a personal `~/.Rprofile` doesn't run. If you
-  render or preview by hand, do the same.
 - **Console errors about CORS or `file://`**: the page was opened as a file.
   Use `quarto preview` or the test script, which serve it over HTTP.
 - **`Failed to launch the browser process`**: Chrome isn't where the script
