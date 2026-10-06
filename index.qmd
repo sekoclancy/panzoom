@@ -1,5 +1,5 @@
 ---
-title: "Panzoom"
+title: "panzoom"
 subtitle: "A full-screen pan/zoom viewer for Quarto figures"
 format:
   html:
@@ -104,7 +104,7 @@ contour(volcano)
 ## Opting out
 
 Inside a `.panzoom` div, every image gets the viewer except one marked
-`.nopanzoom`. Panzoom then leaves that image to Quarto: this page has
+`.nopanzoom`. panzoom then leaves that image to Quarto: this page has
 `lightbox: true`, so the image below opens in Quarto's lightbox instead
 (where a click toggles between fit and full size). Without a lightbox, it
 would open nothing. For a whole code cell, use `#| panzoom: false`.

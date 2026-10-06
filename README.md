@@ -1,4 +1,4 @@
-# Panzoom
+# panzoom
 
 **Live demo:** <https://sekoclancy.github.io/panzoom/> (the example, plus
 test pages comparing panzoom with Quarto's lightbox).

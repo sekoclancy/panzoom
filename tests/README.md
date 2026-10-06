@@ -34,7 +34,7 @@ image inside a link, a margin image, and so on.
 
 The same 12 cases are rendered four ways:
 
-| Page | What it is | Panzoom filter | Lightbox |
+| Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
 | `a-lightbox` | **Reference.** What Quarto's own lightbox does with each case. No panzoom markers at all. | off | `match: auto` |
 | `b-panzoom-lightbox` | **The usual setup.** Images marked with `.panzoom` or `#\| classes: panzoom`; Quarto's lightbox on for the rest. Same markup as D. | on | `true` |
@@ -43,7 +43,7 @@ The same 12 cases are rendered four ways:
 
 A fourth page has its own 8 cases:
 
-| Page | What it is | Panzoom filter | Lightbox |
+| Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
 | `e-formats` | **Formats and shapes.** Very wide collages (100 × 5 in) as png, webp and svg; standard plots as webp, svg, png + pdf and pdf only; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
 

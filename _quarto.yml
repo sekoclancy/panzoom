@@ -12,7 +12,7 @@ execute:
   echo: fenced
 
 website:
-  title: "Panzoom"
+  title: "panzoom"
   site-url: https://sekoclancy.github.io/panzoom/
   repo-url: https://github.com/sekoclancy/panzoom
   navbar:

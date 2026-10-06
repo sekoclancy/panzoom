@@ -21,7 +21,7 @@ lightbox:
 
 This page **tests panzoom's `match: auto` mode**. The markup is identical to
 [`a-lightbox`](a-lightbox.html) (no panzoom markers at all); both `panzoom: match: auto` and
-`lightbox: match: auto` are on. Panzoom should take every image that Quarto's
+`lightbox: match: auto` are on. panzoom should take every image that Quarto's
 auto lightbox would take, except where a case asks for something explicit:
 
 - cases 6 and 7 set `#| lightbox:` options, so they stay with GLightbox;
