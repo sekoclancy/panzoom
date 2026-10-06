@@ -86,6 +86,21 @@ filters:
   - panzoom
 ```
 
+Options, all optional, go under `panzoom:` in the same place:
+
+```yaml
+panzoom:
+  match: auto     # auto gives all block images; unset, only marked images (default unset)
+  max-zoom: 4     # number: screen px per image px (default 4)
+  hint: true      # boolean: show the controls hint at the bottom (default true)
+  caption: true   # boolean: show the figure caption in the viewer (default true)
+  loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
+  fit: auto       # auto, contain, height or width (default auto, see below)
+```
+
+`max-zoom`, `hint`, `caption` and `fit` can also be set per cell under
+`#| panzoom:`, along with `group` and `description`.
+
 Then mark images in any of these ways.
 
 **Code cells:** use the `panzoom` cell option.
@@ -174,21 +189,6 @@ plot(pressure)
 plot(pressure, log = "y")
 ```
 ````
-
-## Options
-
-```yaml
-panzoom:
-  match: auto     # give block images the viewer (default: only marked images)
-  max-zoom: 4     # maximum zoom, in screen px per image px (default 4)
-  hint: true      # show the controls hint at the bottom (default true)
-  caption: true   # show the figure caption in the viewer (default true)
-  loop: false     # in a gallery, wrap from the last image to the first (default false)
-  fit: auto       # how the viewer opens an image (default auto, see below)
-```
-
-`max-zoom`, `hint`, `caption` and `fit` can also be set per cell under
-`#| panzoom:`, along with `group`.
 
 ### Very wide or tall figures
 
