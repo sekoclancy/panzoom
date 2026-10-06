@@ -67,6 +67,14 @@ img.panzoom:not(.nopanzoom):focus-visible {
 }
 .panzoom-caption a { color: #9ec5fe; }
 .panzoom-caption-parent { margin-top: 0.2rem; color: #bbb; font-size: 0.85rem; }
+.panzoom-description {
+  max-width: 60rem; max-height: 20vh; margin: 0 auto 0.3rem; overflow-y: auto;
+  color: #ccc; font-size: 0.85rem; line-height: 1.4;
+  user-select: text; -webkit-user-select: text; cursor: auto;
+}
+.panzoom-description p { margin: 0 0 0.3rem; }
+.panzoom-description p:last-child { margin-bottom: 0; }
+.panzoom-description a { color: #9ec5fe; }
 .panzoom-hint {
   color: #aaa; font-size: 0.8rem; pointer-events: none;
 }

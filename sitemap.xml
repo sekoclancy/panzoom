@@ -2,22 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sekoclancy.github.io/panzoom/tests/pages/e-formats.html</loc>
-    <lastmod>2026-10-05T20:04:49.508Z</lastmod>
+    <lastmod>2026-10-06T22:17:49.104Z</lastmod>
   </url>
   <url>
     <loc>https://sekoclancy.github.io/panzoom/tests/pages/c-panzoom-auto.html</loc>
-    <lastmod>2026-10-01T23:42:19.154Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/index.html</loc>
-    <lastmod>2026-10-05T18:58:45.694Z</lastmod>
+    <lastmod>2026-10-06T22:21:05.924Z</lastmod>
   </url>
   <url>
     <loc>https://sekoclancy.github.io/panzoom/tests/pages/a-lightbox.html</loc>
-    <lastmod>2026-10-01T23:42:19.154Z</lastmod>
+    <lastmod>2026-10-06T22:17:49.100Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/index.html</loc>
+    <lastmod>2026-10-06T22:21:05.916Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/b-panzoom-lightbox.html</loc>
+    <lastmod>2026-10-06T22:17:49.104Z</lastmod>
   </url>
   <url>
     <loc>https://sekoclancy.github.io/panzoom/tests/pages/d-panzoom-selective.html</loc>
-    <lastmod>2026-10-01T23:42:19.154Z</lastmod>
+    <lastmod>2026-10-06T22:17:49.104Z</lastmod>
   </url>
 </urlset>
