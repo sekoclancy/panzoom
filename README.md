@@ -1,7 +1,6 @@
 # panzoom
 
-**Live demo:** <https://sekoclancy.github.io/panzoom/> (the example, plus
-test pages comparing panzoom with Quarto's lightbox).
+**Live demo:** <https://sekoclancy.github.io/panzoom/>
 
 A [Quarto](https://quarto.org) filter extension for HTML formats that opens
 figures in a full-screen pan/zoom viewer, built on
@@ -207,10 +206,6 @@ tall figure, sideways when zoomed in both ways.
 In a gallery, `←`/`→` and swipes pan an image that is larger than the
 screen (or do nothing, if it fits sideways); use `PageUp`/`PageDown` or the
 ‹ › buttons to change images.
-
-## Notes
-
-See the [live example](https://sekoclancy.github.io/panzoom/) for example uses.
 
 ## Development
 
