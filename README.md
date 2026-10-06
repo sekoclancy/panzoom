@@ -4,7 +4,8 @@
 test pages comparing panzoom with Quarto's lightbox).
 
 A [Quarto](https://quarto.org) filter extension for HTML formats that opens
-figures in a full-screen pan/zoom viewer: scroll (or trackpad pinch) to zoom
+figures in a full-screen pan/zoom viewer, built on
+[Panzoom](https://github.com/timmywil/panzoom): scroll (or trackpad pinch) to zoom
 toward the cursor, drag or Shift+scroll to pan, double-click or `0` to reset,
 `+`/`-` to zoom, `Esc` or a background click to close. The image stays on
 screen: panning stops at its edges, with a small bounce (or, when dragging,
@@ -17,8 +18,6 @@ to the image.
 It works alongside Quarto's built-in
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html)
 and attempts to mimic its functionality.
-
-The viewer is built on [Panzoom](https://github.com/timmywil/panzoom).
 
 ## Installation
 
