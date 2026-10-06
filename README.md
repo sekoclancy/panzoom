@@ -193,9 +193,11 @@ height` or `fit: width`:
 ```{r}
 #| panzoom:
 #|   fit: contain
-#| fig-width: 16
+#| fig-width: 25
 #| fig-height: 2
-timeline_plot
+
+par(mfrow = c(1, 12), mar = c(3, 3, 2, 1))
+for (i in 1:12) plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i))
 ```
 ````
 
