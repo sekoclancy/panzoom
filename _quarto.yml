@@ -7,3 +7,26 @@ project:
   render:
     - index.qmd
     - tests/pages/*.qmd
+
+website:
+  title: "Panzoom"
+  site-url: https://sekoclancy.github.io/panzoom/
+  repo-url: https://github.com/sekoclancy/panzoom
+  navbar:
+    left:
+      - href: index.qmd
+        text: Example
+      - text: Test pages
+        menu:
+          - href: tests/pages/a-lightbox.qmd
+            text: "A: Quarto lightbox reference"
+          - href: tests/pages/c-panzoom-auto.qmd
+            text: "C: match: auto"
+          - href: tests/pages/d-panzoom-selective.qmd
+            text: "D: explicit marking"
+          - href: tests/pages/e-formats.qmd
+            text: "E: formats and wide figures"
+    right:
+      - icon: github
+        href: https://github.com/sekoclancy/panzoom
+        aria-label: GitHub repository
