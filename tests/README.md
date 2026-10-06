@@ -88,7 +88,6 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── README.md          this file
     ├── package.json       Node project: dependency (puppeteer-core) and npm scripts
     ├── package-lock.json  exact dependency versions
-    ├── render.sh          renders the project into ../docs/
     ├── browser.mjs        the browser checks
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
     │                      d-panzoom-selective.qmd, e-formats.qmd
@@ -119,20 +118,17 @@ running the tests.
 
 ## Running the tests
 
-From `tests/`:
-
 ```bash
-npm run render   # render the project into ../docs/
-npm test         # click through the test pages in headless Chrome
+quarto render              # from the repo root: render the project into docs/
+cd tests && npm test       # click through the test pages in headless Chrome
 ```
 
 Render again whenever you change the extension or a page; `npm test` only
-checks the HTML that is already there. To render or check a single page
-(render paths are relative to the repo root):
+checks the HTML that is already there. To render or check a single page:
 
 ```bash
-./render.sh tests/pages/d-panzoom-selective.qmd
-node browser.mjs ../docs/tests/pages/d-panzoom-selective.html
+quarto render tests/pages/d-panzoom-selective.qmd                 # from the repo root
+node browser.mjs ../docs/tests/pages/d-panzoom-selective.html     # from tests/
 ```
 
 `browser.mjs` starts a small web server for `docs/` and points Chrome at
@@ -259,7 +255,7 @@ Things the automated checks can't judge:
 ## Adding a case
 
 Add a `## N. Title {#cN}` section to all three pages (A without panzoom
-markers, D with them, C with A's markup), then `npm run render && npm test`.
+markers, D with them, C with A's markup), then render and run the tests.
 The script finds cases by the `## N.` headings.
 
 ## Limitations

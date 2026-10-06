@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Browser checks for the panzoom Quarto extension",
   "scripts": {
-    "test": "node browser.mjs",
-    "render": "./render.sh"
+    "test": "node browser.mjs"
   },
   "type": "module",
   "private": true,

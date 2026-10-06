@@ -10,8 +10,9 @@
   focus-mode's and Quarto search's shortcuts would), that Ctrl+key still
   does, and that a fixed widget at z-index 10000 stays below the viewer.
 
-  Usage (from tests/):
-    npm run render && npm test         # renders the project to ../docs/, then checks the test pages
+  Usage: render first (`quarto render` from the repo root, into ../docs/),
+  then from tests/:
+    npm test                                                          # checks the test pages
     node browser.mjs ../docs/tests/pages/d-panzoom-selective.html ...   # checks the given pages
 
   Pages are served from ../docs/ by a small built-in web server, as GitHub
