@@ -60,6 +60,7 @@ Two markdown subfigures (see @fig-md-a).
 #| fig-subcap: ["Pressure", "Cars"]
 #| layout-ncol: 2
 #| classes: panzoom
+
 plot(pressure)
 plot(cars)
 ```
@@ -74,6 +75,7 @@ This one also has `classes: panzoom` (conflict test).
 #| lightbox:
 #|   group: r-graph
 #|   description: This is 1 to 10 plot
+
 plot(1:10, rnorm(10))
 ```
 
@@ -84,6 +86,7 @@ This one has only the lightbox options.
 #| lightbox:
 #|   group: r-graph
 #|   description: We see our cars data above
+
 plot(cars)
 ```
 
@@ -99,6 +102,7 @@ plot(cars)
 #|   description:
 #|     - Description for first graph
 #|     - Description for second graph
+
 plot(mtcars)
 plot(cars)
 ```
@@ -108,6 +112,7 @@ plot(cars)
 ```{r}
 #| fig-cap: mtcars, lightbox false
 #| lightbox: false
+
 plot(mtcars)
 ```
 
@@ -128,6 +133,7 @@ Some text with an inline image ![](../../images/mv-2.jpg){.panzoom width=60px} i
 ```{r}
 #| label: fig-plain
 #| fig-cap: A plain cross-referenced R figure.
+
 image(volcano)
 ```
 

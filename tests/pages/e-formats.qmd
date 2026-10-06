@@ -39,6 +39,7 @@ inches.
 
 ```{r}
 #| include: false
+
 library(ragg)
 
 # A collage: `n` panels side by side, like a wide patchwork figure.
@@ -68,6 +69,7 @@ strip <- function(seed = 2, n = 8) {
 #| fig-width: 25
 #| fig-height: 2
 #| fig-cap: "A 25 × 2 inch collage of 12 panels (png)."
+
 collage()
 ```
 
@@ -81,6 +83,7 @@ collage()
 #| fig-ext: webp
 #| dev.args: !expr list(units = "in", res = 96)
 #| fig-cap: "The same collage as webp."
+
 collage()
 ```
 
@@ -92,6 +95,7 @@ collage()
 #| fig-height: 2
 #| dev: svg
 #| fig-cap: "The same collage as svg."
+
 collage()
 ```
 
@@ -103,6 +107,7 @@ collage()
 #| fig-ext: webp
 #| dev.args: !expr list(units = "in", res = 96)
 #| fig-cap: "A standard-size plot as webp."
+
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
@@ -112,6 +117,7 @@ filled.contour(volcano, color.palette = terrain.colors)
 #| panzoom: true
 #| dev: svg
 #| fig-cap: "A standard-size plot as svg."
+
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
@@ -123,6 +129,7 @@ Both files are written; the page shows the png.
 #| panzoom: true
 #| dev: !expr c("png", "pdf")
 #| fig-cap: "png shown, pdf written alongside."
+
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
@@ -135,6 +142,7 @@ records what the browser and panzoom do with it.
 #| panzoom: true
 #| dev: pdf
 #| fig-cap: "pdf only."
+
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
@@ -152,6 +160,7 @@ per side; this case records what happens.
 #| dev.args: !expr list(units = "in", res = 192)
 #| fig-cap: "The collage as webp at 192 dpi."
 #| error: true
+
 collage()
 ```
 
@@ -165,6 +174,7 @@ The override: the whole collage, as a strip.
 #| fig-width: 25
 #| fig-height: 2
 #| fig-cap: "The collage, forced to open whole."
+
 collage()
 ```
 
@@ -177,6 +187,7 @@ Wide, but readable whole: the size rule leaves it alone.
 #| fig-width: 16
 #| fig-height: 4
 #| fig-cap: "A 4:1 figure."
+
 collage(4)
 ```
 
@@ -187,6 +198,7 @@ collage(4)
 #| fig-width: 4
 #| fig-height: 15
 #| fig-cap: "A tall strip of 8 panels."
+
 set.seed(2)
 par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
 for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
@@ -205,6 +217,7 @@ buttons switch collages.
 #| fig-cap:
 #|   - "First collage."
 #|   - "Second collage."
+
 collage()
 collage(15)
 ```
@@ -219,6 +232,7 @@ Shift+scroll moves sideways.
 #| fig-width: 24
 #| fig-height: 18
 #| fig-cap: "A 24 × 18 inch poster of 48 panels."
+
 set.seed(3)
 par(mfrow = c(6, 8), mar = c(2, 2, 2, 1))
 for (i in 1:48) plot(cumsum(rnorm(100)), type = "l", main = paste("Panel", i), xlab = "", ylab = "")
@@ -238,6 +252,7 @@ PageDown, PageUp and the buttons switch.
 #| fig-cap:
 #|   - "First strip."
 #|   - "Second strip."
+
 for (k in 1:2) {
   set.seed(10 + k)
   par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
@@ -256,6 +271,7 @@ PDF viewer (case 7), whichever device wrote it.
 #| panzoom: true
 #| dev: !expr c("png", "cairo_pdf")
 #| fig-cap: "png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
+
 filled.contour(volcano, color.palette = terrain.colors,
                plot.title = title(main = "mu = 5, alpha = 0.05"))
 ```
@@ -278,6 +294,7 @@ screen; scroll still zooms in (up to `max-zoom`).
 #| fig-height: 2
 #| fig-dpi: 48
 #| fig-cap: "A small plot."
+
 plot(pressure)
 ```
 
@@ -294,6 +311,7 @@ two form a gallery.
 #| fig-cap: "Two collages, stacked."
 #| fig-subcap: ["First collage", "Second collage"]
 #| layout-nrow: 2
+
 collage()
 collage(15)
 ```
@@ -308,6 +326,7 @@ collage(15)
 #| fig-cap: "Two tall strips, side by side."
 #| fig-subcap: ["First strip", "Second strip"]
 #| layout-ncol: 2
+
 strip(2)
 strip(3)
 ```
@@ -322,12 +341,14 @@ strip opens on its own (no gallery: they are not subfigures).
 ```{r}
 #| fig-width: 4
 #| fig-height: 15
+
 strip(4)
 ```
 
 ```{r}
 #| fig-width: 4
 #| fig-height: 15
+
 strip(5)
 ```
 

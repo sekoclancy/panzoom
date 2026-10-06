@@ -67,6 +67,7 @@ Two markdown subfigures (see @fig-md-a).
 #| fig-cap: "Two R subfigures."
 #| fig-subcap: ["Pressure", "Cars"]
 #| layout-ncol: 2
+
 plot(pressure)
 plot(cars)
 ```
@@ -80,6 +81,7 @@ This chunk sets a lightbox group and description.
 #| lightbox:
 #|   group: r-graph
 #|   description: This is 1 to 10 plot
+
 plot(1:10, rnorm(10))
 ```
 
@@ -90,6 +92,7 @@ So does this one, in the same group.
 #| lightbox:
 #|   group: r-graph
 #|   description: We see our cars data above
+
 plot(cars)
 ```
 
@@ -104,6 +107,7 @@ plot(cars)
 #|   description:
 #|     - Description for first graph
 #|     - Description for second graph
+
 plot(mtcars)
 plot(cars)
 ```
@@ -113,6 +117,7 @@ plot(cars)
 ```{r}
 #| fig-cap: mtcars, lightbox false
 #| lightbox: false
+
 plot(mtcars)
 ```
 
@@ -133,6 +138,7 @@ Some text with an inline image ![](../../images/mv-2.jpg){width=60px} in the mid
 ```{r}
 #| label: fig-plain
 #| fig-cap: A plain cross-referenced R figure.
+
 image(volcano)
 ```
 
