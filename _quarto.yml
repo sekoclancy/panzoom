@@ -8,6 +8,9 @@ project:
     - index.qmd
     - tests/pages/*.qmd
 
+execute:
+  echo: fenced
+
 website:
   title: "Panzoom"
   site-url: https://sekoclancy.github.io/panzoom/
