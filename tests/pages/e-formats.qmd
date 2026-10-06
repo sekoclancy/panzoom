@@ -255,9 +255,9 @@ PDF viewer (case 7), whichever device wrote it.
 ```{r}
 #| panzoom: true
 #| dev: !expr c("png", "cairo_pdf")
-#| fig-cap: "png shown, cairo_pdf written alongside (µ = 5, α = 0.05)."
+#| fig-cap: "png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
 filled.contour(volcano, color.palette = terrain.colors,
-               plot.title = title(main = "µ = 5, α = 0.05"))
+               plot.title = title(main = "mu = 5, alpha = 0.05"))
 ```
 
 ## 16. Portrait photo {#c16 expect-fit="contain"}
