@@ -3,6 +3,7 @@ title: "Panzoom"
 subtitle: "A full-screen pan/zoom viewer for Quarto figures"
 format:
   html:
+    code-tools: true
     lightbox: true
 filters:
   - panzoom
