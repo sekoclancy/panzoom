@@ -98,6 +98,21 @@ local function mark_all(el, attrs)
   return el:walk({
     traverse = "topdown",
     Link = keep_link,
+    -- A cell inside a `.panzoom` div can still opt out: `#| panzoom: false`.
+    -- Its images get `.nopanzoom`, since panzoom.js also opens any image
+    -- inside a `.panzoom` div.
+    Div = function(div)
+      if div.attributes["panzoom"] == "false" then
+        div.attributes["panzoom"] = nil
+        div = div:walk({
+          Image = function(img)
+            if not has(img.classes, "nopanzoom") then img.classes:insert("nopanzoom") end
+            return img
+          end,
+        })
+        return div, false
+      end
+    end,
     Image = function(img)
       img = mark(img)
       if img and attrs then
