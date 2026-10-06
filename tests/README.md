@@ -254,8 +254,9 @@ Things the automated checks can't judge:
 
 ## Adding a case
 
-Add a `## N. Title {#cN}` section to all three pages (A without panzoom
-markers, D with them, C with A's markup), then render and run the tests.
+Add a `## N. Title {#cN}` section to all four pages (A without panzoom
+markers, B and D with them, C with A's markup), then render and run the
+tests.
 The script finds cases by the `## N.` headings.
 
 ## Limitations
