@@ -49,7 +49,7 @@ const OFFLINE = process.argv.includes("--offline");
 const ARGS = process.argv.slice(2).filter((a) => a !== "--offline");
 const PAGES = ARGS.length
   ? ARGS.map((p) => path.resolve(p))
-  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html", "g-captions.html"]
+  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html", "g-captions.html", "h-wide.html"]
       .map((p) => path.join(ROOT, "docs", "tests", "pages", p));
 const VIEWPORT = { width: 1280, height: 900 };
 const RESULTS = path.join(HERE, "results", ...(OFFLINE ? ["offline"] : []));
@@ -656,7 +656,7 @@ async function checkPage(browser, base, file) {
           expectFit: sec.dataset.expectFit || null,
           shiftScroll: sec.dataset.shiftScroll || null,
           expectScale: sec.dataset.expectScale ? +sec.dataset.expectScale : null,
-          // Option checks (page F): on the image itself, or on its case.
+          // Option checks (pages F and G): on the image itself, or on its case.
           expectOpen: img.dataset.expectOpen || sec.dataset.expectOpen || null,
           expectCaption: sec.dataset.expectCaption || null,
           expectHint: sec.dataset.expectHint || null,
@@ -972,7 +972,7 @@ function fitOk(r) {
   return !r.expectFit || (r.fit === r.expectFit && (r.wideFit === undefined || r.wideFit === r.expectFit));
 }
 
-// Option expectations (page F): what opened, whether the caption and hint
+// Option expectations (pages F and G): what opened, whether the caption and hint
 // show, and where zooming stops.
 function optionsOk(r) {
   if (r.expectOpen && r.opened !== r.expectOpen) return false;
@@ -1146,19 +1146,26 @@ for (const file of PAGES) {
 }
 const server = await serve(ROOT);
 const base = `http://127.0.0.1:${server.address().port}/`;
-const browser = await puppeteer.launch({
+// The pages are checked in parallel, each in its own Chrome: tabs of one
+// Chrome slow each other down (all pages together took 99 s instead of the
+// slowest page's 73 s). Chrome normally slows timers in background tabs,
+// which would distort the viewer's timed animations (the bounce) that the
+// checks measure; turn that off.
+const launch = () => puppeteer.launch({
   executablePath: CHROME,
   headless: true,
-  // The pages are checked in parallel, one tab each. Chrome normally slows
-  // timers in background tabs, which would distort the viewer's timed
-  // animations (the bounce) that the checks measure; turn that off.
   args: ["--no-sandbox", "--disable-gpu", "--hide-scrollbars",
     "--disable-background-timer-throttling", "--disable-renderer-backgrounding",
     "--disable-backgrounding-occluded-windows"],
 });
+const browsers = [];
 try {
   // Start every page at once; report them in order as they finish.
-  const runs = PAGES.map((file) => checkPage(browser, base, file));
+  const runs = PAGES.map(async (file) => {
+    const browser = await launch();
+    browsers.push(browser);
+    return checkPage(browser, base, file);
+  });
   for (const run of runs) {
     const { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen } = await run;
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
@@ -1197,6 +1204,6 @@ try {
       `${errors.length} console errors, ${iso}, ${gal}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
   }
 } finally {
-  await browser.close();
+  await Promise.all(browsers.map((b) => b.close()));
   server.close();
 }

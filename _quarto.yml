@@ -29,11 +29,13 @@ website:
           - href: tests/pages/d-panzoom-selective.qmd
             text: "D: explicit marking"
           - href: tests/pages/e-formats.qmd
-            text: "E: formats and wide figures"
+            text: "E: image formats"
           - href: tests/pages/f-options.qmd
             text: "F: options"
           - href: tests/pages/g-captions.qmd
             text: "G: captions and descriptions"
+          - href: tests/pages/h-wide.qmd
+            text: "H: wide and tall figures"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom

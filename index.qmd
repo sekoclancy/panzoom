@@ -135,9 +135,12 @@ images in links, margin images, ...) rendered four ways:
 
 And pages of their own:
 
-- [E: formats and wide figures](tests/pages/e-formats.html): 25 × 2 inch
-  collages, tall strips, and webp, svg and pdf output.
-- [F: options](tests/pages/f-options.html): opting out, and the per-cell
-  `caption`, `hint`, `max-zoom`, `description`, `fit` and `loop` options.
+- [E: image formats](tests/pages/e-formats.html): webp, svg and pdf
+  output.
+- [F: options](tests/pages/f-options.html): opting out, and the `hint`,
+  `max-zoom` and `loop` options.
 - [G: captions and descriptions](tests/pages/g-captions.html): citations
-  and cross-references in captions and descriptions.
+  and cross-references, and the `caption` and `description` options.
+- [H: wide and tall figures](tests/pages/h-wide.html): 25 × 2 inch
+  collages, tall strips, galleries and layouts of them, and the `fit`
+  option.

@@ -41,13 +41,14 @@ The same 12 cases are rendered four ways:
 | `c-panzoom-auto` | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
 | `d-panzoom-selective` | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
 
-Three more pages have cases of their own:
+Four more pages have cases of their own:
 
 | Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
-| `e-formats` | **Formats and shapes.** Very wide collages (25 × 2 in) and tall strips (4 × 15 in), also in layouts, as png, webp and svg; standard plots as webp, svg, png + pdf and pdf only; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
-| `f-options` | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `caption`, `hint`, `max-zoom`, `description` and `fit` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
-| `g-captions` | **Captions and descriptions.** Citations and cross-references in captions and descriptions, including a work cited only in a description; quarto-cli#10709's case. | on | none |
+| `e-formats` | **Image formats.** A wide collage and a standard plot as webp and svg; png + pdf, pdf only, png + cairo_pdf; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
+| `f-options` | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `hint` and `max-zoom` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
+| `g-captions` | **Captions and descriptions.** Citations and cross-references in captions and descriptions, including a work cited only in a description (quarto-cli#10709's case); the per-cell `caption` and `description` options. | on | none |
+| `h-wide` | **Wide and tall figures.** Very wide collages (25 × 2 in), tall strips (4 × 15 in), a poster, a portrait photo and a small plot, alone, in galleries and in layouts; the `fit` option. | on | none |
 
 Two more sets of pages are **not part of the website** (see
 [Standalone pages](#standalone-pages)):
@@ -104,7 +105,7 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
     │                      d-panzoom-selective.qmd, e-formats.qmd, f-options.qmd,
-    │                      g-captions.qmd
+    │                      g-captions.qmd, h-wide.qmd
     ├── node_modules/      installed by npm (git-ignored)
     └── results/           test output (git-ignored)
 ```
@@ -244,7 +245,7 @@ keep Tab and Shift+Tab inside the viewer, close from the close button with
 Enter and with Esc, and return focus to the image afterwards.
 
 **Opening view.** Cases whose heading has an `expect-fit` attribute
-(`contain`, `height` or `width`; page E) are checked against how the viewer
+(`contain`, `height` or `width`; pages E and H) are checked against how the viewer
 actually opened them, in the normal 1280 px window and again in a 2560 px
 wide one (the size rule depends on the screen): Details shows
 `opens: ..., ... at 2560 px`, and the summary line says `fit ok` or
@@ -259,7 +260,7 @@ with that point in the middle (`focal point ok`).
 
 **Options.** Cases with `expect-open` (`panzoom` or `nothing`),
 `expect-caption="none"`, `expect-hint` (`shown` or `hidden`) or
-`expect-max-zoom` (page F) are checked: what opened, whether the caption
+`expect-max-zoom` (pages F and G) are checked: what opened, whether the caption
 and hint show in the viewer, and where zooming in stops (`options ok`).
 With the page's `loop: true`, the gallery check expects `←` on the first
 image to wrap to the last.
@@ -294,7 +295,7 @@ Several steps within one animation frame are checked separately, once the
 image is larger than the screen (`fast zoom ok`).
 
 **Shift+scroll.** Cases with a `shift-scroll` attribute (`x`, `y`, `none`,
-or `zoomed-x` for "after zooming in"; page E) are checked for which way
+or `zoomed-x` for "after zooming in"; pages E and H) are checked for which way
 Shift+scroll moved the image (`shift-scroll ok`).
 
 **Containment.** On the first single collage, `→` must stop at its right

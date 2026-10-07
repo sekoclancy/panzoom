@@ -1,0 +1,262 @@
+---
+title: "H: wide and tall figures"
+format:
+  html:
+    code-tools: true
+filters:
+  - panzoom
+panzoom:
+  hint: false
+---
+
+::: {.callout-note}
+## About this page
+
+This page **tests how the viewer opens figures of different shapes**:
+very wide collages (25 × 2 inches), tall strips, a poster, a portrait
+photo and a small plot, alone, in galleries and in layouts, and the `fit`
+option. All are png; other formats are on [E: image formats](e-formats.html).
+
+By default (`fit: auto`) very wide figures open at screen height from the
+left end (or where they were clicked), very tall ones at screen width from
+the top, and everything else whole, never enlarged past its real size.
+
+Headings carry what the browser test checks: `expect-fit` (`contain`,
+`height` or `width`), `shift-scroll` (which way Shift+scroll moves the
+image: `x` sideways, `y` up and down, `none`, or `zoomed-x`: sideways
+after zooming in until the image extends past the screen both ways) and
+`expect-scale="1"` (opens at real size). The first single collage and
+image shown whole also get the focal point and containment checks.
+:::
+
+```{r}
+#| include: false
+
+# A collage: `n` panels side by side, like a wide patchwork figure.
+collage <- function(n = 12) {
+  set.seed(1)
+  par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
+  for (i in seq_len(n)) {
+    plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i),
+         xlab = "", ylab = "", col = hcl.colors(n)[i], lwd = 2)
+  }
+}
+
+# A tall strip: `n` rows stacked, like a tall patchwork figure.
+strip <- function(seed = 2, n = 8) {
+  set.seed(seed)
+  par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))
+  for (i in seq_len(n)) {
+    plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+  }
+}
+
+wave <- function(k = 1) {
+  x <- seq(0, 4 * pi, length.out = 400)
+  plot(x, sin(k * x), type = "l", lwd = 2, col = hcl.colors(4)[k],
+       main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
+}
+```
+
+## 1. Wide collage, png (25 × 2 in) {#c1 expect-fit="height" shift-scroll="x"}
+
+```{r}
+#| panzoom: true
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "A 25 × 2 inch collage of 12 panels (png)."
+
+collage()
+```
+
+## 2. Wide collage with `fit: contain` {#c2 expect-fit="contain" shift-scroll="none"}
+
+The override for case 1: the whole collage, as a strip.
+
+```{r}
+#| panzoom:
+#|   fit: contain
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "The collage, forced to open whole."
+
+collage()
+```
+
+## 3. Moderately wide figure (16 × 4 in) {#c3 expect-fit="contain"}
+
+Wide, but readable whole: the size rule leaves it alone.
+
+```{r}
+#| panzoom: true
+#| fig-width: 16
+#| fig-height: 4
+#| fig-cap: "A 4:1 figure."
+
+collage(4)
+```
+
+## 4. Tall strip (4 × 15 in) {#c4 expect-fit="width" shift-scroll="y"}
+
+```{r}
+#| panzoom: true
+#| fig-width: 4
+#| fig-height: 15
+#| fig-cap: "A tall strip of 8 panels."
+
+set.seed(2)
+par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
+for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+```
+
+## 5. Large poster (24 × 18 in) {#c5 expect-fit="contain" shift-scroll="zoomed-x"}
+
+Opens whole; zoomed in, it extends past the screen both ways, and
+Shift+scroll moves sideways.
+
+```{r}
+#| panzoom: true
+#| fig-width: 24
+#| fig-height: 18
+#| fig-cap: "A 24 × 18 inch poster of 48 panels."
+
+set.seed(3)
+par(mfrow = c(6, 8), mar = c(2, 2, 2, 1))
+for (i in 1:48) plot(cumsum(rnorm(100)), type = "l", main = paste("Panel", i), xlab = "", ylab = "")
+```
+
+## 6. Portrait photo {#c6 expect-fit="contain"}
+
+An ordinary 9:16 photo is not a strip: it opens whole, on any screen width
+(the test also checks this in a 2560 px wide window).
+
+![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30%}
+
+## 7. Small plot (288 × 192 px) {#c7 expect-fit="contain" expect-scale="1"}
+
+Opens at its real size, centered, rather than enlarged to fill the
+screen; scroll still zooms in (up to `max-zoom`).
+
+```{r}
+#| panzoom: true
+#| fig-width: 3
+#| fig-height: 2
+#| fig-dpi: 48
+#| fig-cap: "A small plot."
+
+plot(pressure)
+```
+
+## 8. `fit: height` on an ordinary plot {#c8 expect-open="panzoom" expect-fit="height"}
+
+```{r}
+#| panzoom:
+#|   fit: height
+
+wave(3)
+```
+
+## 9. `fit: width` on an ordinary plot {#c9 expect-open="panzoom" expect-fit="width"}
+
+```{r}
+#| panzoom:
+#|   fit: width
+
+wave(4)
+```
+
+## 10. Gallery of two collages {#c10 expect-fit="height"}
+
+Left/Right and drags pan along the collage; PageDown, PageUp and the
+buttons switch collages.
+
+```{r}
+#| panzoom:
+#|   group: collages
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap:
+#|   - "First collage."
+#|   - "Second collage."
+
+collage()
+collage(15)
+```
+
+## 11. Gallery of two tall strips {#c11 expect-fit="width"}
+
+Each strip opens at screen width and extends downwards: Left/Right do
+nothing (there is nowhere to go sideways) rather than switch strips;
+PageDown, PageUp and the buttons switch.
+
+```{r}
+#| panzoom:
+#|   group: strips
+#| fig-width: 4
+#| fig-height: 15
+#| fig-cap:
+#|   - "First strip."
+#|   - "Second strip."
+
+for (k in 1:2) {
+  set.seed(10 + k)
+  par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
+  for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
+}
+```
+
+## 12. Two collages stacked (layout-nrow: 2) {#c12 expect-fit="height"}
+
+Subfigures in a layout: each opens on its own at screen height, and the
+two form a gallery.
+
+```{r}
+#| label: fig-collage-rows
+#| panzoom: true
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "Two collages, stacked."
+#| fig-subcap: ["First collage", "Second collage"]
+#| layout-nrow: 2
+
+collage()
+collage(15)
+```
+
+## 13. Two tall strips side by side (layout-ncol: 2) {#c13 expect-fit="width"}
+
+```{r}
+#| label: fig-strip-cols
+#| panzoom: true
+#| fig-width: 4
+#| fig-height: 15
+#| fig-cap: "Two tall strips, side by side."
+#| fig-subcap: ["First strip", "Second strip"]
+#| layout-ncol: 2
+
+strip(2)
+strip(3)
+```
+
+## 14. Tall strips in a layout div {#c14 expect-fit="width"}
+
+A `.panzoom` div with a layout, around two separate code cells: each
+strip opens on its own (no gallery: they are not subfigures).
+
+::: {.panzoom layout-ncol="2"}
+
+```{r}
+#| fig-width: 4
+#| fig-height: 15
+
+strip(4)
+```
+
+```{r}
+#| fig-width: 4
+#| fig-height: 15
+
+strip(5)
+```
+
+:::

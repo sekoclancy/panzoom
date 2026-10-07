@@ -44,10 +44,21 @@ numbers, and a work cited only in a description is still listed under
 References. Quarto's own lightbox shows a citation in a caption as raw
 `[@key]` ([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
 
-Every case has the `expect-references` attribute: the viewer must show
+Cases 1–5 have the `expect-references` attribute: the viewer must show
 at least one citation or cross-reference, none unresolved, and each must
-link to something on this page.
+link to something on this page. Cases 6 and 7 test the per-cell `caption`
+and `description` options (`expect-caption`).
 :::
+
+```{r}
+#| include: false
+
+wave <- function(k = 1) {
+  x <- seq(0, 4 * pi, length.out = 400)
+  plot(x, sin(k * x), type = "l", lwd = 2, col = hcl.colors(4)[k],
+       main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
+}
+```
 
 ## 1. Citation in a caption {#c1 expect-references=""}
 
@@ -81,6 +92,30 @@ plot(pressure)
 ![Gingerbread](../../images/mv-3.jpg){.panzoom group="refs" description="As in @fig-pressure."}
 
 ![Sailboat](../../images/mv-4.jpg){.panzoom group="refs" description="As in @fenner2012."}
+
+## 6. `caption: false` {#c6 expect-open="panzoom" expect-caption="none"}
+
+The figure has a caption on the page, but not in the viewer.
+
+```{r}
+#| panzoom:
+#|   caption: false
+#| fig-cap: "This caption stays on the page."
+
+wave(2)
+```
+
+## 7. `description` cell option {#c7 expect-open="panzoom"}
+
+The description is Markdown, with math, shown under the caption.
+
+```{r}
+#| panzoom:
+#|   description: "A sine wave, $y = \\sin(kx)$, **k = 2**."
+#| fig-cap: "With a description."
+
+wave(2)
+```
 
 ## References {.unnumbered}
 

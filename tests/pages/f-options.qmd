@@ -13,13 +13,15 @@ panzoom:
 ## About this page
 
 This page **tests panzoom's options** one at a time: opting out with
-`.nopanzoom` and `#| panzoom: false`, and the per-cell `caption`, `hint`,
-`max-zoom`, `description` and `fit` options. The page itself sets
-`loop: true`, so the gallery in case 8 wraps around. There is no lightbox,
-so an image panzoom leaves alone opens nothing.
+`.nopanzoom` and `#| panzoom: false`, and the per-cell `hint` and
+`max-zoom` options. The page itself sets `loop: true`, so the gallery in
+case 6 wraps around. There is no lightbox, so an image panzoom leaves alone
+opens nothing. The `caption` and `description` options are on
+[G: captions and descriptions](g-captions.html), `fit` on
+[H: wide and tall figures](h-wide.html).
 
 Each case says what to expect in its heading's attributes (`expect-open`,
-`expect-caption`, `expect-hint`, `expect-max-zoom`, `expect-fit`), or on a
+`expect-hint`, `expect-max-zoom`), or on a
 single image, and the browser test checks them.
 :::
 
@@ -60,19 +62,7 @@ wave(1)
 
 :::
 
-## 3. `caption: false` {#c3 expect-open="panzoom" expect-caption="none"}
-
-The figure has a caption on the page, but not in the viewer.
-
-```{r}
-#| panzoom:
-#|   caption: false
-#| fig-cap: "This caption stays on the page."
-
-wave(2)
-```
-
-## 4. `hint: false` {#c4 expect-open="panzoom" expect-hint="hidden"}
+## 3. `hint: false` {#c3 expect-open="panzoom" expect-hint="hidden"}
 
 The page shows the hint (the default); this cell hides it.
 
@@ -83,7 +73,7 @@ The page shows the hint (the default); this cell hides it.
 wave(3)
 ```
 
-## 5. Hint on by default {#c5 expect-open="panzoom" expect-hint="shown"}
+## 4. Hint on by default {#c4 expect-open="panzoom" expect-hint="shown"}
 
 ```{r}
 #| panzoom: true
@@ -91,7 +81,7 @@ wave(3)
 wave(4)
 ```
 
-## 6. `max-zoom: 2` {#c6 expect-open="panzoom" expect-max-zoom="2"}
+## 5. `max-zoom: 2` {#c5 expect-open="panzoom" expect-max-zoom="2"}
 
 Zooming in stops at 2 screen pixels per image pixel.
 
@@ -102,37 +92,7 @@ Zooming in stops at 2 screen pixels per image pixel.
 wave(1)
 ```
 
-## 7. `description` cell option {#c7 expect-open="panzoom"}
-
-The description is Markdown, with math, shown under the caption.
-
-```{r}
-#| panzoom:
-#|   description: "A sine wave, $y = \\sin(kx)$, **k = 2**."
-#| fig-cap: "With a description."
-
-wave(2)
-```
-
-## 8. `fit: height` on an ordinary plot {#c8 expect-open="panzoom" expect-fit="height"}
-
-```{r}
-#| panzoom:
-#|   fit: height
-
-wave(3)
-```
-
-## 9. `fit: width` on an ordinary plot {#c9 expect-open="panzoom" expect-fit="width"}
-
-```{r}
-#| panzoom:
-#|   fit: width
-
-wave(4)
-```
-
-## 10. Gallery with `loop: true` {#c10 expect-open="panzoom"}
+## 6. Gallery with `loop: true` {#c6 expect-open="panzoom"}
 
 Three plots in one gallery. With the page's `loop: true`, `←` on the first
 goes to the last, and "previous" is never disabled.

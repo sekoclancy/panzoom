@@ -1,5 +1,5 @@
 ---
-title: "E: image formats and very wide figures"
+title: "E: image formats"
 format:
   html:
     code-tools: true
@@ -13,24 +13,15 @@ panzoom:
 ## About this page
 
 This page **tests the panzoom extension** with the knitr graphics devices
-and figure shapes used in practice: very wide collages (25 × 2 inches),
-and webp, svg and pdf output. Every figure is marked with `#| panzoom: true`
-and should open the pan/zoom viewer, except where a case says otherwise.
+used in practice: webp, svg and pdf output, for a wide collage and a
+standard plot. Every figure is marked with `#| panzoom: true` and should
+open the pan/zoom viewer, except where a case says otherwise. Figure
+shapes and how they open are on [H: wide and tall figures](h-wide.html).
 
-Cases with an expected opening view say so in their heading's
-`expect-fit` attribute (`contain`, `height` or `width`), which the browser
-test checks. By default (`fit: auto`) very wide figures open at screen
-height from the left end, very tall ones at screen width from the top, and
-everything else whole.
-
-Cases with a `shift-scroll` attribute say which way Shift+scroll should
-move the image: `x` (sideways), `y` (up and down) or `none` (it fits, so
-it stays put); `zoomed-x` means sideways after zooming in until the image
-extends past the screen both ways.
-
-Cases with `expect-scale="1"` are smaller than the screen and must open
-at their real size (1 image pixel per screen pixel), not enlarged, and
-still zoom in.
+Headings carry what the browser test checks: `expect-fit` (the opening
+view: `contain`, `height` or `width`), `shift-scroll` (which way
+Shift+scroll moves the image: `x`, `y` or `none`) and `expect-scale="1"`
+(opens at real size, not enlarged).
 
 webp comes from ragg's `agg_webp` device: knitr has no built-in webp
 device, and `agg_webp` needs `units = "in"` because knitr passes sizes in
@@ -51,29 +42,9 @@ collage <- function(n = 12) {
          xlab = "", ylab = "", col = hcl.colors(n)[i], lwd = 2)
   }
 }
-
-# A tall strip: `n` rows stacked, like a tall patchwork figure.
-strip <- function(seed = 2, n = 8) {
-  set.seed(seed)
-  par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))
-  for (i in seq_len(n)) {
-    plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
-  }
-}
 ```
 
-## 1. Wide collage, png (25 × 2 in) {#c1 expect-fit="height" shift-scroll="x"}
-
-```{r}
-#| panzoom: true
-#| fig-width: 25
-#| fig-height: 2
-#| fig-cap: "A 25 × 2 inch collage of 12 panels (png)."
-
-collage()
-```
-
-## 2. Wide collage, webp (25 × 2 in) {#c2 expect-fit="height"}
+## 1. Wide collage, webp (25 × 2 in) {#c1 expect-fit="height"}
 
 ```{r}
 #| panzoom: true
@@ -82,24 +53,24 @@ collage()
 #| dev: agg_webp
 #| fig-ext: webp
 #| dev.args: !expr list(units = "in", res = 96)
-#| fig-cap: "The same collage as webp."
+#| fig-cap: "A 25 × 2 inch collage of 12 panels (webp)."
 
 collage()
 ```
 
-## 3. Wide collage, svg (25 × 2 in) {#c3 expect-fit="height"}
+## 2. Wide collage, svg (25 × 2 in) {#c2 expect-fit="height"}
 
 ```{r}
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
 #| dev: svg
-#| fig-cap: "The same collage as svg."
+#| fig-cap: "The collage as svg."
 
 collage()
 ```
 
-## 4. webp plot {#c4 expect-fit="contain" shift-scroll="none" expect-scale="1"}
+## 3. webp plot {#c3 expect-fit="contain" shift-scroll="none" expect-scale="1"}
 
 ```{r}
 #| panzoom: true
@@ -111,7 +82,7 @@ collage()
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 5. svg plot {#c5 expect-fit="contain" expect-scale="1"}
+## 4. svg plot {#c4 expect-fit="contain" expect-scale="1"}
 
 ```{r}
 #| panzoom: true
@@ -121,7 +92,7 @@ filled.contour(volcano, color.palette = terrain.colors)
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 6. png + pdf (dev: [png, pdf]) {#c6 expect-fit="contain"}
+## 5. png + pdf (dev: [png, pdf]) {#c5 expect-fit="contain"}
 
 Both files are written; the page shows the png.
 
@@ -133,7 +104,7 @@ Both files are written; the page shows the png.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 7. pdf only {#c7}
+## 6. pdf only {#c6}
 
 With only the pdf device, the HTML page has no bitmap to show; this case
 records what the browser and panzoom do with it.
@@ -144,6 +115,22 @@ records what the browser and panzoom do with it.
 #| fig-cap: "pdf only."
 
 filled.contour(volcano, color.palette = terrain.colors)
+```
+
+## 7. png + cairo_pdf (dev: [png, cairo_pdf]) {#c7 expect-fit="contain"}
+
+Like case 5, with the cairo PDF device, which embeds fonts and handles
+Unicode (µ, Greek letters) and transparency better than `pdf`. The page
+shows the png either way; a PDF figure only ever appears as the browser's
+PDF viewer (case 6), whichever device wrote it.
+
+```{r}
+#| panzoom: true
+#| dev: !expr c("png", "cairo_pdf")
+#| fig-cap: "png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
+
+filled.contour(volcano, color.palette = terrain.colors,
+               plot.title = title(main = "mu = 5, alpha = 0.05"))
 ```
 
 ## 8. Wide collage, webp at 2× resolution (100 × 5 in) {#c8}
@@ -163,193 +150,3 @@ per side; this case records what happens.
 
 collage()
 ```
-
-## 9. Wide collage with `fit: contain` {#c9 expect-fit="contain" shift-scroll="none"}
-
-The override: the whole collage, as a strip.
-
-```{r}
-#| panzoom:
-#|   fit: contain
-#| fig-width: 25
-#| fig-height: 2
-#| fig-cap: "The collage, forced to open whole."
-
-collage()
-```
-
-## 10. Moderately wide figure (16 × 4 in) {#c10 expect-fit="contain"}
-
-Wide, but readable whole: the size rule leaves it alone.
-
-```{r}
-#| panzoom: true
-#| fig-width: 16
-#| fig-height: 4
-#| fig-cap: "A 4:1 figure."
-
-collage(4)
-```
-
-## 11. Tall strip (4 × 15 in) {#c11 expect-fit="width" shift-scroll="y"}
-
-```{r}
-#| panzoom: true
-#| fig-width: 4
-#| fig-height: 15
-#| fig-cap: "A tall strip of 8 panels."
-
-set.seed(2)
-par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
-for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
-```
-
-## 12. Gallery of two collages {#c12 expect-fit="height"}
-
-Left/Right and drags pan along the collage; PageDown, PageUp and the
-buttons switch collages.
-
-```{r}
-#| panzoom:
-#|   group: collages
-#| fig-width: 25
-#| fig-height: 2
-#| fig-cap:
-#|   - "First collage."
-#|   - "Second collage."
-
-collage()
-collage(15)
-```
-
-## 13. Large poster (24 × 18 in) {#c13 expect-fit="contain" shift-scroll="zoomed-x"}
-
-Opens whole; zoomed in, it extends past the screen both ways, and
-Shift+scroll moves sideways.
-
-```{r}
-#| panzoom: true
-#| fig-width: 24
-#| fig-height: 18
-#| fig-cap: "A 24 × 18 inch poster of 48 panels."
-
-set.seed(3)
-par(mfrow = c(6, 8), mar = c(2, 2, 2, 1))
-for (i in 1:48) plot(cumsum(rnorm(100)), type = "l", main = paste("Panel", i), xlab = "", ylab = "")
-```
-
-## 14. Gallery of two tall strips {#c14 expect-fit="width"}
-
-Each strip opens at screen width and extends downwards: Left/Right do
-nothing (there is nowhere to go sideways) rather than switch strips;
-PageDown, PageUp and the buttons switch.
-
-```{r}
-#| panzoom:
-#|   group: strips
-#| fig-width: 4
-#| fig-height: 15
-#| fig-cap:
-#|   - "First strip."
-#|   - "Second strip."
-
-for (k in 1:2) {
-  set.seed(10 + k)
-  par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
-  for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
-}
-```
-
-## 15. png + cairo_pdf (dev: [png, cairo_pdf]) {#c15 expect-fit="contain"}
-
-Like case 6, with the cairo PDF device, which embeds fonts and handles
-Unicode (µ, Greek letters) and transparency better than `pdf`. The page
-shows the png either way; a PDF figure only ever appears as the browser's
-PDF viewer (case 7), whichever device wrote it.
-
-```{r}
-#| panzoom: true
-#| dev: !expr c("png", "cairo_pdf")
-#| fig-cap: "png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
-
-filled.contour(volcano, color.palette = terrain.colors,
-               plot.title = title(main = "mu = 5, alpha = 0.05"))
-```
-
-## 16. Portrait photo {#c16 expect-fit="contain"}
-
-An ordinary 9:16 photo is not a strip: it opens whole, on any screen width
-(the test also checks this in a 2560 px wide window).
-
-![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30%}
-
-## 17. Small plot (288 × 192 px) {#c17 expect-fit="contain" expect-scale="1"}
-
-Opens at its real size, centered, rather than enlarged to fill the
-screen; scroll still zooms in (up to `max-zoom`).
-
-```{r}
-#| panzoom: true
-#| fig-width: 3
-#| fig-height: 2
-#| fig-dpi: 48
-#| fig-cap: "A small plot."
-
-plot(pressure)
-```
-
-## 18. Two collages stacked (layout-nrow: 2) {#c18 expect-fit="height"}
-
-Subfigures in a layout: each opens on its own at screen height, and the
-two form a gallery.
-
-```{r}
-#| label: fig-collage-rows
-#| panzoom: true
-#| fig-width: 25
-#| fig-height: 2
-#| fig-cap: "Two collages, stacked."
-#| fig-subcap: ["First collage", "Second collage"]
-#| layout-nrow: 2
-
-collage()
-collage(15)
-```
-
-## 19. Two tall strips side by side (layout-ncol: 2) {#c19 expect-fit="width"}
-
-```{r}
-#| label: fig-strip-cols
-#| panzoom: true
-#| fig-width: 4
-#| fig-height: 15
-#| fig-cap: "Two tall strips, side by side."
-#| fig-subcap: ["First strip", "Second strip"]
-#| layout-ncol: 2
-
-strip(2)
-strip(3)
-```
-
-## 20. Tall strips in a layout div {#c20 expect-fit="width"}
-
-A `.panzoom` div with a layout, around two separate code cells: each
-strip opens on its own (no gallery: they are not subfigures).
-
-::: {.panzoom layout-ncol="2"}
-
-```{r}
-#| fig-width: 4
-#| fig-height: 15
-
-strip(4)
-```
-
-```{r}
-#| fig-width: 4
-#| fig-height: 15
-
-strip(5)
-```
-
-:::
