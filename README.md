@@ -86,6 +86,7 @@ Then mark images in any of these ways.
 ````markdown
 ```{r}
 #| panzoom: true
+
 plot(pressure)
 ```
 ````
@@ -98,6 +99,7 @@ cell:
 #| panzoom:
 #|   max-zoom: 8
 #|   hint: false
+
 plot(pressure)
 ```
 ````
@@ -152,6 +154,7 @@ or for all of a cell's plots:
 ```{r}
 #| panzoom:
 #|   description: "Pressure rises with temperature, $p \propto e^{-1/T}$."
+
 plot(pressure)
 ```
 ````
@@ -170,6 +173,7 @@ lightbox:
 ```{r}
 #| panzoom:
 #|   group: pressure
+
 plot(pressure)
 plot(pressure, log = "y")
 ```
