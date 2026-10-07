@@ -189,6 +189,10 @@
       minScale: Math.min(whole, s),
       maxScale: Math.max(opts.maxZoom, s)
     });
+    // Panzoom applies startX/startY on a timer after it starts; apply them
+    // now, so the image doesn't show at (0, 0) for a frame and an
+    // immediate zoom or pan starts from the opening view.
+    pz.pan((cx - w / 2) / s, (cy - h / 2) / s, { animate: false, force: true });
   }
 
   // The space the image is shown in: the overlay above the caption.
@@ -230,8 +234,10 @@
     return (over < 0 ? -1 : 1) * STRETCH * (1 - Math.exp(-Math.abs(over) / (2 * STRETCH)));
   }
 
-  // Runs after every Panzoom change (drag, pinch, zoom, pan, reset), before
-  // the browser paints, and moves the image back inside if needed. During a
+  // Runs after every Panzoom change (drag, pinch, zoom, pan, reset), when
+  // Panzoom draws it (in an animation frame), and moves the image back
+  // inside if needed; that correction is drawn on the next frame. It works
+  // from Panzoom's own pan and scale, which are always current. During a
   // drag the image may go past its ends with resistance (stretch()); it
   // springs back when released (settle()). Not during a bounce: that
   // animation goes past the end on purpose.
@@ -248,14 +254,22 @@
     }
   }
 
+  // Whether a bounce or spring-back is running. The overlay carries the
+  // `panzoom-moving` class meanwhile, for CSS or scripts (the browser tests
+  // wait for it to go).
+  function setBouncing(on) {
+    bouncing = on;
+    if (overlay) overlay.classList.toggle("panzoom-moving", on);
+  }
+
   // Animated pan to (x, y), then `then`. Only a pan at a fixed scale is
   // animated, so the image slides straight (see resetView()).
   function slideTo(x, y, ms, easing, then) {
-    bouncing = true;
+    setBouncing(true);
     pz.pan(x, y, { animate: true, duration: ms, easing: easing, force: true });
     bounceTimer = setTimeout(function () {
       bounceTimer = null;
-      if (then) then(); else bouncing = false;
+      if (then) then(); else setBouncing(false);
     }, ms);
   }
 
@@ -265,7 +279,7 @@
     if (bounceTimer) clearTimeout(bounceTimer);
     bounceTimer = null;
     if (!bouncing) return;
-    bouncing = false;
+    setBouncing(false);
     contain();
   }
 
@@ -280,12 +294,28 @@
   // Zoom by `factor`, keeping the image point under (px, py) fixed on screen.
   // Clamp to the zoom limits here: Panzoom computes the fixed point for the
   // scale it is asked for, so asking past a limit makes the image drift.
+  //
+  // The fixed point (Panzoom's `focal`: the point relative to the image's
+  // unscaled center, times the new scale) is computed here rather than with
+  // pz.zoomToPoint, which measures the image on the page. Panzoom only
+  // draws a change on the next animation frame, so when several zoom steps
+  // come within one frame (fast keys, a trackpad pinch, a fast wheel), the
+  // page still shows the old size and zoomToPoint anchors to the wrong
+  // point. The image's unscaled box sits at the overlay's top-left (see
+  // fit()), so its center is at (w/2, h/2) in overlay coordinates.
   function zoomAt(factor, px, py) {
     if (!pz) return;
     stopBounce();
     var o = pz.getOptions();
     var s = Math.min(o.maxScale, Math.max(o.minScale, pz.getScale() * factor));
-    pz.zoomToPoint(s, { clientX: px, clientY: py });
+    var box = overlay.getBoundingClientRect();
+    pz.zoom(s, {
+      animate: false,
+      focal: {
+        x: (px - box.left - img.naturalWidth / 2) * s,
+        y: (py - box.top - img.naturalHeight / 2) * s
+      }
+    });
   }
 
   // Back to the opening view, without Panzoom's default animation: it
