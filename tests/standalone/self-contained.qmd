@@ -1,0 +1,8 @@
+---
+title: "Self-contained page"
+filters:
+  - panzoom
+embed-resources: true
+---
+
+{{< include _self-contained.qmd >}}

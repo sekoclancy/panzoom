@@ -1,0 +1,9 @@
+---
+title: "Math"
+subtitle: "html-math-method: webtex"
+filters:
+  - panzoom
+html-math-method: webtex
+---
+
+{{< include _math.qmd >}}

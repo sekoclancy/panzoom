@@ -1,0 +1,10 @@
+---
+title: "Self-contained page"
+subtitle: "with self-contained-math: true"
+filters:
+  - panzoom
+embed-resources: true
+self-contained-math: true
+---
+
+{{< include _self-contained.qmd >}}

@@ -1,0 +1,9 @@
+---
+title: "Math"
+subtitle: "html-math-method: mathjax"
+filters:
+  - panzoom
+html-math-method: mathjax
+---
+
+{{< include _math.qmd >}}

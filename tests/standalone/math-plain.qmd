@@ -1,0 +1,9 @@
+---
+title: "Math"
+subtitle: "html-math-method: plain"
+filters:
+  - panzoom
+html-math-method: plain
+---
+
+{{< include _math.qmd >}}

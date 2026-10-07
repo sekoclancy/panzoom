@@ -48,7 +48,15 @@ Two more pages have cases of their own:
 | `e-formats` | **Formats and shapes.** Very wide collages (25 × 2 in) and tall strips (4 × 15 in), also in layouts, as png, webp and svg; standard plots as webp, svg, png + pdf and pdf only; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
 | `f-options` | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `caption`, `hint`, `max-zoom`, `description` and `fit` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
 
-Each page starts with a note saying what it should show, has a **</> Code**
+Two more sets of pages are **not part of the website** (see
+[Standalone pages](#standalone-pages)):
+
+| Page | What it is |
+|---|---|
+| `standalone/self-contained` | **A single HTML file**, `embed-resources: true`, opened from its `file://` address. `self-contained-math` also embeds MathJax (`self-contained-math: true`). |
+| `standalone/math-<method>` | **Math in captions and descriptions** with each `html-math-method`: `mathjax`, `katex`, `mathml`, `webtex`, `plain`. |
+
+Each website page starts with a note saying what it should show, has a **</> Code**
 button that shows its full source, and shows each R chunk with its options.
 They are published with the example at
 <https://sekoclancy.github.io/panzoom/>.
@@ -90,6 +98,9 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── package.json       Node project: dependency (puppeteer-core) and npm scripts
     ├── package-lock.json  exact dependency versions
     ├── browser.mjs        the browser checks
+    ├── standalone.mjs     renders standalone/ (see Standalone pages)
+    ├── standalone/        pages outside the website: *.qmd, shared _*.qmd bodies,
+    │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
     │                      d-panzoom-selective.qmd, e-formats.qmd, f-options.qmd
     ├── node_modules/      installed by npm (git-ignored)
@@ -136,6 +147,50 @@ node browser.mjs ../docs/tests/pages/d-panzoom-selective.html     # from tests/
 it, the way GitHub Pages serves the site. Pages can't simply be opened as
 files: Quarto's main script is a JavaScript module, and browsers refuse to
 load modules from `file://` addresses.
+
+### Standalone pages
+
+The pages in `standalone/` are plain documents with their options in their
+own YAML header, as a self-contained document would have them. They aren't
+in the project's `render:` list, so Quarto renders them without the
+website layout, in place, finding the extension through the
+`standalone/_extensions` symlink. Each is just
+`quarto render <page>.qmd --to html`; to render all and check them:
+
+```bash
+npm run standalone     # node standalone.mjs && node browser.mjs standalone/*.html
+```
+
+A self-contained page (no script or stylesheet files beside it) is opened
+from its `file://` address, the way it would be from an email or a
+download; the others are served like the website.
+
+### Without internet access
+
+```bash
+npm run offline        # render standalone/ offline, then check every page offline
+```
+
+This renders the standalone pages with no network at all
+(`unshare -rn`: a new, empty network namespace; Linux only), then runs the
+browser checks on all pages with every request that would leave the
+machine blocked (`--offline`), as on a computer with no connection. The
+report lists the blocked requests. Results go to `results/offline/`.
+
+What to expect: panzoom itself needs nothing from the internet (Panzoom is
+bundled), so every viewer check passes. Math is another matter: Quarto loads
+MathJax and KaTeX from a CDN, so offline the page's math and the viewer's
+stay raw TeX (`math ok (page: not typeset)`: the viewer is no worse than the
+page), and a KaTeX page logs Quarto's own `katex is not defined`. Rendering
+offline also can't embed MathJax for `self-contained-math`. To check that a
+self-contained file *rendered online* works offline (it does, math
+included; only MathJax's web fonts are missing, so math uses system fonts):
+
+```bash
+node standalone.mjs && node browser.mjs --offline standalone/self-contained*.html
+```
+
+### Output
 
 `npm test` prints one line per page:
 
@@ -208,8 +263,16 @@ With the page's `loop: true`, the gallery check expects `←` on the first
 image to wrap to the last.
 
 **Descriptions.** Every image with a `description` must show it under the
-caption in the viewer, with any math typeset (`descriptions ok`; cases 1
-and 3 on pages C and D). On a gallery of images that open wider than
+caption in the viewer (`descriptions ok`; cases 1 and 3 on pages C and D).
+
+**Math.** Math in the viewer's caption and description must show no worse
+than the page's own math (`math ok (page: typeset)`): typeset if the
+page's is, raw TeX only where the page has it too (the `plain` method, or a
+math library that couldn't load). A page with no math of its own is
+compared with the hidden math element panzoom adds for descriptions.
+
+**Network.** The report lists requests to other machines (CDNs) and any
+request that failed (`N FAILED REQUESTS`). On a gallery of images that open wider than
 the screen, the test also checks that `→` pans along the image and
 `PageDown` switches to the next one, and on a gallery of tall strips that
 `→` neither switches nor moves the strip (`large galleries ok`).
@@ -281,6 +344,6 @@ The script finds cases by the `## N.` headings.
   Use `quarto preview` or the test script, which serve it over HTTP.
 - **`Failed to launch the browser process`**: Chrome isn't where the script
   looks. Run `quarto install chrome-headless-shell --no-prompt`, or set `CHROME=`.
-- **`... is not inside .../docs`**: `browser.mjs` only checks pages from
-  `docs/`. Render first, and pass paths like
-  `../docs/tests/pages/d-panzoom-selective.html`.
+- **`... is not a file inside ...`**: `browser.mjs` only checks rendered
+  pages in this repo. Render first (`quarto render`, `node standalone.mjs`),
+  and pass paths like `../docs/tests/pages/d-panzoom-selective.html`.

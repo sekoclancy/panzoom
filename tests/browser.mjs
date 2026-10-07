@@ -14,13 +14,21 @@
   then from tests/:
     npm test                                                          # checks the test pages
     node browser.mjs ../docs/tests/pages/d-panzoom-selective.html ...   # checks the given pages
+    node browser.mjs standalone/_output/*.html                        # pages from standalone.mjs
+    node browser.mjs --offline [pages]                                # with no internet access
 
-  Pages are served from ../docs/ by a small built-in web server, as GitHub
+  Pages are served from the repo by a small built-in web server, as GitHub
   Pages would serve them: Quarto's scripts are JavaScript modules, which
-  browsers refuse to load from file:// URLs.
+  browsers refuse to load from file:// URLs. A self-contained page (no
+  script or stylesheet files of its own) is opened from its file:// address
+  instead, as it would be from an email or a download.
+
+  External requests (to CDNs, say) are listed in the report. With
+  --offline, they are blocked, as with no internet access.
 
   Output: results/<page>/report.md, results/<page>/results.json and one
-  screenshot per image (results/<page>/<case>-<n>.png).
+  screenshot per image (results/<page>/<case>-<n>.png); with --offline,
+  in results/offline/<page>/.
 
   Chrome: Quarto's `chrome-headless-shell`
   (`quarto install chrome-headless-shell --no-prompt`), or set
@@ -37,12 +45,35 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
 const CHROME = process.env.CHROME || path.join(os.homedir(),
   ".local/share/quarto/chrome-headless-shell/chrome-headless-shell-linux64/chrome-headless-shell");
-const PAGES = process.argv.length > 2
-  ? process.argv.slice(2).map((p) => path.resolve(p))
+const OFFLINE = process.argv.includes("--offline");
+const ARGS = process.argv.slice(2).filter((a) => a !== "--offline");
+const PAGES = ARGS.length
+  ? ARGS.map((p) => path.resolve(p))
   : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html"]
       .map((p) => path.join(ROOT, "docs", "tests", "pages", p));
 const VIEWPORT = { width: 1280, height: 900 };
-const SITE = path.join(ROOT, "docs");
+const RESULTS = path.join(HERE, "results", ...(OFFLINE ? ["offline"] : []));
+
+// A self-contained page has no script or stylesheet files of its own
+// (embed-resources: true), so it works from a file:// address.
+function selfContained(file) {
+  return !/<(script|link)\b[^>]*\s(src|href)="(?!data:|https?:|\/\/|#)/i.test(fs.readFileSync(file, "utf8"));
+}
+
+// How math shows in an element, defined in each page: "delimited" (TeX
+// with its \( \) or \[ \] delimiters: not typeset at all), "raw" (TeX
+// commands left as text) or "clean". KaTeX's and MathJax's hidden copies
+// for screen readers don't count. Ordered from best to worst.
+const TEX_RANK = { clean: 0, raw: 1, delimited: 2 };
+function defineTexClass() {
+  window.__texClass = (el) => {
+    if (!el) return "clean";
+    const c = el.cloneNode(true);
+    c.querySelectorAll("annotation, mjx-assistive-mml, script, style").forEach((n) => n.remove());
+    const t = c.textContent;
+    return /\\[(\[]/.test(t) ? "delimited" : /\\[a-zA-Z]/.test(t) ? "raw" : "clean";
+  };
+}
 
 // Minimal static file server for docs/.
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript",
@@ -63,6 +94,59 @@ function serve(root) {
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Waits until the page is still: which viewer is open, the viewer image's
+// position, size and transform, the gallery counter, GLightbox's slide and
+// the focused element haven't changed for `quiet` ms. Also waits for the
+// viewer's image to load and Panzoom to start on it (keys pressed before
+// that are lost), and for GLightbox's slide to finish loading. Replaces
+// fixed sleeps after an action: returns as soon as the action has played
+// out (a gallery switch, an open or close). The viewer marks a running
+// bounce or spring-back with `panzoom-moving`, so a short `quiet` can't
+// return at a bounce's turning point.
+// After wheel input: Chrome may handle a wheel event after mouse.wheel()
+// returns, so first wait (briefly) for the viewer image's transform to
+// change from `before`, then settle. If it never changes (the wheel was
+// meant to do nothing), this costs `wait` ms.
+async function afterWheel(page, before, wait = 400) {
+  await page.waitForFunction((before) => {
+    const img = document.querySelector(".panzoom-overlay img");
+    return !!img && img.style.transform !== before;
+  }, { polling: 16, timeout: wait }, before).catch(() => {});
+  await settle(page);
+}
+
+const transformOf = (page) =>
+  page.evaluate(() => document.querySelector(".panzoom-overlay img")?.style.transform ?? "");
+
+async function settle(page, quiet = 60, timeout = 5000) {
+  await page.evaluate(() => { window.__settle = null; });
+  await page.waitForFunction((quiet) => {
+    const o = document.querySelector(".panzoom-overlay");
+    const open = !!(o && o.classList.contains("open"));
+    const img = o && o.querySelector("img");
+    if (open && img && !img.complete) return false;           // still loading
+    if (open && img && img.naturalWidth && !img.style.transform) return false;  // Panzoom not started
+    if (o && o.classList.contains("panzoom-moving")) return false;   // bounce running
+    const g = document.querySelector(".glightbox-container");
+    const slide = g && g.querySelector(".gslide.current");
+    if (g && slide && !slide.classList.contains("loaded")) return false;
+    const box = (el) => {
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return [r.x, r.y, r.width, r.height].map((v) => Math.round(v));
+    };
+    const snap = JSON.stringify([
+      open, box(open && img), img && img.style.transform,
+      o && o.querySelector(".panzoom-counter")?.textContent,
+      !!g, g && g.className, box(slide), slide && getComputedStyle(slide).opacity,
+      document.activeElement && document.activeElement.className,
+    ]);
+    const now = performance.now();
+    if (!window.__settle || window.__settle.snap !== snap) window.__settle = { snap, since: now };
+    return now - window.__settle.since >= quiet;
+  }, { polling: 16, timeout }, quiet).catch(() => {});
+}
 
 // Parse Panzoom's `scale(s) translate(x px, y px)` on the viewer image. The
 // translate is in unscaled px, so x and y are multiplied by s to give the
@@ -101,7 +185,14 @@ async function state(page) {
           const d = pz.querySelector(".panzoom-description");
           return !d || d.hidden ? "" : d.textContent.trim().replace(/\s+/g, " ");
         })(),
-        descriptionMath: !!pz.querySelector(".panzoom-description mjx-container, .panzoom-description .katex"),
+        // Shown at all: a description of only webtex math has no text.
+        descriptionShown: (() => {
+          const d = pz.querySelector(".panzoom-description");
+          return !!d && !d.hidden && !!d.innerHTML.trim();
+        })(),
+        captionHasMath: !caption.hidden && !!caption.querySelector(".math, math"),
+        captionTeX: caption.hidden ? "clean" : window.__texClass(caption),
+        descriptionTeX: window.__texClass(pz.querySelector(".panzoom-description:not([hidden])")),
         counter: counter.hidden ? "" : counter.textContent,
       };
     }
@@ -126,16 +217,16 @@ async function closeAll(page) {
   await page.waitForFunction(
     () => !document.querySelector(".panzoom-overlay.open") && !document.querySelector(".glightbox-container"),
     { timeout: 3000 }).catch(() => {});
-  await sleep(200);
+  await settle(page);
 }
 
 // Open the viewer on a result's image, from a closed viewer.
 async function openImage(page, r) {
   const handle = await page.$(`img[data-test-idx="${r.idx}"]`);
   await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
-  await sleep(150);
+  await settle(page);
   await handle.click();
-  await sleep(600);
+  await settle(page);
 }
 
 async function exercisePanzoom(page) {
@@ -158,20 +249,24 @@ async function exercisePanzoom(page) {
   const frac = (r) => [(px - r.left) / r.width, (py - r.top) / r.height];
   const f0 = frac(r0);
   await page.mouse.move(px, py);
-  for (let i = 0; i < 5; i++) { await page.mouse.wheel({ deltaY: -200 }); await sleep(30); }
-  await sleep(100);
+  const beforeWheel = await transformOf(page);
+  // Back to back, like a fast wheel or a trackpad pinch: several steps can
+  // land in one animation frame, which once made the zoom drift.
+  for (let i = 0; i < 5; i++) await page.mouse.wheel({ deltaY: -200 });
+  await afterWheel(page, beforeWheel);
   const zoomed = await viewerTransform(page);
   out.wheelZoom = fit && zoomed ? +(zoomed.s / fit.s).toFixed(2) : null;
   const r1 = await imageRect();
   const f1 = frac(r1);
   out.anchorDrift = r0.width > 0
     ? Math.round(Math.hypot((f1[0] - f0[0]) * r1.width, (f1[1] - f0[1]) * r1.height)) : null;
+
   await page.mouse.move(cx, cy);
 
   await page.mouse.down();
   await page.mouse.move(cx + 150, cy + 80, { steps: 8 });
   await page.mouse.up();
-  await sleep(100);
+  await settle(page);
   const dragged = await viewerTransform(page);
   out.dragMoved = zoomed && dragged
     ? Math.round(Math.hypot(dragged.x - zoomed.x, dragged.y - zoomed.y)) : null;
@@ -181,12 +276,58 @@ async function exercisePanzoom(page) {
     // Reset is instant: right after `0` the view is back where it opened
     // (an animated reset would still be mid-way).
     await page.keyboard.press("0");
-    await sleep(20);
+    // Two animation frames: Panzoom draws on the next one. A fixed 20 ms
+    // could miss it when the machine is busy.
+    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
     const back = await viewerTransform(page);
     out.resetOk = fit ? !!(back && back.s === fit.s &&
       Math.abs(back.x - fit.x) < 1 && Math.abs(back.y - fit.y) < 1) : null;  // null: no image loaded
+
+    // Fast zoom stays on the cursor: zoom in with + until the image is larger
+    // than the screen both ways (so containment can't move it), then a burst
+    // of wheel steps back to back, like a fast wheel or a trackpad pinch,
+    // at an off-center point. Several steps can land in one animation frame,
+    // which once made the zoom drift. Skipped if max-zoom comes first.
+    const area = await page.evaluate(() => {
+      const o = document.querySelector(".panzoom-overlay");
+      return { w: o.clientWidth, h: o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight };
+    });
+    let big = await imageRect();
+    for (let i = 0; i < 12 && !(big.width > area.w && big.height > area.h); i++) {
+      await page.keyboard.press("+");
+      await settle(page);
+      big = await imageRect();
+    }
+    out.anchorChecked = big.width > area.w && big.height > area.h;
+    if (out.anchorChecked) {
+      const qx = Math.round(area.w * 0.35), qy = Math.round(area.h * 0.6);
+      const fq = (r) => [(qx - r.left) / r.width, (qy - r.top) / r.height];
+      const g0 = fq(big);
+      const beforeBurst = await transformOf(page);
+      const s0 = (await viewerTransform(page)).s;
+      // Dispatched from inside the page, so all four land in one frame
+      // (from Puppeteer, each wheel step is a separate round trip).
+      const burstTarget = await page.evaluate((qx, qy) => {
+        const target = document.elementFromPoint(qx, qy);
+        for (let i = 0; i < 4; i++) {
+          target.dispatchEvent(new WheelEvent("wheel", {
+            deltaY: -100, clientX: qx, clientY: qy, bubbles: true, cancelable: true }));
+        }
+        return target.tagName + "." + target.className;
+      }, qx, qy);
+      await afterWheel(page, beforeBurst);
+      const after = await imageRect();
+      const g1 = fq(after);
+      out.anchorFastDrift = Math.round(Math.hypot((g1[0] - g0[0]) * after.width, (g1[1] - g0[1]) * after.height));
+      // For diagnosing a failure: where the burst went and what changed.
+      out.anchorFastDetail = { burstTarget, point: [qx, qy], s0, s1: (await viewerTransform(page)).s,
+        before: [big.left, big.top, big.width, big.height].map(Math.round),
+        after: [after.left, after.top, after.width, after.height].map(Math.round) };
+      // At max-zoom the burst can't zoom; "no drift" would mean nothing.
+      if ((await viewerTransform(page)).s <= s0 * 1.01) out.anchorChecked = false;
+    }
     await page.keyboard.press("Escape");
-    await sleep(100);
+    await settle(page);
     out.escCloses = (await state(page)).opened !== "panzoom";
   }
   return out;
@@ -213,12 +354,12 @@ async function checkIsolation(page, box) {
     document.body.appendChild(w);
   });
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  await sleep(300);
+  await settle(page);
   const out = { opened: (await state(page)).opened === "panzoom" };
   if (!out.opened) return out;
 
   for (const key of ISOLATION_KEYS) await page.keyboard.press(key);
-  await sleep(100);
+  await settle(page);
   out.leaked = await page.evaluate(() => window.__leaked.splice(0));
   out.stillOpen = (await state(page)).opened === "panzoom";
 
@@ -242,7 +383,7 @@ async function checkIsolation(page, box) {
   });
 
   await page.keyboard.press("Escape");
-  await sleep(200);
+  await settle(page);
   out.escCloses = (await state(page)).opened !== "panzoom";
   await page.evaluate(() => document.getElementById("test-fixed-widget").remove());
   return out;
@@ -264,14 +405,14 @@ async function checkKeyboard(page, handle) {
   out.focusable = await handle.evaluate((el) => el.tabIndex === 0 && el.getAttribute("role") === "button");
   await handle.focus();
   await page.keyboard.press("Enter");
-  await sleep(300);
+  await settle(page);
   out.enterOpens = (await state(page)).opened === "panzoom";
   if (!out.enterOpens) return out;
   out.focusMovesIn = (await focusState()).inViewer;
 
   await page.keyboard.press("+");
   await page.keyboard.press("+");
-  await sleep(100);
+  await settle(page);
   // The arrows pan in each direction the image is larger than the screen
   // (in a direction where it fits, containment holds it still).
   const over = await page.evaluate(() => {
@@ -283,7 +424,7 @@ async function checkKeyboard(page, handle) {
   const before = await viewerTransform(page);
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowDown");
-  await sleep(600);  // past an end, a pan bounces and settles
+  await settle(page);  // past an end, a pan bounces and settles
   const after = await viewerTransform(page);
   const movedX = before && after && after.x < before.x - 1;
   const movedY = before && after && after.y < before.y - 1;
@@ -297,15 +438,15 @@ async function checkKeyboard(page, handle) {
 
   await page.evaluate(() => document.querySelector(".panzoom-close").focus());
   await page.keyboard.press("Enter");
-  await sleep(200);
+  await settle(page);
   out.closeButtonCloses = (await state(page)).opened !== "panzoom";
   out.focusReturns = (await focusState()).onImage;
 
   await page.keyboard.press(" ");
-  await sleep(300);
+  await settle(page);
   out.spaceOpens = (await state(page)).opened === "panzoom";
   await page.keyboard.press("Escape");
-  await sleep(200);
+  await settle(page);
   out.escReturnsFocus = (await state(page)).opened !== "panzoom" && (await focusState()).onImage;
   return out;
 }
@@ -315,7 +456,7 @@ async function checkGallery(page, handle) {
   const out = {};
   const counter = async () => (await state(page)).counter;
   await handle.click();
-  await sleep(300);
+  await settle(page);
   const first = await counter();
   const m = /^(\d+) \/ (\d+)$/.exec(first || "");
   if (!m) return out;
@@ -327,50 +468,50 @@ async function checkGallery(page, handle) {
   out.loop = await page.evaluate(() => !!(window.PANZOOM_OPTIONS || {}).loop);
   const t0 = await viewerTransform(page);
   await page.keyboard.press("ArrowLeft");
-  await sleep(100);
+  await settle(page);
   const tl = await viewerTransform(page);
   if (out.loop) {
     out.leftAtStartWraps = (await counter()) === `${n} / ${n}`;
     await page.keyboard.press("ArrowRight");
-    await sleep(100);
+    await settle(page);
     out.leftAtStartStill = out.leftAtStartWraps && (await counter()) === first;
   } else {
     out.leftAtStartStill = (await counter()) === first && !!(t0 && tl) &&
       Math.abs(tl.x - t0.x) < 0.5 && Math.abs(tl.y - t0.y) < 0.5;
   }
   await page.keyboard.press("PageDown");
-  await sleep(100);
+  await settle(page);
   out.pageDown = await counter();
   await page.keyboard.press("PageUp");
-  await sleep(100);
+  await settle(page);
   out.pageUpBack = (await counter()) === first;
   await page.keyboard.press("ArrowRight");
-  await sleep(100);
+  await settle(page);
   out.arrowNext = await counter();
   await page.keyboard.press("ArrowLeft");
-  await sleep(100);
+  await settle(page);
   out.arrowBack = (await counter()) === first;
   await page.click(".panzoom-next");
-  await sleep(100);
+  await settle(page);
   out.buttonNext = await counter();
   await page.click(".panzoom-prev");
-  await sleep(100);
+  await settle(page);
   // Swipe left on the background: next image.
   const cx = VIEWPORT.width / 2, cy = VIEWPORT.height / 2;
   await page.mouse.move(cx + 120, cy);
   await page.mouse.down();
   await page.mouse.move(cx - 120, cy, { steps: 8 });
   await page.mouse.up();
-  await sleep(150);
+  await settle(page);
   out.swipeNext = await counter();
   await page.keyboard.press("PageUp");
-  await sleep(100);
+  await settle(page);
   // Zoomed in, Right pans instead of switching.
   await page.keyboard.press("+");
   await page.keyboard.press("+");
-  await sleep(100);
+  await settle(page);
   await page.keyboard.press("ArrowRight");
-  await sleep(100);
+  await settle(page);
   out.zoomedArrowPans = (await counter()) === first;
   // Without loop, the first image has no previous one.
   // Without loop, the first image has no previous one; with loop it does.
@@ -399,18 +540,56 @@ const KEYBOARD_CHECKS = [
 
 async function checkPage(browser, base, file) {
   const name = path.basename(file, ".html");
-  const outDir = path.join(HERE, "results", name);
+  const outDir = path.join(RESULTS, name);
   fs.rmSync(outDir, { recursive: true, force: true });
   fs.mkdirSync(outDir, { recursive: true });
 
   const page = await browser.newPage();
   await page.setViewport(VIEWPORT);
   const errors = [];
-  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  page.on("console", (m) => {
+    // A failed request logs an error without its address; it is listed
+    // under failed requests instead (and offline, blocked ones aren't).
+    if (m.type() === "error" && !/^Failed to load resource/.test(m.text())) errors.push(m.text());
+  });
   page.on("pageerror", (e) => errors.push(String(e)));
+  await page.evaluateOnNewDocument(defineTexClass);
 
-  await page.goto(base + path.relative(SITE, file).split(path.sep).join("/"), { waitUntil: "load" });
-  await sleep(500);
+  // Requests that leave this machine; offline, they fail as with no network.
+  const external = new Set();
+  const isLocal = (u) => /^(data|blob|about|file):/.test(u) || new URL(u).hostname === "127.0.0.1";
+  const failed = new Set();
+  const short = (u) => (u.length > 120 ? u.slice(0, 120) + "..." : u);
+  page.on("requestfailed", (req) => {
+    if (OFFLINE && !isLocal(req.url())) return;
+    failed.add(`${short(req.url())} (${req.failure()?.errorText})`);
+  });
+  if (OFFLINE) await page.setRequestInterception(true);
+  page.on("request", (req) => {
+    const local = isLocal(req.url());
+    if (!local) external.add(short(req.url()));
+    if (!OFFLINE || req.isInterceptResolutionHandled()) return;
+    if (local) req.continue(); else req.abort("internetdisconnected");
+  });
+
+  const url = selfContained(file)
+    ? "file://" + file
+    : base + path.relative(ROOT, file).split(path.sep).join("/");
+  await page.goto(url, { waitUntil: "load" });
+  await page.evaluate(() => window.MathJax?.startup?.promise); await settle(page);
+
+  // How the page shows its own math, to compare the viewer's with: not the
+  // viewer's, nor the hidden math panzoom adds for descriptions, unless the
+  // page has no other (then that shows whether its math library loaded).
+  // null: no math at all.
+  const pageTeX = await page.evaluate(() => {
+    const all = [...document.querySelectorAll(".math, math")].filter((e) =>
+      !e.closest(".panzoom-overlay, pre, code") && !e.parentElement.closest(".math"));
+    const own = all.filter((e) => !e.closest(".panzoom-math"));
+    const els = own.length ? own : all;
+    const order = ["clean", "raw", "delimited"];
+    return els.length ? els.map(window.__texClass).reduce((a, b) => (order.indexOf(b) > order.indexOf(a) ? b : a)) : null;
+  });
 
   // Record link navigations instead of following them. This listener runs in
   // the bubble phase on window, i.e. after the page's own handlers, so it only
@@ -431,7 +610,8 @@ async function checkPage(browser, base, file) {
       const h = sec.querySelector("h2");
       const m = h && /^(\d+)\.\s*(.*)$/.exec(h.textContent.trim());
       if (!m) return;
-      sec.querySelectorAll("img").forEach((img, i) => {
+      // Not webtex's math images.
+      [...sec.querySelectorAll("img")].filter((img) => !img.closest(".math")).forEach((img, i) => {
         const idx = out.length;
         img.dataset.testIdx = idx;
         const link = img.closest("a");
@@ -446,7 +626,7 @@ async function checkPage(browser, base, file) {
           expectHint: sec.dataset.expectHint || null,
           expectMaxZoom: sec.dataset.expectMaxZoom ? +sec.dataset.expectMaxZoom : null,
           hasDescription: !!img.dataset.panzoomDescription,
-          descriptionHasMath: /class="math/.test(img.dataset.panzoomDescription || ""),
+          descriptionHasMath: /class="math|<math/.test(img.dataset.panzoomDescription || ""),
           classes: img.className,
           wrapper: link ? (link.classList.contains("lightbox") ? "a.lightbox" : "a[href]") : "none",
           gallery: link?.dataset.gallery || null,
@@ -462,13 +642,13 @@ async function checkPage(browser, base, file) {
     const handle = await page.$(`img[data-test-idx="${img.idx}"]`);
     if (!handle) { r.opened = "missing from DOM"; results.push(r); continue; }
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
-    await sleep(150);
+    await settle(page);
     const box = await handle.boundingBox();
     if (!box || box.width < 2) { r.opened = "not visible"; results.push(r); continue; }
 
     await page.evaluate(() => { window.__navigatedTo = null; });
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-    await sleep(900);  // GLightbox open animation
+    await settle(page, 200);  // long enough to be sure whether anything opens
     Object.assign(r, await state(page));
     const navigatedTo = await page.evaluate(() => window.__navigatedTo);
     if (navigatedTo && r.opened === "nothing") r.opened = "navigation", r.navigatedTo = navigatedTo;
@@ -482,10 +662,10 @@ async function checkPage(browser, base, file) {
       // Background click: reopen, click the top-left corner.
       await closeAll(page);
       await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-      await sleep(300);
+      await settle(page, 200);
       if ((await state(page)).opened === "panzoom") {
         await page.mouse.click(5, 5);
-        await sleep(200);
+        await settle(page);
         r.backgroundCloses = (await state(page)).opened !== "panzoom";
       }
     }
@@ -499,7 +679,7 @@ async function checkPage(browser, base, file) {
   if (first) {
     const handle = await page.$(`img[data-test-idx="${first.idx}"]`);
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
-    await sleep(150);
+    await settle(page);
     isolation = await checkIsolation(page, await handle.boundingBox());
     isolation.image = `${first.case}. ${first.caseTitle} (img ${first.n})`;
     isolation.keyboard = await checkKeyboard(page, handle);
@@ -511,7 +691,7 @@ async function checkPage(browser, base, file) {
   if (firstInGallery) {
     const handle = await page.$(`img[data-test-idx="${firstInGallery.idx}"]`);
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
-    await sleep(150);
+    await settle(page);
     gallery = await checkGallery(page, handle);
     gallery.image = `${firstInGallery.case}. ${firstInGallery.caseTitle} (img ${firstInGallery.n})`;
   }
@@ -528,11 +708,11 @@ async function checkPage(browser, base, file) {
     await openImage(page, first);
     const t0 = await viewerTransform(page);
     await page.keyboard.press("ArrowRight");
-    await sleep(100);
+    await settle(page);
     const t1 = await viewerTransform(page);
     const s1 = await state(page);
     await page.keyboard.press("PageDown");
-    await sleep(600);
+    await settle(page);
     const s2 = await state(page);
     const moved = t0 && t1 ? t0.x - t1.x : null;
     const g = {
@@ -565,22 +745,22 @@ async function checkPage(browser, base, file) {
     });
     // (Waits of 600 ms let an end-of-image bounce finish: 120 + 200 ms.)
     for (let i = 0; i < 200; i++) await page.keyboard.press("ArrowRight");
-    await sleep(600);
+    await settle(page);
     const end = await edges();
     for (let i = 0; i < 20; i++) await page.keyboard.press("ArrowRight");
-    await sleep(600);
+    await settle(page);
     const past = await edges();
     c.stopsAtRightEnd = Math.abs(end.right - (end.w - end.m)) < 2 && Math.abs(past.right - end.right) < 0.5;
     // At the end, a key press goes a little past it (up to 40 px) and back.
     await page.keyboard.press("ArrowRight");
     await sleep(90);
     const out = await edges();
-    await sleep(600);
+    await settle(page);
     const back = await edges();
     c.bounceOut = Math.round(end.right - out.right);
     c.bounces = c.bounceOut > 5 && c.bounceOut <= 41 && Math.abs(back.right - end.right) < 0.5;
     for (let i = 0; i < 250; i++) await page.keyboard.press("ArrowLeft");
-    await sleep(600);
+    await settle(page);
     const start = await edges();
     c.stopsAtLeftEnd = Math.abs(start.left - start.m) < 2;
     // Dragging past the left end: follows with resistance (at most 80 px),
@@ -592,13 +772,13 @@ async function checkPage(browser, base, file) {
     await sleep(50);
     const pulled = await edges();
     await page.mouse.up();
-    await sleep(600);
+    await settle(page);
     const released = await edges();
     c.stretch = Math.round(pulled.left - start.left);
     c.stretches = c.stretch > 5 && c.stretch <= 81 && Math.abs(released.left - start.left) < 0.5;
     await page.keyboard.press("ArrowUp");
     await page.keyboard.press("ArrowDown");
-    await sleep(100);
+    await settle(page);
     c.heldVertically = Math.abs((await edges()).top - start.top) < 0.5;
     await closeAll(page);
   }
@@ -613,7 +793,7 @@ async function checkPage(browser, base, file) {
     await page.mouse.down();
     await page.mouse.move(cx + 150, cy + 80, { steps: 8 });
     await page.mouse.up();
-    await sleep(600);  // a drag stretches it, then it springs back
+    await settle(page);  // a drag stretches it, then it springs back
     const t1 = await viewerTransform(page);
     w.stays = !!(t0 && t1) && Math.abs(t1.x - t0.x) < 0.5 && Math.abs(t1.y - t0.y) < 0.5;
     await closeAll(page);
@@ -630,14 +810,15 @@ async function checkPage(browser, base, file) {
     await openImage(page, r);
     if (r.shiftScroll.startsWith("zoomed-")) {
       for (let i = 0; i < 4; i++) await page.keyboard.press("+");
-      await sleep(100);
+      await settle(page);
     }
     const t0 = await viewerTransform(page);
     await page.mouse.move(VIEWPORT.width / 2, VIEWPORT.height / 2);
+    const beforeWheel = await transformOf(page);
     await page.keyboard.down("Shift");
     await page.mouse.wheel({ deltaY: 300 });
+    await afterWheel(page, beforeWheel);
     await page.keyboard.up("Shift");
-    await sleep(150);
     const t1 = await viewerTransform(page);
     const dx = Math.abs(t1.x - t0.x), dy = Math.abs(t1.y - t0.y);
     r.shiftScrolled = t1.s !== t0.s ? "zoomed" : dx > 1 && dy < 0.5 ? "x" : dy > 1 && dx < 0.5 ? "y" :
@@ -661,10 +842,10 @@ async function checkPage(browser, base, file) {
   const clickAt = async (r, fx, fy) => {
     const handle = await page.$(`img[data-test-idx="${r.idx}"]`);
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
-    await sleep(150);
+    await settle(page);
     const b = await handle.boundingBox();
     await page.mouse.click(b.x + fx * b.width, b.y + fy * b.height);
-    await sleep(600);
+    await settle(page);
   };
   const strip = results.find((r) => r.opened === "panzoom" && r.fit === "height" && r.overX && (r.counter || "1 / 1") === "1 / 1");
   const tall = results.find((r) => r.opened === "panzoom" && r.fit === "width" && r.overY && (r.counter || "1 / 1") === "1 / 1");
@@ -675,7 +856,7 @@ async function checkPage(browser, base, file) {
     const mid = await viewAt();
     c.middle = +mid.fx.toFixed(3);
     for (let i = 0; i < 5; i++) await page.keyboard.press("ArrowRight");
-    await sleep(600);
+    await settle(page);
     await page.keyboard.press("0");
     await sleep(50);
     c.resetBack = Math.abs((await viewAt()).left - mid.left) < 0.5;
@@ -687,7 +868,7 @@ async function checkPage(browser, base, file) {
     const handle = await page.$(`img[data-test-idx="${strip.idx}"]`);
     await handle.focus();
     await page.keyboard.press("Enter");
-    await sleep(600);
+    await settle(page);
     c.keyboardLeft = Math.abs((await viewAt()).left - end.m) < 2;
     await closeAll(page);
     c.ok = Math.abs(c.middle - 0.5) < 0.01 && c.resetBack && c.rightFlush && c.keyboardLeft;
@@ -705,8 +886,9 @@ async function checkPage(browser, base, file) {
   for (const r of results.filter((r) => r.opened === "panzoom" && r.expectMaxZoom)) {
     await openImage(page, r);
     await page.mouse.move(VIEWPORT.width / 2, VIEWPORT.height / 2);
+    const beforeWheel = await transformOf(page);
     for (let i = 0; i < 30; i++) { await page.mouse.wheel({ deltaY: -200 }); await sleep(20); }
-    await sleep(200);
+    await afterWheel(page, beforeWheel);
     r.maxScaleReached = (await viewerTransform(page))?.s ?? null;
     await closeAll(page);
   }
@@ -716,20 +898,21 @@ async function checkPage(browser, base, file) {
   const fitCases = results.filter((r) => r.opened === "panzoom" && r.expectFit);
   if (fitCases.length) {
     await page.setViewport({ width: 2560, height: 1000 });
-    await sleep(300);
+    await settle(page);
     for (const r of fitCases) {
       await openImage(page, r);
       r.wideFit = (await state(page)).fit;
       await closeAll(page);
     }
     await page.setViewport(VIEWPORT);
-    await sleep(300);
+    await settle(page);
   }
 
   await page.close();
-  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen }, null, 2));
-  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen));
-  return { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen };
+  const network = { url: url.startsWith("file:") ? "file://" : "http", external: [...external], failed: [...failed], offline: OFFLINE, pageTeX };
+  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen }, null, 2));
+  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen));
+  return { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen };
 }
 
 function isolationOk(iso) {
@@ -765,15 +948,34 @@ function hasOptionChecks(r) {
   return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom);
 }
 
-// An image with a description shows it in the viewer, with any math typeset.
+// An image with a description shows it in the viewer.
 function descriptionOk(r) {
-  return !r.hasDescription || (!!r.description && (!r.descriptionHasMath || r.descriptionMath));
+  return !r.hasDescription || r.descriptionShown;
 }
 
-function report(file, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen) {
+// Math in the viewer's caption and description shows no worse than the
+// page's own: typeset if the page's is; raw TeX only where the page has it
+// too (the plain method, or a math library that couldn't load).
+function mathOk(r, pageTeX) {
+  const worst = TEX_RANK[pageTeX ?? "clean"];
+  return TEX_RANK[r.captionTeX] <= worst && TEX_RANK[r.descriptionTeX] <= worst;
+}
+function hasMath(r) {
+  return r.opened === "panzoom" && (r.captionHasMath || r.descriptionHasMath);
+}
+const TEX_LABEL = { clean: "typeset", raw: "raw TeX", delimited: "not typeset" };
+
+function report(file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen) {
   const yn = (v) => (v === undefined || v === null ? "" : v === true ? "yes" : v === false ? "NO" : String(v));
   const lines = [
     `# ${path.basename(file)}`, "",
+    `Opened from ${network.url === "file://" ? "its file:// address (self-contained)" : "the local web server"}` +
+      `${network.offline ? ", offline (external requests blocked)" : ""}.`, "",
+    `External requests${network.offline ? " (blocked)" : ""}: ${network.external.length ? "" : "none"}`,
+    ...network.external.map((u) => `- \`${u}\``), "",
+    `Failed requests${network.offline ? " (besides the blocked ones)" : ""}: ${network.failed.length ? "" : "none"}`,
+    ...network.failed.map((u) => `- \`${u}\``), "",
+    `Math on the page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"}`, "",
     `Console errors: ${errors.length ? "" : "none"}`,
     ...errors.map((e) => `- \`${e}\``), "",
     "| Case | Img | Classes | Wrapper | Opened | Details | Zoom× | Anchor px | Drag px | Reset | Esc | Bg click |",
@@ -786,7 +988,8 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
         `opens: ${r.fit || "—"}` + (r.wideFit !== undefined ? `, ${r.wideFit} at 2560 px` : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "") +
         (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "") +
-        (r.description ? `; description: ${r.description}` + (r.descriptionMath ? " (math typeset)" : "") : "") +
+        (r.captionHasMath ? ` (caption math ${TEX_LABEL[r.captionTeX]})` : "") +
+        (r.description ? `; description: ${r.description}` + (r.descriptionHasMath ? ` (math ${TEX_LABEL[r.descriptionTeX]})` : "") : "") +
         (r.opened === "panzoom" ? `; hint ${r.hintShown ? "shown" : "hidden"}` : "") +
         (r.maxScaleReached ? `; zoom stops at ${+r.maxScaleReached.toFixed(3)}` : "")
       : r.opened === "navigation" ? r.navigatedTo : "";
@@ -889,12 +1092,12 @@ function report(file, errors, results, isolation, gallery, overflowGalleries, co
 }
 
 for (const file of PAGES) {
-  if (!file.startsWith(SITE + path.sep)) {
-    console.error(`${file} is not inside ${SITE}; render the project and pass pages from docs/.`);
+  if (!file.startsWith(ROOT + path.sep) || !fs.existsSync(file)) {
+    console.error(`${file} is not a file inside ${ROOT}; render first (quarto render, node standalone.mjs).`);
     process.exit(1);
   }
 }
-const server = await serve(SITE);
+const server = await serve(ROOT);
 const base = `http://127.0.0.1:${server.address().port}/`;
 const browser = await puppeteer.launch({
   executablePath: CHROME,
@@ -910,7 +1113,7 @@ try {
   // Start every page at once; report them in order as they finish.
   const runs = PAGES.map((file) => checkPage(browser, base, file));
   for (const run of runs) {
-    const { name, outDir, errors, results, isolation, gallery, overflowGalleries, containment, clickOpen } = await run;
+    const { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen } = await run;
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
     const iso = isolation
       ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
@@ -922,12 +1125,19 @@ try {
     // Every image is shown on an opaque backdrop (transparent plots stay readable).
     const opened = results.filter((r) => r.opened === "panzoom");
     if (opened.length) extra.push(opened.every((r) => /^rgb\(/.test(r.backdrop || "")) ? "backdrop ok" : "BACKDROP FAILED");
+    const anchored = opened.filter((r) => r.anchorChecked);
+    if (anchored.length) extra.push(anchored.every((r) => r.anchorFastDrift <= 5) ? "fast zoom ok" : "FAST ZOOM FAILED");
     const scaled = opened.filter((r) => r.expectScale);
     if (scaled.length) extra.push(scaled.every(scaleOk) ? "real size ok" : "REAL SIZE FAILED");
     const optioned = results.filter(hasOptionChecks);
     if (optioned.length) extra.push(optioned.every(optionsOk) ? "options ok" : "OPTIONS FAILED");
     const described = opened.filter((r) => r.hasDescription);
     if (described.length) extra.push(described.every(descriptionOk) ? "descriptions ok" : "DESCRIPTIONS FAILED");
+    const withMath = results.filter(hasMath);
+    if (withMath.length) extra.push((withMath.every((r) => mathOk(r, network.pageTeX)) ? "math ok" : "MATH FAILED") +
+      ` (page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"})`);
+    if (network.failed.length) extra.push(`${network.failed.length} FAILED REQUESTS`);
+    if (network.external.length) extra.push(`${network.external.length} external requests${OFFLINE ? " blocked" : ""}`);
     if (overflowGalleries.length) extra.push(overflowGalleries.every((g) => g.ok) ? "large galleries ok" : "LARGE GALLERIES FAILED");
     if (containment) extra.push(containment.ok ? "containment ok" : "CONTAINMENT FAILED");
     if (clickOpen) extra.push(clickOpen.ok ? "focal point ok" : "FOCAL POINT FAILED");

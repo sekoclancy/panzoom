@@ -11,6 +11,7 @@
 # Tests
 /tests/node_modules/
 /tests/results/
+/tests/standalone/*.html
 /tests/ext-compat/
 
 **/*.quarto_ipynb

@@ -1,0 +1,9 @@
+---
+title: "Math"
+subtitle: "html-math-method: katex"
+filters:
+  - panzoom
+html-math-method: katex
+---
+
+{{< include _math.qmd >}}
