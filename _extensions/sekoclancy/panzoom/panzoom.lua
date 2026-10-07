@@ -39,12 +39,17 @@ local function has(classes, name)
   return classes ~= nil and classes:includes(name)
 end
 
--- Markdown to HTML, for descriptions. Math stays as \( \) for the page's
--- MathJax (or KaTeX) to typeset in the viewer.
+-- Markdown to HTML, for descriptions. Math is written the way the page
+-- writes its own (`html-math-method`): left as TeX for MathJax or KaTeX
+-- to typeset in the viewer, or as MathML, webtex images or plain text,
+-- which need no typesetting.
 local function markdown_html(text)
   local doc = pandoc.read(text, "markdown")
   doc:walk({ Math = function() needs_math = true end })
-  return pandoc.write(doc, "html", { html_math_method = "mathjax", wrap_text = "none" })
+  return pandoc.write(doc, "html", {
+    html_math_method = PANDOC_WRITER_OPTIONS.html_math_method,
+    wrap_text = "none",
+  })
 end
 
 local function mark(img)
@@ -297,13 +302,15 @@ return {
   },
   -- A description's math is typeset by the page's MathJax (or KaTeX), but
   -- Quarto only loads it when the page itself has math. The descriptions
-  -- live in image attributes, which it doesn't see, so add a hidden empty
-  -- math element when one of them has math.
+  -- live in image attributes, which it doesn't see, so add a hidden math
+  -- element when one of them has math. It holds `{}` (renders as nothing):
+  -- Quarto's KaTeX loader reads every math element's text and throws on an
+  -- empty one.
   {
     Pandoc = function(doc)
       if needs_math then
         doc.blocks:insert(pandoc.Div(
-          { pandoc.Plain({ pandoc.Math("InlineMath", "") }) },
+          { pandoc.Plain({ pandoc.Math("InlineMath", "{}") }) },
           pandoc.Attr("", { "panzoom-math" }, { style = "display:none" })))
         return doc
       end
