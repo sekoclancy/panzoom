@@ -62,6 +62,11 @@
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption, desc;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
   var bouncing = false, bounceTimer = null;
+  // Where the image's center is held, on screen, along an axis where it is
+  // smaller than the screen ({ x, y }; null: centered). Only zooming sets
+  // it (see zoomAt()); opening, reset and zooming out to the whole image
+  // clear it.
+  var held = { x: null, y: null };
   // The focal point: where the image was clicked on the page, as fractions
   // of its width and height ({ el, fx, fy }), or null (opened from the
   // keyboard).
@@ -154,6 +159,7 @@
   // (cy - h/2) / s).
   function fit() {
     stopBounce();
+    held = { x: null, y: null };
     var a = area(), vw = a.w, vh = a.h;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
@@ -210,13 +216,20 @@
   }
 
   // Keeps the image on screen, one axis at a time: where it is smaller than
-  // the space it stays centered; where it is larger, its edges stop at the
-  // screen edges (less the opening margin), so panning ends at the image's
-  // ends. `t` is Panzoom's pan along the axis (unscaled px, see fit()), `n`
-  // the image size and `avail` the space, both along the axis.
-  function containAxis(t, s, n, avail) {
+  // the space it stays where zooming put it (`hold`, its center on screen),
+  // or centered, and wholly on screen (within the opening margin where it
+  // fits); drags and arrow keys don't move it. Where it is larger, its
+  // edges stop at the screen edges (less the margin), so panning ends at
+  // the image's ends. `t` is Panzoom's pan along the axis (unscaled px, see
+  // fit()), `n` the image size and `avail` the space, both along the axis.
+  function containAxis(t, s, n, avail, hold) {
     var size = n * s;
-    if (size <= avail) return (avail - n) / (2 * s);
+    if (size <= avail) {
+      var m = Math.min(margin, (avail - size) / 2);
+      var h = hold === null || hold === undefined ? avail / 2 : hold;
+      h = Math.min(avail - m - size / 2, Math.max(m + size / 2, h));
+      return (h - n / 2) / s;
+    }
     var c = n / 2 + s * t;                             // image center on screen
     c = Math.min(margin + size / 2, Math.max(avail - margin - size / 2, c));
     return (c - n / 2) / s;
@@ -225,7 +238,10 @@
   // The contained pan for (x, y) at scale s.
   function contained(x, y, s) {
     var a = area();
-    return { x: containAxis(x, s, img.naturalWidth, a.w), y: containAxis(y, s, img.naturalHeight, a.h) };
+    return {
+      x: containAxis(x, s, img.naturalWidth, a.w, held.x),
+      y: containAxis(y, s, img.naturalHeight, a.h, held.y)
+    };
   }
 
   // How far a drag `over` px past an image's end shows: it follows with
@@ -303,12 +319,25 @@
   // page still shows the old size and zoomToPoint anchors to the wrong
   // point. The image's unscaled box sits at the overlay's top-left (see
   // fit()), so its center is at (w/2, h/2) in overlay coordinates.
+  //
+  // Along an axis where the image ends up smaller than the screen, its
+  // center is held where this zoom puts it (see containAxis()), so the
+  // point under the cursor stays there instead of the image re-centering
+  // and drifting away from it. Zoomed out to the whole image, it centers.
   function zoomAt(factor, px, py) {
     if (!pz) return;
     stopBounce();
     var o = pz.getOptions();
-    var s = Math.min(o.maxScale, Math.max(o.minScale, pz.getScale() * factor));
+    var s0 = pz.getScale(), p = pz.getPan(), a = area();
+    var s = Math.min(o.maxScale, Math.max(o.minScale, s0 * factor));
     var box = overlay.getBoundingClientRect();
+    var w = img.naturalWidth, h = img.naturalHeight;
+    var fx = px - box.left, fy = py - box.top, f = s / s0;
+    var whole = s <= o.minScale + 1e-9;
+    held = {
+      x: whole || w * s > a.w ? null : fx - (fx - (w / 2 + s0 * p.x)) * f,
+      y: whole || h * s > a.h ? null : fy - (fy - (h / 2 + s0 * p.y)) * f
+    };
     pz.zoom(s, {
       animate: false,
       focal: {
@@ -324,6 +353,7 @@
   // image flies far off-screen mid-animation and snaps back.
   function resetView() {
     stopBounce();
+    held = { x: null, y: null };
     if (pz) pz.reset({ animate: false });
   }
 

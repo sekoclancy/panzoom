@@ -249,11 +249,37 @@ async function exercisePanzoom(page) {
   const frac = (r) => [(px - r.left) / r.width, (py - r.top) / r.height];
   const f0 = frac(r0);
   await page.mouse.move(px, py);
-  const beforeWheel = await transformOf(page);
-  // Back to back, like a fast wheel or a trackpad pinch: several steps can
-  // land in one animation frame, which once made the zoom drift.
-  for (let i = 0; i < 5; i++) await page.mouse.wheel({ deltaY: -200 });
-  await afterWheel(page, beforeWheel);
+  // One wheel step at a time (several in one frame are the fast zoom check,
+  // below). In each step the image point under the cursor must stay there,
+  // within 3 px, except along an axis where the step left the image flush
+  // with the screen margin: containment may move it there (an image larger
+  // than the screen covers it edge to edge; a smaller one stays wholly on
+  // screen). Anchor px is how far the point drifted over all five steps.
+  const flush = () => page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay");
+    const a = { w: o.clientWidth, h: o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight };
+    const margin = 0.025 * Math.min(a.w, a.h);
+    const ob = o.getBoundingClientRect(), r = o.querySelector("img").getBoundingClientRect();
+    const at = (lo, size, avail) => {
+      const m = size > avail ? margin : Math.min(margin, (avail - size) / 2);
+      return Math.abs(lo - m) <= 2 || Math.abs(avail - lo - size - m) <= 2;
+    };
+    return [at(r.left - ob.left, r.width, a.w), at(r.top - ob.top, r.height, a.h)];
+  });
+  out.anchorOk = true;
+  let prev = r0;
+  for (let i = 0; i < 5; i++) {
+    const before = await transformOf(page);
+    const fp = frac(prev);
+    await page.mouse.wheel({ deltaY: -200 });
+    await afterWheel(page, before);
+    const next = await imageRect();
+    const d = [fp[0] * next.width + next.left - px, fp[1] * next.height + next.top - py];
+    const fl = await flush();
+    (out.anchorSteps ??= []).push({ d: d.map(Math.round), flush: fl, w: Math.round(next.width), h: Math.round(next.height), left: Math.round(next.left), top: Math.round(next.top) });
+    if ((Math.abs(d[0]) > 3 && !fl[0]) || (Math.abs(d[1]) > 3 && !fl[1])) out.anchorOk = false;
+    prev = next;
+  }
   const zoomed = await viewerTransform(page);
   out.wheelZoom = fit && zoomed ? +(zoomed.s / fit.s).toFixed(2) : null;
   const r1 = await imageRect();
@@ -994,7 +1020,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         (r.maxScaleReached ? `; zoom stops at ${+r.maxScaleReached.toFixed(3)}` : "")
       : r.opened === "navigation" ? r.navigatedTo : "";
     lines.push(`| ${r.case}. ${r.caseTitle} | ${r.n} | \`${r.classes}\` | ${r.wrapper} | **${r.opened}** | ` +
-      `${details.replace(/\|/g, "\\|")} | ${yn(r.wheelZoom)} | ${yn(r.anchorDrift)} | ${yn(r.dragMoved)} | ${yn(r.resetOk)} | ` +
+      `${details.replace(/\|/g, "\\|")} | ${yn(r.wheelZoom)} | ${yn(r.anchorDrift)}${r.anchorOk === false ? " **NO**" : ""} | ${yn(r.dragMoved)} | ${yn(r.resetOk)} | ` +
       `${yn(r.escCloses)} | ${yn(r.backgroundCloses)} |`);
   }
   lines.push("", "## Viewer isolation", "");
@@ -1127,6 +1153,7 @@ try {
     if (opened.length) extra.push(opened.every((r) => /^rgb\(/.test(r.backdrop || "")) ? "backdrop ok" : "BACKDROP FAILED");
     const anchored = opened.filter((r) => r.anchorChecked);
     if (anchored.length) extra.push(anchored.every((r) => r.anchorFastDrift <= 5) ? "fast zoom ok" : "FAST ZOOM FAILED");
+    if (opened.length) extra.push(opened.every((r) => r.anchorOk) ? "zoom anchor ok" : "ZOOM ANCHOR FAILED");
     const scaled = opened.filter((r) => r.expectScale);
     if (scaled.length) extra.push(scaled.every(scaleOk) ? "real size ok" : "REAL SIZE FAILED");
     const optioned = results.filter(hasOptionChecks);

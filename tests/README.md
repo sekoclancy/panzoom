@@ -221,9 +221,9 @@ Report columns:
 | Opened | What a click did: **panzoom** (our viewer), **glightbox** (Quarto's lightbox), **navigation** (followed a link; the test stops it before it leaves), or **nothing**. |
 | Details | For GLightbox: the slide's title, description and how many slides its gallery has. For panzoom: the caption shown in the viewer and the gallery position (`2 / 3`). |
 | Zoom× | Five wheel-scroll steps zoomed the image this many times its fitted size. |
-| Anchor px | Those steps were taken with the mouse over a point 30% across and 60% down the image. Zooming toward the cursor keeps that point under it; this is how far it drifted (a few px of rounding is normal). |
+| Anchor px | Those steps were taken, one at a time, with the mouse over a point 30% across and 60% down the image. Zooming toward the cursor keeps that point under it; this is how far it drifted in all. **NO**: a step moved it more than 3 px without the image being held at a screen edge (see Zoom anchor). |
 | Drag px | A 170 px mouse drag moved the image this far. |
-| Reset | Pressing `0` returned to the opening view at once (checked 20 ms later, so an animated reset fails). |
+| Reset | Pressing `0` returned to the opening view at once (checked two animation frames later, so an animated reset fails). |
 | Esc / Bg click | Esc, and a click on the dark background, closed the viewer. |
 
 **Viewer isolation.** With the viewer open, the test adds key listeners to the
@@ -276,6 +276,14 @@ request that failed (`N FAILED REQUESTS`). On a gallery of images that open wide
 the screen, the test also checks that `→` pans along the image and
 `PageDown` switches to the next one, and on a gallery of tall strips that
 `→` neither switches nor moves the strip (`large galleries ok`).
+
+**Zoom anchor.** In each of the five wheel steps (Anchor px), the image
+point under the cursor must stay within 3 px of it, except along an axis
+where the step left the image flush with the screen margin: there the
+viewer may move it, to keep an image larger than the screen covering it
+edge to edge, or a smaller one wholly on screen (`zoom anchor ok`).
+Several steps within one animation frame are checked separately, once the
+image is larger than the screen (`fast zoom ok`).
 
 **Shift+scroll.** Cases with a `shift-scroll` attribute (`x`, `y`, `none`,
 or `zoomed-x` for "after zooming in"; page E) are checked for which way
