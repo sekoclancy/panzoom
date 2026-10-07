@@ -34,6 +34,14 @@ It attempts to match, and extend, the feature set of Quarto's built-in
 - **Layouts:** figures in Quarto layouts (`layout-ncol`, `layout-nrow`,
   layout divs) open one at a time; subfigures form a gallery.
 - **Linked images:** an image inside a link keeps its link.
+- **Self-contained documents:** works in a single HTML file
+  (`embed-resources: true`), opened straight from disk.
+- **Math libraries:** math in captions and descriptions shows as it does on
+  the page, with any `html-math-method` (MathJax, KaTeX, MathML, WebTeX,
+  plain).
+- **No internet needed:** the viewer and the Panzoom library it uses
+  are bundled; only math needs a connection, unless it is embedded (see
+  [Self-contained and offline documents](#self-contained-and-offline-documents)).
 
 ## Installation
 
@@ -210,6 +218,32 @@ larger than the screen (or do nothing, if it fits sideways); use
 <kbd>PageUp</kbd>/<kbd>PageDown</kbd> or the on-screen ‹ › buttons to
 change images.
 
+### Self-contained and offline documents
+
+panzoom works in a self-contained document, a single HTML file you can
+email or open from disk:
+
+```yaml
+filters:
+  - panzoom
+embed-resources: true
+```
+
+The viewer needs no internet access. Quarto loads MathJax and KaTeX from
+the web, though, so without a connection math in the page, and in the
+viewer's captions and descriptions, shows as raw TeX. To make a file whose
+math works offline too, render it (with a connection) using MathJax and
+`self-contained-math`:
+
+```yaml
+embed-resources: true
+self-contained-math: true
+```
+
+Math is then typeset offline, in system fonts rather than MathJax's own
+(Quarto doesn't embed those). MathML (`html-math-method: mathml`) needs no
+library at all, so it works offline without embedding anything.
+
 ## Development
 
 ```bash
@@ -279,5 +313,9 @@ viewer, it then checks zoom, pan, reset and closing, that key presses
 don't reach the page behind it, and that it works from the keyboard alone.
 It writes a report per page and a screenshot of each step for a person to
 review; nothing is compared pixel by pixel.
+
+A few more pages, outside the website, check a single self-contained HTML
+file opened from disk and math with each of Quarto's math methods, and the
+whole set can be run with no internet access.
 
 See `tests/README.md` for setup and running the tests.
