@@ -189,7 +189,19 @@ window.Quarto = {
   </li>  
         <li>
     <a class="dropdown-item" href="../../tests/pages/e-formats.html">
- <span class="dropdown-text">E: formats and wide figures</span></a>
+ <span class="dropdown-text">E: image formats</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tests/pages/f-options.html">
+ <span class="dropdown-text">F: options</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tests/pages/g-captions.html">
+ <span class="dropdown-text">G: captions and descriptions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tests/pages/h-wide.html">
+ <span class="dropdown-text">H: wide and tall figures</span></a>
   </li>  
     </ul>
   </li>
@@ -259,9 +271,12 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="c1">1. Single image, markdown description, desc-position left</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../images/mv-0.jpg" class="panzoom nolightbox img-fluid figure-img" data-desc-position="left" data-panzoom-description="<p>Chilmark has <em>some</em> of the best beaches. <strong>credit:</strong> <a href=&quot;https://unsplash.com/photos/VBDJGOMCwps&quot;>Chilmark Beach</a></p>"></p>
+<p><img src="../../images/mv-0.jpg" class="panzoom nolightbox img-fluid figure-img" data-desc-position="left" data-panzoom-desc="panzoom-desc-1"></p>
 <figcaption>Beach in Chilmark</figcaption>
 </figure>
+</div>
+<div id="panzoom-desc-1" class="panzoom-desc">
+<p>Chilmark has <em>some</em> of the best beaches. <strong>credit:</strong> <a href="https://unsplash.com/photos/VBDJGOMCwps">Chilmark Beach</a></p>
 </div>
 </section>
 <section id="c2" class="level2">
@@ -271,7 +286,7 @@ window.Quarto = {
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../images/mv-1.jpg" class="panzoom nolightbox img-fluid figure-img" data-group="elsewhere" data-panzoom-description="<p>The waves break off Aquinnah.</p>"></p>
+<p><img src="../../images/mv-1.jpg" class="panzoom nolightbox img-fluid figure-img" data-group="elsewhere" data-panzoom-desc="panzoom-desc-2"></p>
 <figcaption>Aquinnah</figcaption>
 </figure>
 </div>
@@ -279,7 +294,7 @@ window.Quarto = {
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../images/mv-3.jpg" class="panzoom nolightbox img-fluid figure-img" data-group="elsewhere" data-panzoom-description="<p>Gingerbread cottages.</p>"></p>
+<p><img src="../../images/mv-3.jpg" class="panzoom nolightbox img-fluid figure-img" data-group="elsewhere" data-panzoom-desc="panzoom-desc-3"></p>
 <figcaption>Oak Bluffs</figcaption>
 </figure>
 </div>
@@ -289,21 +304,33 @@ window.Quarto = {
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../images/mv-2.jpg" class="panzoom nolightbox img-fluid figure-img" data-group="elsewhere" data-panzoom-description="<p>Edgartown Lighthouse.</p>"></p>
+<p><img src="../../images/mv-2.jpg" class="panzoom nolightbox img-fluid figure-img" data-group="elsewhere" data-panzoom-desc="panzoom-desc-4"></p>
 <figcaption>Vineyard lighthouse</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<div id="panzoom-desc-2" class="panzoom-desc">
+<p>The waves break off Aquinnah.</p>
+</div>
+<div id="panzoom-desc-3" class="panzoom-desc">
+<p>Gingerbread cottages.</p>
+</div>
+<div id="panzoom-desc-4" class="panzoom-desc">
+<p>Edgartown Lighthouse.</p>
+</div>
 </section>
 <section id="c3" class="level2">
 <h2 class="anchored" data-anchor-id="c3">3. Math in caption and description</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../images/mv-4.jpg" class="panzoom nolightbox img-fluid figure-img" data-panzoom-description="<p>Description with math <span class=&quot;math inline&quot;>\(\int_0^1 x^2\,dx = 1/3\)</span></p>"></p>
+<p><img src="../../images/mv-4.jpg" class="panzoom nolightbox img-fluid figure-img" data-panzoom-desc="panzoom-desc-5"></p>
 <figcaption>Caption with math <span class="math inline">\(e^{i\pi}+1=0\)</span></figcaption>
 </figure>
+</div>
+<div id="panzoom-desc-5" class="panzoom-desc">
+<p>Description with math <span class="math inline">\(\int_0^1 x^2\,dx = 1/3\)</span></p>
 </div>
 </section>
 <section id="c4" class="level2">

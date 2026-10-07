@@ -78,3 +78,6 @@ img.panzoom:not(.nopanzoom):focus-visible {
 .panzoom-hint {
   color: #aaa; font-size: 0.8rem; pointer-events: none;
 }
+
+/* Descriptions, rendered on the page for the viewer to copy (panzoom.lua) */
+.panzoom-desc { display: none; }

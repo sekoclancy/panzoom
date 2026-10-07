@@ -10,9 +10,10 @@
 
   Captions: the viewer shows the image's figure caption, taken from the
   rendered page (the nearest <figcaption>), so "Figure N:" prefixes and
-  typeset math come through. Below it, the image's description
-  (`data-panzoom-description`: HTML that panzoom.lua made from the
-  `description` attribute or cell option), with its math typeset on show.
+  typeset math come through. Below it, the image's description: a copy
+  of the hidden `.panzoom-desc` div its `data-panzoom-desc` names, which
+  panzoom.lua made from the `description` attribute or cell option and
+  Quarto rendered with the page (citations, cross-references, math).
 
   Galleries: images with the same group are stepped through with the
   prev/next buttons, PageUp/PageDown, Left/Right or a horizontal swipe
@@ -62,6 +63,11 @@
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption, desc;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
   var bouncing = false, bounceTimer = null;
+  // Where the image's center is held, on screen, along an axis where it is
+  // smaller than the screen ({ x, y }; null: centered). Only zooming sets
+  // it (see zoomAt()); opening, reset and zooming out to the whole image
+  // clear it.
+  var held = { x: null, y: null };
   // The focal point: where the image was clicked on the page, as fractions
   // of its width and height ({ el, fx, fy }), or null (opened from the
   // keyboard).
@@ -95,6 +101,12 @@
   // The image's caption: its figure's caption and, for a subfigure, the
   // parent figure's caption as a second line ("(a) Sub A" over "Figure 1:
   // ..."), since the subfigure caption alone has no figure number.
+  // The image's description, as rendered on the page (see the header).
+  function descriptionOf(el) {
+    var d = el.dataset.panzoomDesc && document.getElementById(el.dataset.panzoomDesc);
+    return d ? d.innerHTML : "";
+  }
+
   function captionOf(el) {
     var fig = el.closest("figure");
     var html = figcaption(fig);
@@ -154,6 +166,7 @@
   // (cy - h/2) / s).
   function fit() {
     stopBounce();
+    held = { x: null, y: null };
     var a = area(), vw = a.w, vh = a.h;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
@@ -189,6 +202,10 @@
       minScale: Math.min(whole, s),
       maxScale: Math.max(opts.maxZoom, s)
     });
+    // Panzoom applies startX/startY on a timer after it starts; apply them
+    // now, so the image doesn't show at (0, 0) for a frame and an
+    // immediate zoom or pan starts from the opening view.
+    pz.pan((cx - w / 2) / s, (cy - h / 2) / s, { animate: false, force: true });
   }
 
   // The space the image is shown in: the overlay above the caption.
@@ -206,13 +223,20 @@
   }
 
   // Keeps the image on screen, one axis at a time: where it is smaller than
-  // the space it stays centered; where it is larger, its edges stop at the
-  // screen edges (less the opening margin), so panning ends at the image's
-  // ends. `t` is Panzoom's pan along the axis (unscaled px, see fit()), `n`
-  // the image size and `avail` the space, both along the axis.
-  function containAxis(t, s, n, avail) {
+  // the space it stays where zooming put it (`hold`, its center on screen),
+  // or centered, and wholly on screen (within the opening margin where it
+  // fits); drags and arrow keys don't move it. Where it is larger, its
+  // edges stop at the screen edges (less the margin), so panning ends at
+  // the image's ends. `t` is Panzoom's pan along the axis (unscaled px, see
+  // fit()), `n` the image size and `avail` the space, both along the axis.
+  function containAxis(t, s, n, avail, hold) {
     var size = n * s;
-    if (size <= avail) return (avail - n) / (2 * s);
+    if (size <= avail) {
+      var m = Math.min(margin, (avail - size) / 2);
+      var h = hold === null || hold === undefined ? avail / 2 : hold;
+      h = Math.min(avail - m - size / 2, Math.max(m + size / 2, h));
+      return (h - n / 2) / s;
+    }
     var c = n / 2 + s * t;                             // image center on screen
     c = Math.min(margin + size / 2, Math.max(avail - margin - size / 2, c));
     return (c - n / 2) / s;
@@ -221,7 +245,10 @@
   // The contained pan for (x, y) at scale s.
   function contained(x, y, s) {
     var a = area();
-    return { x: containAxis(x, s, img.naturalWidth, a.w), y: containAxis(y, s, img.naturalHeight, a.h) };
+    return {
+      x: containAxis(x, s, img.naturalWidth, a.w, held.x),
+      y: containAxis(y, s, img.naturalHeight, a.h, held.y)
+    };
   }
 
   // How far a drag `over` px past an image's end shows: it follows with
@@ -230,8 +257,10 @@
     return (over < 0 ? -1 : 1) * STRETCH * (1 - Math.exp(-Math.abs(over) / (2 * STRETCH)));
   }
 
-  // Runs after every Panzoom change (drag, pinch, zoom, pan, reset), before
-  // the browser paints, and moves the image back inside if needed. During a
+  // Runs after every Panzoom change (drag, pinch, zoom, pan, reset), when
+  // Panzoom draws it (in an animation frame), and moves the image back
+  // inside if needed; that correction is drawn on the next frame. It works
+  // from Panzoom's own pan and scale, which are always current. During a
   // drag the image may go past its ends with resistance (stretch()); it
   // springs back when released (settle()). Not during a bounce: that
   // animation goes past the end on purpose.
@@ -248,14 +277,22 @@
     }
   }
 
+  // Whether a bounce or spring-back is running. The overlay carries the
+  // `panzoom-moving` class meanwhile, for CSS or scripts (the browser tests
+  // wait for it to go).
+  function setBouncing(on) {
+    bouncing = on;
+    if (overlay) overlay.classList.toggle("panzoom-moving", on);
+  }
+
   // Animated pan to (x, y), then `then`. Only a pan at a fixed scale is
   // animated, so the image slides straight (see resetView()).
   function slideTo(x, y, ms, easing, then) {
-    bouncing = true;
+    setBouncing(true);
     pz.pan(x, y, { animate: true, duration: ms, easing: easing, force: true });
     bounceTimer = setTimeout(function () {
       bounceTimer = null;
-      if (then) then(); else bouncing = false;
+      if (then) then(); else setBouncing(false);
     }, ms);
   }
 
@@ -265,7 +302,7 @@
     if (bounceTimer) clearTimeout(bounceTimer);
     bounceTimer = null;
     if (!bouncing) return;
-    bouncing = false;
+    setBouncing(false);
     contain();
   }
 
@@ -280,12 +317,41 @@
   // Zoom by `factor`, keeping the image point under (px, py) fixed on screen.
   // Clamp to the zoom limits here: Panzoom computes the fixed point for the
   // scale it is asked for, so asking past a limit makes the image drift.
+  //
+  // The fixed point (Panzoom's `focal`: the point relative to the image's
+  // unscaled center, times the new scale) is computed here rather than with
+  // pz.zoomToPoint, which measures the image on the page. Panzoom only
+  // draws a change on the next animation frame, so when several zoom steps
+  // come within one frame (fast keys, a trackpad pinch, a fast wheel), the
+  // page still shows the old size and zoomToPoint anchors to the wrong
+  // point. The image's unscaled box sits at the overlay's top-left (see
+  // fit()), so its center is at (w/2, h/2) in overlay coordinates.
+  //
+  // Along an axis where the image ends up smaller than the screen, its
+  // center is held where this zoom puts it (see containAxis()), so the
+  // point under the cursor stays there instead of the image re-centering
+  // and drifting away from it. Zoomed out to the whole image, it centers.
   function zoomAt(factor, px, py) {
     if (!pz) return;
     stopBounce();
     var o = pz.getOptions();
-    var s = Math.min(o.maxScale, Math.max(o.minScale, pz.getScale() * factor));
-    pz.zoomToPoint(s, { clientX: px, clientY: py });
+    var s0 = pz.getScale(), p = pz.getPan(), a = area();
+    var s = Math.min(o.maxScale, Math.max(o.minScale, s0 * factor));
+    var box = overlay.getBoundingClientRect();
+    var w = img.naturalWidth, h = img.naturalHeight;
+    var fx = px - box.left, fy = py - box.top, f = s / s0;
+    var whole = s <= o.minScale + 1e-9;
+    held = {
+      x: whole || w * s > a.w ? null : fx - (fx - (w / 2 + s0 * p.x)) * f,
+      y: whole || h * s > a.h ? null : fy - (fy - (h / 2 + s0 * p.y)) * f
+    };
+    pz.zoom(s, {
+      animate: false,
+      focal: {
+        x: (px - box.left - img.naturalWidth / 2) * s,
+        y: (py - box.top - img.naturalHeight / 2) * s
+      }
+    });
   }
 
   // Back to the opening view, without Panzoom's default animation: it
@@ -294,6 +360,7 @@
   // image flies far off-screen mid-animation and snaps back.
   function resetView() {
     stopBounce();
+    held = { x: null, y: null };
     if (pz) pz.reset({ animate: false });
   }
 
@@ -336,13 +403,8 @@
     counter.textContent = (i + 1) + " / " + n;
     caption.innerHTML = opts.caption ? captionOf(el) : "";
     caption.hidden = !caption.innerHTML;
-    desc.innerHTML = opts.caption ? el.dataset.panzoomDescription || "" : "";
-    desc.hidden = !desc.innerHTML;
-    // Typeset the description's math, as Quarto's lightbox does (the caption
-    // is copied already typeset).
-    if (!desc.hidden && window.Quarto && typeof window.Quarto.typesetMath === "function") {
-      window.Quarto.typesetMath(desc);
-    }
+    desc.innerHTML = opts.caption ? descriptionOf(el) : "";
+    desc.hidden = !desc.innerHTML.trim();
     overlay.querySelector(".panzoom-hint").hidden = !opts.hint;
     overlay.querySelector(".panzoom-hint-gallery").hidden = !many;
     overlay.setAttribute("aria-label", "Image viewer" + (many ? ", image " + (i + 1) + " of " + n : ""));
