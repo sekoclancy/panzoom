@@ -1,6 +1,3 @@
-# Renders the example (index.qmd) and the test pages into docs/.
-#   quarto render              build everything
-#   quarto publish gh-pages --no-prompt --no-browser   build and publish to GitHub Pages
 project:
   type: website
   output-dir: docs
