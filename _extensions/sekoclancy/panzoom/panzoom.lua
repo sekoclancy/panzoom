@@ -10,12 +10,15 @@
 --     `panzoom: { match: auto }` -- the same images Quarto's auto lightbox takes.
 -- `.nopanzoom` opts a single image out, `#| panzoom: false` a whole cell.
 --
--- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`,
--- `description`) become
+-- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`) become
 -- `data-panzoom-*` attributes on the cell's images; document options
 -- (`max-zoom`, `hint`, `caption`, `loop`, `fit`) go to
 -- `window.PANZOOM_OPTIONS`.
 -- Captions and galleries are built in panzoom.js from the rendered page.
+-- A description (`description` on an image or cell) becomes a hidden
+-- `.panzoom-desc` div after the image's top-level block, which Quarto
+-- renders like any text (citations, cross-references, math); the image
+-- points to it with `data-panzoom-desc`, and panzoom.js shows a copy.
 -- Images inside links are always left
 -- alone, so the link keeps working.
 --
@@ -32,24 +35,21 @@
 if not quarto.doc.is_format("html:js") then return {} end
 
 local match_auto = false
--- Whether any description has math (see the last filter pass).
-local needs_math = false
+-- Descriptions waiting to be placed (see the last filter pass): id -> text.
+local descriptions = {}
+local n_descriptions = 0
 
 local function has(classes, name)
   return classes ~= nil and classes:includes(name)
 end
 
--- Markdown to HTML, for descriptions. Math is written the way the page
--- writes its own (`html-math-method`): left as TeX for MathJax or KaTeX
--- to typeset in the viewer, or as MathML, webtex images or plain text,
--- which need no typesetting.
-local function markdown_html(text)
-  local doc = pandoc.read(text, "markdown")
-  doc:walk({ Math = function() needs_math = true end })
-  return pandoc.write(doc, "html", {
-    html_math_method = PANDOC_WRITER_OPTIONS.html_math_method,
-    wrap_text = "none",
-  })
+-- Records a description's markdown and returns the id of the div it will
+-- go in.
+local function add_description(text)
+  n_descriptions = n_descriptions + 1
+  local id = "panzoom-desc-" .. n_descriptions
+  descriptions[id] = text
+  return id
 end
 
 local function mark(img)
@@ -57,7 +57,7 @@ local function mark(img)
   -- `description="..."` (as for Quarto's lightbox), shown under the caption.
   local desc = img.attributes["description"]
   if desc ~= nil and desc ~= "" then
-    img.attributes["data-panzoom-description"] = markdown_html(desc)
+    img.attributes["data-panzoom-desc"] = add_description(desc)
     img.attributes["description"] = nil
   end
   img.classes = img.classes:filter(function(c) return c ~= "lightbox" end)
@@ -195,7 +195,7 @@ local function cell_option(el)
       attrs["data-panzoom-fit"] = tostring(cfg.fit)
     end
     if type(cfg.description) == "string" and cfg.description ~= "" then
-      attrs["data-panzoom-description"] = markdown_html(cfg.description)
+      attrs["data-panzoom-desc"] = add_description(cfg.description)
     end
   end
   return true, attrs
@@ -300,20 +300,34 @@ return {
       end
     end,
   },
-  -- A description's math is typeset by the page's MathJax (or KaTeX), but
-  -- Quarto only loads it when the page itself has math. The descriptions
-  -- live in image attributes, which it doesn't see, so add a hidden math
-  -- element when one of them has math. It holds `{}` (renders as nothing):
-  -- Quarto's KaTeX loader reads every math element's text and throws on an
-  -- empty one.
+  -- Each description, as a hidden div right after the top-level block
+  -- holding its image(s): there Quarto renders it like the text around it
+  -- (citations in reading order), and never inside a figure or layout.
   {
     Pandoc = function(doc)
-      if needs_math then
-        doc.blocks:insert(pandoc.Div(
-          { pandoc.Plain({ pandoc.Math("InlineMath", "{}") }) },
-          pandoc.Attr("", { "panzoom-math" }, { style = "display:none" })))
-        return doc
+      if n_descriptions == 0 then return nil end
+      local blocks = pandoc.Blocks({})
+      for _, block in ipairs(doc.blocks) do
+        blocks:insert(block)
+        local ids = {}
+        pandoc.Blocks({ block }):walk({
+          Image = function(img)
+            local id = img.attributes["data-panzoom-desc"]
+            if id and descriptions[id] then
+              table.insert(ids, id)
+            end
+          end,
+        })
+        for _, id in ipairs(ids) do
+          if descriptions[id] then
+            blocks:insert(pandoc.Div(pandoc.read(descriptions[id], "markdown").blocks,
+              pandoc.Attr(id, { "panzoom-desc" })))
+            descriptions[id] = nil
+          end
+        end
       end
+      doc.blocks = blocks
+      return doc
     end,
   },
 }

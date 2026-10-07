@@ -10,9 +10,10 @@
 
   Captions: the viewer shows the image's figure caption, taken from the
   rendered page (the nearest <figcaption>), so "Figure N:" prefixes and
-  typeset math come through. Below it, the image's description
-  (`data-panzoom-description`: HTML that panzoom.lua made from the
-  `description` attribute or cell option), with its math typeset on show.
+  typeset math come through. Below it, the image's description: a copy
+  of the hidden `.panzoom-desc` div its `data-panzoom-desc` names, which
+  panzoom.lua made from the `description` attribute or cell option and
+  Quarto rendered with the page (citations, cross-references, math).
 
   Galleries: images with the same group are stepped through with the
   prev/next buttons, PageUp/PageDown, Left/Right or a horizontal swipe
@@ -100,6 +101,12 @@
   // The image's caption: its figure's caption and, for a subfigure, the
   // parent figure's caption as a second line ("(a) Sub A" over "Figure 1:
   // ..."), since the subfigure caption alone has no figure number.
+  // The image's description, as rendered on the page (see the header).
+  function descriptionOf(el) {
+    var d = el.dataset.panzoomDesc && document.getElementById(el.dataset.panzoomDesc);
+    return d ? d.innerHTML : "";
+  }
+
   function captionOf(el) {
     var fig = el.closest("figure");
     var html = figcaption(fig);
@@ -396,13 +403,8 @@
     counter.textContent = (i + 1) + " / " + n;
     caption.innerHTML = opts.caption ? captionOf(el) : "";
     caption.hidden = !caption.innerHTML;
-    desc.innerHTML = opts.caption ? el.dataset.panzoomDescription || "" : "";
-    desc.hidden = !desc.innerHTML;
-    // Typeset the description's math, as Quarto's lightbox does (the caption
-    // is copied already typeset).
-    if (!desc.hidden && window.Quarto && typeof window.Quarto.typesetMath === "function") {
-      window.Quarto.typesetMath(desc);
-    }
+    desc.innerHTML = opts.caption ? descriptionOf(el) : "";
+    desc.hidden = !desc.innerHTML.trim();
     overlay.querySelector(".panzoom-hint").hidden = !opts.hint;
     overlay.querySelector(".panzoom-hint-gallery").hidden = !many;
     overlay.setAttribute("aria-label", "Image viewer" + (many ? ", image " + (i + 1) + " of " + n : ""));

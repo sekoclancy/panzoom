@@ -139,3 +139,5 @@ And pages of their own:
   collages, tall strips, and webp, svg and pdf output.
 - [F: options](tests/pages/f-options.html): opting out, and the per-cell
   `caption`, `hint`, `max-zoom`, `description`, `fit` and `loop` options.
+- [G: captions and descriptions](tests/pages/g-captions.html): citations
+  and cross-references in captions and descriptions.

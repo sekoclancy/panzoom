@@ -25,8 +25,9 @@ It attempts to match, and extend, the feature set of Quarto's built-in
   off on screens 768 px wide or less).
 - **Pan:** drag, arrow keys or <kbd>Shift</kbd>+scroll at any zoom; the
   image stops at its edges with a bounce.
-- **Captions:** math is typeset (the lightbox shows raw TeX); a subfigure
-  shows its own caption with the parent figure's caption below.
+- **Captions:** math, citations and cross-references are rendered (the
+  lightbox shows raw TeX and `[@key]`); a subfigure shows its own caption
+  with the parent figure's caption below.
 - **Very wide or tall figures:** open at screen height (or width), at the
   spot you clicked.
 - **Galleries:** <kbd>←</kbd>/<kbd>→</kbd> pan an image larger than the
@@ -141,8 +142,10 @@ The viewer shows the figure's caption under the image, including its
 the parent figure's caption below it. Turn captions off with
 `caption: false` (for the document or one cell).
 
-A description, written in Markdown (with math, links, emphasis), is shown
-under the caption, as for Quarto's lightbox:
+A description, written in Markdown (with math, links, emphasis,
+citations and cross-references), is shown under the caption, as for
+Quarto's lightbox. It is rendered with the page, so a work cited only in a
+description is still listed under References:
 
 ```markdown
 ![Beach](beach.jpg){.panzoom description="The best beaches. **Credit:** [Unsplash](https://unsplash.com)"}

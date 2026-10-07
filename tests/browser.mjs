@@ -49,7 +49,7 @@ const OFFLINE = process.argv.includes("--offline");
 const ARGS = process.argv.slice(2).filter((a) => a !== "--offline");
 const PAGES = ARGS.length
   ? ARGS.map((p) => path.resolve(p))
-  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html"]
+  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html", "g-captions.html"]
       .map((p) => path.join(ROOT, "docs", "tests", "pages", p));
 const VIEWPORT = { width: 1280, height: 900 };
 const RESULTS = path.join(HERE, "results", ...(OFFLINE ? ["offline"] : []));
@@ -191,6 +191,16 @@ async function state(page) {
           return !!d && !d.hidden && !!d.innerHTML.trim();
         })(),
         captionHasMath: !caption.hidden && !!caption.querySelector(".math, math"),
+        // Citations and cross-references left unresolved: Quarto shows an
+        // unknown one as `?@key`, an unprocessed one stays `[@key]` or
+        // `@key` (not an email address).
+        unresolved: (pz.querySelector(".panzoom-caption:not([hidden])")?.textContent || "").concat(" ",
+          pz.querySelector(".panzoom-description:not([hidden])")?.textContent || "").match(/(?<![\w.])[[?]?@[A-Za-z][\w:-]*/g) || [],
+        // In-page links (citations, cross-references) whose target is missing.
+        brokenLinks: [...pz.querySelectorAll(".panzoom-caption a[href^='#'], .panzoom-description a[href^='#']")]
+          .map((a) => a.getAttribute("href")).filter((h) => h.length > 1 && !document.getElementById(decodeURIComponent(h.slice(1)))),
+        citations: pz.querySelectorAll(".panzoom-caption .citation, .panzoom-description .citation").length,
+        crossrefs: pz.querySelectorAll(".panzoom-caption a.quarto-xref, .panzoom-description a.quarto-xref").length,
         captionTeX: caption.hidden ? "clean" : window.__texClass(caption),
         descriptionTeX: window.__texClass(pz.querySelector(".panzoom-description:not([hidden])")),
         counter: counter.hidden ? "" : counter.textContent,
@@ -651,8 +661,9 @@ async function checkPage(browser, base, file) {
           expectCaption: sec.dataset.expectCaption || null,
           expectHint: sec.dataset.expectHint || null,
           expectMaxZoom: sec.dataset.expectMaxZoom ? +sec.dataset.expectMaxZoom : null,
-          hasDescription: !!img.dataset.panzoomDescription,
-          descriptionHasMath: /class="math|<math/.test(img.dataset.panzoomDescription || ""),
+          expectReferences: "expectReferences" in sec.dataset,
+          hasDescription: !!img.dataset.panzoomDesc,
+          descriptionHasMath: !!document.getElementById(img.dataset.panzoomDesc || "-")?.querySelector(".math, math"),
           classes: img.className,
           wrapper: link ? (link.classList.contains("lightbox") ? "a.lightbox" : "a[href]") : "none",
           gallery: link?.dataset.gallery || null,
@@ -979,6 +990,13 @@ function descriptionOk(r) {
   return !r.hasDescription || r.descriptionShown;
 }
 
+// The viewer's caption and description have their citations and
+// cross-references resolved, linking to things on the page.
+// Cases marked `expect-references` (page G) must show at least one.
+function referencesOk(r) {
+  return !r.unresolved?.length && !r.brokenLinks?.length && (!r.expectReferences || r.citations + r.crossrefs > 0);
+}
+
 // Math in the viewer's caption and description shows no worse than the
 // page's own: typeset if the page's is; raw TeX only where the page has it
 // too (the plain method, or a math library that couldn't load).
@@ -1015,6 +1033,9 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "") +
         (r.captionHasMath ? ` (caption math ${TEX_LABEL[r.captionTeX]})` : "") +
+        (r.citations ? `; ${r.citations} citations` : "") + (r.crossrefs ? `; ${r.crossrefs} cross-references` : "") +
+        (r.unresolved?.length ? `; **unresolved: ${r.unresolved.join(", ")}**` : "") +
+        (r.brokenLinks?.length ? `; **broken links: ${r.brokenLinks.join(", ")}**` : "") +
         (r.description ? `; description: ${r.description}` + (r.descriptionHasMath ? ` (math ${TEX_LABEL[r.descriptionTeX]})` : "") : "") +
         (r.opened === "panzoom" ? `; hint ${r.hintShown ? "shown" : "hidden"}` : "") +
         (r.maxScaleReached ? `; zoom stops at ${+r.maxScaleReached.toFixed(3)}` : "")
@@ -1160,6 +1181,7 @@ try {
     if (optioned.length) extra.push(optioned.every(optionsOk) ? "options ok" : "OPTIONS FAILED");
     const described = opened.filter((r) => r.hasDescription);
     if (described.length) extra.push(described.every(descriptionOk) ? "descriptions ok" : "DESCRIPTIONS FAILED");
+    if (opened.length) extra.push(opened.every(referencesOk) ? "references ok" : "REFERENCES FAILED");
     const withMath = results.filter(hasMath);
     if (withMath.length) extra.push((withMath.every((r) => mathOk(r, network.pageTeX)) ? "math ok" : "MATH FAILED") +
       ` (page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"})`);

@@ -41,12 +41,13 @@ The same 12 cases are rendered four ways:
 | `c-panzoom-auto` | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
 | `d-panzoom-selective` | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
 
-Two more pages have cases of their own:
+Three more pages have cases of their own:
 
 | Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
 | `e-formats` | **Formats and shapes.** Very wide collages (25 × 2 in) and tall strips (4 × 15 in), also in layouts, as png, webp and svg; standard plots as webp, svg, png + pdf and pdf only; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
 | `f-options` | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `caption`, `hint`, `max-zoom`, `description` and `fit` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
+| `g-captions` | **Captions and descriptions.** Citations and cross-references in captions and descriptions, including a work cited only in a description; quarto-cli#10709's case. | on | none |
 
 Two more sets of pages are **not part of the website** (see
 [Standalone pages](#standalone-pages)):
@@ -102,7 +103,8 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── standalone/        pages outside the website: *.qmd, shared _*.qmd bodies,
     │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
-    │                      d-panzoom-selective.qmd, e-formats.qmd, f-options.qmd
+    │                      d-panzoom-selective.qmd, e-formats.qmd, f-options.qmd,
+    │                      g-captions.qmd
     ├── node_modules/      installed by npm (git-ignored)
     └── results/           test output (git-ignored)
 ```
@@ -264,6 +266,12 @@ image to wrap to the last.
 
 **Descriptions.** Every image with a `description` must show it under the
 caption in the viewer (`descriptions ok`; cases 1 and 3 on pages C and D).
+
+**References.** Citations and cross-references in the viewer's caption and
+description must be resolved (no `[@key]`, `@key` or Quarto's `?@key`
+left), and each in-page link must lead to something on the page, such as
+the References entry (`references ok`). Cases with `expect-references`
+(page G) must show at least one.
 
 **Math.** Math in the viewer's caption and description must show no worse
 than the page's own math (`math ok (page: typeset)`): typeset if the

@@ -32,6 +32,8 @@ website:
             text: "E: formats and wide figures"
           - href: tests/pages/f-options.qmd
             text: "F: options"
+          - href: tests/pages/g-captions.qmd
+            text: "G: captions and descriptions"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom
