@@ -7,10 +7,10 @@ the way it should.
 
 ## What is being tested
 
-**The extension.** `panzoom` (in `../_extensions/sekoclancy/panzoom/`) is a Quarto filter
+**The extension.** `panzoom` (in [../_extensions/sekoclancy/panzoom/](../_extensions/sekoclancy/panzoom/)) is a Quarto filter
 that opens figures in a full-screen pan/zoom viewer, alongside Quarto's
 built-in lightbox (GLightbox). The Lua filter decides which images get the
-viewer; the JavaScript is the viewer itself. See `../README.md` for how to use
+viewer; the JavaScript is the viewer itself. See [../README.md](../README.md) for how to use
 it.
 
 **The test cases.** The test pages contain 12 numbered cases (`## 1.` to
@@ -24,7 +24,7 @@ image inside a link, a margin image, and so on.
   [Quarto lightbox docs](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 - The other cases were written for this project to cover what those examples
   don't.
-- The photos in `../images/` are the ones quarto-ext/lightbox uses. They
+- The photos in [../images/](../images/) are the ones quarto-ext/lightbox uses. They
   are from Unsplash, under the [Unsplash license](https://unsplash.com/license):
   [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps),
   [Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU),
@@ -36,27 +36,27 @@ The same 12 cases are rendered four ways:
 
 | Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
-| `a-lightbox` | **Reference.** What Quarto's own lightbox does with each case. No panzoom markers at all. | off | `match: auto` |
-| `b-panzoom-lightbox` | **The usual setup.** Images marked with `.panzoom` or `#\| classes: panzoom`; Quarto's lightbox on for the rest. Same markup as D. | on | `true` |
-| `c-panzoom-auto` | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
-| `d-panzoom-selective` | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
+| [a-lightbox](pages/a-lightbox.qmd) | **Reference.** What Quarto's own lightbox does with each case. No panzoom markers at all. | off | `match: auto` |
+| [b-panzoom-lightbox](pages/b-panzoom-lightbox.qmd) | **The usual setup.** Images marked with `.panzoom` or `#\| classes: panzoom`; Quarto's lightbox on for the rest. Same markup as D. | on | `true` |
+| [c-panzoom-auto](pages/c-panzoom-auto.qmd) | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
+| [d-panzoom-selective](pages/d-panzoom-selective.qmd) | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
 
 Four more pages have cases of their own:
 
 | Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
-| `e-formats` | **Image formats.** A wide collage and a standard plot as webp and svg; png + pdf, pdf only, png + cairo_pdf; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
-| `f-options` | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `hint` and `max-zoom` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
-| `g-captions` | **Captions and descriptions.** Citations and cross-references in captions and descriptions, including a work cited only in a description (quarto-cli#10709's case); the per-cell `caption` and `description` options. | on | none |
-| `h-wide` | **Wide and tall figures.** Very wide collages (25 × 2 in), tall strips (4 × 15 in), a poster, a portrait photo and a small plot, alone, in galleries and in layouts; the `fit` option. | on | none |
+| [e-formats](pages/e-formats.qmd) | **Image formats.** A wide collage and a standard plot as webp and svg; png + pdf, pdf only, png + cairo_pdf; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
+| [f-options](pages/f-options.qmd) | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `hint` and `max-zoom` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
+| [g-captions](pages/g-captions.qmd) | **Captions and descriptions.** Citations and cross-references in captions and descriptions, including a work cited only in a description (quarto-cli#10709's case); the per-cell `caption` and `description` options. | on | none |
+| [h-wide](pages/h-wide.qmd) | **Wide and tall figures.** Very wide collages (25 × 2 in), tall strips (4 × 15 in), a poster, a portrait photo and a small plot, alone, in galleries and in layouts; the `fit` option. | on | none |
 
 Two more sets of pages are **not part of the website** (see
 [Standalone pages](#standalone-pages)):
 
 | Page | What it is |
 |---|---|
-| `standalone/self-contained` | **A single HTML file**, `embed-resources: true`, opened from its `file://` address. `self-contained-math` also embeds MathJax (`self-contained-math: true`). |
-| `standalone/math-<method>` | **Math in captions and descriptions** with each `html-math-method`: `mathjax`, `katex`, `mathml`, `webtex`, `plain`. |
+| [standalone/self-contained](standalone/self-contained.qmd) | **A single HTML file**, `embed-resources: true`, opened from its `file://` address. `self-contained-math` also embeds MathJax (`self-contained-math: true`). |
+| [standalone/math-&lt;method&gt;](standalone/_math.qmd) | **Math in captions and descriptions** with each `html-math-method`: `mathjax`, `katex`, `mathml`, `webtex`, `plain`. |
 
 Each website page starts with a note saying what it should show, has a **</> Code**
 button that shows its full source, and shows each R chunk with its options.
@@ -76,7 +76,7 @@ If you haven't used these tools before:
   read anything from the page, and take screenshots. We use `puppeteer-core`,
   the variant that doesn't download its own Chrome and instead uses the one
   Quarto installs.
-- **`browser.mjs`** is our script. It does what you would do by hand: open
+- **[browser.mjs](browser.mjs)** is our script. It does what you would do by hand: open
   each page, click every image, see what opened, try zooming and dragging,
   press Esc. Instead of you watching, it reads the result from the page (for
   example "is the viewer's overlay showing?", "how far did the image move?")
@@ -111,7 +111,7 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
 ```
 
 Because the repo root is a Quarto project, the pages find the extension in
-the root `_extensions/` folder, and `quarto render` puts them in
+the root [_extensions/](../_extensions/) folder, and `quarto render` puts them in
 `../docs/tests/pages/`.
 
 ## One-time setup
@@ -146,18 +146,18 @@ quarto render tests/pages/d-panzoom-selective.qmd                 # from the rep
 node browser.mjs ../docs/tests/pages/d-panzoom-selective.html     # from tests/
 ```
 
-`browser.mjs` starts a small web server for `docs/` and points Chrome at
+[browser.mjs](browser.mjs) starts a small web server for `docs/` and points Chrome at
 it, the way GitHub Pages serves the site. Pages can't simply be opened as
 files: Quarto's main script is a JavaScript module, and browsers refuse to
 load modules from `file://` addresses.
 
 ### Standalone pages
 
-The pages in `standalone/` are plain documents with their options in their
+The pages in [standalone/](standalone/) are plain documents with their options in their
 own YAML header, as a self-contained document would have them. They aren't
 in the project's `render:` list, so Quarto renders them without the
 website layout, in place, finding the extension through the
-`standalone/_extensions` symlink. Each is just
+[standalone/_extensions](standalone/_extensions) symlink. Each is just
 `quarto render <page>.qmd --to html`; to render all and check them:
 
 ```bash
@@ -361,6 +361,6 @@ The script finds cases by the `## N.` headings.
   Use `quarto preview` or the test script, which serve it over HTTP.
 - **`Failed to launch the browser process`**: Chrome isn't where the script
   looks. Run `quarto install chrome-headless-shell --no-prompt`, or set `CHROME=`.
-- **`... is not a file inside ...`**: `browser.mjs` only checks rendered
+- **`... is not a file inside ...`**: [browser.mjs](browser.mjs) only checks rendered
   pages in this repo. Render first (`quarto render`, `node standalone.mjs`),
   and pass paths like `../docs/tests/pages/d-panzoom-selective.html`.

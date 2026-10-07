@@ -297,9 +297,9 @@ when running the tests.
 
 #### Puppeteer
 
-The Node.js library that controls Chrome. `tests/package.json` lists
+The Node.js library that controls Chrome. [tests/package.json](tests/package.json) lists
 `puppeteer-core` (the variant that uses an existing Chrome instead of
-downloading its own), and `tests/package-lock.json` pins its version. From
+downloading its own), and [tests/package-lock.json](tests/package-lock.json) pins its version. From
 the repo root:
 
 ```bash
@@ -325,4 +325,4 @@ A few more pages, outside the website, check a single self-contained HTML
 file opened from disk and math with each of Quarto's math methods, and the
 whole set can be run with no internet access.
 
-See `tests/README.md` for setup and running the tests.
+See [tests/README.md](tests/README.md) for setup and running the tests.
