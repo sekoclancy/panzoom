@@ -140,6 +140,14 @@ python3 -m venv .venv
 .venv/bin/pip install -r tests/requirements.txt
 ```
 
+Or, with [uv](https://docs.astral.sh/uv/) (from the repo root; `uv pip`
+installs into `.venv` in the current directory):
+
+```bash
+uv venv .venv
+uv pip install -r tests/requirements.txt
+```
+
 To use a different Chrome or Chromium, set `CHROME=/path/to/chrome` when
 running the tests.
 
