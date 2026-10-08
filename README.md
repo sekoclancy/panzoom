@@ -87,7 +87,8 @@ panzoom:
 
 Then mark images in any of these ways.
 
-**Code cells:** use the `panzoom` cell option.
+**Code cells** (R with knitr, or Python and others with Jupyter): use the
+`panzoom` cell option.
 
 ````markdown
 ```{r}

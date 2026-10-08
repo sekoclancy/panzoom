@@ -171,9 +171,35 @@ local function parse_options(value)
   return cfg
 end
 
+-- Jupyter passes a nested cell option in an attribute of its own,
+-- `quarto-private-N = {"key":"panzoom","value":{...}}`, where knitr writes
+-- `panzoom = {...}`; the value has the same unescaped strings (see
+-- parse_options). Returns the attribute's name and the value's text, or nil.
+local function jupyter_option(el, key)
+  for k, v in pairs(el.attributes) do
+    if k:match("^quarto%-private%-") then
+      local value = v:match('^%s*{%s*"key"%s*:%s*"' .. key:gsub("%-", "%%-") .. '"%s*,%s*"value"%s*:%s*(.-)%s*}%s*$')
+      if value then return k, value end
+    end
+  end
+  return nil
+end
+
+-- Removes a cell option in either form.
+local function drop_option(el, key)
+  el.attributes[key] = nil
+  local k = jupyter_option(el, key)
+  if k then el.attributes[k] = nil end
+end
+
 local function cell_option(el)
   local value = el.attributes["panzoom"]
-  if value == nil then return nil end
+  if value == nil then
+    local k
+    k, value = jupyter_option(el, "panzoom")
+    if k == nil then return nil end
+    el.attributes[k] = nil
+  end
   el.attributes["panzoom"] = nil
   if value == "false" then return false end
   local attrs = {}
@@ -246,7 +272,7 @@ local function container(el)
   local on, attrs = cell_option(el)
   if on == false then return el, false end
   if on or has(el.classes, "panzoom") then
-    el.attributes["lightbox"] = nil
+    drop_option(el, "lightbox")
     -- A FloatRefTarget is a Quarto custom node without :walk(); its content
     -- is ordinary Pandoc AST (nested subfigures are plain Divs inside it).
     if el.walk then
@@ -256,7 +282,7 @@ local function container(el)
     end
     return el, false
   end
-  if match_auto and el.attributes["lightbox"] ~= nil then
+  if match_auto and (el.attributes["lightbox"] ~= nil or jupyter_option(el, "lightbox")) then
     return nil, false
   end
 end
