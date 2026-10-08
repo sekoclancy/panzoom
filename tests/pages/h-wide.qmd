@@ -25,7 +25,9 @@ Headings carry what the browser test checks: `expect-fit` (`contain`,
 `height` or `width`), `shift-scroll` (which way Shift+scroll moves the
 image: `x` sideways, `y` up and down, `none`, or `zoomed-x`: sideways
 after zooming in until the image extends past the screen both ways) and
-`expect-scale="1"` (opens at real size). The first single collage and
+`expect-scale="1"` (opens at real size), `expect-zoom-out` (`yes`: the
+opening view is closer than the whole image, so it zooms out; `no`: it
+already is the whole image). The first single collage and
 image shown whole also get the focal point and containment checks.
 :::
 
@@ -147,7 +149,11 @@ screen; scroll still zooms in (up to `max-zoom`).
 plot(pressure)
 ```
 
-## 8. `fit: height` on an ordinary plot {#c8 expect-open="panzoom" expect-fit="height"}
+## 8. `fit: height` on an ordinary plot {#c8 expect-open="panzoom" expect-fit="height" expect-zoom-out="no"}
+
+On a screen wider than the plot (1.4:1), filling the height is already the
+whole plot, so this opens like `fit: contain` and can't zoom out. Case 15
+shows `fit: height` on a figure where it differs.
 
 ```{r}
 #| panzoom:
@@ -156,7 +162,10 @@ plot(pressure)
 wave(3)
 ```
 
-## 9. `fit: width` on an ordinary plot {#c9 expect-open="panzoom" expect-fit="width"}
+## 9. `fit: width` on an ordinary plot {#c9 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
+
+Filling the width makes the plot taller than the screen: it opens closer
+than the whole plot, and zooms out to it.
 
 ```{r}
 #| panzoom:
@@ -260,3 +269,37 @@ strip(5)
 ```
 
 :::
+
+## 15. `fit: height` on a wide figure (12 × 4.5 in) {#c15 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+
+Not a strip (shown whole it is over a quarter of the screen tall), so
+`fit: auto` would open it whole. `fit: height` opens it filling the screen
+height (but not past its real size), from where it was clicked, and zooms
+out to the whole figure.
+
+```{r}
+#| panzoom:
+#|   fit: height
+#| fig-width: 12
+#| fig-height: 4.5
+
+collage(6)
+```
+
+## 16. Case 15 with a long caption and description {#c16 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+
+The caption and description sit below the image; `fit: height` fills the
+height left above them, so it opens smaller than case 15. The caption
+scrolls past a quarter of the screen, the description past a fifth, so the
+image keeps at least about half.
+
+```{r}
+#| panzoom:
+#|   fit: height
+#|   description: "A long description, to take room below the image. Each panel is a random walk of 200 steps, drawn with base R's `plot()` in a one-row layout (`par(mfrow = c(1, 6))`), coloured along the `hcl.colors()` palette. The figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864 px). With `fit: height` the viewer opens it as tall as the space above this text allows, and no taller than its real size. Drag or use the arrow keys to move along the figure, scroll or press - to zoom out to the whole of it, and 0 to come back to this opening view."
+#| fig-cap: "Six random walks side by side, opened with `fit: height` under a long description."
+#| fig-width: 12
+#| fig-height: 4.5
+
+collage(6)
+```

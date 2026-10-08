@@ -249,7 +249,12 @@ Enter and with Esc, and return focus to the image afterwards.
 actually opened them, in the normal 1280 px window and again in a 2560 px
 wide one (the size rule depends on the screen): Details shows
 `opens: ..., ... at 2560 px`, and the summary line says `fit ok` or
-`FIT FAILED`.
+`FIT FAILED`. Cases with `expect-zoom-out` (page H) are also zoomed out as
+far as possible from the opening view: `yes` means it must go below the
+opening scale (the view was closer than the whole image), `no` that it
+can't (the view already was the whole image); Details shows
+`zooms out from ... to ...`. Without this, a `fit` override that changes
+nothing visible would still pass.
 
 **Focal point.** On the first single collage, a click at 50%
 across the figure on the page must open the viewer with that point in the

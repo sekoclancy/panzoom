@@ -656,6 +656,7 @@ async function checkPage(browser, base, file) {
           expectFit: sec.dataset.expectFit || null,
           shiftScroll: sec.dataset.shiftScroll || null,
           expectScale: sec.dataset.expectScale ? +sec.dataset.expectScale : null,
+          expectZoomOut: sec.dataset.expectZoomOut || null,
           // Option checks (pages F and G): on the image itself, or on its case.
           expectOpen: img.dataset.expectOpen || sec.dataset.expectOpen || null,
           expectCaption: sec.dataset.expectCaption || null,
@@ -930,6 +931,22 @@ async function checkPage(browser, base, file) {
     await closeAll(page);
   }
 
+  // Zoom-out room: from the opening view, zooming out as far as possible
+  // goes below the opening scale only if that view is closer than the
+  // whole image (`expect-zoom-out`, page H: a `fit` override that does
+  // nothing visible would pass the `expect-fit` check alone).
+  for (const r of results.filter((r) => r.opened === "panzoom" && r.expectZoomOut)) {
+    await openImage(page, r);
+    await page.mouse.move(VIEWPORT.width / 2, VIEWPORT.height / 2);
+    const open = (await viewerTransform(page))?.s ?? null;
+    const beforeWheel = await transformOf(page);
+    for (let i = 0; i < 30; i++) { await page.mouse.wheel({ deltaY: 200 }); await sleep(20); }
+    await afterWheel(page, beforeWheel);
+    const min = (await viewerTransform(page))?.s ?? null;
+    r.zoomOut = open && min ? { open, min, room: min < open * 0.99 } : null;
+    await closeAll(page);
+  }
+
   // The opening view on a wide screen (2560 px): the size rule must still
   // only pick out strips.
   const fitCases = results.filter((r) => r.opened === "panzoom" && r.expectFit);
@@ -969,7 +986,12 @@ function scaleOk(r) {
 }
 
 function fitOk(r) {
-  return !r.expectFit || (r.fit === r.expectFit && (r.wideFit === undefined || r.wideFit === r.expectFit));
+  return (!r.expectFit || (r.fit === r.expectFit && (r.wideFit === undefined || r.wideFit === r.expectFit))) &&
+    zoomOutOk(r);
+}
+
+function zoomOutOk(r) {
+  return !r.expectZoomOut || (!!r.zoomOut && r.zoomOut.room === (r.expectZoomOut === "yes"));
 }
 
 // Option expectations (pages F and G): what opened, whether the caption and hint
@@ -1029,7 +1051,8 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
     const details = r.opened === "glightbox"
       ? `title: ${r.title || "—"}; desc: ${r.description || "—"}; slides: ${r.slides}`
       : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}; ${r.size}; ` +
-        `opens: ${r.fit || "—"}` + (r.wideFit !== undefined ? `, ${r.wideFit} at 2560 px` : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}**)`) : "") +
+        `opens: ${r.fit || "—"}` + (r.wideFit !== undefined ? `, ${r.wideFit} at 2560 px` : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}${r.expectZoomOut ? `, zoom-out ${r.expectZoomOut}` : ""}**)`) : "") +
+        (r.zoomOut ? `; zooms out from ${+r.zoomOut.open.toFixed(3)} to ${+r.zoomOut.min.toFixed(3)}` : "") +
         (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "") +
         (r.captionHasMath ? ` (caption math ${TEX_LABEL[r.captionTeX]})` : "") +
