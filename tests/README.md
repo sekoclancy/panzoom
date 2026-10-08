@@ -103,6 +103,7 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── browser.mjs        the browser checks
     ├── standalone.mjs     renders standalone/ (see Standalone pages)
     ├── nojs.mjs           the checks with JavaScript off (see Without JavaScript)
+    ├── contrast.mjs       text contrast in light and dark mode (see Text contrast)
     ├── standalone/        pages outside the website: *.qmd, shared _*.qmd bodies,
     │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
@@ -192,6 +193,21 @@ lightbox links do the same (`self-contained-lightbox`). The line reports
 them as `dead links (self-contained, as Quarto's lightbox)`, counted for
 both, without failing the run. A link to a file that still exists (a
 markdown image from the repo's `images/`) counts as fine.
+
+### Text contrast
+
+```bash
+npm run contrast       # node contrast.mjs: index and every test page, light and dark
+```
+
+The site has Quarto's light/dark toggle (flatly and darkly). `contrast.mjs`
+opens each page in both modes and measures the WCAG contrast ratio of every
+visible piece of text in the page content and, with the first marked image
+opened, in the viewer: the text color against the background behind it,
+semi-transparent layers included. Text below 4.5:1 (3:1 for large text) is
+reported, grouped by element and colors, and fails the run. Text over
+images, typeset math and Quarto's navbar, sidebar and footer are not
+measured.
 
 ### Without internet access
 

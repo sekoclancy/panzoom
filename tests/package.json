@@ -6,6 +6,7 @@
     "test": "node browser.mjs",
     "standalone": "node standalone.mjs && node browser.mjs standalone/*.html",
     "nojs": "node nojs.mjs",
+    "contrast": "node contrast.mjs",
     "offline": "node standalone.mjs --offline && node browser.mjs --offline ../docs/tests/pages/*.html standalone/*.html"
   },
   "type": "module",
