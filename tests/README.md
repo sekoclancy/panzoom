@@ -286,6 +286,17 @@ on Enter and on Space, move focus into the viewer, pan with the arrow keys,
 keep Tab and Shift+Tab inside the viewer, close from the close button with
 Enter and with Esc, and return focus to the image afterwards.
 
+**Page behind the viewer.** Opening the viewer hides the page's scrollbar.
+Where scrollbars take up room (Windows, most Linux desktops; not macOS's
+default overlay scrollbars), the page would get wider and shift sideways
+behind the viewer. Headless Chrome hides scrollbars, so the test reopens
+each page in a Chrome that shows them, opens the first marked image, and
+checks that the content and header keep their place and width, that the
+viewer covers the whole window (scrollbar strip included), and that closing
+brings the scrollbar back: `page still ok` in the summary line, and a
+"Page behind the viewer" section in the report. Pages with no scrollbar or
+no marked image skip it.
+
 **Opening view.** Cases whose heading has an `expect-fit` attribute
 (`contain`, `height` or `width`; pages E and H) are checked against how the viewer
 actually opened them, in the normal 1280 px window and again in a 2560 px

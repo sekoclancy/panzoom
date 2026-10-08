@@ -440,7 +440,12 @@
     returnFocus = document.activeElement;
     gallery = galleryOf(el);
     overlay.classList.add("open");
-    document.documentElement.style.overflow = "hidden";
+    // Stop the page scrolling; keep the scrollbar's space, if it has one,
+    // so the page behind doesn't shift sideways, and cover that space too.
+    var html = document.documentElement, bar = window.innerWidth - html.clientWidth;
+    if (bar > 0) html.style.scrollbarGutter = "stable";
+    overlay.style.right = -bar + "px";
+    html.style.overflow = "hidden";
     show(Math.max(0, gallery.indexOf(el)));
     overlay.focus({ preventScroll: true });
   }
@@ -449,6 +454,7 @@
     stopBounce();
     overlay.classList.remove("open");
     document.documentElement.style.overflow = "";
+    document.documentElement.style.scrollbarGutter = "";
     if (pz) { pz.destroy(); pz = null; }
     press = null;
     gallery = [];

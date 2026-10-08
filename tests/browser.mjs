@@ -9,6 +9,9 @@
   Then, with the viewer open, checks that keys don't reach the page (as
   focus-mode's and Quarto search's shortcuts would), that Ctrl+key still
   does, and that a fixed widget at z-index 10000 stays below the viewer.
+  Last, in a separate Chrome that shows scrollbars (the others hide them),
+  checks that the page behind the viewer doesn't shift sideways when the
+  viewer hides the page's scrollbar, and that the viewer covers the window.
 
   Usage: render first (`quarto render` from the repo root, into ../docs/),
   then from tests/:
@@ -1166,6 +1169,67 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
   return lines.join("\n") + "\n";
 }
 
+// The page behind the viewer stays still. Opening the viewer hides the
+// page's scrollbar; where scrollbars take up room (Windows, most Linux
+// desktops), the page would get wider and its content shift sideways. Checked
+// in a Chrome that shows scrollbars, on the first marked image: the content
+// and header keep their place and width, the viewer covers the whole window,
+// and closing brings the scrollbar back. null: no scrollbar, or no image.
+async function checkStill(base, file) {
+  const browser = await launch(false);
+  try {
+    const page = await browser.newPage();
+    await page.setViewport(VIEWPORT);
+    if (OFFLINE) {
+      await page.setRequestInterception(true);
+      page.on("request", (req) => (/^(data|blob|about|file):/.test(req.url()) || new URL(req.url()).hostname === "127.0.0.1"
+        ? req.continue() : req.abort("internetdisconnected")));
+    }
+    const url = selfContained(file)
+      ? "file://" + file
+      : base + path.relative(ROOT, file).split(path.sep).join("/");
+    await page.goto(url, { waitUntil: "load" });
+    await settle(page);
+    const measure = () => page.evaluate(() => {
+      const box = (el) => el && (({ left, width }) => ({ left, width }))(el.getBoundingClientRect());
+      const overlay = document.querySelector(".panzoom-overlay.open");
+      return {
+        bar: window.innerWidth - document.documentElement.clientWidth,
+        main: box(document.querySelector("main")),
+        header: box(document.querySelector("#quarto-header")),
+        overlay: overlay && box(overlay),
+        window: window.innerWidth,
+      };
+    });
+    const before = await measure();
+    if (!before.bar) return null;
+    const opened = await page.evaluate(() => {
+      const img = document.querySelector("a.panzoom-link img, img.panzoom");
+      if (!img) return false;
+      img.click();
+      return !!document.querySelector(".panzoom-overlay.open");
+    });
+    if (!opened) return null;
+    await settle(page);
+    const open = await measure();
+    await page.keyboard.press("Escape");
+    await settle(page);
+    const closed = await measure();
+    const same = (a, b) => (!a && !b) || (a && b && Math.abs(a.left - b.left) < 0.5 && Math.abs(a.width - b.width) < 0.5);
+    const r = {
+      bar: before.bar,
+      still: same(before.main, open.main) && same(before.header, open.header),
+      covers: !!open.overlay && open.overlay.left <= 0 && open.overlay.left + open.overlay.width >= open.window,
+      restored: closed.bar === before.bar && same(before.main, closed.main),
+      before, open,
+    };
+    r.ok = r.still && r.covers && r.restored;
+    return r;
+  } finally {
+    await browser.close();
+  }
+}
+
 for (const file of PAGES) {
   if (!file.startsWith(ROOT + path.sep) || !fs.existsSync(file)) {
     console.error(`${file} is not a file inside ${ROOT}; render first (quarto render, node standalone.mjs).`);
@@ -1179,10 +1243,11 @@ const base = `http://127.0.0.1:${server.address().port}/`;
 // slowest page's 73 s). Chrome normally slows timers in background tabs,
 // which would distort the viewer's timed animations (the bounce) that the
 // checks measure; turn that off.
-const launch = () => puppeteer.launch({
+const launch = (hideScrollbars = true) => puppeteer.launch({
   executablePath: CHROME,
   headless: true,
-  args: ["--no-sandbox", "--disable-gpu", "--hide-scrollbars",
+  ignoreDefaultArgs: ["--hide-scrollbars"],
+  args: ["--no-sandbox", "--disable-gpu", ...(hideScrollbars ? ["--hide-scrollbars"] : []),
     "--disable-background-timer-throttling", "--disable-renderer-backgrounding",
     "--disable-backgrounding-occluded-windows"],
 });
@@ -1192,10 +1257,12 @@ try {
   const runs = PAGES.map(async (file) => {
     const browser = await launch();
     browsers.push(browser);
-    return checkPage(browser, base, file);
+    const checked = await checkPage(browser, base, file);
+    checked.still = await checkStill(base, file);
+    return checked;
   });
   for (const run of runs) {
-    const { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen } = await run;
+    const { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen, still } = await run;
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
     const iso = isolation
       ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
@@ -1227,6 +1294,17 @@ try {
     if (clickOpen) extra.push(clickOpen.ok ? "focal point ok" : "FOCAL POINT FAILED");
     const shift = results.filter((r) => r.shiftScroll && r.opened === "panzoom");
     if (shift.length) extra.push(shift.every((r) => r.shiftScrollOk) ? "shift-scroll ok" : "SHIFT-SCROLL FAILED");
+    if (still) {
+      extra.push(still.ok ? "page still ok" : "PAGE STILL FAILED");
+      const yes = (v) => (v ? "yes" : "**NO**");
+      fs.appendFileSync(path.join(outDir, "report.md"), [
+        "", "## Page behind the viewer", "",
+        `With a ${still.bar} px scrollbar, on the first marked image.`, "",
+        `- Content and header keep their place and width: ${yes(still.still)}` +
+          (still.still ? "" : ` (content left ${still.before.main?.left} -> ${still.open.main?.left}, header width ${still.before.header?.width} -> ${still.open.header?.width})`),
+        `- The viewer covers the whole window: ${yes(still.covers)}`,
+        `- Closing brings the scrollbar back: ${yes(still.restored)}`, ""].join("\n"));
+    }
     const wide = extra.join(", ");
     console.log(`${name}: ${results.length} images, ${JSON.stringify(counts)}, ` +
       `${errors.length} console errors, ${iso}, ${gal}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
