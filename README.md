@@ -301,7 +301,8 @@ Only needed to run the browser tests (see [Testing](#testing)), not to use
 the extension. They also need [Node.js](https://nodejs.org) 22.12 or later.
 Rendering the test pages needs [Quarto](https://quarto.org) 1.9+ and R
 with the ragg package (they have R chunks, some taken from the
-quarto-ext/lightbox examples; ragg makes the webp figures).
+quarto-ext/lightbox examples; ragg makes the webp figures), and Python
+with matplotlib for the Jupyter page (see [tests/README.md](tests/README.md)).
 
 #### Chrome Headless Shell
 

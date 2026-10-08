@@ -13,3 +13,4 @@
 **/*.quarto_ipynb
 # Shell history
 .bash_history
+/.venv/

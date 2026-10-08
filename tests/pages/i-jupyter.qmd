@@ -1,0 +1,196 @@
+---
+title: "I: Jupyter (Python) figures"
+engine: jupyter
+jupyter: python3
+format:
+  html:
+    code-tools: true
+filters:
+  - panzoom
+---
+
+::: {.callout-note}
+## About this page
+
+This page **tests the panzoom extension with the Jupyter engine**: the
+same cell options as the R pages, on matplotlib figures. knitr and
+Jupyter hand figures to Quarto differently (knitr writes the image
+markdown itself; Jupyter cells come back as notebook outputs), so the
+filter has to find the figures and their cell options either way. The
+document has no `lightbox:` key, and only marked cells should open the
+viewer.
+
+Rendering it needs Python with matplotlib and ipykernel: see
+[tests/README.md](https://github.com/sekoclancy/panzoom/blob/main/tests/README.md).
+
+Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
+on the page (knitr shows them); the **Code** button at the top shows the
+full source.
+
+Headings carry what the browser test checks, as on the other pages:
+`expect-open`, `expect-hint`, `expect-max-zoom` and `expect-fit`.
+:::
+
+```{python}
+#| include: false
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+rng = np.random.default_rng(1)
+
+def walk(ax, n=200, title=None):
+    ax.plot(np.cumsum(rng.normal(size=n)))
+    if title:
+        ax.set_title(title)
+```
+
+## 1. `panzoom: true` {#c1 expect-open="panzoom" expect-hint="shown"}
+
+```{python}
+#| panzoom: true
+#| fig-cap: "A sine wave."
+
+x = np.linspace(0, 4 * np.pi, 400)
+plt.plot(x, np.sin(x))
+plt.show()
+```
+
+## 2. Options overriding the defaults {#c2 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
+
+```{python}
+#| panzoom:
+#|   max-zoom: 2
+#|   hint: false
+#| fig-cap: "Zoom stops at 2, no hint."
+
+plt.plot(x, np.cos(x))
+plt.show()
+```
+
+## 3. Labeled figure with a description {#c3 expect-open="panzoom"}
+
+@fig-scatter has a description with math and a cross-reference to
+@fig-sub.
+
+```{python}
+#| label: fig-scatter
+#| panzoom:
+#|   description: 'Points scattered around $y = x + \varepsilon$, with a "quote"; compare @fig-sub.'
+#| fig-cap: "A scatter plot, $n = 100$."
+
+pts = rng.normal(size=100)
+plt.scatter(pts, pts + rng.normal(scale=0.5, size=100))
+plt.show()
+```
+
+## 4. Subfigures (fig-subcap, layout-ncol) {#c4 expect-open="panzoom"}
+
+The two subfigures form a gallery.
+
+```{python}
+#| label: fig-sub
+#| panzoom: true
+#| fig-cap: "Two subfigures."
+#| fig-subcap: ["A random walk", "A histogram"]
+#| layout-ncol: 2
+
+fig, ax = plt.subplots()
+walk(ax)
+plt.show()
+plt.hist(rng.normal(size=500), bins=30)
+plt.show()
+```
+
+## 5. Multi-plot cell with a group {#c5 expect-open="panzoom"}
+
+```{python}
+#| panzoom:
+#|   group: walks
+#| fig-cap:
+#|   - "First walk."
+#|   - "Second walk."
+
+for i in range(2):
+    fig, ax = plt.subplots()
+    walk(ax)
+    plt.show()
+```
+
+## 6. Wide collage (8 × 0.8 in) {#c6 expect-open="panzoom" expect-fit="height"}
+
+A strip, so it opens at screen height. Jupyter figures are shown at their
+size in inches × 96 px (Quarto writes it on the image), not shrunk to the
+column as knitr's are: a 25 × 2 in collage would be 2,400 px wide on the
+page, cut off at the column's edge. This one fits.
+
+```{python}
+#| panzoom: true
+#| fig-cap: "An 8 × 0.8 inch collage of 8 panels."
+
+fig, axes = plt.subplots(1, 8, figsize=(8, 0.8), layout="constrained")
+for ax in axes:
+    walk(ax)
+    ax.tick_params(labelsize=4)
+plt.show()
+```
+
+## 7. `panzoom: false` inside a `.panzoom` div {#c7 expect-open="nothing"}
+
+::: {.panzoom}
+```{python}
+#| panzoom: false
+#| fig-cap: "Left alone."
+
+plt.plot(x, np.sin(2 * x))
+plt.show()
+```
+:::
+
+## 8. `classes: panzoom` {#c8 expect-open="panzoom"}
+
+```{python}
+#| classes: panzoom
+#| fig-cap: "Marked with the classes cell option."
+
+plt.plot(x, np.sin(3 * x))
+plt.show()
+```
+
+## 9. Lightbox cell option only {#c9 expect-open="glightbox"}
+
+Quarto's lightbox, not panzoom.
+
+```{python}
+#| lightbox: true
+#| fig-cap: "Opened by Quarto's lightbox."
+
+plt.plot(x, np.sin(4 * x))
+plt.show()
+```
+
+## 10. Plain cell, no options {#c10 expect-open="nothing"}
+
+```{python}
+#| fig-cap: "No options: not opened."
+
+plt.plot(x, np.sin(5 * x))
+plt.show()
+```
+
+## 11. `panzoom` and `lightbox` options on one cell {#c11 expect-open="panzoom"}
+
+Both options: panzoom wins, and the `lightbox:` options are dropped. (With
+Jupyter, Quarto's lightbox ignores `#| lightbox:` with options under it
+anyway, unlike with knitr; `lightbox: true` works, as in case 9.)
+
+```{python}
+#| panzoom: true
+#| fig-cap: "Both options: panzoom."
+#| lightbox:
+#|   group: both
+#|   description: "Should not reach the lightbox."
+
+plt.plot(x, np.sin(6 * x))
+plt.show()
+```
