@@ -37,6 +37,9 @@ It attempts to match, and extend, the feature set of Quarto's built-in
 - **Linked images:** an image inside a link keeps its link.
 - **Without JavaScript:** each image links to its own file, as with the
   lightbox (see [Without JavaScript](#without-javascript)).
+- **Light and dark themes:** the viewer is a dark overlay with light text
+  on either, so it looks the same whichever theme Quarto's light/dark
+  toggle shows.
 - **Self-contained documents:** works in a single HTML file
   (`embed-resources: true`), opened straight from disk.
 - **Math libraries:** math in captions and descriptions shows as it does on
