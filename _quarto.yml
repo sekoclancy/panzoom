@@ -17,8 +17,8 @@ format:
       light: [flatly, styles.scss]
       dark: [darkly, styles.scss]
     syntax-highlighting:
-      light: github-light
-      dark: github-dark
+      light: a11y-light
+      dark: a11y-dark
 
 execute:
   echo: fenced
