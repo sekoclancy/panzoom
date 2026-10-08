@@ -13,3 +13,8 @@
 .quarto-dark .aa-Input {
   color: var(--bs-body-color) !important;
 }
+
+/* Dark mode: the "</> Code" button's grey is 3.4:1 on the background. */
+.quarto-dark .code-tools-button {
+  color: var(--bs-body-color);
+}
