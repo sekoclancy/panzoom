@@ -1,0 +1,15 @@
+/*-- scss:rules --*/
+
+/* Dark mode: code in headings and figure captions keeps the light theme's
+   background (quarto-cli#13182). */
+.quarto-dark :is(h1, h2, h3, h4, h5, h6, figcaption) :is(code, code.sourceCode) {
+  background-color: rgba(var(--bs-body-color-rgb), 0.12) !important;
+}
+
+/* Dark mode: the search box keeps a light background. */
+.quarto-dark .aa-Form {
+  background-color: var(--bs-body-bg);
+}
+.quarto-dark .aa-Input {
+  color: var(--bs-body-color) !important;
+}

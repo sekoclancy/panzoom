@@ -4,6 +4,21 @@ project:
   render:
     - index.qmd
     - tests/pages/*.qmd
+  preview:
+    host: 127.0.0.1
+    port: 4242
+    browser: false
+    navigate: false
+
+format:
+  html:
+    # Light and dark themes: Quarto adds a toggle to the navbar.
+    theme:
+      light: [flatly, styles.scss]
+      dark: [darkly, styles.scss]
+    syntax-highlighting:
+      light: github-light
+      dark: github-dark
 
 execute:
   echo: fenced
