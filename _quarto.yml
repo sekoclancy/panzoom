@@ -14,8 +14,8 @@ format:
   html:
     # Light and dark themes: Quarto adds a toggle to the navbar.
     theme:
-      light: [flatly, styles.scss, light.scss]
-      dark: [darkly, styles.scss]
+      light: [flatly, light.scss]
+      dark: [darkly, dark.scss]
     syntax-highlighting:
       light: a11y-light
       dark: a11y-dark

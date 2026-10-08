@@ -1,5 +1,9 @@
 /*-- scss:rules --*/
 
+/* Dark theme only (darkly). The .quarto-dark prefix, the class Quarto puts
+   on <body> in dark mode, also keeps these rules ahead of the rules they
+   override. */
+
 /* Dark mode: code in headings and figure captions keeps the light theme's
    background (quarto-cli#13182). */
 .quarto-dark :is(h1, h2, h3, h4, h5, h6, figcaption) :is(code, code.sourceCode) {
