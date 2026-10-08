@@ -104,25 +104,13 @@ Both files are written; the page shows the png.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 6. pdf only {#c6}
-
-With only the pdf device, the HTML page has no bitmap to show; this case
-records what the browser and panzoom do with it.
-
-```{r}
-#| panzoom: true
-#| dev: pdf
-#| fig-cap: "pdf only."
-
-filled.contour(volcano, color.palette = terrain.colors)
-```
-
-## 7. png + cairo_pdf (dev: [png, cairo_pdf]) {#c7 expect-fit="contain"}
+## 6. png + cairo_pdf (dev: [png, cairo_pdf]) {#c6 expect-fit="contain"}
 
 Like case 5, with the cairo PDF device, which embeds fonts and handles
 Unicode (µ, Greek letters) and transparency better than `pdf`. The page
-shows the png either way; a PDF figure only ever appears as the browser's
-PDF viewer (case 6), whichever device wrote it.
+shows the png either way. With a PDF device alone, there is no image to
+open: Quarto embeds the PDF in a small box with the browser's PDF viewer,
+which panzoom leaves alone.
 
 ```{r}
 #| panzoom: true
@@ -133,7 +121,7 @@ filled.contour(volcano, color.palette = terrain.colors,
                plot.title = title(main = "mu = 5, alpha = 0.05"))
 ```
 
-## 8. Wide collage, webp at 2× resolution (100 × 5 in) {#c8}
+## 7. Wide collage, webp at 2× resolution (100 × 5 in) {#c7}
 
 At 192 dpi the collage is 19,200 px wide, beyond webp's limit of 16,383 px
 per side; this case records what happens.
