@@ -3,9 +3,11 @@ img.panzoom:not(.nopanzoom) {
   cursor: zoom-in;
 }
 .panzoom img:not(.nopanzoom):focus-visible,
-img.panzoom:not(.nopanzoom):focus-visible {
+img.panzoom:not(.nopanzoom):focus-visible,
+a.panzoom-link:focus-visible img {
   outline: 3px solid #2780e3; outline-offset: 2px;
 }
+a.panzoom-link:focus-visible { outline: none; }
 
 .panzoom-overlay {
   position: fixed; inset: 0; z-index: 100000; display: none;

@@ -595,20 +595,25 @@
   window.addEventListener("keyup", onKey, true);
 
   // Whether a marked image opens the viewer: not one inside the viewer, and
-  // not a real link (other than a lightbox wrapper), which keeps its link.
+  // not one inside an author's link, which keeps its link. panzoom.lua's
+  // own `a.panzoom-link` (the no-JS fallback) doesn't count.
   function opens(t) {
     if (overlay && overlay.contains(t)) return false;
     var link = t.closest("a[href]");
-    return !(link && !link.classList.contains("lightbox"));
+    return !link || link.classList.contains("panzoom-link");
   }
 
-  // The marked image an event targets, if it opens the viewer.
+  // The marked image an event targets, if it opens the viewer. Keys and
+  // keyboard clicks on an `a.panzoom-link` target the link, not its image.
   function target(e) {
-    var t = e.target.closest && e.target.closest(SELECTOR);
+    var el = e.target;
+    if (el.matches && el.matches("a.panzoom-link")) el = el.querySelector(SELECTOR) || el;
+    var t = el.closest && el.closest(SELECTOR);
     return t && opens(t) ? t : null;
   }
 
-  // Capture phase, so this runs before any lightbox handler on a wrapping <a>.
+  // Capture phase, so this runs before other click handlers on the page;
+  // preventDefault stops the `a.panzoom-link` around the image.
   document.addEventListener("click", function (e) {
     var t = target(e);
     if (!t) return;
@@ -632,14 +637,16 @@
     open(t);
   });
 
-  // Make marked images reachable with Tab and announced as buttons.
+  // Make marked images reachable with Tab and announced as buttons. An
+  // image in an `a.panzoom-link` is reached through the link (one Tab stop).
   function makeFocusable() {
-    document.querySelectorAll(SELECTOR).forEach(function (el) {
-      if (!opens(el)) return;
+    document.querySelectorAll(SELECTOR).forEach(function (img) {
+      if (!opens(img)) return;
+      var el = img.closest("a.panzoom-link") || img;
       el.tabIndex = 0;
       el.setAttribute("role", "button");
       el.setAttribute("aria-haspopup", "dialog");
-      el.setAttribute("aria-label", (el.alt ? el.alt + ": " : "") + "open in zoom viewer");
+      el.setAttribute("aria-label", (img.alt ? img.alt + ": " : "") + "open in zoom viewer");
     });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", makeFocusable);

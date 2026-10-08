@@ -425,9 +425,10 @@ async function checkIsolation(page, box) {
   return out;
 }
 
-// Keyboard access: the image is a focusable button that opens on Enter and
-// Space; the viewer takes focus, keeps Tab inside, pans with the arrows, and
-// gives focus back to the image when it closes.
+// Keyboard access: the image (or its `a.panzoom-link`, the no-JS fallback)
+// is one focusable button that opens on Enter and Space; the viewer takes
+// focus, keeps Tab inside, pans with the arrows, and gives focus back to the
+// image when it closes.
 async function checkKeyboard(page, handle) {
   const out = {};
   const focusState = () => page.evaluate(() => {
@@ -435,11 +436,14 @@ async function checkKeyboard(page, handle) {
     return {
       inViewer: !!(a && a.closest(".panzoom-overlay")),
       onClose: !!(a && a.classList.contains("panzoom-close")),
-      onImage: !!(a && a.dataset.testIdx !== undefined),
+      onImage: !!(a && (a.dataset.testIdx !== undefined ||
+        (a.matches("a.panzoom-link") && a.querySelector("[data-test-idx]")))),
     };
   });
-  out.focusable = await handle.evaluate((el) => el.tabIndex === 0 && el.getAttribute("role") === "button");
-  await handle.focus();
+  const control = await handle.evaluateHandle((el) => el.closest("a.panzoom-link") || el);
+  out.focusable = await control.evaluate((el) => el.tabIndex === 0 && el.getAttribute("role") === "button");
+  out.oneTabStop = await handle.evaluate((el) => !el.closest("a.panzoom-link") || el.tabIndex < 0);
+  await control.focus();
   await page.keyboard.press("Enter");
   await settle(page);
   out.enterOpens = (await state(page)).opened === "panzoom";
@@ -564,6 +568,7 @@ async function checkGallery(page, handle) {
 
 const KEYBOARD_CHECKS = [
   ["focusable", "Image is focusable and a button"],
+  ["oneTabStop", "One Tab stop per image"],
   ["enterOpens", "Enter on the image opens the viewer"],
   ["focusMovesIn", "Focus moves into the viewer"],
   ["arrowsPan", "Arrow keys pan"],

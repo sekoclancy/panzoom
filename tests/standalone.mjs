@@ -11,6 +11,7 @@
 
     self-contained.qmd        embed-resources: true
     self-contained-math.qmd   ... plus self-contained-math: true
+    self-contained-lightbox.qmd  self-contained.qmd with Quarto's lightbox
     math-<method>.qmd         each html-math-method
 
   Usage, from tests/:

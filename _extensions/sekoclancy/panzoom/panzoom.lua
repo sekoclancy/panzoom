@@ -300,6 +300,18 @@ return {
       end
     end,
   },
+  -- Without JavaScript, a marked image is a link to its own file, as with
+  -- Quarto's lightbox; panzoom.js stops the link and opens the viewer.
+  -- Images already inside a link keep that link.
+  {
+    traverse = "topdown",
+    Link = function() return nil, false end,
+    Image = function(img)
+      if has(img.classes, "panzoom") and not has(img.classes, "nopanzoom") then
+        return pandoc.Link({ img }, img.src, "", pandoc.Attr("", { "panzoom-link" })), false
+      end
+    end,
+  },
   -- Each description, as a hidden div right after the top-level block
   -- holding its image(s): there Quarto renders it like the text around it
   -- (citations in reading order), and never inside a figure or layout.

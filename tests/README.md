@@ -56,6 +56,7 @@ Two more sets of pages are **not part of the website** (see
 | Page | What it is |
 |---|---|
 | [standalone/self-contained](standalone/self-contained.qmd) | **A single HTML file**, `embed-resources: true`, opened from its `file://` address. `self-contained-math` also embeds MathJax (`self-contained-math: true`). |
+| [standalone/self-contained-lightbox](standalone/self-contained-lightbox.qmd) | **The same page with Quarto's lightbox** instead of panzoom, for comparison (a copy: keep it in step with `_self-contained.qmd`). |
 | [standalone/math-&lt;method&gt;](standalone/_math.qmd) | **Math in captions and descriptions** with each `html-math-method`: `mathjax`, `katex`, `mathml`, `webtex`, `plain`. |
 
 Each website page starts with a note saying what it should show, has a **</> Code**
@@ -101,6 +102,7 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── package-lock.json  exact dependency versions
     ├── browser.mjs        the browser checks
     ├── standalone.mjs     renders standalone/ (see Standalone pages)
+    ├── nojs.mjs           the checks with JavaScript off (see Without JavaScript)
     ├── standalone/        pages outside the website: *.qmd, shared _*.qmd bodies,
     │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
@@ -167,6 +169,29 @@ npm run standalone     # node standalone.mjs && node browser.mjs standalone/*.ht
 A self-contained page (no script or stylesheet files beside it) is opened
 from its `file://` address, the way it would be from an email or a
 download; the others are served like the website.
+
+### Without JavaScript
+
+```bash
+npm run nojs           # node nojs.mjs: every test and standalone page, JavaScript off
+```
+
+With JavaScript off there is no viewer: each marked image is a link to its
+own file (`a.panzoom-link`, written by panzoom.lua), as Quarto's lightbox
+does with `a.lightbox`, so a click shows the full image in the same tab.
+`nojs.mjs` opens every page with JavaScript disabled and checks that each
+marked image is in such a link pointing at the image (or in an author's
+own link, left alone), then clicks it and checks where the browser goes.
+It prints one line per page, with the number of lightbox images for
+comparison.
+
+Self-contained pages are the exception. Their images are embedded, but the
+link still points at the `*_files/` copy that Quarto deletes after
+embedding, so with JavaScript off those links lead nowhere. Quarto's
+lightbox links do the same (`self-contained-lightbox`). The line reports
+them as `dead links (self-contained, as Quarto's lightbox)`, counted for
+both, without failing the run. A link to a file that still exists (a
+markdown image from the repo's `images/`) counts as fine.
 
 ### Without internet access
 
@@ -239,7 +264,8 @@ against keys acting on the page behind the viewer (for example focus-mode's
 arrow keys switching pages).
 
 **Keyboard access.** On the same image, the test opens the viewer with the
-keyboard only: the image must be focusable and announced as a button, open
+keyboard only: the image must be focusable and announced as a button (its
+`a.panzoom-link` is, if it has one: one Tab stop per image), open
 on Enter and on Space, move focus into the viewer, pan with the arrow keys,
 keep Tab and Shift+Tab inside the viewer, close from the close button with
 Enter and with Esc, and return focus to the image afterwards.

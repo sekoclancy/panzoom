@@ -35,6 +35,8 @@ It attempts to match, and extend, the feature set of Quarto's built-in
 - **Layouts:** figures in Quarto layouts (`layout-ncol`, `layout-nrow`,
   layout divs) open one at a time; subfigures form a gallery.
 - **Linked images:** an image inside a link keeps its link.
+- **Without JavaScript:** each image links to its own file, as with the
+  lightbox (see [Without JavaScript](#without-javascript)).
 - **Self-contained documents:** works in a single HTML file
   (`embed-resources: true`), opened straight from disk.
 - **Math libraries:** math in captions and descriptions shows as it does on
@@ -227,6 +229,16 @@ larger than the screen (or do nothing, if it fits sideways); use
 <kbd>PageUp</kbd>/<kbd>PageDown</kbd> or the on-screen ‹ › buttons to
 change images.
 
+### Without JavaScript
+
+Each marked image is wrapped in a link to its own file, as Quarto's
+lightbox does. With JavaScript running, panzoom stops the link and opens
+the viewer instead. Without it (blocked, failed to load, or not loaded
+yet), a click opens the full image in the same tab, where the browser's
+own image view fits it to the window and shows it at real size on a
+click; Back returns to the page. An image already inside a link keeps that
+link.
+
 ### Self-contained and offline documents
 
 panzoom works in a self-contained document, a single HTML file you can
@@ -252,6 +264,11 @@ self-contained-math: true
 Math is then typeset offline, in system fonts rather than MathJax's own
 (Quarto doesn't embed those). MathML (`html-math-method: mathml`) needs no
 library at all, so it works offline without embedding anything.
+
+With JavaScript off, the links around images in a self-contained file lead
+nowhere: Quarto embeds the images but not the files the links point to,
+and deletes those. Quarto's lightbox links have the same problem. With
+JavaScript on, the viewer shows the embedded image as usual.
 
 ## Development
 
@@ -325,6 +342,7 @@ review; nothing is compared pixel by pixel.
 
 A few more pages, outside the website, check a single self-contained HTML
 file opened from disk and math with each of Quarto's math methods, and the
-whole set can be run with no internet access.
+whole set can be run with no internet access. A separate script opens every
+page with JavaScript off and checks each image's link to its file.
 
 See [tests/README.md](tests/README.md) for setup and running the tests.
