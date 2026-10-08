@@ -189,8 +189,10 @@ times wider than tall, that would show less than a quarter of the screen
 tall, such as a collage of many panels (`fig-width: 100`, `fig-height: 5`),
 opens filling the screen height instead; drag or use
 <kbd>←</kbd>/<kbd>→</kbd> to move along it. A strip at least 3 times taller
-than wide opens filling the screen width, at its top. Ordinary photos and
-plots, portrait or landscape, always open whole. No image is enlarged past
+than wide, that would show less than a quarter of the screen wide, opens
+filling the screen width, at its top. Ordinary photos and plots, portrait
+or landscape, always open whole, even on a very wide screen where a portrait
+photo is narrower than a quarter of it. No image is enlarged past
 its real size when it opens (as with Quarto's lightbox): a small image opens
 at its own size, and scrolling still zooms it in, up to `max-zoom`.
 

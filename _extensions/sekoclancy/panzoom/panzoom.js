@@ -33,11 +33,12 @@
   what had it before when it closes.
 
   Fit: by default (`fit: auto`) the viewer opens on the whole image, unless
-  it is a strip (at least 3 times wider than tall, or taller than wide) that
-  would show too thin to read (shorter than a quarter of the screen height,
-  or narrower than a quarter of its width): then it fills the screen height
-  from the left end (or the width from the top). The shape condition keeps
-  ordinary portrait photos whole on wide screens. `fit: contain | height | width` forces one of these.
+  it is a strip (at least 3 times wider than tall, or 3 times taller than
+  wide) that would show too thin to read (shorter than a quarter of the
+  screen height, or narrower than a quarter of its width): then it fills
+  the screen height from the left end (or the width from the top). The
+  shape condition keeps ordinary portrait photos whole on wide screens.
+  `fit: contain | height | width` forces one of these.
   Zooming out always goes down to the whole image. A strip clicked on the
   page opens with the clicked spot (its focal point) in the middle (as far as its ends
   allow); opened from the keyboard, at its left end (or top). Reset (0,
