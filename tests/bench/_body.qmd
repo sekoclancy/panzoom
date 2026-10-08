@@ -1,0 +1,76 @@
+The same images on each page: four photos and eight R plots, one by one,
+and a figure with two subfigures; nothing else differs between the pages
+but the viewer.
+
+```{r}
+#| include: false
+
+wave <- function(k = 1) {
+  x <- seq(0, 4 * pi, length.out = 400)
+  plot(x, sin(k * x), type = "l", lwd = 2, col = hcl.colors(8)[k],
+       main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
+}
+```
+
+## Photos
+
+![Chilmark](../../images/mv-0.jpg)
+
+![Aquinnah](../../images/mv-1.jpg)
+
+![Edgartown Lighthouse](../../images/mv-2.jpg)
+
+![Oak Bluffs](../../images/mv-3.jpg)
+
+## Plots
+
+```{r}
+#| fig-cap: "Wave 1."
+wave(1)
+```
+
+```{r}
+#| fig-cap: "Wave 2."
+wave(2)
+```
+
+```{r}
+#| fig-cap: "Wave 3."
+wave(3)
+```
+
+```{r}
+#| fig-cap: "Wave 4."
+wave(4)
+```
+
+```{r}
+#| fig-cap: "Wave 5."
+wave(5)
+```
+
+```{r}
+#| fig-cap: "Wave 6."
+wave(6)
+```
+
+```{r}
+#| fig-cap: "Wave 7."
+wave(7)
+```
+
+```{r}
+#| fig-cap: "Wave 8."
+wave(8)
+```
+
+## Subfigures
+
+```{r}
+#| label: fig-pair
+#| fig-cap: "Two plots."
+#| fig-subcap: ["Pressure", "Cars"]
+#| layout-ncol: 2
+plot(pressure)
+plot(cars)
+```

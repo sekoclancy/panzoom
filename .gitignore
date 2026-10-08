@@ -9,6 +9,7 @@
 /tests/node_modules/
 /tests/results/
 /tests/standalone/*.html
+/tests/bench/*.html
 
 **/*.quarto_ipynb
 # Shell history

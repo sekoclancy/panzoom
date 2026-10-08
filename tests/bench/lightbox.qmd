@@ -1,0 +1,6 @@
+---
+title: "Benchmark: Quarto's lightbox"
+lightbox: auto
+---
+
+{{< include _body.qmd >}}

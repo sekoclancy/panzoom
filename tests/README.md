@@ -105,6 +105,9 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── standalone.mjs     renders standalone/ (see Standalone pages)
     ├── nojs.mjs           the checks with JavaScript off (see Without JavaScript)
     ├── contrast.mjs       text contrast in light and dark mode (see Text contrast)
+    ├── bench.mjs          benchmark against Quarto's lightbox (see Benchmark)
+    ├── bench/             its pages: none, lightbox, panzoom .qmd and their shared
+    │                      _body.qmd; _extensions -> ../../_extensions (symlink)
     ├── standalone/        pages outside the website: *.qmd, shared _*.qmd bodies,
     │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
@@ -225,6 +228,24 @@ semi-transparent layers included. Text below 4.5:1 (3:1 for large text) is
 reported, grouped by element and colors, and fails the run. Text over
 images, typeset math and Quarto's navbar, sidebar and footer are not
 measured.
+
+### Benchmark
+
+```bash
+npm run bench          # node bench.mjs: render and time panzoom against the lightbox
+node bench.mjs --rounds 10 --no-render   # more rounds; skip rendering
+```
+
+`bench/` has three pages with the same knitr body (four photos, eight R
+plots, two subfigures): no viewer, Quarto's lightbox (`lightbox: auto`) and
+panzoom (`match: auto`). `bench.mjs` times `quarto render` for each (the
+pages taking turns), weighs the script and stylesheet files each viewer
+adds, times page load in headless Chrome with no cache, and times opening
+and closing the viewer on six images: until it's first visible, and until
+it has settled (image loaded, fully opaque, nothing moving), at full speed
+and with the CPU slowed 4x. It writes `results/bench/report.md`. Times
+depend on the machine: compare the rows, not the numbers. It checks
+nothing and always passes.
 
 ### Without internet access
 

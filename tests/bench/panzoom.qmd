@@ -1,0 +1,9 @@
+---
+title: "Benchmark: panzoom"
+filters:
+  - panzoom
+panzoom:
+  match: auto
+---
+
+{{< include _body.qmd >}}
