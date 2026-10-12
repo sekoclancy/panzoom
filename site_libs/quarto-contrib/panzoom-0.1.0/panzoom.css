@@ -3,9 +3,11 @@ img.panzoom:not(.nopanzoom) {
   cursor: zoom-in;
 }
 .panzoom img:not(.nopanzoom):focus-visible,
-img.panzoom:not(.nopanzoom):focus-visible {
+img.panzoom:not(.nopanzoom):focus-visible,
+a.panzoom-link:focus-visible img {
   outline: 3px solid #2780e3; outline-offset: 2px;
 }
+a.panzoom-link:focus-visible { outline: none; }
 
 .panzoom-overlay {
   position: fixed; inset: 0; z-index: 100000; display: none;
@@ -42,7 +44,7 @@ img.panzoom:not(.nopanzoom):focus-visible {
 }
 .panzoom-prev { left: 10px; }
 .panzoom-next { right: 10px; }
-.panzoom-prev:hover, .panzoom-next:hover { color: #fff; background: rgba(0, 0, 0, 0.6); }
+.panzoom-prev:hover, .panzoom-next:hover { color: #fff; background: rgba(0, 0, 0, 0.7); }
 .panzoom-prev:disabled, .panzoom-next:disabled { opacity: 0.3; cursor: default; }
 .panzoom-prev:focus-visible, .panzoom-next:focus-visible {
   color: #fff; outline: 2px solid #fff; outline-offset: 2px;
@@ -60,21 +62,16 @@ img.panzoom:not(.nopanzoom):focus-visible {
   padding: 0.5rem 1rem 0.6rem; text-align: center;
   background: rgb(15, 15, 15);
 }
-.panzoom-caption {
-  max-width: 60rem; max-height: 25vh; margin: 0 auto 0.3rem; overflow-y: auto;
-  color: #eee; font-size: 0.95rem; line-height: 1.4;
+.panzoom-caption, .panzoom-description {
+  max-width: 60rem; margin: 0 auto 0.3rem; overflow-y: auto; line-height: 1.4;
   user-select: text; -webkit-user-select: text; cursor: auto;
 }
-.panzoom-caption a { color: #9ec5fe; }
+.panzoom-caption a, .panzoom-description a { color: #9ec5fe; }
+.panzoom-caption { max-height: 25vh; color: #eee; font-size: 0.95rem; }
 .panzoom-caption-parent { margin-top: 0.2rem; color: #bbb; font-size: 0.85rem; }
-.panzoom-description {
-  max-width: 60rem; max-height: 20vh; margin: 0 auto 0.3rem; overflow-y: auto;
-  color: #ccc; font-size: 0.85rem; line-height: 1.4;
-  user-select: text; -webkit-user-select: text; cursor: auto;
-}
+.panzoom-description { max-height: 20vh; color: #ccc; font-size: 0.85rem; }
 .panzoom-description p { margin: 0 0 0.3rem; }
 .panzoom-description p:last-child { margin-bottom: 0; }
-.panzoom-description a { color: #9ec5fe; }
 .panzoom-hint {
   color: #aaa; font-size: 0.8rem; pointer-events: none;
 }

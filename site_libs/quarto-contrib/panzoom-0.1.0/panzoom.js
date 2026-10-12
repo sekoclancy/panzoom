@@ -16,9 +16,9 @@
   Quarto rendered with the page (citations, cross-references, math).
 
   Galleries: images with the same group are stepped through with the
-  prev/next buttons, PageUp/PageDown, Left/Right or a horizontal swipe
-  (the last two only while the image fits the screen; when it is larger in
-  either direction, they pan).
+  prev/next buttons, Left/Right or a horizontal swipe (the last two only
+  while the image fits the screen; when it is larger in either direction,
+  they pan).
 
   Panning: drag, arrow keys, Shift+wheel or sideways trackpad scrolling
   (along the direction the image extends past the screen; sideways if
@@ -33,11 +33,12 @@
   what had it before when it closes.
 
   Fit: by default (`fit: auto`) the viewer opens on the whole image, unless
-  it is a strip (at least 3 times wider than tall, or taller than wide) that
-  would show too thin to read (shorter than a quarter of the screen height,
-  or narrower than a quarter of its width): then it fills the screen height
-  from the left end (or the width from the top). The shape condition keeps
-  ordinary portrait photos whole on wide screens. `fit: contain | height | width` forces one of these.
+  it is a strip (at least 3 times wider than tall, or 3 times taller than
+  wide) that would show too thin to read (shorter than a quarter of the
+  screen height, or narrower than a quarter of its width): then it fills
+  the screen height from the left end (or the width from the top). The
+  shape condition keeps ordinary portrait photos whole on wide screens.
+  `fit: contain | height | width` forces one of these.
   Zooming out always goes down to the whole image. A strip clicked on the
   page opens with the clicked spot (its focal point) in the middle (as far as its ends
   allow); opened from the keyboard, at its left end (or top). Reset (0,
@@ -98,15 +99,15 @@
     return cap ? cap.innerHTML.trim() : "";
   }
 
-  // The image's caption: its figure's caption and, for a subfigure, the
-  // parent figure's caption as a second line ("(a) Sub A" over "Figure 1:
-  // ..."), since the subfigure caption alone has no figure number.
   // The image's description, as rendered on the page (see the header).
   function descriptionOf(el) {
     var d = el.dataset.panzoomDesc && document.getElementById(el.dataset.panzoomDesc);
     return d ? d.innerHTML : "";
   }
 
+  // The image's caption: its figure's caption and, for a subfigure, the
+  // parent figure's caption as a second line ("(a) Sub A" over "Figure 1:
+  // ..."), since the subfigure caption alone has no figure number.
   function captionOf(el) {
     var fig = el.closest("figure");
     var html = figcaption(fig);
@@ -345,13 +346,7 @@
       x: whole || w * s > a.w ? null : fx - (fx - (w / 2 + s0 * p.x)) * f,
       y: whole || h * s > a.h ? null : fy - (fy - (h / 2 + s0 * p.y)) * f
     };
-    pz.zoom(s, {
-      animate: false,
-      focal: {
-        x: (px - box.left - img.naturalWidth / 2) * s,
-        y: (py - box.top - img.naturalHeight / 2) * s
-      }
-    });
+    pz.zoom(s, { animate: false, focal: { x: (fx - w / 2) * s, y: (fy - h / 2) * s } });
   }
 
   // Back to the opening view, without Panzoom's default animation: it
@@ -439,7 +434,12 @@
     returnFocus = document.activeElement;
     gallery = galleryOf(el);
     overlay.classList.add("open");
-    document.documentElement.style.overflow = "hidden";
+    // Stop the page scrolling; keep the scrollbar's space, if it has one,
+    // so the page behind doesn't shift sideways, and cover that space too.
+    var html = document.documentElement, bar = window.innerWidth - html.clientWidth;
+    if (bar > 0) html.style.scrollbarGutter = "stable";
+    overlay.style.right = -bar + "px";
+    html.style.overflow = "hidden";
     show(Math.max(0, gallery.indexOf(el)));
     overlay.focus({ preventScroll: true });
   }
@@ -448,6 +448,7 @@
     stopBounce();
     overlay.classList.remove("open");
     document.documentElement.style.overflow = "";
+    document.documentElement.style.scrollbarGutter = "";
     if (pz) { pz.destroy(); pz = null; }
     press = null;
     gallery = [];
@@ -481,7 +482,7 @@
       '<div class="panzoom-description"></div>' +
       '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
       'double-click to reset &middot; Esc to close' +
-      '<span class="panzoom-hint-gallery"> &middot; PageUp/PageDown for other images</span></div>' +
+      '<span class="panzoom-hint-gallery"> &middot; &lsaquo; &rsaquo; for other images</span></div>' +
       '</div>';
     document.body.appendChild(overlay);
     img = overlay.querySelector("img");
@@ -577,8 +578,6 @@
     }
     else if (e.key === "Escape") close();
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
-    else if (e.key === "PageUp") step(-1);
-    else if (e.key === "PageDown") step(1);
     // Left/Right pan while the image is larger than the screen (doing
     // nothing if it fits sideways); otherwise they switch gallery images
     // (doing nothing at either end without `loop`).
@@ -594,20 +593,25 @@
   window.addEventListener("keyup", onKey, true);
 
   // Whether a marked image opens the viewer: not one inside the viewer, and
-  // not a real link (other than a lightbox wrapper), which keeps its link.
+  // not one inside an author's link, which keeps its link. panzoom.lua's
+  // own `a.panzoom-link` (the no-JS fallback) doesn't count.
   function opens(t) {
     if (overlay && overlay.contains(t)) return false;
     var link = t.closest("a[href]");
-    return !(link && !link.classList.contains("lightbox"));
+    return !link || link.classList.contains("panzoom-link");
   }
 
-  // The marked image an event targets, if it opens the viewer.
+  // The marked image an event targets, if it opens the viewer. Keys and
+  // keyboard clicks on an `a.panzoom-link` target the link, not its image.
   function target(e) {
-    var t = e.target.closest && e.target.closest(SELECTOR);
+    var el = e.target;
+    if (el.matches && el.matches("a.panzoom-link")) el = el.querySelector(SELECTOR) || el;
+    var t = el.closest && el.closest(SELECTOR);
     return t && opens(t) ? t : null;
   }
 
-  // Capture phase, so this runs before any lightbox handler on a wrapping <a>.
+  // Capture phase, so this runs before other click handlers on the page;
+  // preventDefault stops the `a.panzoom-link` around the image.
   document.addEventListener("click", function (e) {
     var t = target(e);
     if (!t) return;
@@ -631,14 +635,16 @@
     open(t);
   });
 
-  // Make marked images reachable with Tab and announced as buttons.
+  // Make marked images reachable with Tab and announced as buttons. An
+  // image in an `a.panzoom-link` is reached through the link (one Tab stop).
   function makeFocusable() {
-    document.querySelectorAll(SELECTOR).forEach(function (el) {
-      if (!opens(el)) return;
+    document.querySelectorAll(SELECTOR).forEach(function (img) {
+      if (!opens(img)) return;
+      var el = img.closest("a.panzoom-link") || img;
       el.tabIndex = 0;
       el.setAttribute("role", "button");
       el.setAttribute("aria-haspopup", "dialog");
-      el.setAttribute("aria-label", (el.alt ? el.alt + ": " : "") + "open in zoom viewer");
+      el.setAttribute("aria-label", (img.alt ? img.alt + ": " : "") + "open in zoom viewer");
     });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", makeFocusable);

@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/tests/pages/h-wide.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/i-jupyter.html</loc>
+    <lastmod>2026-10-08T20:58:45.865Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/g-captions.html</loc>
     <lastmod>2026-10-07T22:57:29.349Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/tests/pages/f-options.html</loc>
-    <lastmod>2026-10-07T22:57:14.081Z</lastmod>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/e-formats.html</loc>
+    <lastmod>2026-10-08T20:45:37.311Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/tests/pages/d-panzoom-selective.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/c-panzoom-auto.html</loc>
     <lastmod>2026-10-07T00:32:25.499Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/tests/pages/b-panzoom-lightbox.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/a-lightbox.html</loc>
     <lastmod>2026-10-07T00:32:25.499Z</lastmod>
   </url>
   <url>
@@ -21,19 +25,19 @@
     <lastmod>2026-10-07T22:57:45.085Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/tests/pages/a-lightbox.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/b-panzoom-lightbox.html</loc>
     <lastmod>2026-10-07T00:32:25.499Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/tests/pages/c-panzoom-auto.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/d-panzoom-selective.html</loc>
     <lastmod>2026-10-07T00:32:25.499Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/tests/pages/e-formats.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/f-options.html</loc>
     <lastmod>2026-10-07T22:57:14.081Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/tests/pages/g-captions.html</loc>
-    <lastmod>2026-10-07T22:57:29.349Z</lastmod>
+    <loc>https://sekoclancy.github.io/panzoom/tests/pages/h-wide.html</loc>
+    <lastmod>2026-10-12T18:16:19.685Z</lastmod>
   </url>
 </urlset>
