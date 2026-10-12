@@ -52,7 +52,7 @@ const OFFLINE = process.argv.includes("--offline");
 const ARGS = process.argv.slice(2).filter((a) => a !== "--offline");
 const PAGES = ARGS.length
   ? ARGS.map((p) => path.resolve(p))
-  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html", "g-captions.html", "h-wide.html", "i-jupyter.html"]
+  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html", "g-captions.html", "h-wide.html", "i-jupyter.html", "j-wide-galleries.html"]
       .map((p) => path.join(ROOT, "docs", "tests", "pages", p));
 const VIEWPORT = { width: 1280, height: 900 };
 const RESULTS = path.join(HERE, "results", ...(OFFLINE ? ["offline"] : []));

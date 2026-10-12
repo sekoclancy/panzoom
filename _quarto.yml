@@ -51,6 +51,8 @@ website:
             text: "G: captions and descriptions"
           - href: tests/pages/h-wide.qmd
             text: "H: wide and tall figures"
+          - href: tests/pages/j-wide-galleries.qmd
+            text: "J: wide figures in galleries and layouts"
           - href: tests/pages/i-jupyter.qmd
             text: "I: Jupyter (Python) figures"
     right:

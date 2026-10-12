@@ -1,0 +1,145 @@
+---
+title: "J: wide figures in galleries and layouts"
+format:
+  html:
+    code-tools: true
+filters:
+  - panzoom
+panzoom:
+  hint: false
+---
+
+::: {.callout-note}
+## About this page
+
+This page **tests very wide and tall figures in galleries and layouts**:
+collages (25 × 2 inches) and tall strips grouped into galleries, as
+subfigures and in a layout div. The same shapes on their own, and the
+`fit` option, are on [H: wide and tall figures](h-wide.html).
+
+Wide figures open at screen height from the left end, tall ones at
+screen width from the top. Headings carry `expect-fit`, the way each image
+should open. On the galleries, the browser test also checks that
+Left/Right pan (or, on a tall strip, do nothing) rather than switch, and
+that the ‹ › buttons switch.
+:::
+
+```{r}
+#| include: false
+
+# A collage: `n` panels side by side, like a wide patchwork figure.
+collage <- function(n = 12) {
+  set.seed(1)
+  par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
+  for (i in seq_len(n)) {
+    plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i),
+         xlab = "", ylab = "", col = hcl.colors(n)[i], lwd = 2)
+  }
+}
+
+# A tall strip: `n` rows stacked, like a tall patchwork figure.
+strip <- function(seed = 2, n = 8) {
+  set.seed(seed)
+  par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))
+  for (i in seq_len(n)) {
+    plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+  }
+}
+```
+
+## 1. Gallery of two collages {#c1 expect-fit="height"}
+
+Left/Right and drags pan along the collage; the ‹ › buttons switch
+collages.
+
+```{r}
+#| panzoom:
+#|   group: collages
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap:
+#|   - "First collage."
+#|   - "Second collage."
+
+collage()
+collage(15)
+```
+
+## 2. Gallery of two tall strips {#c2 expect-fit="width"}
+
+Each strip opens at screen width and extends downwards: Left/Right do
+nothing (there is nowhere to go sideways) rather than switch strips;
+the ‹ › buttons switch.
+
+```{r}
+#| panzoom:
+#|   group: strips
+#| fig-width: 4
+#| fig-height: 15
+#| fig-cap:
+#|   - "First strip."
+#|   - "Second strip."
+
+for (k in 1:2) {
+  set.seed(10 + k)
+  par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
+  for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
+}
+```
+
+## 3. Two collages stacked (layout-nrow: 2) {#c3 expect-fit="height"}
+
+Subfigures in a layout: each opens on its own at screen height, and the
+two form a gallery.
+
+```{r}
+#| label: fig-collage-rows
+#| panzoom: true
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "Two collages, stacked."
+#| fig-subcap: ["First collage", "Second collage"]
+#| layout-nrow: 2
+
+collage()
+collage(15)
+```
+
+## 4. Two tall strips side by side (layout-ncol: 2) {#c4 expect-fit="width"}
+
+```{r}
+#| label: fig-strip-cols
+#| panzoom: true
+#| fig-width: 4
+#| fig-height: 15
+#| fig-cap: "Two tall strips, side by side."
+#| fig-subcap: ["First strip", "Second strip"]
+#| layout-ncol: 2
+
+strip(2)
+strip(3)
+```
+
+## 5. Tall strips in a layout div {#c5 expect-fit="width"}
+
+A `.panzoom` div with a layout, around two separate code cells: each
+strip opens on its own (no gallery: they are not subfigures).
+
+::: {.panzoom layout-ncol="2"}
+
+```{r}
+#| fig-width: 4
+#| fig-height: 15
+
+strip(4)
+```
+
+```{r}
+#| fig-width: 4
+#| fig-height: 15
+
+strip(5)
+```
+
+:::
+

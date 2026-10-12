@@ -14,8 +14,10 @@ panzoom:
 
 This page **tests how the viewer opens figures of different shapes**:
 very wide collages (25 × 2 inches), tall strips, a poster, a portrait
-photo and a small plot, alone, in galleries and in layouts, and the `fit`
-option. All are png; other formats are on [E: image formats](e-formats.html).
+photo and a small plot, each on its own, and the `fit` option. All are
+png; other formats are on [E: image formats](e-formats.html), and the same
+shapes in galleries and layouts on
+[J: wide figures in galleries and layouts](j-wide-galleries.html).
 
 By default (`fit: auto`) very wide figures open at screen height from the
 left end (or where they were clicked), very tall ones at screen width from
@@ -152,7 +154,7 @@ plot(pressure)
 ## 8. `fit: height` on an ordinary plot {#c8 expect-open="panzoom" expect-fit="height" expect-zoom-out="no"}
 
 On a screen wider than the plot (1.4:1), filling the height is already the
-whole plot, so this opens like `fit: contain` and can't zoom out. Case 15
+whole plot, so this opens like `fit: contain` and can't zoom out. Case 10
 shows `fit: height` on a figure where it differs.
 
 ```{r}
@@ -174,103 +176,7 @@ than the whole plot, and zooms out to it.
 wave(4)
 ```
 
-## 10. Gallery of two collages {#c10 expect-fit="height"}
-
-Left/Right and drags pan along the collage; the ‹ › buttons switch
-collages.
-
-```{r}
-#| panzoom:
-#|   group: collages
-#| fig-width: 25
-#| fig-height: 2
-#| fig-cap:
-#|   - "First collage."
-#|   - "Second collage."
-
-collage()
-collage(15)
-```
-
-## 11. Gallery of two tall strips {#c11 expect-fit="width"}
-
-Each strip opens at screen width and extends downwards: Left/Right do
-nothing (there is nowhere to go sideways) rather than switch strips;
-the ‹ › buttons switch.
-
-```{r}
-#| panzoom:
-#|   group: strips
-#| fig-width: 4
-#| fig-height: 15
-#| fig-cap:
-#|   - "First strip."
-#|   - "Second strip."
-
-for (k in 1:2) {
-  set.seed(10 + k)
-  par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
-  for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
-}
-```
-
-## 12. Two collages stacked (layout-nrow: 2) {#c12 expect-fit="height"}
-
-Subfigures in a layout: each opens on its own at screen height, and the
-two form a gallery.
-
-```{r}
-#| label: fig-collage-rows
-#| panzoom: true
-#| fig-width: 25
-#| fig-height: 2
-#| fig-cap: "Two collages, stacked."
-#| fig-subcap: ["First collage", "Second collage"]
-#| layout-nrow: 2
-
-collage()
-collage(15)
-```
-
-## 13. Two tall strips side by side (layout-ncol: 2) {#c13 expect-fit="width"}
-
-```{r}
-#| label: fig-strip-cols
-#| panzoom: true
-#| fig-width: 4
-#| fig-height: 15
-#| fig-cap: "Two tall strips, side by side."
-#| fig-subcap: ["First strip", "Second strip"]
-#| layout-ncol: 2
-
-strip(2)
-strip(3)
-```
-
-## 14. Tall strips in a layout div {#c14 expect-fit="width"}
-
-A `.panzoom` div with a layout, around two separate code cells: each
-strip opens on its own (no gallery: they are not subfigures).
-
-::: {.panzoom layout-ncol="2"}
-
-```{r}
-#| fig-width: 4
-#| fig-height: 15
-
-strip(4)
-```
-
-```{r}
-#| fig-width: 4
-#| fig-height: 15
-
-strip(5)
-```
-
-:::
-
-## 15. `fit: height` on a wide figure (12 × 4.5 in) {#c15 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+## 10. `fit: height` on a wide figure (12 × 4.5 in) {#c10 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
 Not a strip (shown whole it is over a quarter of the screen tall), so
 `fit: auto` would open it whole. `fit: height` opens it filling the screen
@@ -286,10 +192,10 @@ out to the whole figure.
 collage(6)
 ```
 
-## 16. Case 15 with a long caption and description {#c16 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+## 11. Case 10 with a long caption and description {#c11 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
 The caption and description sit below the image; `fit: height` fills the
-height left above them, so it opens smaller than case 15. The caption
+height left above them, so it opens smaller than case 10. The caption
 scrolls past a quarter of the screen, the description past a fifth, so the
 image keeps at least about half.
 

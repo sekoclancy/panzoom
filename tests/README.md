@@ -41,15 +41,16 @@ The same 12 cases are rendered four ways:
 | [c-panzoom-auto](pages/c-panzoom-auto.qmd) | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
 | [d-panzoom-selective](pages/d-panzoom-selective.qmd) | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
 
-Five more pages have cases of their own:
+Six more pages have cases of their own:
 
 | Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
 | [e-formats](pages/e-formats.qmd) | **Image formats.** A wide collage and a standard plot as webp and svg; png + pdf, png + cairo_pdf; and webp past its 16,383 px size limit. webp uses ragg's `agg_webp` (needs the ragg package). | on | none |
 | [f-options](pages/f-options.qmd) | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `hint` and `max-zoom` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
 | [g-captions](pages/g-captions.qmd) | **Captions and descriptions.** Citations and cross-references in captions and descriptions, including a work cited only in a description (quarto-cli#10709's case); the per-cell `caption` and `description` options. | on | none |
-| [h-wide](pages/h-wide.qmd) | **Wide and tall figures.** Very wide collages (25 × 2 in), tall strips (4 × 15 in), a poster, a portrait photo and a small plot, alone, in galleries and in layouts; the `fit` option. | on | none |
+| [h-wide](pages/h-wide.qmd) | **Wide and tall figures.** Very wide collages (25 × 2 in), tall strips (4 × 15 in), a poster, a portrait photo and a small plot, each on its own; the `fit` option. | on | none |
 | [i-jupyter](pages/i-jupyter.qmd) | **The Jupyter engine.** matplotlib figures with the same cell options as the R pages (`panzoom: true`, nested options, a description, subfigures, a group, a strip, `panzoom: false`, `classes`, `lightbox`): Jupyter passes nested options to the filter differently from knitr. Needs the Python venv (see [One-time setup](#one-time-setup)). | on | none |
+| [j-wide-galleries](pages/j-wide-galleries.qmd) | **Wide figures in galleries and layouts.** H's collages and tall strips as galleries, subfigures and in a layout div: how each opens, and that ←/→ pan rather than switch. Split from H to keep the test run short. | on | none |
 
 Two more sets of pages are **not part of the website** (see
 [Standalone pages](#standalone-pages)):
@@ -113,7 +114,8 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
     │                      d-panzoom-selective.qmd, e-formats.qmd, f-options.qmd,
-    │                      g-captions.qmd, h-wide.qmd, i-jupyter.qmd
+    │                      g-captions.qmd, h-wide.qmd, i-jupyter.qmd,
+    │                      j-wide-galleries.qmd
     ├── requirements.txt   Python packages for page I (matplotlib, Jupyter)
     ├── node_modules/      installed by npm (git-ignored)
     └── results/           test output (git-ignored)

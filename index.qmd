@@ -142,5 +142,6 @@ And pages of their own:
 - [G: captions and descriptions](tests/pages/g-captions.html): citations
   and cross-references, and the `caption` and `description` options.
 - [H: wide and tall figures](tests/pages/h-wide.html): 25 × 2 inch
-  collages, tall strips, galleries and layouts of them, and the `fit`
-  option.
+  collages, tall strips and other shapes, and the `fit` option.
+- [J: wide figures in galleries and layouts](tests/pages/j-wide-galleries.html):
+  the same collages and strips in galleries and layouts.
