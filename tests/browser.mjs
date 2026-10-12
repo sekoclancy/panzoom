@@ -184,6 +184,10 @@ async function state(page) {
         // or up and down (overY): a strip to scroll along.
         overX: r.width > pz.clientWidth + 1,
         overY: r.height > pz.clientHeight - pz.querySelector(".panzoom-footer").offsetHeight + 1,
+        // An image that fits the screen's height stays clear of the caption
+        // band below it (the band's height follows its text).
+        captionClear: r.height > pz.clientHeight - pz.querySelector(".panzoom-footer").offsetHeight + 1 ||
+          (r.top >= -1 && r.bottom <= pz.clientHeight - pz.querySelector(".panzoom-footer").offsetHeight + 1),
         backdrop: getComputedStyle(img).backgroundColor,
         description: (() => {
           const d = pz.querySelector(".panzoom-description");
@@ -1279,6 +1283,8 @@ try {
     // Every image is shown on an opaque backdrop (transparent plots stay readable).
     const opened = results.filter((r) => r.opened === "panzoom");
     if (opened.length) extra.push(opened.every((r) => /^rgb\(/.test(r.backdrop || "")) ? "backdrop ok" : "BACKDROP FAILED");
+    const overlaps = opened.filter((r) => r.captionClear === false);
+    if (opened.length) extra.push(overlaps.length ? `CAPTION OVERLAP (${overlaps.map((r) => `case ${r.case} img ${r.n}`).join(", ")})` : "caption clear ok");
     const anchored = opened.filter((r) => r.anchorChecked);
     if (anchored.length) extra.push(anchored.every((r) => r.anchorFastDrift <= 5) ? "fast zoom ok" : "FAST ZOOM FAILED");
     if (opened.length) extra.push(opened.every((r) => r.anchorOk) ? "zoom anchor ok" : "ZOOM ANCHOR FAILED");

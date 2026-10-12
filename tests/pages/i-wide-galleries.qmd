@@ -143,3 +143,65 @@ strip(seed = 5, n = 8)
 
 :::
 
+
+## 6. Collages of different lengths in a gallery {#c6 expect-fit="height"}
+
+Two cells, a long collage (40 × 2 in, 24 panels) and a shorter one
+(24 × 2 in, 12 panels), joined by `group`. Each opens at screen height
+from its left end; stepping to the other image fits it afresh, so the
+short collage doesn't keep the long one's scale or position. Whether a
+figure counts as a strip depends only on its shape (much shorter, and
+the short one would open whole on the test's 2560 px wide screen), so
+`fig-dpi: 48` halves the resolution to keep the files small. The
+captions differ in length: stepping between the two changes the caption
+band's height, and each collage must stay clear of it.
+
+```{r}
+#| panzoom:
+#|   group: mixed-collages
+#| fig-width: 40
+#| fig-height: 2
+#| fig-dpi: 48
+#| fig-cap: "The long collage."
+
+collage(n = 24)
+```
+
+```{r}
+#| panzoom:
+#|   group: mixed-collages
+#|   description: "A longer text under the short collage, so that the caption band grows when the gallery steps to it. Each panel is a random walk of 200 steps, coloured along a single palette from the first panel to the last, and titled with its panel number so the order can be read at any zoom."
+#| fig-width: 24
+#| fig-height: 2
+#| fig-dpi: 48
+#| fig-cap: "The short collage, with a description."
+
+collage(n = 12)
+```
+
+## 7. Tall strips of different lengths side by side {#c7 expect-fit="width"}
+
+As case 4, but the strips differ: 4 × 20 in (10 rows) and 3 × 12 in
+(6 rows), in a layout div, with captions of different lengths. Each opens
+at screen width from its top, and the layout shows them at different
+heights on the page.
+
+::: {.panzoom layout-ncol="2"}
+
+```{r}
+#| fig-width: 4
+#| fig-height: 20
+#| fig-cap: "The long strip."
+
+strip(seed = 6, n = 10)
+```
+
+```{r}
+#| fig-width: 3
+#| fig-height: 12
+#| fig-cap: "The short strip, with a caption long enough to wrap onto a second line in the viewer."
+
+strip(seed = 7, n = 6)
+```
+
+:::
