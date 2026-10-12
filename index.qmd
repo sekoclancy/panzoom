@@ -127,7 +127,7 @@ would open nothing. For a whole code cell, use `#| panzoom: false`.
 
 ## Test pages
 
-### R (knitr)
+### R
 
 The same 12 lightbox situations (galleries, subfigures, captions with math,
 images in links, margin images, ...) rendered four ways:
@@ -154,7 +154,7 @@ And pages of their own:
 - [I: wide figures in galleries and layouts](tests/pages/i-wide-galleries.html):
   the same collages and strips in galleries and layouts.
 
-### Python (Jupyter)
+### Python
 
 - [J: Python lightbox reference](tests/pages/j-jupyter-lightbox.html):
   Quarto's lightbox alone on Python cells.
