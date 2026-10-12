@@ -7,6 +7,7 @@
     "standalone": "node standalone.mjs && node browser.mjs standalone/*.html",
     "nojs": "node nojs.mjs",
     "contrast": "node contrast.mjs",
+    "touch": "node touch.mjs",
     "bench": "node bench.mjs",
     "bench:save": "node bench.mjs --save",
     "offline": "node standalone.mjs --offline && node browser.mjs --offline ../docs/tests/pages/*.html standalone/*.html"

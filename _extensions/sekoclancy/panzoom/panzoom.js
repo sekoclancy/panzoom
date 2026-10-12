@@ -527,23 +527,38 @@
     // Panzoom handles the drag itself. A press and release on the background
     // without moving closes the viewer; a horizontal swipe switches images
     // unless the image is larger than the screen (then the drag pans it).
+    // Only a single finger (or the mouse) taps or swipes: once a second
+    // finger is down (a pinch), lifting the fingers just ends the gesture,
+    // whichever finger touched down last or rests on the background.
     overlay.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest(".panzoom-exclude")) return;
       stopBounce();
-      press = { id: e.pointerId, sx: e.clientX, sy: e.clientY, onImg: e.target === img, pans: overflow().any };
+      if (press) {
+        press.ids.push(e.pointerId);
+        press.multi = true;
+        return;
+      }
+      press = { id: e.pointerId, ids: [e.pointerId], multi: false, sx: e.clientX, sy: e.clientY,
+        onImg: e.target === img, pans: overflow().any };
       overlay.classList.add("dragging");
     });
-    document.addEventListener("pointerup", function (e) {
-      if (!press || e.pointerId !== press.id) return;
+    function release(e) {
+      var i = press ? press.ids.indexOf(e.pointerId) : -1;
+      if (i < 0) return;
+      press.ids.splice(i, 1);
+      if (press.ids.length) return;
+      var single = !press.multi && e.type === "pointerup";
       var dx = e.clientX - press.sx, dy = e.clientY - press.sy;
       var moved = Math.abs(dx) + Math.abs(dy) > 3;
-      var clickedBackground = !moved && !press.onImg;
-      var swipe = !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
+      var clickedBackground = single && !moved && !press.onImg;
+      var swipe = single && !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
       press = null;
       overlay.classList.remove("dragging");
       if (clickedBackground) close();
       else if (!(swipe && step(dx < 0 ? 1 : -1))) settle();
-    });
+    }
+    document.addEventListener("pointerup", release);
+    document.addEventListener("pointercancel", release);
 
     overlay.addEventListener("dblclick", function (e) {
       if (!e.target.closest(".panzoom-exclude")) resetView();
