@@ -57,7 +57,7 @@ The whole cell opts out.
 #| panzoom: false
 #| fig-cap: "Opted out cell."
 
-wave(1)
+wave(k = 1)
 ```
 
 :::
@@ -70,7 +70,7 @@ The page shows the hint (the default); this cell hides it.
 #| panzoom:
 #|   hint: false
 
-wave(3)
+wave(k = 3)
 ```
 
 ## 4. Hint on by default {#c4 expect-open="panzoom" expect-hint="shown"}
@@ -78,7 +78,7 @@ wave(3)
 ```{r}
 #| panzoom: true
 
-wave(4)
+wave(k = 4)
 ```
 
 ## 5. `max-zoom: 2` {#c5 expect-open="panzoom" expect-max-zoom="2"}
@@ -89,7 +89,7 @@ Zooming in stops at 2 screen pixels per image pixel.
 #| panzoom:
 #|   max-zoom: 2
 
-wave(1)
+wave(k = 1)
 ```
 
 ## 6. Gallery with `loop: true` {#c6 expect-open="panzoom"}
@@ -105,7 +105,7 @@ goes to the last, and "previous" is never disabled.
 #|   - "Wave two."
 #|   - "Wave three."
 
-wave(1)
-wave(2)
-wave(3)
+wave(k = 1)
+wave(k = 2)
+wave(k = 3)
 ```

@@ -55,7 +55,7 @@ collage <- function(n = 12) {
 #| dev.args: !expr list(units = "in", res = 96)
 #| fig-cap: "A 25 × 2 inch collage of 12 panels (webp)."
 
-collage()
+collage(n = 12)
 ```
 
 ## 2. Wide collage, svg (25 × 2 in) {#c2 expect-fit="height"}
@@ -67,7 +67,7 @@ collage()
 #| dev: svg
 #| fig-cap: "The collage as svg."
 
-collage()
+collage(n = 12)
 ```
 
 ## 3. webp plot {#c3 expect-fit="contain" shift-scroll="none" expect-scale="1"}
@@ -136,5 +136,5 @@ per side; this case records what happens.
 #| fig-cap: "The collage as webp at 192 dpi."
 #| error: true
 
-collage()
+collage(n = 12)
 ```

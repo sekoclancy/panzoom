@@ -26,42 +26,42 @@ wave <- function(k = 1) {
 
 ```{r}
 #| fig-cap: "Wave 1."
-wave(1)
+wave(k = 1)
 ```
 
 ```{r}
 #| fig-cap: "Wave 2."
-wave(2)
+wave(k = 2)
 ```
 
 ```{r}
 #| fig-cap: "Wave 3."
-wave(3)
+wave(k = 3)
 ```
 
 ```{r}
 #| fig-cap: "Wave 4."
-wave(4)
+wave(k = 4)
 ```
 
 ```{r}
 #| fig-cap: "Wave 5."
-wave(5)
+wave(k = 5)
 ```
 
 ```{r}
 #| fig-cap: "Wave 6."
-wave(6)
+wave(k = 6)
 ```
 
 ```{r}
 #| fig-cap: "Wave 7."
-wave(7)
+wave(k = 7)
 ```
 
 ```{r}
 #| fig-cap: "Wave 8."
-wave(8)
+wave(k = 8)
 ```
 
 ## Subfigures

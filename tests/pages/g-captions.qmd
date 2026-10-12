@@ -102,7 +102,7 @@ The figure has a caption on the page, but not in the viewer.
 #|   caption: false
 #| fig-cap: "This caption stays on the page."
 
-wave(2)
+wave(k = 2)
 ```
 
 ## 7. `description` cell option {#c7 expect-open="panzoom"}
@@ -114,7 +114,7 @@ The description is Markdown, with math, shown under the caption.
 #|   description: "A sine wave, $y = \\sin(kx)$, **k = 2**."
 #| fig-cap: "With a description."
 
-wave(2)
+wave(k = 2)
 ```
 
 ## References {.unnumbered}

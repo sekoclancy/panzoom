@@ -61,8 +61,8 @@ buttons switch collages.
 #|   - "First collage."
 #|   - "Second collage."
 
-collage()
-collage(15)
+collage(n = 12)
+collage(n = 15)
 ```
 
 ## 2. Gallery of two tall strips {#c2 expect-fit="width"}
@@ -101,8 +101,8 @@ two form a gallery.
 #| fig-subcap: ["First collage", "Second collage"]
 #| layout-nrow: 2
 
-collage()
-collage(15)
+collage(n = 12)
+collage(n = 15)
 ```
 
 ## 4. Two tall strips side by side (layout-ncol: 2) {#c4 expect-fit="width"}
@@ -116,8 +116,8 @@ collage(15)
 #| fig-subcap: ["First strip", "Second strip"]
 #| layout-ncol: 2
 
-strip(2)
-strip(3)
+strip(seed = 2, n = 8)
+strip(seed = 3, n = 8)
 ```
 
 ## 5. Tall strips in a layout div {#c5 expect-fit="width"}
@@ -131,14 +131,14 @@ strip opens on its own (no gallery: they are not subfigures).
 #| fig-width: 4
 #| fig-height: 15
 
-strip(4)
+strip(seed = 4, n = 8)
 ```
 
 ```{r}
 #| fig-width: 4
 #| fig-height: 15
 
-strip(5)
+strip(seed = 5, n = 8)
 ```
 
 :::

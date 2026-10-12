@@ -70,7 +70,7 @@ wave <- function(k = 1) {
 #| fig-height: 2
 #| fig-cap: "A 25 × 2 inch collage of 12 panels (png)."
 
-collage()
+collage(n = 12)
 ```
 
 ## 2. Wide collage with `fit: contain` {#c2 expect-fit="contain" shift-scroll="none"}
@@ -84,7 +84,7 @@ The override for case 1: the whole collage, as a strip.
 #| fig-height: 2
 #| fig-cap: "The collage, forced to open whole."
 
-collage()
+collage(n = 12)
 ```
 
 ## 3. Moderately wide figure (16 × 4 in) {#c3 expect-fit="contain"}
@@ -97,7 +97,7 @@ Wide, but readable whole: the size rule leaves it alone.
 #| fig-height: 4
 #| fig-cap: "A 4:1 figure."
 
-collage(4)
+collage(n = 4)
 ```
 
 ## 4. Tall strip (4 × 15 in) {#c4 expect-fit="width" shift-scroll="y"}
@@ -161,7 +161,7 @@ shows `fit: height` on a figure where it differs.
 #| panzoom:
 #|   fit: height
 
-wave(3)
+wave(k = 3)
 ```
 
 ## 9. `fit: width` on an ordinary plot {#c9 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
@@ -173,7 +173,7 @@ than the whole plot, and zooms out to it.
 #| panzoom:
 #|   fit: width
 
-wave(4)
+wave(k = 4)
 ```
 
 ## 10. `fit: height` on a wide figure (12 × 4.5 in) {#c10 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
@@ -189,7 +189,7 @@ out to the whole figure.
 #| fig-width: 12
 #| fig-height: 4.5
 
-collage(6)
+collage(n = 6)
 ```
 
 ## 11. Case 10 with a long caption and description {#c11 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
@@ -207,5 +207,5 @@ image keeps at least about half.
 #| fig-width: 12
 #| fig-height: 4.5
 
-collage(6)
+collage(n = 6)
 ```
