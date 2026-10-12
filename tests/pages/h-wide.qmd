@@ -19,9 +19,29 @@ png; other formats are on [E: image formats](e-formats.html), and the same
 shapes in galleries and layouts on
 [I: wide figures in galleries and layouts](i-wide-galleries.html).
 
-By default (`fit: auto`) very wide figures open at screen height from the
-left end (or where they were clicked), very tall ones at screen width from
-the top, and everything else whole, never enlarged past its real size.
+**The rules** (`fit: auto`, the default). The viewer opens most images
+whole. A strip at least 3 times wider than tall, that would show less than
+a quarter of the screen tall, such as a collage of many panels
+(`fig-width: 100`, `fig-height: 5`), opens filling the screen height
+instead. A strip at least 3 times taller than wide, that would show less
+than a quarter of the screen wide, opens filling the screen width, at its
+top. Ordinary photos and plots, portrait or landscape, always open whole,
+even on a very wide screen where a portrait photo is narrower than a
+quarter of it. No image is enlarged past its real size when it opens (as
+with Quarto's lightbox): a small image opens at its own size, and
+scrolling still zooms it in, up to `max-zoom`. `fit: contain`, `height` or
+`width` overrides the rule for one figure.
+
+**Focal point.** Where you click a strip on the page is its focal point:
+click panel 12 of a 20-panel collage and the viewer opens with panel 12 in
+the middle of the screen (or flush with the end, near either end). The 0
+key and double-click return to it. Opened from the keyboard, a strip
+starts at its left end (or top). Ordinary images open whole wherever you
+click. Zooming out still shows the whole figure.
+
+Shift+scroll (or a sideways trackpad swipe) pans along the direction the
+figure extends past the screen: sideways for a collage, up and down for a
+tall figure, sideways when zoomed in both ways.
 
 Headings carry what the browser test checks: `expect-fit` (`contain`,
 `height` or `width`), `shift-scroll` (which way Shift+scroll moves the
