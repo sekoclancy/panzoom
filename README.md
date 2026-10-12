@@ -137,8 +137,9 @@ From the keyboard, marked images can be reached with Tab and opened with
 Enter or Space; Tab moves between the viewer's buttons, and closing returns
 focus to the image.
 
-The viewer is a dark overlay with light text, so it looks the same under
-Quarto's light and dark themes.
+As with Quarto's lightbox, the page shows through a dark overlay, and the
+caption takes the page's own colours, so the viewer follows Quarto's light
+and dark themes.
 
 ## Captions and descriptions
 

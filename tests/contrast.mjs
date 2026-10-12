@@ -10,6 +10,10 @@
   included). Text below 4.5:1 (3:1 for large text: 24 px, or 18.66 px
   bold) is reported, grouped by element and colors.
 
+  The viewer must also follow the page's theme, as Quarto's lightbox
+  does: its caption band takes the page's background and text colors
+  (`theme ok`; `THEME FAILED` names the colors that differ).
+
   Not measured: text over images or gradients, typeset math (MathJax,
   KaTeX), and Quarto's page chrome (navbar, sidebar, footer).
 
@@ -55,7 +59,12 @@ function serve(root) {
 
 // Runs in the page: low-contrast text under `root`, grouped.
 function measure(rootSelector) {
-  const parse = (s) => { const v = (s.match(/[\d.]+/g) || [0, 0, 0, 0]).map(Number); return { c: v.slice(0, 3), a: v.length > 3 ? v[3] : 1 }; };
+  // rgb()/rgba() in 0-255, or color(srgb r g b / a) in 0-1 (what color-mix() computes to).
+  const parse = (s) => {
+    const v = (s.match(/[\d.]+/g) || [0, 0, 0, 0]).map(Number);
+    const k = s.startsWith("color(") ? 255 : 1;
+    return { c: v.slice(0, 3).map((x) => x * k), a: v.length > 3 ? v[3] : 1 };
+  };
   const over = (top, bottom) => bottom.map((x, i) => x * (1 - top.a) + top.c[i] * top.a);
   const lum = (rgb) => { const f = (c) => (c /= 255) <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; return 0.2126 * f(rgb[0]) + 0.7152 * f(rgb[1]) + 0.0722 * f(rgb[2]); };
   const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
@@ -104,6 +113,7 @@ async function checkPage(browser, base, file, dark) {
   const main = await page.evaluate(measure, "main");
   const found = main.low.map((g) => ({ ...g, where: "page" }));
   const checked = { page: main.checked, viewer: 0 };
+  let theme = null;
   // The viewer, on the first image that opens it.
   const img = await page.$(".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)");
   if (img) {
@@ -112,12 +122,23 @@ async function checkPage(browser, base, file, dark) {
     await new Promise((r) => setTimeout(r, 300));
     if (await page.$(".panzoom-overlay.open")) {
       const viewer = await page.evaluate(measure, ".panzoom-overlay.open");
+      // The caption band in the page's colors (what the viewer shows over
+      // the page, not the band's own declared value).
+      theme = await page.evaluate(() => {
+        const cs = (sel) => getComputedStyle(document.querySelector(sel));
+        const body = cs("body"), band = cs(".panzoom-overlay.open .panzoom-footer");
+        const cap = cs(".panzoom-overlay.open .panzoom-caption");
+        const diffs = [];
+        if (band.backgroundColor !== body.backgroundColor) diffs.push(`band ${band.backgroundColor}, page ${body.backgroundColor}`);
+        if (cap.color !== body.color) diffs.push(`caption ${cap.color}, page text ${body.color}`);
+        return diffs;
+      });
       checked.viewer = viewer.checked;
       found.push(...viewer.low.map((g) => ({ ...g, where: "viewer" })));
     }
   }
   await page.close();
-  return { name: path.relative(ROOT, file), scheme, checked, found };
+  return { name: path.relative(ROOT, file), scheme, checked, found, theme };
 }
 
 const server = await serve(SITE);
@@ -128,9 +149,10 @@ try {
   for (const dark of [false, true]) {
     const runs = PAGES.map((f) => checkPage(browser, base, f, dark));
     for (const run of runs) {
-      const { name, scheme, checked, found } = await run;
-      failed += found.length;
-      console.log(`${name} (${scheme}): ${checked.page} text runs on the page, ${checked.viewer} in the viewer, ` +
+      const { name, scheme, checked, found, theme } = await run;
+      failed += found.length + (theme?.length ? 1 : 0);
+      const themeNote = theme === null ? "" : theme.length ? `, THEME FAILED (${theme.join("; ")})` : ", theme ok";
+      console.log(`${name} (${scheme}): ${checked.page} text runs on the page, ${checked.viewer} in the viewer${themeNote}, ` +
         (found.length ? `${found.length} LOW CONTRAST` : "ok"));
       for (const g of found.sort((a, b) => a.ratio - b.ratio)) {
         console.log(`  ${g.where}: ${g.key}, ${g.ratio.toFixed(2)}:1 (needs ${g.need}), ${g.count}x, e.g. "${g.sample}"`);

@@ -232,6 +232,10 @@ reported, grouped by element and colors, and fails the run. Text over
 images, typeset math and Quarto's navbar, sidebar and footer are not
 measured.
 
+It also checks that the viewer follows the theme, as Quarto's lightbox
+does: the caption band must have the page's background and text colors in
+both modes (`theme ok`; `THEME FAILED` names the colors that differ).
+
 ### Benchmark
 
 ```bash
