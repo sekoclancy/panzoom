@@ -482,7 +482,7 @@
       '<div class="panzoom-description"></div>' +
       '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
       'double-click to reset &middot; Esc to close' +
-      '<span class="panzoom-hint-gallery"> &middot; &lsaquo; &rsaquo; for other images</span></div>' +
+      '<span class="panzoom-hint-gallery"> &middot; previous/next buttons for other images</span></div>' +
       '</div>';
     document.body.appendChild(overlay);
     img = overlay.querySelector("img");

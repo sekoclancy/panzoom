@@ -9,9 +9,15 @@ a.panzoom-link:focus-visible img {
 }
 a.panzoom-link:focus-visible { outline: none; }
 
+/* As Quarto's lightbox: the page shows through a dark overlay, and the
+   caption takes the page's own colours, so it follows a light or dark
+   theme. The fallbacks are Bootstrap's light defaults. */
 .panzoom-overlay {
+  --panzoom-bg: var(--quarto-body-bg, #fff);
+  --panzoom-fg: var(--quarto-body-color, #212529);
+  --panzoom-link: var(--bs-link-color, #0d6efd);
   position: fixed; inset: 0; z-index: 100000; display: none;
-  overflow: hidden; background: rgba(15, 15, 15, 0.94);
+  overflow: hidden; background: rgba(0, 0, 0, 0.7);
   touch-action: none; user-select: none; -webkit-user-select: none;
 }
 .panzoom-overlay.open { display: block; }
@@ -60,20 +66,27 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-footer {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
   padding: 0.5rem 1rem 0.6rem; text-align: center;
-  background: rgb(15, 15, 15);
+  background: var(--panzoom-bg);
 }
 .panzoom-caption, .panzoom-description {
   max-width: 60rem; margin: 0 auto 0.3rem; overflow-y: auto; line-height: 1.4;
   user-select: text; -webkit-user-select: text; cursor: auto;
 }
-.panzoom-caption a, .panzoom-description a { color: #9ec5fe; }
-.panzoom-caption { max-height: 25vh; color: #eee; font-size: 0.95rem; }
-.panzoom-caption-parent { margin-top: 0.2rem; color: #bbb; font-size: 0.85rem; }
-.panzoom-description { max-height: 20vh; color: #ccc; font-size: 0.85rem; }
+.panzoom-caption a, .panzoom-description a { color: var(--panzoom-link); }
+.panzoom-caption { max-height: 25vh; color: var(--panzoom-fg); font-size: 0.95rem; }
+.panzoom-caption-parent {
+  margin-top: 0.2rem; font-size: 0.85rem;
+  color: color-mix(in srgb, var(--panzoom-fg) 80%, var(--panzoom-bg));
+}
+.panzoom-description {
+  max-height: 20vh; font-size: 0.85rem;
+  color: color-mix(in srgb, var(--panzoom-fg) 85%, var(--panzoom-bg));
+}
 .panzoom-description p { margin: 0 0 0.3rem; }
 .panzoom-description p:last-child { margin-bottom: 0; }
 .panzoom-hint {
-  color: #aaa; font-size: 0.8rem; pointer-events: none;
+  font-size: 0.8rem; pointer-events: none;
+  color: color-mix(in srgb, var(--panzoom-fg) 70%, var(--panzoom-bg));
 }
 
 /* Descriptions, rendered on the page for the viewer to copy (panzoom.lua) */

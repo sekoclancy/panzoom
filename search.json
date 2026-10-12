@@ -1,556 +1,290 @@
 [
   {
-    "objectID": "tests/pages/i-jupyter.html",
-    "href": "tests/pages/i-jupyter.html",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html",
+    "href": "tests/pages/l-jupyter.html",
+    "title": "L: Python cell options and svg",
     "section": "",
-    "text": "NoteAbout this page\n\n\n\nThis page tests the panzoom extension with the Jupyter engine: the same cell options as the R pages, on matplotlib figures. knitr and Jupyter hand figures to Quarto differently (knitr writes the image markdown itself; Jupyter cells come back as notebook outputs), so the filter has to find the figures and their cell options either way. The document has no lightbox: key, and only marked cells should open the viewer.\nRendering it needs Python with matplotlib and ipykernel: see tests/README.md.\nJupyter leaves the panzoom and lightbox options out of the code shown on the page (knitr shows them); the Code button at the top shows the full source.\nHeadings carry what the browser test checks, as on the other pages: expect-open, expect-hint, expect-max-zoom and expect-fit."
+    "text": "NoteAbout this page\n\n\n\nThis page tests the panzoom extension with the Jupyter engine: the same cell options as the R pages, on matplotlib figures. knitr and Jupyter hand figures to Quarto differently (knitr writes the image markdown itself; Jupyter cells come back as notebook outputs), so the filter has to find the figures and their cell options either way. The document has no lightbox: key, and only marked cells should open the viewer.\nRendering it needs Python with matplotlib and ipykernel: see tests/README.md.\nJupyter leaves the panzoom and lightbox options out of the code shown on the page (knitr shows them); the Code button at the top shows the full source.\nHeadings carry what the browser test checks, as on the other pages: expect-open, expect-hint, expect-max-zoom, expect-fit and expect-format (svg: the viewer got a vector image).\nThe cases below share this setup and helper:\n```{python}\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nrng = np.random.default_rng(1)\n\ndef walk(ax, n=200, title=None):\n    ax.plot(np.cumsum(rng.normal(size=n)))\n    if title:\n        ax.set_title(title)\n```"
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c1",
-    "href": "tests/pages/i-jupyter.html#c1",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c1",
+    "href": "tests/pages/l-jupyter.html#c1",
+    "title": "L: Python cell options and svg",
     "section": "1. panzoom: true",
     "text": "1. panzoom: true\n\n```{python}\n#| fig-cap: A sine wave.\n\nx = np.linspace(0, 4 * np.pi, 400)\nplt.plot(x, np.sin(x))\nplt.show()\n```\n\n\n\n\nA sine wave."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c2",
-    "href": "tests/pages/i-jupyter.html#c2",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c2",
+    "href": "tests/pages/l-jupyter.html#c2",
+    "title": "L: Python cell options and svg",
     "section": "2. Options overriding the defaults",
     "text": "2. Options overriding the defaults\n\n```{python}\n#| fig-cap: Zoom stops at 2, no hint.\n\nplt.plot(x, np.cos(x))\nplt.show()\n```\n\n\n\n\nZoom stops at 2, no hint."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c3",
-    "href": "tests/pages/i-jupyter.html#c3",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c3",
+    "href": "tests/pages/l-jupyter.html#c3",
+    "title": "L: Python cell options and svg",
     "section": "3. Labeled figure with a description",
     "text": "3. Labeled figure with a description\nFigure 1 has a description with math and a cross-reference to Figure 2.\n\n```{python}\n#| label: fig-scatter\n#| fig-cap: A scatter plot, $n = 100$.\n\npts = rng.normal(size=100)\nplt.scatter(pts, pts + rng.normal(scale=0.5, size=100))\nplt.show()\n```\n\n\n\n\n\n\n\nFigure 1: A scatter plot, \\(n = 100\\).\n\n\n\n\n\n\nPoints scattered around \\(y = x + \\varepsilon\\), with a “quote”; compare Figure 2."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c4",
-    "href": "tests/pages/i-jupyter.html#c4",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c4",
+    "href": "tests/pages/l-jupyter.html#c4",
+    "title": "L: Python cell options and svg",
     "section": "4. Subfigures (fig-subcap, layout-ncol)",
     "text": "4. Subfigures (fig-subcap, layout-ncol)\nThe two subfigures form a gallery.\n```{python}\n#| label: fig-sub\n#| fig-cap: Two subfigures.\n#| fig-subcap:\n#|   - A random walk\n#|   - A histogram\n#| layout-ncol: 2\n\nfig, ax = plt.subplots()\nwalk(ax)\nplt.show()\nplt.hist(rng.normal(size=500), bins=30)\nplt.show()\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) A random walk\n\n\n\n\n\n\n\n\n\n\n\n(b) A histogram\n\n\n\n\n\n\n\nFigure 2: Two subfigures."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c5",
-    "href": "tests/pages/i-jupyter.html#c5",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c5",
+    "href": "tests/pages/l-jupyter.html#c5",
+    "title": "L: Python cell options and svg",
     "section": "5. Multi-plot cell with a group",
     "text": "5. Multi-plot cell with a group\n\n```{python}\n#| fig-cap:\n#|   - First walk.\n#|   - Second walk.\n\nfor i in range(2):\n    fig, ax = plt.subplots()\n    walk(ax)\n    plt.show()\n```\n\n\n\n\nFirst walk.\n\n\n\n\n\n\n\nSecond walk."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c6",
-    "href": "tests/pages/i-jupyter.html#c6",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c6",
+    "href": "tests/pages/l-jupyter.html#c6",
+    "title": "L: Python cell options and svg",
     "section": "6. Wide collage (8 × 0.8 in)",
     "text": "6. Wide collage (8 × 0.8 in)\nA strip, so it opens at screen height. Jupyter figures are shown at their size in inches × 96 px (Quarto writes it on the image), not shrunk to the column as knitr’s are: a 25 × 2 in collage would be 2,400 px wide on the page, cut off at the column’s edge. This one fits.\n\n```{python}\n#| fig-cap: An 8 × 0.8 inch collage of 8 panels.\n\nfig, axes = plt.subplots(1, 8, figsize=(8, 0.8), layout=\"constrained\")\nfor ax in axes:\n    walk(ax)\n    ax.tick_params(labelsize=4)\nplt.show()\n```\n\n\n\n\nAn 8 × 0.8 inch collage of 8 panels."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c7",
-    "href": "tests/pages/i-jupyter.html#c7",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c7",
+    "href": "tests/pages/l-jupyter.html#c7",
+    "title": "L: Python cell options and svg",
     "section": "7. panzoom: false inside a .panzoom div",
     "text": "7. panzoom: false inside a .panzoom div\n\n\n```{python}\n#| fig-cap: Left alone.\n\nplt.plot(x, np.sin(2 * x))\nplt.show()\n```\n\n\n\n\nLeft alone."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c8",
-    "href": "tests/pages/i-jupyter.html#c8",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c8",
+    "href": "tests/pages/l-jupyter.html#c8",
+    "title": "L: Python cell options and svg",
     "section": "8. classes: panzoom",
     "text": "8. classes: panzoom\n\n```{python}\n#| classes: panzoom\n#| fig-cap: \"Marked with the classes cell option.\"\n\nplt.plot(x, np.sin(3 * x))\nplt.show()\n```\n\n\n\n\nMarked with the classes cell option."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c9",
-    "href": "tests/pages/i-jupyter.html#c9",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c9",
+    "href": "tests/pages/l-jupyter.html#c9",
+    "title": "L: Python cell options and svg",
     "section": "9. Lightbox cell option only",
     "text": "9. Lightbox cell option only\nQuarto’s lightbox, not panzoom.\n\n```{python}\n#| fig-cap: Opened by Quarto's lightbox.\n\nplt.plot(x, np.sin(4 * x))\nplt.show()\n```\n\n\n\n\nOpened by Quarto’s lightbox."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c10",
-    "href": "tests/pages/i-jupyter.html#c10",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c10",
+    "href": "tests/pages/l-jupyter.html#c10",
+    "title": "L: Python cell options and svg",
     "section": "10. Plain cell, no options",
     "text": "10. Plain cell, no options\n\n```{python}\n#| fig-cap: \"No options: not opened.\"\n\nplt.plot(x, np.sin(5 * x))\nplt.show()\n```\n\n\n\n\nNo options: not opened."
   },
   {
-    "objectID": "tests/pages/i-jupyter.html#c11",
-    "href": "tests/pages/i-jupyter.html#c11",
-    "title": "I: Jupyter (Python) figures",
+    "objectID": "tests/pages/l-jupyter.html#c11",
+    "href": "tests/pages/l-jupyter.html#c11",
+    "title": "L: Python cell options and svg",
     "section": "11. panzoom and lightbox options on one cell",
     "text": "11. panzoom and lightbox options on one cell\nBoth options: panzoom wins, and the lightbox: options are dropped. (With Jupyter, Quarto’s lightbox ignores #| lightbox: with options under it anyway, unlike with knitr; lightbox: true works, as in case 9.)\n\n```{python}\n#| fig-cap: 'Both options: panzoom.'\n\nplt.plot(x, np.sin(6 * x))\nplt.show()\n```\n\n\n\n\nBoth options: panzoom."
   },
   {
-    "objectID": "tests/pages/g-captions.html",
-    "href": "tests/pages/g-captions.html",
-    "title": "G: captions and descriptions",
+    "objectID": "tests/pages/l-jupyter.html#c12",
+    "href": "tests/pages/l-jupyter.html#c12",
+    "title": "L: Python cell options and svg",
+    "section": "12. matplotlib as svg",
+    "text": "12. matplotlib as svg\nThe same figure path as case 1, written as svg instead of png: Jupyter saves the figure file itself, unlike knitr (svg from R is on E: image formats). The viewer redraws svg at each zoom, so it stays sharp. Jupyter ignores a cell’s fig-format, so the cell switches matplotlib’s output to svg itself, and back to png after.\n\n```{python}\n#| fig-cap: A damped wave, as svg.\n\n%config InlineBackend.figure_formats = [\"svg\"]\nplt.plot(x, np.exp(-x / 4) * np.sin(3 * x))\nplt.show()\n%config InlineBackend.figure_formats = [\"png\"]\n```\n\n\n\n\nA damped wave, as svg."
+  },
+  {
+    "objectID": "tests/pages/j-jupyter-lightbox.html",
+    "href": "tests/pages/j-jupyter-lightbox.html",
+    "title": "J: Python lightbox reference",
     "section": "",
-    "text": "NoteAbout this page\n\n\n\nThis page tests citations and cross-references in the viewer. A caption is copied from the page, so whatever Quarto renders there comes through. A description is rendered with the page too, in a hidden block the viewer copies, so its citations resolve, its cross-references get numbers, and a work cited only in a description is still listed under References. Quarto’s own lightbox shows a citation in a caption as raw [@key] (quarto-cli#10709).\nCases 1–5 have the expect-references attribute: the viewer must show at least one citation or cross-reference, none unresolved, and each must link to something on this page. Cases 6 and 7 test the per-cell caption and description options (expect-caption)."
+    "text": "NoteAbout this page\n\n\n\nThis page is the reference for page K: Python (Jupyter) cells rendered with Quarto’s built-in lightbox only, lightbox: true, and no panzoom filter. It shows what Quarto does with each case; K renders the same cases with panzoom: true as well. The knitr equivalents are pages A and C.\nKeep the cases in step with the other page of the pair. Each heading’s expect-open says what should open. Jupyter leaves the panzoom and lightbox options out of the code shown on the page; the Code button at the top shows the full source.\nThe cases below share this setup:\n```{python}\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nx = np.linspace(0, 4 * np.pi, 400)\n```"
   },
   {
-    "objectID": "tests/pages/g-captions.html#c1",
-    "href": "tests/pages/g-captions.html#c1",
-    "title": "G: captions and descriptions",
-    "section": "1. Citation in a caption",
-    "text": "1. Citation in a caption\nThe case from quarto-cli#10709.\n\n\n\nSome claim (Fenner 2012)."
+    "objectID": "tests/pages/j-jupyter-lightbox.html#c1",
+    "href": "tests/pages/j-jupyter-lightbox.html#c1",
+    "title": "J: Python lightbox reference",
+    "section": "1. Figure with a caption",
+    "text": "1. Figure with a caption\n\n```{python}\n#| fig-cap: \"A sine wave.\"\n\nplt.plot(x, np.sin(x))\nplt.show()\n```\n\n\n\n\nA sine wave."
   },
   {
-    "objectID": "tests/pages/g-captions.html#c2",
-    "href": "tests/pages/g-captions.html#c2",
-    "title": "G: captions and descriptions",
-    "section": "2. Citation only in a description",
-    "text": "2. Citation only in a description\nTufte is cited nowhere else on the page, but is listed under References.\n\n\n\nEdgartown Light\n\n\n\nShow the data (Tufte 2001, 13)."
+    "objectID": "tests/pages/j-jupyter-lightbox.html#c2",
+    "href": "tests/pages/j-jupyter-lightbox.html#c2",
+    "title": "J: Python lightbox reference",
+    "section": "2. Plot without a caption",
+    "text": "2. Plot without a caption\n\n```{python}\nplt.plot(x, np.cos(x))\nplt.show()\n```"
   },
   {
-    "objectID": "tests/pages/g-captions.html#c3",
-    "href": "tests/pages/g-captions.html#c3",
-    "title": "G: captions and descriptions",
-    "section": "3. Cross-reference in a description",
-    "text": "3. Cross-reference in a description\n\n\n\nAquinnah\n\n\n\nCompare with Figure 1, and see Section 1."
+    "objectID": "tests/pages/j-jupyter-lightbox.html#c3",
+    "href": "tests/pages/j-jupyter-lightbox.html#c3",
+    "title": "J: Python lightbox reference",
+    "section": "3. Subfigures (fig-subcap, layout-ncol)",
+    "text": "3. Subfigures (fig-subcap, layout-ncol)\n```{python}\n#| label: fig-pair\n#| fig-cap: Two waves.\n#| fig-subcap:\n#|   - Sine\n#|   - Cosine\n#| layout-ncol: 2\n\nplt.plot(x, np.sin(2 * x))\nplt.show()\nplt.plot(x, np.cos(2 * x))\nplt.show()\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Sine\n\n\n\n\n\n\n\n\n\n\n\n(b) Cosine\n\n\n\n\n\n\n\nFigure 1: Two waves."
   },
   {
-    "objectID": "tests/pages/g-captions.html#c4",
-    "href": "tests/pages/g-captions.html#c4",
-    "title": "G: captions and descriptions",
-    "section": "4. Cell description with citation and math",
-    "text": "4. Cell description with citation and math\n\n```{r}\n#| label: fig-pressure\n#| fig-cap: \"Vapor pressure of mercury [@fenner2012].\"\n#| panzoom:\n#|   description: \"Rises roughly as $p \\\\propto e^{-1/T}$ [@tufte2001].\"\n\nplot(pressure)\n```\n\n\n\n\n\n\n\nFigure 1: Vapor pressure of mercury (Fenner 2012).\n\n\n\n\n\n\nRises roughly as \\(p \\propto e^{-1/T}\\) (Tufte 2001)."
+    "objectID": "tests/pages/j-jupyter-lightbox.html#c4",
+    "href": "tests/pages/j-jupyter-lightbox.html#c4",
+    "title": "J: Python lightbox reference",
+    "section": "4. Nested lightbox: options",
+    "text": "4. Nested lightbox: options\nA cell’s own lightbox: options ask for Quarto’s lightbox, so panzoom leaves the cell to it, as with knitr (page C, cases 6 and 7). With Jupyter, Quarto’s lightbox ignores the options themselves: the group and description don’t reach it.\n\n```{python}\nplt.plot(x, np.sin(3 * x))\nplt.show()\nplt.plot(x, np.cos(3 * x))\nplt.show()\n```"
   },
   {
-    "objectID": "tests/pages/g-captions.html#c5",
-    "href": "tests/pages/g-captions.html#c5",
-    "title": "G: captions and descriptions",
-    "section": "5. Gallery with a reference in each description",
-    "text": "5. Gallery with a reference in each description\n\n\n\nGingerbread\n\n\n\nAs in Figure 1.\n\n\n\n\nSailboat\n\n\n\nAs in Fenner (2012)."
+    "objectID": "tests/pages/j-jupyter-lightbox.html#c5",
+    "href": "tests/pages/j-jupyter-lightbox.html#c5",
+    "title": "J: Python lightbox reference",
+    "section": "5. lightbox: false",
+    "text": "5. lightbox: false\nOpted out of the lightbox; panzoom leaves an explicit lightbox setting alone too.\n\n```{python}\nplt.plot(x, np.sin(4 * x))\nplt.show()\n```"
   },
   {
-    "objectID": "tests/pages/g-captions.html#c6",
-    "href": "tests/pages/g-captions.html#c6",
-    "title": "G: captions and descriptions",
-    "section": "6. caption: false",
-    "text": "6. caption: false\nThe figure has a caption on the page, but not in the viewer.\n\n```{r}\n#| panzoom:\n#|   caption: false\n#| fig-cap: \"This caption stays on the page.\"\n\nwave(2)\n```\n\n\n\n\nThis caption stays on the page."
+    "objectID": "tests/pages/j-jupyter-lightbox.html#c6",
+    "href": "tests/pages/j-jupyter-lightbox.html#c6",
+    "title": "J: Python lightbox reference",
+    "section": "6. panzoom: true on a cell",
+    "text": "6. panzoom: true on a cell\nWithout the panzoom filter (K) the option means nothing, and the document’s lightbox: true takes the plot.\n\n```{python}\nplt.plot(x, np.cos(4 * x))\nplt.show()\n```"
   },
   {
-    "objectID": "tests/pages/g-captions.html#c7",
-    "href": "tests/pages/g-captions.html#c7",
-    "title": "G: captions and descriptions",
-    "section": "7. description cell option",
-    "text": "7. description cell option\nThe description is Markdown, with math, shown under the caption.\n\n```{r}\n#| panzoom:\n#|   description: \"A sine wave, $y = \\\\sin(kx)$, **k = 2**.\"\n#| fig-cap: \"With a description.\"\n\nwave(2)\n```\n\n\n\n\nWith a description.\n\n\n\n\n\nA sine wave, \\(y = \\sin(kx)\\), k = 2."
+    "objectID": "tests/pages/j-jupyter-lightbox.html#c7",
+    "href": "tests/pages/j-jupyter-lightbox.html#c7",
+    "title": "J: Python lightbox reference",
+    "section": "7. Markdown image alone in a paragraph",
+    "text": "7. Markdown image alone in a paragraph\n\n\n\nChilmark."
   },
   {
-    "objectID": "tests/pages/g-captions.html#references",
-    "href": "tests/pages/g-captions.html#references",
-    "title": "G: captions and descriptions",
-    "section": "References",
-    "text": "References\n\n\nFenner, Martin. 2012. “One-Click Science Marketing.” Nature Materials 11 (March): 261–63.\n\n\nTufte, Edward R. 2001. The Visual Display of Quantitative Information. 2nd ed. Graphics Press."
+    "objectID": "tests/pages/j-jupyter-lightbox.html#c8",
+    "href": "tests/pages/j-jupyter-lightbox.html#c8",
+    "title": "J: Python lightbox reference",
+    "section": "8. Markdown image with .nolightbox",
+    "text": "8. Markdown image with .nolightbox\n\n\n\nOpted out."
   },
   {
-    "objectID": "tests/pages/e-formats.html",
-    "href": "tests/pages/e-formats.html",
-    "title": "E: image formats",
+    "objectID": "tests/pages/h-wide.html",
+    "href": "tests/pages/h-wide.html",
+    "title": "H: wide and tall figures",
     "section": "",
-    "text": "NoteAbout this page\n\n\n\nThis page tests the panzoom extension with the knitr graphics devices used in practice: webp, svg and pdf output, for a wide collage and a standard plot. Every figure is marked with #| panzoom: true and should open the pan/zoom viewer, except where a case says otherwise. Figure shapes and how they open are on H: wide and tall figures.\nHeadings carry what the browser test checks: expect-fit (the opening view: contain, height or width), shift-scroll (which way Shift+scroll moves the image: x, y or none) and expect-scale=\"1\" (opens at real size, not enlarged).\nwebp comes from ragg’s agg_webp device: knitr has no built-in webp device, and agg_webp needs units = \"in\" because knitr passes sizes in inches."
+    "text": "NoteAbout this page\n\n\n\nThis page tests how the viewer opens figures of different shapes: very wide collages (25 × 2 inches), tall strips, a poster, a portrait photo and a small plot, each on its own, and the fit option. All are png; other formats are on E: image formats, and the same shapes in galleries and layouts on I: wide figures in galleries and layouts.\nThe rules (fit: auto, the default). The viewer opens most images whole. A strip at least 3 times wider than tall, that would show less than a quarter of the screen tall, such as a collage of many panels (fig-width: 100, fig-height: 5), opens filling the screen height instead. A strip at least 3 times taller than wide, that would show less than a quarter of the screen wide, opens filling the screen width, at its top. Ordinary photos and plots, portrait or landscape, always open whole, even on a very wide screen where a portrait photo is narrower than a quarter of it. No image is enlarged past its real size when it opens (as with Quarto’s lightbox): a small image opens at its own size, and scrolling still zooms it in, up to max-zoom. fit: contain, height or width overrides the rule for one figure.\nFocal point. Where you click a strip on the page is its focal point: click panel 12 of a 20-panel collage and the viewer opens with panel 12 in the middle of the screen (or flush with the end, near either end). The 0 key and double-click return to it. Opened from the keyboard, a strip starts at its left end (or top). Ordinary images open whole wherever you click. Zooming out still shows the whole figure.\nShift+scroll (or a sideways trackpad swipe) pans along the direction the figure extends past the screen: sideways for a collage, up and down for a tall figure, sideways when zoomed in both ways.\nHeadings carry what the browser test checks: expect-fit (contain, height or width), shift-scroll (which way Shift+scroll moves the image: x sideways, y up and down, none, or zoomed-x: sideways after zooming in until the image extends past the screen both ways) and expect-scale=\"1\" (opens at real size), expect-zoom-out (yes: the opening view is closer than the whole image, so it zooms out; no: it already is the whole image). The first single collage and image shown whole also get the focal point and containment checks.\nThe cases below draw with these helpers:\n```{r}\n# A collage: `n` panels side by side, like a wide patchwork figure.\ncollage &lt;- function(n = 12) {\n  set.seed(1)\n  par(mfrow = c(1, n), mar = c(3, 3, 2, 1))\n  for (i in seq_len(n)) {\n    plot(cumsum(rnorm(200)), type = \"l\", main = paste(\"Panel\", i),\n         xlab = \"\", ylab = \"\", col = hcl.colors(n)[i], lwd = 2)\n  }\n}\n\n# A tall strip: `n` rows stacked, like a tall patchwork figure.\nstrip &lt;- function(seed = 2, n = 8) {\n  set.seed(seed)\n  par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))\n  for (i in seq_len(n)) {\n    plot(cumsum(rnorm(100)), type = \"l\", main = paste(\"Row\", i), xlab = \"\", ylab = \"\")\n  }\n}\n\nwave &lt;- function(k = 1) {\n  x &lt;- seq(0, 4 * pi, length.out = 400)\n  plot(x, sin(k * x), type = \"l\", lwd = 2, col = hcl.colors(4)[k],\n       main = paste(\"Wave\", k), xlab = \"x\", ylab = \"sin(kx)\")\n}\n```"
   },
   {
-    "objectID": "tests/pages/e-formats.html#c1",
-    "href": "tests/pages/e-formats.html#c1",
-    "title": "E: image formats",
-    "section": "1. Wide collage, webp (25 × 2 in)",
-    "text": "1. Wide collage, webp (25 × 2 in)\n\n```{r}\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| dev: agg_webp\n#| fig-ext: webp\n#| dev.args: !expr list(units = \"in\", res = 96)\n#| fig-cap: \"A 25 × 2 inch collage of 12 panels (webp).\"\n\ncollage()\n```\n\n\n\n\nA 25 × 2 inch collage of 12 panels (webp)."
+    "objectID": "tests/pages/h-wide.html#c1",
+    "href": "tests/pages/h-wide.html#c1",
+    "title": "H: wide and tall figures",
+    "section": "1. Wide collage, png (25 × 2 in)",
+    "text": "1. Wide collage, png (25 × 2 in)\n\n```{r}\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap: \"A 25 × 2 inch collage of 12 panels (png).\"\n\ncollage(n = 12)\n```\n\n\n\n\nA 25 × 2 inch collage of 12 panels (png)."
   },
   {
-    "objectID": "tests/pages/e-formats.html#c2",
-    "href": "tests/pages/e-formats.html#c2",
-    "title": "E: image formats",
-    "section": "2. Wide collage, svg (25 × 2 in)",
-    "text": "2. Wide collage, svg (25 × 2 in)\n\n```{r}\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| dev: svg\n#| fig-cap: \"The collage as svg.\"\n\ncollage()\n```\n\n\n\n\nThe collage as svg."
+    "objectID": "tests/pages/h-wide.html#c2",
+    "href": "tests/pages/h-wide.html#c2",
+    "title": "H: wide and tall figures",
+    "section": "2. Wide collage with fit: contain",
+    "text": "2. Wide collage with fit: contain\nThe override for case 1: the whole collage, as a strip.\n\n```{r}\n#| panzoom:\n#|   fit: contain\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap: \"The collage, forced to open whole.\"\n\ncollage(n = 12)\n```\n\n\n\n\nThe collage, forced to open whole."
   },
   {
-    "objectID": "tests/pages/e-formats.html#c3",
-    "href": "tests/pages/e-formats.html#c3",
-    "title": "E: image formats",
-    "section": "3. webp plot",
-    "text": "3. webp plot\n\n```{r}\n#| panzoom: true\n#| dev: agg_webp\n#| fig-ext: webp\n#| dev.args: !expr list(units = \"in\", res = 96)\n#| fig-cap: \"A standard-size plot as webp.\"\n\nfilled.contour(volcano, color.palette = terrain.colors)\n```\n\n\n\n\nA standard-size plot as webp."
+    "objectID": "tests/pages/h-wide.html#c3",
+    "href": "tests/pages/h-wide.html#c3",
+    "title": "H: wide and tall figures",
+    "section": "3. Moderately wide figure (16 × 4 in)",
+    "text": "3. Moderately wide figure (16 × 4 in)\nWide, but readable whole: the size rule leaves it alone.\n\n```{r}\n#| panzoom: true\n#| fig-width: 16\n#| fig-height: 4\n#| fig-cap: \"A 4:1 figure.\"\n\ncollage(n = 4)\n```\n\n\n\n\nA 4:1 figure."
   },
   {
-    "objectID": "tests/pages/e-formats.html#c4",
-    "href": "tests/pages/e-formats.html#c4",
-    "title": "E: image formats",
-    "section": "4. svg plot",
-    "text": "4. svg plot\n\n```{r}\n#| panzoom: true\n#| dev: svg\n#| fig-cap: \"A standard-size plot as svg.\"\n\nfilled.contour(volcano, color.palette = terrain.colors)\n```\n\n\n\n\nA standard-size plot as svg."
+    "objectID": "tests/pages/h-wide.html#c4",
+    "href": "tests/pages/h-wide.html#c4",
+    "title": "H: wide and tall figures",
+    "section": "4. Tall strip (4 × 15 in)",
+    "text": "4. Tall strip (4 × 15 in)\n\n```{r}\n#| panzoom: true\n#| fig-width: 4\n#| fig-height: 15\n#| fig-cap: \"A tall strip of 8 panels.\"\n\nset.seed(2)\npar(mfrow = c(8, 1), mar = c(2, 3, 2, 1))\nfor (i in 1:8) plot(cumsum(rnorm(100)), type = \"l\", main = paste(\"Row\", i), xlab = \"\", ylab = \"\")\n```\n\n\n\n\nA tall strip of 8 panels."
   },
   {
-    "objectID": "tests/pages/e-formats.html#c5",
-    "href": "tests/pages/e-formats.html#c5",
-    "title": "E: image formats",
-    "section": "5. png + pdf (dev: [png, pdf])",
-    "text": "5. png + pdf (dev: [png, pdf])\nBoth files are written; the page shows the png.\n\n```{r}\n#| panzoom: true\n#| dev: !expr c(\"png\", \"pdf\")\n#| fig-cap: \"png shown, pdf written alongside.\"\n\nfilled.contour(volcano, color.palette = terrain.colors)\n```\n\n\n\n\npng shown, pdf written alongside."
+    "objectID": "tests/pages/h-wide.html#c5",
+    "href": "tests/pages/h-wide.html#c5",
+    "title": "H: wide and tall figures",
+    "section": "5. Large poster (24 × 18 in)",
+    "text": "5. Large poster (24 × 18 in)\nOpens whole; zoomed in, it extends past the screen both ways, and Shift+scroll moves sideways.\n\n```{r}\n#| panzoom: true\n#| fig-width: 24\n#| fig-height: 18\n#| fig-cap: \"A 24 × 18 inch poster of 48 panels.\"\n\nset.seed(3)\npar(mfrow = c(6, 8), mar = c(2, 2, 2, 1))\nfor (i in 1:48) plot(cumsum(rnorm(100)), type = \"l\", main = paste(\"Panel\", i), xlab = \"\", ylab = \"\")\n```\n\n\n\n\nA 24 × 18 inch poster of 48 panels."
   },
   {
-    "objectID": "tests/pages/e-formats.html#c6",
-    "href": "tests/pages/e-formats.html#c6",
-    "title": "E: image formats",
-    "section": "6. png + cairo_pdf (dev: [png, cairo_pdf])",
-    "text": "6. png + cairo_pdf (dev: [png, cairo_pdf])\nLike case 5, with the cairo PDF device, which embeds fonts and handles Unicode (µ, Greek letters) and transparency better than pdf. The page shows the png either way. With a PDF device alone, there is no image to open: Quarto embeds the PDF in a small box with the browser’s PDF viewer, which panzoom leaves alone.\n\n```{r}\n#| panzoom: true\n#| dev: !expr c(\"png\", \"cairo_pdf\")\n#| fig-cap: \"png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05).\"\n\nfilled.contour(volcano, color.palette = terrain.colors,\n               plot.title = title(main = \"mu = 5, alpha = 0.05\"))\n```\n\n\n\n\npng shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
+    "objectID": "tests/pages/h-wide.html#c6",
+    "href": "tests/pages/h-wide.html#c6",
+    "title": "H: wide and tall figures",
+    "section": "6. Portrait photo",
+    "text": "6. Portrait photo\nAn ordinary 9:16 photo is not a strip: it opens whole, on any screen width (the test also checks this in a 2560 px wide window).\n\n\n\nA portrait photo."
   },
   {
-    "objectID": "tests/pages/e-formats.html#c7",
-    "href": "tests/pages/e-formats.html#c7",
-    "title": "E: image formats",
-    "section": "7. Wide collage, webp at 2× resolution (100 × 5 in)",
-    "text": "7. Wide collage, webp at 2× resolution (100 × 5 in)\nAt 192 dpi the collage is 19,200 px wide, beyond webp’s limit of 16,383 px per side; this case records what happens.\n\n```{r}\n#| panzoom: true\n#| fig-width: 100\n#| fig-height: 5\n#| dev: agg_webp\n#| fig-ext: webp\n#| dev.args: !expr list(units = \"in\", res = 192)\n#| fig-cap: \"The collage as webp at 192 dpi.\"\n#| error: true\n\ncollage()\n```\n\n\n\n\nThe collage as webp at 192 dpi."
+    "objectID": "tests/pages/h-wide.html#c7",
+    "href": "tests/pages/h-wide.html#c7",
+    "title": "H: wide and tall figures",
+    "section": "7. Small plot (288 × 192 px)",
+    "text": "7. Small plot (288 × 192 px)\nOpens at its real size, centered, rather than enlarged to fill the screen; scroll still zooms in (up to max-zoom).\n\n```{r}\n#| panzoom: true\n#| fig-width: 3\n#| fig-height: 2\n#| fig-dpi: 48\n#| fig-cap: \"A small plot.\"\n\nplot(pressure)\n```\n\n\n\n\nA small plot."
   },
   {
-    "objectID": "tests/pages/c-panzoom-auto.html",
-    "href": "tests/pages/c-panzoom-auto.html",
-    "title": "C: panzoom match: auto",
+    "objectID": "tests/pages/h-wide.html#c8",
+    "href": "tests/pages/h-wide.html#c8",
+    "title": "H: wide and tall figures",
+    "section": "8. fit: height on an ordinary plot",
+    "text": "8. fit: height on an ordinary plot\nOn a screen wider than the plot (1.4:1), filling the height is already the whole plot, so this opens like fit: contain and can’t zoom out. Case 10 shows fit: height on a figure where it differs.\n\n```{r}\n#| panzoom:\n#|   fit: height\n\nwave(k = 3)\n```"
+  },
+  {
+    "objectID": "tests/pages/h-wide.html#c9",
+    "href": "tests/pages/h-wide.html#c9",
+    "title": "H: wide and tall figures",
+    "section": "9. fit: width on an ordinary plot",
+    "text": "9. fit: width on an ordinary plot\nFilling the width makes the plot taller than the screen: it opens closer than the whole plot, and zooms out to it.\n\n```{r}\n#| panzoom:\n#|   fit: width\n\nwave(k = 4)\n```"
+  },
+  {
+    "objectID": "tests/pages/h-wide.html#c10",
+    "href": "tests/pages/h-wide.html#c10",
+    "title": "H: wide and tall figures",
+    "section": "10. fit: height on a wide figure (12 × 4.5 in)",
+    "text": "10. fit: height on a wide figure (12 × 4.5 in)\nNot a strip (shown whole it is over a quarter of the screen tall), so fit: auto would open it whole. fit: height opens it filling the screen height (but not past its real size), from where it was clicked, and zooms out to the whole figure.\n\n```{r}\n#| panzoom:\n#|   fit: height\n#| fig-width: 12\n#| fig-height: 4.5\n\ncollage(n = 6)\n```"
+  },
+  {
+    "objectID": "tests/pages/h-wide.html#c11",
+    "href": "tests/pages/h-wide.html#c11",
+    "title": "H: wide and tall figures",
+    "section": "11. Case 10 with a long caption and description",
+    "text": "11. Case 10 with a long caption and description\nThe caption and description sit below the image; fit: height fills the height left above them, so it opens smaller than case 10. The caption scrolls past a quarter of the screen, the description past a fifth, so the image keeps at least about half.\n\n```{r}\n#| panzoom:\n#|   fit: height\n#|   description: \"A long description, to take room below the image. Each panel is a random walk of 200 steps, drawn with base R's `plot()` in a one-row layout (`par(mfrow = c(1, 6))`), coloured along the `hcl.colors()` palette. The figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864 px). With `fit: height` the viewer opens it as tall as the space above this text allows, and no taller than its real size. Drag or use the arrow keys to move along the figure, scroll or press - to zoom out to the whole of it, and 0 to come back to this opening view.\"\n#| fig-cap: \"Six random walks side by side, opened with `fit: height` under a long description.\"\n#| fig-width: 12\n#| fig-height: 4.5\n\ncollage(n = 6)\n```\n\n\n\n\nSix random walks side by side, opened with fit: height under a long description.\n\n\n\n\n\nA long description, to take room below the image. Each panel is a random walk of 200 steps, drawn with base R’s plot() in a one-row layout (par(mfrow = c(1, 6))), coloured along the hcl.colors() palette. The figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864 px). With fit: height the viewer opens it as tall as the space above this text allows, and no taller than its real size. Drag or use the arrow keys to move along the figure, scroll or press - to zoom out to the whole of it, and 0 to come back to this opening view."
+  },
+  {
+    "objectID": "tests/pages/f-options.html",
+    "href": "tests/pages/f-options.html",
+    "title": "F: options",
     "section": "",
-    "text": "NoteAbout this page\n\n\n\nThis page tests panzoom’s match: auto mode. The markup is identical to a-lightbox (no panzoom markers at all); both panzoom: match: auto and lightbox: match: auto are on. panzoom should take every image that Quarto’s auto lightbox would take, except where a case asks for something explicit:\n\ncases 6 and 7 set #| lightbox: options, so they stay with GLightbox;\ncase 8 sets #| lightbox: false, so it gets neither;\ncase 9 (image inside a link) and case 11 (inline image) are skipped, as Quarto’s auto mode skips them.\n\nCompare each case with the same numbered case in a-lightbox."
+    "text": "NoteAbout this page\n\n\n\nThis page tests panzoom’s options one at a time: opting out with .nopanzoom and #| panzoom: false, and the per-cell hint and max-zoom options. The page itself sets loop: true, so the gallery in case 6 wraps around. There is no lightbox, so an image panzoom leaves alone opens nothing. The caption and description options are on G: captions and descriptions, fit on H: wide and tall figures.\nEach case says what to expect in its heading’s attributes (expect-open, expect-hint, expect-max-zoom), or on a single image, and the browser test checks them.\nThe cases below draw with this helper:\n```{r}\nwave &lt;- function(k = 1) {\n  x &lt;- seq(0, 4 * pi, length.out = 400)\n  plot(x, sin(k * x), type = \"l\", lwd = 2, col = hcl.colors(4)[k],\n       main = paste(\"Wave\", k), xlab = \"x\", ylab = \"sin(kx)\")\n}\n```"
   },
   {
-    "objectID": "tests/pages/c-panzoom-auto.html#c1",
-    "href": "tests/pages/c-panzoom-auto.html#c1",
-    "title": "C: panzoom match: auto",
-    "section": "1. Single image, markdown description, desc-position left",
-    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark\n\n\n\nChilmark has some of the best beaches. credit: Chilmark Beach"
+    "objectID": "tests/pages/f-options.html#c1",
+    "href": "tests/pages/f-options.html#c1",
+    "title": "F: options",
+    "section": "1. .nopanzoom inside a .panzoom div",
+    "text": "1. .nopanzoom inside a .panzoom div\nThe first image is marked .nopanzoom, so panzoom leaves it alone: with no lightbox on this page, clicking it does nothing. The second opens the viewer.\n\n\n\n\n\n\nOpted out.\n\n\n\n\n\n\n\nNot opted out."
   },
   {
-    "objectID": "tests/pages/c-panzoom-auto.html#c2",
-    "href": "tests/pages/c-panzoom-auto.html#c2",
-    "title": "C: panzoom match: auto",
-    "section": "2. Gallery via group=, custom layout",
-    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse\n\n\n\n\n\n\nThe waves break off Aquinnah.\n\n\nGingerbread cottages.\n\n\nEdgartown Lighthouse."
+    "objectID": "tests/pages/f-options.html#c2",
+    "href": "tests/pages/f-options.html#c2",
+    "title": "F: options",
+    "section": "2. #| panzoom: false inside a .panzoom div",
+    "text": "2. #| panzoom: false inside a .panzoom div\nThe whole cell opts out.\n\n\n```{r}\n#| panzoom: false\n#| fig-cap: \"Opted out cell.\"\n\nwave(k = 1)\n```\n\n\n\n\nOpted out cell."
   },
   {
-    "objectID": "tests/pages/c-panzoom-auto.html#c3",
-    "href": "tests/pages/c-panzoom-auto.html#c3",
-    "title": "C: panzoom match: auto",
-    "section": "3. Math in caption and description",
-    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)\n\n\n\nDescription with math \\(\\int_0^1 x^2\\,dx = 1/3\\)"
+    "objectID": "tests/pages/f-options.html#c3",
+    "href": "tests/pages/f-options.html#c3",
+    "title": "F: options",
+    "section": "3. hint: false",
+    "text": "3. hint: false\nThe page shows the hint (the default); this cell hides it.\n\n```{r}\n#| panzoom:\n#|   hint: false\n\nwave(k = 3)\n```"
   },
   {
-    "objectID": "tests/pages/c-panzoom-auto.html#c4",
-    "href": "tests/pages/c-panzoom-auto.html#c4",
-    "title": "C: panzoom match: auto",
-    "section": "4. Markdown subfigures with cross-ref",
-    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
+    "objectID": "tests/pages/f-options.html#c4",
+    "href": "tests/pages/f-options.html#c4",
+    "title": "F: options",
+    "section": "4. Hint on by default",
+    "text": "4. Hint on by default\n\n```{r}\n#| panzoom: true\n\nwave(k = 4)\n```"
   },
   {
-    "objectID": "tests/pages/c-panzoom-auto.html#c5",
-    "href": "tests/pages/c-panzoom-auto.html#c5",
-    "title": "C: panzoom match: auto",
-    "section": "5. R subfigures (fig-subcap, layout-ncol)",
-    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\n\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
+    "objectID": "tests/pages/f-options.html#c5",
+    "href": "tests/pages/f-options.html#c5",
+    "title": "F: options",
+    "section": "5. max-zoom: 2",
+    "text": "5. max-zoom: 2\nZooming in stops at 2 screen pixels per image pixel.\n\n```{r}\n#| panzoom:\n#|   max-zoom: 2\n\nwave(k = 1)\n```"
   },
   {
-    "objectID": "tests/pages/c-panzoom-auto.html#c6",
-    "href": "tests/pages/c-panzoom-auto.html#c6",
-    "title": "C: panzoom match: auto",
-    "section": "6. R chunks with lightbox cell options (group + description)",
-    "text": "6. R chunks with lightbox cell options (group + description)\nThis chunk sets a lightbox group and description.\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\n\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nSo does this one, in the same group.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\n\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
-  },
-  {
-    "objectID": "tests/pages/c-panzoom-auto.html#c7",
-    "href": "tests/pages/c-panzoom-auto.html#c7",
-    "title": "C: panzoom match: auto",
-    "section": "7. Multi-plot cell, list-valued options",
-    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\n\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
-  },
-  {
-    "objectID": "tests/pages/c-panzoom-auto.html#c8",
-    "href": "tests/pages/c-panzoom-auto.html#c8",
-    "title": "C: panzoom match: auto",
-    "section": "8. lightbox: false on a chunk",
-    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\n\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
-  },
-  {
-    "objectID": "tests/pages/c-panzoom-auto.html#c9",
-    "href": "tests/pages/c-panzoom-auto.html#c9",
-    "title": "C: panzoom match: auto",
-    "section": "9. Image inside a link",
-    "text": "9. Image inside a link\n\n\n\nLinked image"
-  },
-  {
-    "objectID": "tests/pages/c-panzoom-auto.html#c10",
-    "href": "tests/pages/c-panzoom-auto.html#c10",
-    "title": "C: panzoom match: auto",
-    "section": "10. Margin image",
-    "text": "10. Margin image\n\n\n\n\nMargin image"
-  },
-  {
-    "objectID": "tests/pages/c-panzoom-auto.html#c11",
-    "href": "tests/pages/c-panzoom-auto.html#c11",
-    "title": "C: panzoom match: auto",
-    "section": "11. Inline image in text",
-    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
-  },
-  {
-    "objectID": "tests/pages/c-panzoom-auto.html#c12",
-    "href": "tests/pages/c-panzoom-auto.html#c12",
-    "title": "C: panzoom match: auto",
-    "section": "12. Plain R chunk figure, no options",
-    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\n\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
-  },
-  {
-    "objectID": "tests/pages/c-panzoom-auto.html#credits",
-    "href": "tests/pages/c-panzoom-auto.html#credits",
-    "title": "C: panzoom match: auto",
-    "section": "Credits",
-    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nThis is 1 to 10 plot\n\n\nWe see our cars data above\n\n\nDescription for first graph\n\n\nDescription for second graph"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html",
-    "href": "tests/pages/a-lightbox.html",
-    "title": "A: Quarto lightbox reference",
-    "section": "",
-    "text": "NoteAbout this page\n\n\n\nThis is the reference: the same 12 cases as d-panzoom-selective, rendered with Quarto’s built-in lightbox only. The panzoom filter is not loaded and no image carries a panzoom marker. Every block image gets the lightbox via lightbox: match: auto, with effect: fade, desc-position: right, loop: true and css-class: my-lb set to exercise those options.\nCompare each case with the same numbered case in d-panzoom-selective."
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c1",
-    "href": "tests/pages/a-lightbox.html#c1",
-    "title": "A: Quarto lightbox reference",
-    "section": "1. Single image, markdown description, desc-position left",
-    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c2",
-    "href": "tests/pages/a-lightbox.html#c2",
-    "title": "A: Quarto lightbox reference",
-    "section": "2. Gallery via group=, custom layout",
-    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c3",
-    "href": "tests/pages/a-lightbox.html#c3",
-    "title": "A: Quarto lightbox reference",
-    "section": "3. Math in caption and description",
-    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c4",
-    "href": "tests/pages/a-lightbox.html#c4",
-    "title": "A: Quarto lightbox reference",
-    "section": "4. Markdown subfigures with cross-ref",
-    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c5",
-    "href": "tests/pages/a-lightbox.html#c5",
-    "title": "A: Quarto lightbox reference",
-    "section": "5. R subfigures (fig-subcap, layout-ncol)",
-    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\n\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c6",
-    "href": "tests/pages/a-lightbox.html#c6",
-    "title": "A: Quarto lightbox reference",
-    "section": "6. R chunks with lightbox cell options (group + description)",
-    "text": "6. R chunks with lightbox cell options (group + description)\nThis chunk sets a lightbox group and description.\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\n\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nSo does this one, in the same group.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\n\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c7",
-    "href": "tests/pages/a-lightbox.html#c7",
-    "title": "A: Quarto lightbox reference",
-    "section": "7. Multi-plot cell, list-valued options",
-    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\n\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c8",
-    "href": "tests/pages/a-lightbox.html#c8",
-    "title": "A: Quarto lightbox reference",
-    "section": "8. lightbox: false on a chunk",
-    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\n\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c9",
-    "href": "tests/pages/a-lightbox.html#c9",
-    "title": "A: Quarto lightbox reference",
-    "section": "9. Image inside a link",
-    "text": "9. Image inside a link\n\n\n\nLinked image"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c10",
-    "href": "tests/pages/a-lightbox.html#c10",
-    "title": "A: Quarto lightbox reference",
-    "section": "10. Margin image",
-    "text": "10. Margin image\n\n\n\n\nMargin image"
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c11",
-    "href": "tests/pages/a-lightbox.html#c11",
-    "title": "A: Quarto lightbox reference",
-    "section": "11. Inline image in text",
-    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#c12",
-    "href": "tests/pages/a-lightbox.html#c12",
-    "title": "A: Quarto lightbox reference",
-    "section": "12. Plain R chunk figure, no options",
-    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\n\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
-  },
-  {
-    "objectID": "tests/pages/a-lightbox.html#credits",
-    "href": "tests/pages/a-lightbox.html#credits",
-    "title": "A: Quarto lightbox reference",
-    "section": "Credits",
-    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nChilmark has some of the best beaches. credit: Chilmark Beach\n\n\nThe waves break off Aquinnah.\n\n\nGingerbread cottages.\n\n\nEdgartown Lighthouse.\n\n\nDescription with math \\(\\int_0^1 x^2\\,dx = 1/3\\)\n\n\nThis is 1 to 10 plot\n\n\nWe see our cars data above\n\n\nDescription for first graph\n\n\nDescription for second graph"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "panzoom",
-    "section": "",
-    "text": "This is a Quarto extension that opens figures in a full-screen viewer, built on Panzoom: scroll to zoom toward the cursor, drag to pan, double-click or 0 to reset, Esc to close. It attempts to match, and extend, the feature set of Quarto’s built-in lightbox. Source and documentation: https://github.com/sekoclancy/panzoom."
-  },
-  {
-    "objectID": "index.html#chunk-output",
-    "href": "index.html#chunk-output",
-    "title": "panzoom",
-    "section": "Chunk output",
-    "text": "Chunk output\nMark a code cell with #| panzoom: true. Click the figure to open it, scroll to zoom toward the cursor, drag to pan, double-click to reset, Esc to close.\n\n```{r}\n#| panzoom: true\n#| fig-width: 12\n#| fig-height: 4\n\nimage(volcano, col = hcl.colors(100, \"Viridis\"), asp = 1 / 3)\n```"
-  },
-  {
-    "objectID": "index.html#cross-referenced-figure",
-    "href": "index.html#cross-referenced-figure",
-    "title": "panzoom",
-    "section": "Cross-referenced figure",
-    "text": "Cross-referenced figure\nLabeled figures work too (Figure 1). Options under #| panzoom: override the document’s settings for one cell: this figure zooms to 10 instead of the page’s 6, and hides the hint.\n\n```{r}\n#| label: fig-volcano\n#| fig-cap: \"Maunga Whau volcano.\"\n#| panzoom:\n#|   max-zoom: 10\n#|   hint: false\n\nfilled.contour(volcano, color.palette = terrain.colors)\n```\n\n\n\n\n\n\n\nFigure 1: Maunga Whau volcano."
-  },
-  {
-    "objectID": "index.html#markdown-image",
-    "href": "index.html#markdown-image",
-    "title": "panzoom",
-    "section": "Markdown image",
-    "text": "Markdown image\n\n\n\nA markdown image with the .panzoom class."
-  },
-  {
-    "objectID": "index.html#captions-and-galleries",
-    "href": "index.html#captions-and-galleries",
-    "title": "panzoom",
-    "section": "Captions and galleries",
-    "text": "Captions and galleries\nThe viewer shows the figure’s caption. Plots with the same group form a gallery: use the ‹ › buttons, ←/→ or a swipe to step through them. Subfigures of one figure are a gallery automatically.\n```{r}\n#| panzoom:\n#|   group: volcano-views\n#| fig-cap:\n#|   - \"Volcano heights as an image.\"\n#|   - \"The same data as a perspective plot.\"\n#| layout-ncol: 2\n\nimage(volcano, col = hcl.colors(100, \"Viridis\"))\npersp(volcano, theta = 135, phi = 30, col = \"green3\", shade = 0.5, border = NA)\n```\n\n\n\n\n\n\nVolcano heights as an image.\n\n\n\n\n\n\n\nThe same data as a perspective plot.\n\n\n\n\n\n```{r}\n#| label: fig-volcano-sub\n#| fig-cap: \"Two views of Maunga Whau, as subfigures.\"\n#| fig-subcap: [\"Contours\", \"Filled contours\"]\n#| layout-ncol: 2\n#| panzoom: true\n\ncontour(volcano)\nimage(volcano)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Contours\n\n\n\n\n\n\n\n\n\n\n\n(b) Filled contours\n\n\n\n\n\n\n\nFigure 2: Two views of Maunga Whau, as subfigures."
-  },
-  {
-    "objectID": "index.html#untouched-figure",
-    "href": "index.html#untouched-figure",
-    "title": "panzoom",
-    "section": "Untouched figure",
-    "text": "Untouched figure\nWithout the option, Quarto’s own lightbox still handles the figure.\n\n```{r}\ncontour(volcano)\n```"
-  },
-  {
-    "objectID": "index.html#opting-out",
-    "href": "index.html#opting-out",
-    "title": "panzoom",
-    "section": "Opting out",
-    "text": "Opting out\nInside a .panzoom div, every image gets the viewer except one marked .nopanzoom. panzoom then leaves that image to Quarto: this page has lightbox: true, so the image below opens in Quarto’s lightbox instead (where a click toggles between fit and full size). Without a lightbox, it would open nothing. For a whole code cell, use #| panzoom: false.\n::: {.panzoom}\n![Opted out.](volcano.png){.nopanzoom width=40%}\n:::\n\n\n\n\nOpted out."
-  },
-  {
-    "objectID": "index.html#test-pages",
-    "href": "index.html#test-pages",
-    "title": "panzoom",
-    "section": "Test pages",
-    "text": "Test pages\nThe same 12 lightbox situations (galleries, subfigures, captions with math, images in links, margin images, …) rendered four ways:\n\nA: Quarto lightbox reference: Quarto’s built-in lightbox alone.\nB: marked images + lightbox: the usual setup, lightbox: true with some images marked for panzoom.\nC: panzoom match: auto: panzoom picks the images itself.\nD: explicit marking: images marked with .panzoom or #| classes: panzoom.\n\nAnd pages of their own:\n\nE: image formats: webp, svg and pdf output.\nF: options: opting out, and the hint, max-zoom and loop options.\nG: captions and descriptions: citations and cross-references, and the caption and description options.\nH: wide and tall figures: 25 × 2 inch collages, tall strips, galleries and layouts of them, and the fit option."
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html",
-    "href": "tests/pages/b-panzoom-lightbox.html",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "",
-    "text": "NoteAbout this page\n\n\n\nThis page tests the usual setup: Quarto’s lightbox is on for the document (lightbox: true), and only some images are marked for panzoom, with .panzoom or #| classes: panzoom. The markup is the same as in d-panzoom-selective, which has no lightbox.\nThe marked images should open the pan/zoom viewer; every other image should open Quarto’s lightbox, as in a-lightbox. Case 6’s first chunk has both classes: panzoom and #| lightbox: options on purpose: panzoom should win, so it doesn’t join GLightbox’s gallery. Case 8 (#| lightbox: false) gets neither. Case 9’s link should still work (images inside links are left alone)."
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c1",
-    "href": "tests/pages/b-panzoom-lightbox.html#c1",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "1. Single image, markdown description, desc-position left",
-    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark\n\n\n\nChilmark has some of the best beaches. credit: Chilmark Beach"
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c2",
-    "href": "tests/pages/b-panzoom-lightbox.html#c2",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "2. Gallery via group=, custom layout",
-    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse\n\n\n\n\n\n\nGingerbread cottages."
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c3",
-    "href": "tests/pages/b-panzoom-lightbox.html#c3",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "3. Math in caption and description",
-    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)\n\n\n\nDescription with math \\(\\int_0^1 x^2\\,dx = 1/3\\)"
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c4",
-    "href": "tests/pages/b-panzoom-lightbox.html#c4",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "4. Markdown subfigures with cross-ref",
-    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c5",
-    "href": "tests/pages/b-panzoom-lightbox.html#c5",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "5. R subfigures (fig-subcap, layout-ncol)",
-    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\n#| classes: panzoom\n\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c6",
-    "href": "tests/pages/b-panzoom-lightbox.html#c6",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "6. R chunks with lightbox cell options (group + description)",
-    "text": "6. R chunks with lightbox cell options (group + description)\nThis one also has classes: panzoom (conflict test).\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| classes: panzoom\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\n\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nThis one has only the lightbox options.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\n\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c7",
-    "href": "tests/pages/b-panzoom-lightbox.html#c7",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "7. Multi-plot cell, list-valued options",
-    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| classes: panzoom\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\n\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c8",
-    "href": "tests/pages/b-panzoom-lightbox.html#c8",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "8. lightbox: false on a chunk",
-    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\n\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c9",
-    "href": "tests/pages/b-panzoom-lightbox.html#c9",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "9. Image inside a link",
-    "text": "9. Image inside a link\n\n\n\nLinked image"
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c10",
-    "href": "tests/pages/b-panzoom-lightbox.html#c10",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "10. Margin image",
-    "text": "10. Margin image\n\n\n\n\nMargin image"
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c11",
-    "href": "tests/pages/b-panzoom-lightbox.html#c11",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "11. Inline image in text",
-    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#c12",
-    "href": "tests/pages/b-panzoom-lightbox.html#c12",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "12. Plain R chunk figure, no options",
-    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\n\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
-  },
-  {
-    "objectID": "tests/pages/b-panzoom-lightbox.html#credits",
-    "href": "tests/pages/b-panzoom-lightbox.html#credits",
-    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
-    "section": "Credits",
-    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nThe waves break off Aquinnah.\n\n\nEdgartown Lighthouse.\n\n\nWe see our cars data above"
+    "objectID": "tests/pages/f-options.html#c6",
+    "href": "tests/pages/f-options.html#c6",
+    "title": "F: options",
+    "section": "6. Gallery with loop: true",
+    "text": "6. Gallery with loop: true\nThree plots in one gallery. With the page’s loop: true, ← on the first goes to the last, and “previous” is never disabled.\n\n```{r}\n#| panzoom:\n#|   group: waves\n#| fig-cap:\n#|   - \"Wave one.\"\n#|   - \"Wave two.\"\n#|   - \"Wave three.\"\n\nwave(k = 1)\nwave(k = 2)\nwave(k = 3)\n```\n\n\n\n\nWave one.\n\n\n\n\n\n\n\nWave two.\n\n\n\n\n\n\n\nWave three."
   },
   {
     "objectID": "tests/pages/d-panzoom-selective.html",
@@ -651,171 +385,605 @@
     "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nWe see our cars data above"
   },
   {
-    "objectID": "tests/pages/f-options.html",
-    "href": "tests/pages/f-options.html",
-    "title": "F: options",
+    "objectID": "tests/pages/b-panzoom-lightbox.html",
+    "href": "tests/pages/b-panzoom-lightbox.html",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
     "section": "",
-    "text": "NoteAbout this page\n\n\n\nThis page tests panzoom’s options one at a time: opting out with .nopanzoom and #| panzoom: false, and the per-cell hint and max-zoom options. The page itself sets loop: true, so the gallery in case 6 wraps around. There is no lightbox, so an image panzoom leaves alone opens nothing. The caption and description options are on G: captions and descriptions, fit on H: wide and tall figures.\nEach case says what to expect in its heading’s attributes (expect-open, expect-hint, expect-max-zoom), or on a single image, and the browser test checks them."
+    "text": "NoteAbout this page\n\n\n\nThis page tests the usual setup: Quarto’s lightbox is on for the document (lightbox: true), and only some images are marked for panzoom, with .panzoom or #| classes: panzoom. The markup is the same as in d-panzoom-selective, which has no lightbox.\nThe marked images should open the pan/zoom viewer; every other image should open Quarto’s lightbox, as in a-lightbox. Case 6’s first chunk has both classes: panzoom and #| lightbox: options on purpose: panzoom should win, so it doesn’t join GLightbox’s gallery. Case 8 (#| lightbox: false) gets neither. Case 9’s link should still work (images inside links are left alone)."
   },
   {
-    "objectID": "tests/pages/f-options.html#c1",
-    "href": "tests/pages/f-options.html#c1",
-    "title": "F: options",
-    "section": "1. .nopanzoom inside a .panzoom div",
-    "text": "1. .nopanzoom inside a .panzoom div\nThe first image is marked .nopanzoom, so panzoom leaves it alone: with no lightbox on this page, clicking it does nothing. The second opens the viewer.\n\n\n\n\n\n\nOpted out.\n\n\n\n\n\n\n\nNot opted out."
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c1",
+    "href": "tests/pages/b-panzoom-lightbox.html#c1",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "1. Single image, markdown description, desc-position left",
+    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark\n\n\n\nChilmark has some of the best beaches. credit: Chilmark Beach"
   },
   {
-    "objectID": "tests/pages/f-options.html#c2",
-    "href": "tests/pages/f-options.html#c2",
-    "title": "F: options",
-    "section": "2. #| panzoom: false inside a .panzoom div",
-    "text": "2. #| panzoom: false inside a .panzoom div\nThe whole cell opts out.\n\n\n```{r}\n#| panzoom: false\n#| fig-cap: \"Opted out cell.\"\n\nwave(1)\n```\n\n\n\n\nOpted out cell."
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c2",
+    "href": "tests/pages/b-panzoom-lightbox.html#c2",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "2. Gallery via group=, custom layout",
+    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse\n\n\n\n\n\n\nGingerbread cottages."
   },
   {
-    "objectID": "tests/pages/f-options.html#c3",
-    "href": "tests/pages/f-options.html#c3",
-    "title": "F: options",
-    "section": "3. hint: false",
-    "text": "3. hint: false\nThe page shows the hint (the default); this cell hides it.\n\n```{r}\n#| panzoom:\n#|   hint: false\n\nwave(3)\n```"
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c3",
+    "href": "tests/pages/b-panzoom-lightbox.html#c3",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "3. Math in caption and description",
+    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)\n\n\n\nDescription with math \\(\\int_0^1 x^2\\,dx = 1/3\\)"
   },
   {
-    "objectID": "tests/pages/f-options.html#c4",
-    "href": "tests/pages/f-options.html#c4",
-    "title": "F: options",
-    "section": "4. Hint on by default",
-    "text": "4. Hint on by default\n\n```{r}\n#| panzoom: true\n\nwave(4)\n```"
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c4",
+    "href": "tests/pages/b-panzoom-lightbox.html#c4",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "4. Markdown subfigures with cross-ref",
+    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
   },
   {
-    "objectID": "tests/pages/f-options.html#c5",
-    "href": "tests/pages/f-options.html#c5",
-    "title": "F: options",
-    "section": "5. max-zoom: 2",
-    "text": "5. max-zoom: 2\nZooming in stops at 2 screen pixels per image pixel.\n\n```{r}\n#| panzoom:\n#|   max-zoom: 2\n\nwave(1)\n```"
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c5",
+    "href": "tests/pages/b-panzoom-lightbox.html#c5",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "5. R subfigures (fig-subcap, layout-ncol)",
+    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\n#| classes: panzoom\n\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
   },
   {
-    "objectID": "tests/pages/f-options.html#c6",
-    "href": "tests/pages/f-options.html#c6",
-    "title": "F: options",
-    "section": "6. Gallery with loop: true",
-    "text": "6. Gallery with loop: true\nThree plots in one gallery. With the page’s loop: true, ← on the first goes to the last, and “previous” is never disabled.\n\n```{r}\n#| panzoom:\n#|   group: waves\n#| fig-cap:\n#|   - \"Wave one.\"\n#|   - \"Wave two.\"\n#|   - \"Wave three.\"\n\nwave(1)\nwave(2)\nwave(3)\n```\n\n\n\n\nWave one.\n\n\n\n\n\n\n\nWave two.\n\n\n\n\n\n\n\nWave three."
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c6",
+    "href": "tests/pages/b-panzoom-lightbox.html#c6",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "6. R chunks with lightbox cell options (group + description)",
+    "text": "6. R chunks with lightbox cell options (group + description)\nThis one also has classes: panzoom (conflict test).\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| classes: panzoom\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\n\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nThis one has only the lightbox options.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\n\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
   },
   {
-    "objectID": "tests/pages/h-wide.html",
-    "href": "tests/pages/h-wide.html",
-    "title": "H: wide and tall figures",
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c7",
+    "href": "tests/pages/b-panzoom-lightbox.html#c7",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "7. Multi-plot cell, list-valued options",
+    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| classes: panzoom\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\n\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
+  },
+  {
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c8",
+    "href": "tests/pages/b-panzoom-lightbox.html#c8",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "8. lightbox: false on a chunk",
+    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\n\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
+  },
+  {
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c9",
+    "href": "tests/pages/b-panzoom-lightbox.html#c9",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "9. Image inside a link",
+    "text": "9. Image inside a link\n\n\n\nLinked image"
+  },
+  {
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c10",
+    "href": "tests/pages/b-panzoom-lightbox.html#c10",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "10. Margin image",
+    "text": "10. Margin image\n\n\n\n\nMargin image"
+  },
+  {
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c11",
+    "href": "tests/pages/b-panzoom-lightbox.html#c11",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "11. Inline image in text",
+    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
+  },
+  {
+    "objectID": "tests/pages/b-panzoom-lightbox.html#c12",
+    "href": "tests/pages/b-panzoom-lightbox.html#c12",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "12. Plain R chunk figure, no options",
+    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\n\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
+  },
+  {
+    "objectID": "tests/pages/b-panzoom-lightbox.html#credits",
+    "href": "tests/pages/b-panzoom-lightbox.html#credits",
+    "title": "B: panzoom on marked images, Quarto’s lightbox on for the rest",
+    "section": "Credits",
+    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nThe waves break off Aquinnah.\n\n\nEdgartown Lighthouse.\n\n\nWe see our cars data above"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "panzoom",
     "section": "",
-    "text": "NoteAbout this page\n\n\n\nThis page tests how the viewer opens figures of different shapes: very wide collages (25 × 2 inches), tall strips, a poster, a portrait photo and a small plot, alone, in galleries and in layouts, and the fit option. All are png; other formats are on E: image formats.\nBy default (fit: auto) very wide figures open at screen height from the left end (or where they were clicked), very tall ones at screen width from the top, and everything else whole, never enlarged past its real size.\nHeadings carry what the browser test checks: expect-fit (contain, height or width), shift-scroll (which way Shift+scroll moves the image: x sideways, y up and down, none, or zoomed-x: sideways after zooming in until the image extends past the screen both ways) and expect-scale=\"1\" (opens at real size), expect-zoom-out (yes: the opening view is closer than the whole image, so it zooms out; no: it already is the whole image). The first single collage and image shown whole also get the focal point and containment checks."
+    "text": "This is a Quarto extension that opens figures in a full-screen viewer, built on Panzoom: scroll to zoom toward the cursor, drag to pan, double-click or 0 to reset, Esc to close. It attempts to match, and extend, the feature set of Quarto’s built-in lightbox. Source and documentation: https://github.com/sekoclancy/panzoom."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c1",
-    "href": "tests/pages/h-wide.html#c1",
-    "title": "H: wide and tall figures",
-    "section": "1. Wide collage, png (25 × 2 in)",
-    "text": "1. Wide collage, png (25 × 2 in)\n\n```{r}\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap: \"A 25 × 2 inch collage of 12 panels (png).\"\n\ncollage()\n```\n\n\n\n\nA 25 × 2 inch collage of 12 panels (png)."
+    "objectID": "index.html#chunk-output",
+    "href": "index.html#chunk-output",
+    "title": "panzoom",
+    "section": "Chunk output",
+    "text": "Chunk output\nMark a code cell with #| panzoom: true. Click the figure to open it, scroll to zoom toward the cursor, drag to pan, double-click to reset, Esc to close.\n\n```{r}\n#| panzoom: true\n#| fig-width: 12\n#| fig-height: 4\n\nimage(volcano, col = hcl.colors(100, \"Viridis\"), asp = 1 / 3)\n```"
   },
   {
-    "objectID": "tests/pages/h-wide.html#c2",
-    "href": "tests/pages/h-wide.html#c2",
-    "title": "H: wide and tall figures",
-    "section": "2. Wide collage with fit: contain",
-    "text": "2. Wide collage with fit: contain\nThe override for case 1: the whole collage, as a strip.\n\n```{r}\n#| panzoom:\n#|   fit: contain\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap: \"The collage, forced to open whole.\"\n\ncollage()\n```\n\n\n\n\nThe collage, forced to open whole."
+    "objectID": "index.html#cross-referenced-figure",
+    "href": "index.html#cross-referenced-figure",
+    "title": "panzoom",
+    "section": "Cross-referenced figure",
+    "text": "Cross-referenced figure\nLabeled figures work too (Figure 1). Options under #| panzoom: override the document’s settings for one cell: this figure zooms to 10 instead of the page’s 6, and hides the hint.\n\n```{r}\n#| label: fig-volcano\n#| fig-cap: \"Maunga Whau volcano.\"\n#| panzoom:\n#|   max-zoom: 10\n#|   hint: false\n\nfilled.contour(volcano, color.palette = terrain.colors)\n```\n\n\n\n\n\n\n\nFigure 1: Maunga Whau volcano."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c3",
-    "href": "tests/pages/h-wide.html#c3",
-    "title": "H: wide and tall figures",
-    "section": "3. Moderately wide figure (16 × 4 in)",
-    "text": "3. Moderately wide figure (16 × 4 in)\nWide, but readable whole: the size rule leaves it alone.\n\n```{r}\n#| panzoom: true\n#| fig-width: 16\n#| fig-height: 4\n#| fig-cap: \"A 4:1 figure.\"\n\ncollage(4)\n```\n\n\n\n\nA 4:1 figure."
+    "objectID": "index.html#markdown-image",
+    "href": "index.html#markdown-image",
+    "title": "panzoom",
+    "section": "Markdown image",
+    "text": "Markdown image\nMark a markdown image with the .panzoom class:\n![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom}\n\n\n\nA markdown image with the .panzoom class."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c4",
-    "href": "tests/pages/h-wide.html#c4",
-    "title": "H: wide and tall figures",
-    "section": "4. Tall strip (4 × 15 in)",
-    "text": "4. Tall strip (4 × 15 in)\n\n```{r}\n#| panzoom: true\n#| fig-width: 4\n#| fig-height: 15\n#| fig-cap: \"A tall strip of 8 panels.\"\n\nset.seed(2)\npar(mfrow = c(8, 1), mar = c(2, 3, 2, 1))\nfor (i in 1:8) plot(cumsum(rnorm(100)), type = \"l\", main = paste(\"Row\", i), xlab = \"\", ylab = \"\")\n```\n\n\n\n\nA tall strip of 8 panels."
+    "objectID": "index.html#captions-and-galleries",
+    "href": "index.html#captions-and-galleries",
+    "title": "panzoom",
+    "section": "Captions and galleries",
+    "text": "Captions and galleries\nThe viewer shows the figure’s caption. Plots with the same group form a gallery: use the previous and next buttons, ←/→ or a swipe to step through them. Subfigures of one figure are a gallery automatically.\n```{r}\n#| panzoom:\n#|   group: volcano-views\n#| fig-cap:\n#|   - \"Volcano heights as an image.\"\n#|   - \"The same data as a perspective plot.\"\n#| layout-ncol: 2\n\nimage(volcano, col = hcl.colors(100, \"Viridis\"))\npersp(volcano, theta = 135, phi = 30, col = \"green3\", shade = 0.5, border = NA)\n```\n\n\n\n\n\n\nVolcano heights as an image.\n\n\n\n\n\n\n\nThe same data as a perspective plot.\n\n\n\n\n\n```{r}\n#| label: fig-volcano-sub\n#| fig-cap: \"Two views of Maunga Whau, as subfigures.\"\n#| fig-subcap: [\"Contours\", \"Filled contours\"]\n#| layout-ncol: 2\n#| panzoom: true\n\ncontour(volcano)\nimage(volcano)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Contours\n\n\n\n\n\n\n\n\n\n\n\n(b) Filled contours\n\n\n\n\n\n\n\nFigure 2: Two views of Maunga Whau, as subfigures."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c5",
-    "href": "tests/pages/h-wide.html#c5",
-    "title": "H: wide and tall figures",
-    "section": "5. Large poster (24 × 18 in)",
-    "text": "5. Large poster (24 × 18 in)\nOpens whole; zoomed in, it extends past the screen both ways, and Shift+scroll moves sideways.\n\n```{r}\n#| panzoom: true\n#| fig-width: 24\n#| fig-height: 18\n#| fig-cap: \"A 24 × 18 inch poster of 48 panels.\"\n\nset.seed(3)\npar(mfrow = c(6, 8), mar = c(2, 2, 2, 1))\nfor (i in 1:48) plot(cumsum(rnorm(100)), type = \"l\", main = paste(\"Panel\", i), xlab = \"\", ylab = \"\")\n```\n\n\n\n\nA 24 × 18 inch poster of 48 panels."
+    "objectID": "index.html#wide-figure",
+    "href": "index.html#wide-figure",
+    "title": "panzoom",
+    "section": "Wide figure",
+    "text": "Wide figure\nA figure many times wider than tall would be too thin to read if it opened whole, so it opens at screen height, at the spot you clicked: click one of the panels below and the viewer opens on it. Drag or use ←/→ to move along it; zooming out shows the whole figure.\n\n```{r}\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap: \"Twelve random walks, side by side.\"\n\nset.seed(1)\npar(mfrow = c(1, 12), mar = c(3, 3, 2, 1))\nfor (i in 1:12) plot(cumsum(rnorm(200)), type = \"l\", main = paste(\"Panel\", i))\n```\n\n\n\n\nTwelve random walks, side by side."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c6",
-    "href": "tests/pages/h-wide.html#c6",
-    "title": "H: wide and tall figures",
-    "section": "6. Portrait photo",
-    "text": "6. Portrait photo\nAn ordinary 9:16 photo is not a strip: it opens whole, on any screen width (the test also checks this in a 2560 px wide window).\n\n\n\nA portrait photo."
+    "objectID": "index.html#math-in-captions-and-descriptions",
+    "href": "index.html#math-in-captions-and-descriptions",
+    "title": "panzoom",
+    "section": "Math in captions and descriptions",
+    "text": "Math in captions and descriptions\nCaptions and descriptions keep their math, typeset as on the page, along with citations, cross-references and links.\n\n```{r}\n#| fig-cap: \"The standard normal density, $\\\\varphi(x)$.\"\n#| panzoom:\n#|   description: \"$\\\\varphi(x) = \\\\frac{1}{\\\\sqrt{2\\\\pi}} e^{-x^2/2}$. The shaded area is $P(|X| &lt; 1) \\\\approx 0.683$.\"\n\nx &lt;- seq(-4, 4, length.out = 400)\nplot(x, dnorm(x), type = \"l\", lwd = 2, xlab = \"x\", ylab = \"density\")\ninner &lt;- abs(x) &lt; 1\npolygon(c(-1, x[inner], 1), c(0, dnorm(x[inner]), 0), col = \"grey85\", border = NA)\nlines(x, dnorm(x), lwd = 2)\n```\n\n\n\n\nThe standard normal density, \\(\\varphi(x)\\).\n\n\n\n\n\n\\(\\varphi(x) = \\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}\\). The shaded area is \\(P(|X| &lt; 1) \\approx 0.683\\)."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c7",
-    "href": "tests/pages/h-wide.html#c7",
-    "title": "H: wide and tall figures",
-    "section": "7. Small plot (288 × 192 px)",
-    "text": "7. Small plot (288 × 192 px)\nOpens at its real size, centered, rather than enlarged to fill the screen; scroll still zooms in (up to max-zoom).\n\n```{r}\n#| panzoom: true\n#| fig-width: 3\n#| fig-height: 2\n#| fig-dpi: 48\n#| fig-cap: \"A small plot.\"\n\nplot(pressure)\n```\n\n\n\n\nA small plot."
+    "objectID": "index.html#untouched-figure",
+    "href": "index.html#untouched-figure",
+    "title": "panzoom",
+    "section": "Untouched figure",
+    "text": "Untouched figure\nWithout the option, Quarto’s own lightbox still handles the figure.\n\n```{r}\ncontour(volcano)\n```"
   },
   {
-    "objectID": "tests/pages/h-wide.html#c8",
-    "href": "tests/pages/h-wide.html#c8",
-    "title": "H: wide and tall figures",
-    "section": "8. fit: height on an ordinary plot",
-    "text": "8. fit: height on an ordinary plot\nOn a screen wider than the plot (1.4:1), filling the height is already the whole plot, so this opens like fit: contain and can’t zoom out. Case 15 shows fit: height on a figure where it differs.\n\n```{r}\n#| panzoom:\n#|   fit: height\n\nwave(3)\n```"
+    "objectID": "index.html#opting-out",
+    "href": "index.html#opting-out",
+    "title": "panzoom",
+    "section": "Opting out",
+    "text": "Opting out\nInside a .panzoom div, every image gets the viewer except one marked .nopanzoom. panzoom then leaves that image to Quarto: this page has lightbox: true, so the image below opens in Quarto’s lightbox instead (where a click toggles between fit and full size). Without a lightbox, it would open nothing. For a whole code cell, use #| panzoom: false.\n::: {.panzoom}\n![Opted out.](images/volcano.png){.nopanzoom width=40%}\n:::\n\n\n\n\nOpted out."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c9",
-    "href": "tests/pages/h-wide.html#c9",
-    "title": "H: wide and tall figures",
-    "section": "9. fit: width on an ordinary plot",
-    "text": "9. fit: width on an ordinary plot\nFilling the width makes the plot taller than the screen: it opens closer than the whole plot, and zooms out to it.\n\n```{r}\n#| panzoom:\n#|   fit: width\n\nwave(4)\n```"
+    "objectID": "index.html#test-pages",
+    "href": "index.html#test-pages",
+    "title": "panzoom",
+    "section": "Test pages",
+    "text": "Test pages\n\nR\nThe same 12 lightbox situations (galleries, subfigures, captions with math, images in links, margin images, …) rendered four ways:\n\nA: R lightbox reference: Quarto’s built-in lightbox alone.\nB: marked images + lightbox: the usual setup, lightbox: true with some images marked for panzoom.\nC: panzoom match: auto: panzoom picks the images itself.\nD: explicit marking: images marked with .panzoom or #| classes: panzoom.\n\nAnd pages of their own:\n\nE: image formats: webp, svg and pdf output.\nF: options: opting out, and the hint, max-zoom and loop options.\nG: captions and descriptions: citations and cross-references, and the caption and description options.\nH: wide and tall figures: 25 × 2 inch collages, tall strips and other shapes, and the fit option.\nI: wide figures in galleries and layouts: the same collages and strips in galleries and layouts.\n\n\n\nPython\n\nJ: Python lightbox reference: Quarto’s lightbox alone on Python cells.\nK: Python, panzoom: true with the lightbox: the same cells, with panzoom taking the images the lightbox would.\nL: Python cell options and svg: the R pages’ cell options on matplotlib figures, and svg output."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c10",
-    "href": "tests/pages/h-wide.html#c10",
-    "title": "H: wide and tall figures",
-    "section": "10. Gallery of two collages",
-    "text": "10. Gallery of two collages\nLeft/Right and drags pan along the collage; the ‹ › buttons switch collages.\n\n```{r}\n#| panzoom:\n#|   group: collages\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap:\n#|   - \"First collage.\"\n#|   - \"Second collage.\"\n\ncollage()\ncollage(15)\n```\n\n\n\n\nFirst collage.\n\n\n\n\n\n\n\nSecond collage."
+    "objectID": "tests/pages/a-lightbox.html",
+    "href": "tests/pages/a-lightbox.html",
+    "title": "A: knitr lightbox reference",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis is the reference: the same 12 cases as d-panzoom-selective, rendered with Quarto’s built-in lightbox only. The panzoom filter is not loaded and no image carries a panzoom marker. Every block image gets the lightbox via lightbox: match: auto, with effect: fade, desc-position: right, loop: true and css-class: my-lb set to exercise those options.\nCompare each case with the same numbered case in d-panzoom-selective."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c11",
-    "href": "tests/pages/h-wide.html#c11",
-    "title": "H: wide and tall figures",
-    "section": "11. Gallery of two tall strips",
-    "text": "11. Gallery of two tall strips\nEach strip opens at screen width and extends downwards: Left/Right do nothing (there is nowhere to go sideways) rather than switch strips; the ‹ › buttons switch.\n\n```{r}\n#| panzoom:\n#|   group: strips\n#| fig-width: 4\n#| fig-height: 15\n#| fig-cap:\n#|   - \"First strip.\"\n#|   - \"Second strip.\"\n\nfor (k in 1:2) {\n  set.seed(10 + k)\n  par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))\n  for (i in 1:8) plot(cumsum(rnorm(100)), type = \"l\", main = paste(\"Strip\", k, \"row\", i), xlab = \"\", ylab = \"\")\n}\n```\n\n\n\n\nFirst strip.\n\n\n\n\n\n\n\nSecond strip."
+    "objectID": "tests/pages/a-lightbox.html#c1",
+    "href": "tests/pages/a-lightbox.html#c1",
+    "title": "A: knitr lightbox reference",
+    "section": "1. Single image, markdown description, desc-position left",
+    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark"
   },
   {
-    "objectID": "tests/pages/h-wide.html#c12",
-    "href": "tests/pages/h-wide.html#c12",
-    "title": "H: wide and tall figures",
-    "section": "12. Two collages stacked (layout-nrow: 2)",
-    "text": "12. Two collages stacked (layout-nrow: 2)\nSubfigures in a layout: each opens on its own at screen height, and the two form a gallery.\n\n```{r}\n#| label: fig-collage-rows\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap: \"Two collages, stacked.\"\n#| fig-subcap: [\"First collage\", \"Second collage\"]\n#| layout-nrow: 2\n\ncollage()\ncollage(15)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) First collage\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b) Second collage\n\n\n\n\n\n\n\nFigure 1: Two collages, stacked."
+    "objectID": "tests/pages/a-lightbox.html#c2",
+    "href": "tests/pages/a-lightbox.html#c2",
+    "title": "A: knitr lightbox reference",
+    "section": "2. Gallery via group=, custom layout",
+    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse"
   },
   {
-    "objectID": "tests/pages/h-wide.html#c13",
-    "href": "tests/pages/h-wide.html#c13",
-    "title": "H: wide and tall figures",
-    "section": "13. Two tall strips side by side (layout-ncol: 2)",
-    "text": "13. Two tall strips side by side (layout-ncol: 2)\n```{r}\n#| label: fig-strip-cols\n#| panzoom: true\n#| fig-width: 4\n#| fig-height: 15\n#| fig-cap: \"Two tall strips, side by side.\"\n#| fig-subcap: [\"First strip\", \"Second strip\"]\n#| layout-ncol: 2\n\nstrip(2)\nstrip(3)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) First strip\n\n\n\n\n\n\n\n\n\n\n\n(b) Second strip\n\n\n\n\n\n\n\nFigure 2: Two tall strips, side by side."
+    "objectID": "tests/pages/a-lightbox.html#c3",
+    "href": "tests/pages/a-lightbox.html#c3",
+    "title": "A: knitr lightbox reference",
+    "section": "3. Math in caption and description",
+    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)"
   },
   {
-    "objectID": "tests/pages/h-wide.html#c14",
-    "href": "tests/pages/h-wide.html#c14",
-    "title": "H: wide and tall figures",
-    "section": "14. Tall strips in a layout div",
-    "text": "14. Tall strips in a layout div\nA .panzoom div with a layout, around two separate code cells: each strip opens on its own (no gallery: they are not subfigures).\n```{r}\n#| fig-width: 4\n#| fig-height: 15\n\nstrip(4)\n```\n```{r}\n#| fig-width: 4\n#| fig-height: 15\n\nstrip(5)\n```"
+    "objectID": "tests/pages/a-lightbox.html#c4",
+    "href": "tests/pages/a-lightbox.html#c4",
+    "title": "A: knitr lightbox reference",
+    "section": "4. Markdown subfigures with cross-ref",
+    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c15",
-    "href": "tests/pages/h-wide.html#c15",
-    "title": "H: wide and tall figures",
-    "section": "15. fit: height on a wide figure (12 × 4.5 in)",
-    "text": "15. fit: height on a wide figure (12 × 4.5 in)\nNot a strip (shown whole it is over a quarter of the screen tall), so fit: auto would open it whole. fit: height opens it filling the screen height (but not past its real size), from where it was clicked, and zooms out to the whole figure.\n\n```{r}\n#| panzoom:\n#|   fit: height\n#| fig-width: 12\n#| fig-height: 4.5\n\ncollage(6)\n```"
+    "objectID": "tests/pages/a-lightbox.html#c5",
+    "href": "tests/pages/a-lightbox.html#c5",
+    "title": "A: knitr lightbox reference",
+    "section": "5. R subfigures (fig-subcap, layout-ncol)",
+    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\n\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
   },
   {
-    "objectID": "tests/pages/h-wide.html#c16",
-    "href": "tests/pages/h-wide.html#c16",
-    "title": "H: wide and tall figures",
-    "section": "16. Case 15 with a long caption and description",
-    "text": "16. Case 15 with a long caption and description\nThe caption and description sit below the image; fit: height fills the height left above them, so it opens smaller than case 15. The caption scrolls past a quarter of the screen, the description past a fifth, so the image keeps at least about half.\n\n```{r}\n#| panzoom:\n#|   fit: height\n#|   description: \"A long description, to take room below the image. Each panel is a random walk of 200 steps, drawn with base R's `plot()` in a one-row layout (`par(mfrow = c(1, 6))`), coloured along the `hcl.colors()` palette. The figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864 px). With `fit: height` the viewer opens it as tall as the space above this text allows, and no taller than its real size. Drag or use the arrow keys to move along the figure, scroll or press - to zoom out to the whole of it, and 0 to come back to this opening view.\"\n#| fig-cap: \"Six random walks side by side, opened with `fit: height` under a long description.\"\n#| fig-width: 12\n#| fig-height: 4.5\n\ncollage(6)\n```\n\n\n\n\nSix random walks side by side, opened with fit: height under a long description.\n\n\n\n\n\nA long description, to take room below the image. Each panel is a random walk of 200 steps, drawn with base R’s plot() in a one-row layout (par(mfrow = c(1, 6))), coloured along the hcl.colors() palette. The figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864 px). With fit: height the viewer opens it as tall as the space above this text allows, and no taller than its real size. Drag or use the arrow keys to move along the figure, scroll or press - to zoom out to the whole of it, and 0 to come back to this opening view."
+    "objectID": "tests/pages/a-lightbox.html#c6",
+    "href": "tests/pages/a-lightbox.html#c6",
+    "title": "A: knitr lightbox reference",
+    "section": "6. R chunks with lightbox cell options (group + description)",
+    "text": "6. R chunks with lightbox cell options (group + description)\nThis chunk sets a lightbox group and description.\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\n\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nSo does this one, in the same group.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\n\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c7",
+    "href": "tests/pages/a-lightbox.html#c7",
+    "title": "A: knitr lightbox reference",
+    "section": "7. Multi-plot cell, list-valued options",
+    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\n\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c8",
+    "href": "tests/pages/a-lightbox.html#c8",
+    "title": "A: knitr lightbox reference",
+    "section": "8. lightbox: false on a chunk",
+    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\n\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c9",
+    "href": "tests/pages/a-lightbox.html#c9",
+    "title": "A: knitr lightbox reference",
+    "section": "9. Image inside a link",
+    "text": "9. Image inside a link\n\n\n\nLinked image"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c10",
+    "href": "tests/pages/a-lightbox.html#c10",
+    "title": "A: knitr lightbox reference",
+    "section": "10. Margin image",
+    "text": "10. Margin image\n\n\n\n\nMargin image"
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c11",
+    "href": "tests/pages/a-lightbox.html#c11",
+    "title": "A: knitr lightbox reference",
+    "section": "11. Inline image in text",
+    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#c12",
+    "href": "tests/pages/a-lightbox.html#c12",
+    "title": "A: knitr lightbox reference",
+    "section": "12. Plain R chunk figure, no options",
+    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\n\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
+  },
+  {
+    "objectID": "tests/pages/a-lightbox.html#credits",
+    "href": "tests/pages/a-lightbox.html#credits",
+    "title": "A: knitr lightbox reference",
+    "section": "Credits",
+    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nChilmark has some of the best beaches. credit: Chilmark Beach\n\n\nThe waves break off Aquinnah.\n\n\nGingerbread cottages.\n\n\nEdgartown Lighthouse.\n\n\nDescription with math \\(\\int_0^1 x^2\\,dx = 1/3\\)\n\n\nThis is 1 to 10 plot\n\n\nWe see our cars data above\n\n\nDescription for first graph\n\n\nDescription for second graph"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html",
+    "href": "tests/pages/c-panzoom-auto.html",
+    "title": "C: panzoom match: auto",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis page tests panzoom’s match: auto mode. The markup is identical to a-lightbox (no panzoom markers at all); both panzoom: match: auto and lightbox: match: auto are on. panzoom should take every image that Quarto’s auto lightbox would take, except where a case asks for something explicit:\n\ncases 6 and 7 set #| lightbox: options, so they stay with GLightbox;\ncase 8 sets #| lightbox: false, so it gets neither;\ncase 9 (image inside a link) and case 11 (inline image) are skipped, as Quarto’s auto mode skips them.\n\nCompare each case with the same numbered case in a-lightbox."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c1",
+    "href": "tests/pages/c-panzoom-auto.html#c1",
+    "title": "C: panzoom match: auto",
+    "section": "1. Single image, markdown description, desc-position left",
+    "text": "1. Single image, markdown description, desc-position left\n\n\n\nBeach in Chilmark\n\n\n\nChilmark has some of the best beaches. credit: Chilmark Beach"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c2",
+    "href": "tests/pages/c-panzoom-auto.html#c2",
+    "title": "C: panzoom match: auto",
+    "section": "2. Gallery via group=, custom layout",
+    "text": "2. Gallery via group=, custom layout\n\n\n\n\n\n\nAquinnah\n\n\n\n\n\n\n\nOak Bluffs\n\n\n\n\n\n\n\n\n\nVineyard lighthouse\n\n\n\n\n\n\nThe waves break off Aquinnah.\n\n\nGingerbread cottages.\n\n\nEdgartown Lighthouse."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c3",
+    "href": "tests/pages/c-panzoom-auto.html#c3",
+    "title": "C: panzoom match: auto",
+    "section": "3. Math in caption and description",
+    "text": "3. Math in caption and description\n\n\n\nCaption with math \\(e^{i\\pi}+1=0\\)\n\n\n\nDescription with math \\(\\int_0^1 x^2\\,dx = 1/3\\)"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c4",
+    "href": "tests/pages/c-panzoom-auto.html#c4",
+    "title": "C: panzoom match: auto",
+    "section": "4. Markdown subfigures with cross-ref",
+    "text": "4. Markdown subfigures with cross-ref\n\n\n\n\n\n\n\n\n\n\n\n(a) Sub A\n\n\n\n\n\n\n\n\n\n\n\n(b) Sub B\n\n\n\n\n\n\n\nFigure 1: Two markdown subfigures (see Figure 1 (a))."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c5",
+    "href": "tests/pages/c-panzoom-auto.html#c5",
+    "title": "C: panzoom match: auto",
+    "section": "5. R subfigures (fig-subcap, layout-ncol)",
+    "text": "5. R subfigures (fig-subcap, layout-ncol)\n```{r}\n#| label: fig-r-sub\n#| fig-cap: \"Two R subfigures.\"\n#| fig-subcap: [\"Pressure\", \"Cars\"]\n#| layout-ncol: 2\n\nplot(pressure)\nplot(cars)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Pressure\n\n\n\n\n\n\n\n\n\n\n\n(b) Cars\n\n\n\n\n\n\n\nFigure 2: Two R subfigures."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c6",
+    "href": "tests/pages/c-panzoom-auto.html#c6",
+    "title": "C: panzoom match: auto",
+    "section": "6. R chunks with lightbox cell options (group + description)",
+    "text": "6. R chunks with lightbox cell options (group + description)\nThis chunk sets a lightbox group and description.\n\n```{r}\n#| fig-cap: Simple demo R plot\n#| lightbox:\n#|   group: r-graph\n#|   description: This is 1 to 10 plot\n\nplot(1:10, rnorm(10))\n```\n\n\n\n\nSimple demo R plot\n\n\n\n\nSo does this one, in the same group.\n\n```{r}\n#| fig-cap: Plot about cars data\n#| lightbox:\n#|   group: r-graph\n#|   description: We see our cars data above\n\nplot(cars)\n```\n\n\n\n\nPlot about cars data"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c7",
+    "href": "tests/pages/c-panzoom-auto.html#c7",
+    "title": "C: panzoom match: auto",
+    "section": "7. Multi-plot cell, list-valued options",
+    "text": "7. Multi-plot cell, list-valued options\n\n```{r}\n#| fig-cap:\n#|   - Caption for first plot\n#|   - Caption for second plot\n#| lightbox:\n#|   group: cars\n#|   description:\n#|     - Description for first graph\n#|     - Description for second graph\n\nplot(mtcars)\nplot(cars)\n```\n\n\n\n\nCaption for first plot\n\n\n\n\n\n\n\nCaption for second plot"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c8",
+    "href": "tests/pages/c-panzoom-auto.html#c8",
+    "title": "C: panzoom match: auto",
+    "section": "8. lightbox: false on a chunk",
+    "text": "8. lightbox: false on a chunk\n\n```{r}\n#| fig-cap: mtcars, lightbox false\n#| lightbox: false\n\nplot(mtcars)\n```\n\n\n\n\nmtcars, lightbox false"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c9",
+    "href": "tests/pages/c-panzoom-auto.html#c9",
+    "title": "C: panzoom match: auto",
+    "section": "9. Image inside a link",
+    "text": "9. Image inside a link\n\n\n\nLinked image"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c10",
+    "href": "tests/pages/c-panzoom-auto.html#c10",
+    "title": "C: panzoom match: auto",
+    "section": "10. Margin image",
+    "text": "10. Margin image\n\n\n\n\nMargin image"
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c11",
+    "href": "tests/pages/c-panzoom-auto.html#c11",
+    "title": "C: panzoom match: auto",
+    "section": "11. Inline image in text",
+    "text": "11. Inline image in text\nSome text with an inline image  in the middle."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#c12",
+    "href": "tests/pages/c-panzoom-auto.html#c12",
+    "title": "C: panzoom match: auto",
+    "section": "12. Plain R chunk figure, no options",
+    "text": "12. Plain R chunk figure, no options\n\n```{r}\n#| label: fig-plain\n#| fig-cap: A plain cross-referenced R figure.\n\nimage(volcano)\n```\n\n\n\n\n\n\n\nFigure 3: A plain cross-referenced R figure."
+  },
+  {
+    "objectID": "tests/pages/c-panzoom-auto.html#credits",
+    "href": "tests/pages/c-panzoom-auto.html#credits",
+    "title": "C: panzoom match: auto",
+    "section": "Credits",
+    "text": "Credits\nThe images in this example were used under the Unsplash license, view originals below:\n\nChilmark Beach\nAquinnah\nGingerbread House\nEdgartown Light\nEdgartown Sailboat\n\n\n\n\n\n\n\nThis is 1 to 10 plot\n\n\nWe see our cars data above\n\n\nDescription for first graph\n\n\nDescription for second graph"
+  },
+  {
+    "objectID": "tests/pages/e-formats.html",
+    "href": "tests/pages/e-formats.html",
+    "title": "E: image formats",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis page tests the panzoom extension with the knitr graphics devices used in practice: webp, svg and pdf output, for a wide collage and a standard plot. Every figure is marked with #| panzoom: true and should open the pan/zoom viewer, except where a case says otherwise. Figure shapes and how they open are on H: wide and tall figures.\nHeadings carry what the browser test checks: expect-fit (the opening view: contain, height or width), shift-scroll (which way Shift+scroll moves the image: x, y or none) and expect-scale=\"1\" (opens at real size, not enlarged).\nwebp comes from ragg’s agg_webp device: knitr has no built-in webp device, and agg_webp needs units = \"in\" because knitr passes sizes in inches.\nThe cases below draw with this helper (ragg writes the webp files):\n```{r}\nlibrary(ragg)\n\n# A collage: `n` panels side by side, like a wide patchwork figure.\ncollage &lt;- function(n = 12) {\n  set.seed(1)\n  par(mfrow = c(1, n), mar = c(3, 3, 2, 1))\n  for (i in seq_len(n)) {\n    plot(cumsum(rnorm(200)), type = \"l\", main = paste(\"Panel\", i),\n         xlab = \"\", ylab = \"\", col = hcl.colors(n)[i], lwd = 2)\n  }\n}\n```"
+  },
+  {
+    "objectID": "tests/pages/e-formats.html#c1",
+    "href": "tests/pages/e-formats.html#c1",
+    "title": "E: image formats",
+    "section": "1. Wide collage, webp (25 × 2 in)",
+    "text": "1. Wide collage, webp (25 × 2 in)\n\n```{r}\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| dev: agg_webp\n#| fig-ext: webp\n#| dev.args: !expr list(units = \"in\", res = 96)\n#| fig-cap: \"A 25 × 2 inch collage of 12 panels (webp).\"\n\ncollage(n = 12)\n```\n\n\n\n\nA 25 × 2 inch collage of 12 panels (webp)."
+  },
+  {
+    "objectID": "tests/pages/e-formats.html#c2",
+    "href": "tests/pages/e-formats.html#c2",
+    "title": "E: image formats",
+    "section": "2. Wide collage, svg (25 × 2 in)",
+    "text": "2. Wide collage, svg (25 × 2 in)\n\n```{r}\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| dev: svg\n#| fig-cap: \"The collage as svg.\"\n\ncollage(n = 12)\n```\n\n\n\n\nThe collage as svg."
+  },
+  {
+    "objectID": "tests/pages/e-formats.html#c3",
+    "href": "tests/pages/e-formats.html#c3",
+    "title": "E: image formats",
+    "section": "3. webp plot",
+    "text": "3. webp plot\n\n```{r}\n#| panzoom: true\n#| dev: agg_webp\n#| fig-ext: webp\n#| dev.args: !expr list(units = \"in\", res = 96)\n#| fig-cap: \"A standard-size plot as webp.\"\n\nfilled.contour(volcano, color.palette = terrain.colors)\n```\n\n\n\n\nA standard-size plot as webp."
+  },
+  {
+    "objectID": "tests/pages/e-formats.html#c4",
+    "href": "tests/pages/e-formats.html#c4",
+    "title": "E: image formats",
+    "section": "4. svg plot",
+    "text": "4. svg plot\n\n```{r}\n#| panzoom: true\n#| dev: svg\n#| fig-cap: \"A standard-size plot as svg.\"\n\nfilled.contour(volcano, color.palette = terrain.colors)\n```\n\n\n\n\nA standard-size plot as svg."
+  },
+  {
+    "objectID": "tests/pages/e-formats.html#c5",
+    "href": "tests/pages/e-formats.html#c5",
+    "title": "E: image formats",
+    "section": "5. png + pdf (dev: [png, pdf])",
+    "text": "5. png + pdf (dev: [png, pdf])\nBoth files are written; the page shows the png.\n\n```{r}\n#| panzoom: true\n#| dev: !expr c(\"png\", \"pdf\")\n#| fig-cap: \"png shown, pdf written alongside.\"\n\nfilled.contour(volcano, color.palette = terrain.colors)\n```\n\n\n\n\npng shown, pdf written alongside."
+  },
+  {
+    "objectID": "tests/pages/e-formats.html#c6",
+    "href": "tests/pages/e-formats.html#c6",
+    "title": "E: image formats",
+    "section": "6. png + cairo_pdf (dev: [png, cairo_pdf])",
+    "text": "6. png + cairo_pdf (dev: [png, cairo_pdf])\nLike case 5, with the cairo PDF device, which embeds fonts and handles Unicode (µ, Greek letters) and transparency better than pdf. The page shows the png either way. With a PDF device alone, there is no image to open: Quarto embeds the PDF in a small box with the browser’s PDF viewer, which panzoom leaves alone.\n\n```{r}\n#| panzoom: true\n#| dev: !expr c(\"png\", \"cairo_pdf\")\n#| fig-cap: \"png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05).\"\n\nfilled.contour(volcano, color.palette = terrain.colors,\n               plot.title = title(main = \"mu = 5, alpha = 0.05\"))\n```\n\n\n\n\npng shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
+  },
+  {
+    "objectID": "tests/pages/e-formats.html#c7",
+    "href": "tests/pages/e-formats.html#c7",
+    "title": "E: image formats",
+    "section": "7. Wide collage, webp at 2× resolution (100 × 5 in)",
+    "text": "7. Wide collage, webp at 2× resolution (100 × 5 in)\nAt 192 dpi the collage is 19,200 px wide, beyond webp’s limit of 16,383 px per side; this case records what happens.\n\n```{r}\n#| panzoom: true\n#| fig-width: 100\n#| fig-height: 5\n#| dev: agg_webp\n#| fig-ext: webp\n#| dev.args: !expr list(units = \"in\", res = 192)\n#| fig-cap: \"The collage as webp at 192 dpi.\"\n#| error: true\n\ncollage(n = 12)\n```\n\n\n\n\nThe collage as webp at 192 dpi."
+  },
+  {
+    "objectID": "tests/pages/g-captions.html",
+    "href": "tests/pages/g-captions.html",
+    "title": "G: captions and descriptions",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis page tests citations and cross-references in the viewer. A caption is copied from the page, so whatever Quarto renders there comes through. A description is rendered with the page too, in a hidden block the viewer copies, so its citations resolve, its cross-references get numbers, and a work cited only in a description is still listed under References. Quarto’s own lightbox shows a citation in a caption as raw [@key] (quarto-cli#10709).\nCases 1–5 have the expect-references attribute: the viewer must show at least one citation or cross-reference, none unresolved, and each must link to something on this page. Cases 6 and 7 test the per-cell caption and description options (expect-caption).\nThe cases below draw with this helper:\n```{r}\nwave &lt;- function(k = 1) {\n  x &lt;- seq(0, 4 * pi, length.out = 400)\n  plot(x, sin(k * x), type = \"l\", lwd = 2, col = hcl.colors(4)[k],\n       main = paste(\"Wave\", k), xlab = \"x\", ylab = \"sin(kx)\")\n}\n```"
+  },
+  {
+    "objectID": "tests/pages/g-captions.html#c1",
+    "href": "tests/pages/g-captions.html#c1",
+    "title": "G: captions and descriptions",
+    "section": "1. Citation in a caption",
+    "text": "1. Citation in a caption\nThe case from quarto-cli#10709.\n\n\n\nSome claim (Fenner 2012)."
+  },
+  {
+    "objectID": "tests/pages/g-captions.html#c2",
+    "href": "tests/pages/g-captions.html#c2",
+    "title": "G: captions and descriptions",
+    "section": "2. Citation only in a description",
+    "text": "2. Citation only in a description\nTufte is cited nowhere else on the page, but is listed under References.\n\n\n\nEdgartown Light\n\n\n\nShow the data (Tufte 2001, 13)."
+  },
+  {
+    "objectID": "tests/pages/g-captions.html#c3",
+    "href": "tests/pages/g-captions.html#c3",
+    "title": "G: captions and descriptions",
+    "section": "3. Cross-reference in a description",
+    "text": "3. Cross-reference in a description\n\n\n\nAquinnah\n\n\n\nCompare with Figure 1, and see Section 1."
+  },
+  {
+    "objectID": "tests/pages/g-captions.html#c4",
+    "href": "tests/pages/g-captions.html#c4",
+    "title": "G: captions and descriptions",
+    "section": "4. Cell description with citation and math",
+    "text": "4. Cell description with citation and math\n\n```{r}\n#| label: fig-pressure\n#| fig-cap: \"Vapor pressure of mercury [@fenner2012].\"\n#| panzoom:\n#|   description: \"Rises roughly as $p \\\\propto e^{-1/T}$ [@tufte2001].\"\n\nplot(pressure)\n```\n\n\n\n\n\n\n\nFigure 1: Vapor pressure of mercury (Fenner 2012).\n\n\n\n\n\n\nRises roughly as \\(p \\propto e^{-1/T}\\) (Tufte 2001)."
+  },
+  {
+    "objectID": "tests/pages/g-captions.html#c5",
+    "href": "tests/pages/g-captions.html#c5",
+    "title": "G: captions and descriptions",
+    "section": "5. Gallery with a reference in each description",
+    "text": "5. Gallery with a reference in each description\n\n\n\nGingerbread\n\n\n\nAs in Figure 1.\n\n\n\n\nSailboat\n\n\n\nAs in Fenner (2012)."
+  },
+  {
+    "objectID": "tests/pages/g-captions.html#c6",
+    "href": "tests/pages/g-captions.html#c6",
+    "title": "G: captions and descriptions",
+    "section": "6. caption: false",
+    "text": "6. caption: false\nThe figure has a caption on the page, but not in the viewer.\n\n```{r}\n#| panzoom:\n#|   caption: false\n#| fig-cap: \"This caption stays on the page.\"\n\nwave(k = 2)\n```\n\n\n\n\nThis caption stays on the page."
+  },
+  {
+    "objectID": "tests/pages/g-captions.html#c7",
+    "href": "tests/pages/g-captions.html#c7",
+    "title": "G: captions and descriptions",
+    "section": "7. description cell option",
+    "text": "7. description cell option\nThe description is Markdown, with math, shown under the caption.\n\n```{r}\n#| panzoom:\n#|   description: \"A sine wave, $y = \\\\sin(kx)$, **k = 2**.\"\n#| fig-cap: \"With a description.\"\n\nwave(k = 2)\n```\n\n\n\n\nWith a description.\n\n\n\n\n\nA sine wave, \\(y = \\sin(kx)\\), k = 2."
+  },
+  {
+    "objectID": "tests/pages/g-captions.html#references",
+    "href": "tests/pages/g-captions.html#references",
+    "title": "G: captions and descriptions",
+    "section": "References",
+    "text": "References\n\n\nFenner, Martin. 2012. “One-Click Science Marketing.” Nature Materials 11 (March): 261–63.\n\n\nTufte, Edward R. 2001. The Visual Display of Quantitative Information. 2nd ed. Graphics Press."
+  },
+  {
+    "objectID": "tests/pages/i-wide-galleries.html",
+    "href": "tests/pages/i-wide-galleries.html",
+    "title": "I: wide figures in galleries and layouts",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis page tests very wide and tall figures in galleries and layouts: collages (25 × 2 inches) and tall strips grouped into galleries, as subfigures and in a layout div. The same shapes on their own, and the fit option, are on H: wide and tall figures.\nWide figures open at screen height from the left end, tall ones at screen width from the top. Headings carry expect-fit, the way each image should open. On the galleries, the browser test also checks that Left/Right pan (or, on a tall strip, do nothing) rather than switch, and that the previous and next buttons switch.\nThe cases below draw with these helpers:\n```{r}\n# A collage: `n` panels side by side, like a wide patchwork figure.\ncollage &lt;- function(n = 12) {\n  set.seed(1)\n  par(mfrow = c(1, n), mar = c(3, 3, 2, 1))\n  for (i in seq_len(n)) {\n    plot(cumsum(rnorm(200)), type = \"l\", main = paste(\"Panel\", i),\n         xlab = \"\", ylab = \"\", col = hcl.colors(n)[i], lwd = 2)\n  }\n}\n\n# A tall strip: `n` rows stacked, like a tall patchwork figure.\nstrip &lt;- function(seed = 2, n = 8) {\n  set.seed(seed)\n  par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))\n  for (i in seq_len(n)) {\n    plot(cumsum(rnorm(100)), type = \"l\", main = paste(\"Row\", i), xlab = \"\", ylab = \"\")\n  }\n}\n```"
+  },
+  {
+    "objectID": "tests/pages/i-wide-galleries.html#c1",
+    "href": "tests/pages/i-wide-galleries.html#c1",
+    "title": "I: wide figures in galleries and layouts",
+    "section": "1. Gallery of two collages",
+    "text": "1. Gallery of two collages\nLeft/Right and drags pan along the collage; the previous and next buttons switch collages.\n\n```{r}\n#| panzoom:\n#|   group: collages\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap:\n#|   - \"First collage.\"\n#|   - \"Second collage.\"\n\ncollage(n = 12)\ncollage(n = 15)\n```\n\n\n\n\nFirst collage.\n\n\n\n\n\n\n\nSecond collage."
+  },
+  {
+    "objectID": "tests/pages/i-wide-galleries.html#c2",
+    "href": "tests/pages/i-wide-galleries.html#c2",
+    "title": "I: wide figures in galleries and layouts",
+    "section": "2. Gallery of two tall strips",
+    "text": "2. Gallery of two tall strips\nEach strip opens at screen width and extends downwards: Left/Right do nothing (there is nowhere to go sideways) rather than switch strips; the previous and next buttons switch.\n\n```{r}\n#| panzoom:\n#|   group: strips\n#| fig-width: 4\n#| fig-height: 15\n#| fig-cap:\n#|   - \"First strip.\"\n#|   - \"Second strip.\"\n\nfor (k in 1:2) {\n  set.seed(10 + k)\n  par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))\n  for (i in 1:8) plot(cumsum(rnorm(100)), type = \"l\", main = paste(\"Strip\", k, \"row\", i), xlab = \"\", ylab = \"\")\n}\n```\n\n\n\n\nFirst strip.\n\n\n\n\n\n\n\nSecond strip."
+  },
+  {
+    "objectID": "tests/pages/i-wide-galleries.html#c3",
+    "href": "tests/pages/i-wide-galleries.html#c3",
+    "title": "I: wide figures in galleries and layouts",
+    "section": "3. Two collages stacked (layout-nrow: 2)",
+    "text": "3. Two collages stacked (layout-nrow: 2)\nSubfigures in a layout: each opens on its own at screen height, and the two form a gallery.\n\n```{r}\n#| label: fig-collage-rows\n#| panzoom: true\n#| fig-width: 25\n#| fig-height: 2\n#| fig-cap: \"Two collages, stacked.\"\n#| fig-subcap: [\"First collage\", \"Second collage\"]\n#| layout-nrow: 2\n\ncollage(n = 12)\ncollage(n = 15)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) First collage\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b) Second collage\n\n\n\n\n\n\n\nFigure 1: Two collages, stacked."
+  },
+  {
+    "objectID": "tests/pages/i-wide-galleries.html#c4",
+    "href": "tests/pages/i-wide-galleries.html#c4",
+    "title": "I: wide figures in galleries and layouts",
+    "section": "4. Two tall strips side by side (layout-ncol: 2)",
+    "text": "4. Two tall strips side by side (layout-ncol: 2)\n```{r}\n#| label: fig-strip-cols\n#| panzoom: true\n#| fig-width: 4\n#| fig-height: 15\n#| fig-cap: \"Two tall strips, side by side.\"\n#| fig-subcap: [\"First strip\", \"Second strip\"]\n#| layout-ncol: 2\n\nstrip(seed = 2, n = 8)\nstrip(seed = 3, n = 8)\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) First strip\n\n\n\n\n\n\n\n\n\n\n\n(b) Second strip\n\n\n\n\n\n\n\nFigure 2: Two tall strips, side by side."
+  },
+  {
+    "objectID": "tests/pages/i-wide-galleries.html#c5",
+    "href": "tests/pages/i-wide-galleries.html#c5",
+    "title": "I: wide figures in galleries and layouts",
+    "section": "5. Tall strips in a layout div",
+    "text": "5. Tall strips in a layout div\nA .panzoom div with a layout, around two separate code cells: each strip opens on its own (no gallery: they are not subfigures).\n```{r}\n#| fig-width: 4\n#| fig-height: 15\n\nstrip(seed = 4, n = 8)\n```\n```{r}\n#| fig-width: 4\n#| fig-height: 15\n\nstrip(seed = 5, n = 8)\n```"
+  },
+  {
+    "objectID": "tests/pages/i-wide-galleries.html#c6",
+    "href": "tests/pages/i-wide-galleries.html#c6",
+    "title": "I: wide figures in galleries and layouts",
+    "section": "6. Collages of different lengths in a gallery",
+    "text": "6. Collages of different lengths in a gallery\nTwo cells, a long collage (40 × 2 in, 24 panels) and a shorter one (24 × 2 in, 12 panels), joined by group. Each opens at screen height from its left end; stepping to the other image fits it afresh, so the short collage doesn’t keep the long one’s scale or position. Whether a figure counts as a strip depends only on its shape (much shorter, and the short one would open whole on the test’s 2560 px wide screen), so fig-dpi: 48 halves the resolution to keep the files small. The captions differ in length: stepping between the two changes the caption band’s height, and each collage must stay clear of it.\n\n```{r}\n#| panzoom:\n#|   group: mixed-collages\n#| fig-width: 40\n#| fig-height: 2\n#| fig-dpi: 48\n#| fig-cap: \"The long collage.\"\n\ncollage(n = 24)\n```\n\n\n\n\nThe long collage.\n\n\n\n\n\n```{r}\n#| panzoom:\n#|   group: mixed-collages\n#|   description: \"A longer text under the short collage, so that the caption band grows when the gallery steps to it. Each panel is a random walk of 200 steps, coloured along a single palette from the first panel to the last, and titled with its panel number so the order can be read at any zoom.\"\n#| fig-width: 24\n#| fig-height: 2\n#| fig-dpi: 48\n#| fig-cap: \"The short collage, with a description.\"\n\ncollage(n = 12)\n```\n\n\n\n\nThe short collage, with a description.\n\n\n\n\n\nA longer text under the short collage, so that the caption band grows when the gallery steps to it. Each panel is a random walk of 200 steps, coloured along a single palette from the first panel to the last, and titled with its panel number so the order can be read at any zoom."
+  },
+  {
+    "objectID": "tests/pages/i-wide-galleries.html#c7",
+    "href": "tests/pages/i-wide-galleries.html#c7",
+    "title": "I: wide figures in galleries and layouts",
+    "section": "7. Tall strips of different lengths side by side",
+    "text": "7. Tall strips of different lengths side by side\nAs case 4, but the strips differ: 4 × 20 in (10 rows) and 3 × 12 in (6 rows), in a layout div, with captions of different lengths. Each opens at screen width from its top, and the layout shows them at different heights on the page.\n```{r}\n#| fig-width: 4\n#| fig-height: 20\n#| fig-cap: \"The long strip.\"\n\nstrip(seed = 6, n = 10)\n```\n```{r}\n#| fig-width: 3\n#| fig-height: 12\n#| fig-cap: \"The short strip, with a caption long enough to wrap onto a second line in the viewer.\"\n\nstrip(seed = 7, n = 6)\n```\n\n\n\n\n\n\n\nThe long strip.\n\n\n\n\n\n\n\n\n\nThe short strip, with a caption long enough to wrap onto a second line in the viewer."
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html",
+    "href": "tests/pages/k-jupyter-auto.html",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "",
+    "text": "NoteAbout this page\n\n\n\nThis page tests panzoom: true with the Jupyter engine, next to Quarto’s lightbox: true. The cases are the same as on J, the lightbox-only reference: panzoom should take every image the lightbox takes on J, except where a case asks for the lightbox explicitly. The knitr equivalent is page C.\nKeep the cases in step with the other page of the pair. Each heading’s expect-open says what should open. Jupyter leaves the panzoom and lightbox options out of the code shown on the page; the Code button at the top shows the full source.\nThe cases below share this setup:\n```{python}\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nx = np.linspace(0, 4 * np.pi, 400)\n```"
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html#c1",
+    "href": "tests/pages/k-jupyter-auto.html#c1",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "1. Figure with a caption",
+    "text": "1. Figure with a caption\n\n```{python}\n#| fig-cap: \"A sine wave.\"\n\nplt.plot(x, np.sin(x))\nplt.show()\n```\n\n\n\n\nA sine wave."
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html#c2",
+    "href": "tests/pages/k-jupyter-auto.html#c2",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "2. Plot without a caption",
+    "text": "2. Plot without a caption\n\n```{python}\nplt.plot(x, np.cos(x))\nplt.show()\n```"
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html#c3",
+    "href": "tests/pages/k-jupyter-auto.html#c3",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "3. Subfigures (fig-subcap, layout-ncol)",
+    "text": "3. Subfigures (fig-subcap, layout-ncol)\n```{python}\n#| label: fig-pair\n#| fig-cap: Two waves.\n#| fig-subcap:\n#|   - Sine\n#|   - Cosine\n#| layout-ncol: 2\n\nplt.plot(x, np.sin(2 * x))\nplt.show()\nplt.plot(x, np.cos(2 * x))\nplt.show()\n```\n\n\n\n\n\n\n\n\n\n\n\n(a) Sine\n\n\n\n\n\n\n\n\n\n\n\n(b) Cosine\n\n\n\n\n\n\n\nFigure 1: Two waves."
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html#c4",
+    "href": "tests/pages/k-jupyter-auto.html#c4",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "4. Nested lightbox: options",
+    "text": "4. Nested lightbox: options\nA cell’s own lightbox: options ask for Quarto’s lightbox, so panzoom leaves the cell to it, as with knitr (page C, cases 6 and 7). With Jupyter, Quarto’s lightbox ignores the options themselves: the group and description don’t reach it.\n\n```{python}\nplt.plot(x, np.sin(3 * x))\nplt.show()\nplt.plot(x, np.cos(3 * x))\nplt.show()\n```"
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html#c5",
+    "href": "tests/pages/k-jupyter-auto.html#c5",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "5. lightbox: false",
+    "text": "5. lightbox: false\nOpted out of the lightbox; panzoom leaves an explicit lightbox setting alone too.\n\n```{python}\nplt.plot(x, np.sin(4 * x))\nplt.show()\n```"
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html#c6",
+    "href": "tests/pages/k-jupyter-auto.html#c6",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "6. panzoom: true on a cell",
+    "text": "6. panzoom: true on a cell\nWithout the panzoom filter (K) the option means nothing, and the document’s lightbox: true takes the plot.\n\n```{python}\nplt.plot(x, np.cos(4 * x))\nplt.show()\n```"
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html#c7",
+    "href": "tests/pages/k-jupyter-auto.html#c7",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "7. Markdown image alone in a paragraph",
+    "text": "7. Markdown image alone in a paragraph\n\n\n\nChilmark."
+  },
+  {
+    "objectID": "tests/pages/k-jupyter-auto.html#c8",
+    "href": "tests/pages/k-jupyter-auto.html#c8",
+    "title": "K: Python, panzoom: true with the lightbox",
+    "section": "8. Markdown image with .nolightbox",
+    "text": "8. Markdown image with .nolightbox\n\n\n\nOpted out."
   }
 ]

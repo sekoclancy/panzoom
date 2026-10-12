@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>A: Quarto lightbox reference – panzoom</title>
+<title>A: knitr lightbox reference – panzoom</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -326,16 +326,16 @@ window.Quarto = {
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../index.html"> 
-<span class="menu-text">Example</span></a>
+<span class="menu-text">panzoom</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-test-pages" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Test pages</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-r" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">R</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-test-pages">    
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-r">    
         <li>
     <a class="dropdown-item" href="../../tests/pages/a-lightbox.html">
- <span class="dropdown-text">A: Quarto lightbox reference</span></a>
+ <span class="dropdown-text">A: R lightbox reference</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../tests/pages/b-panzoom-lightbox.html">
@@ -366,8 +366,27 @@ window.Quarto = {
  <span class="dropdown-text">H: wide and tall figures</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../tests/pages/i-jupyter.html">
- <span class="dropdown-text">I: Jupyter (Python) figures</span></a>
+    <a class="dropdown-item" href="../../tests/pages/i-wide-galleries.html">
+ <span class="dropdown-text">I: wide figures in galleries and layouts</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-python" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Python</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-python">    
+        <li>
+    <a class="dropdown-item" href="../../tests/pages/j-jupyter-lightbox.html">
+ <span class="dropdown-text">J: Python lightbox reference</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tests/pages/k-jupyter-auto.html">
+ <span class="dropdown-text">K: Python, panzoom: true with the lightbox</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tests/pages/l-jupyter.html">
+ <span class="dropdown-text">L: Python cell options and svg</span></a>
   </li>  
     </ul>
   </li>
@@ -399,7 +418,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">A: Quarto lightbox reference</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">A: knitr lightbox reference</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -434,7 +453,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="c1">1. Single image, markdown description, desc-position left</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../images/mv-0.jpg" class="lightbox" data-glightbox="description: .lightbox-desc-1;title:Beach in Chilmark;" data-gallery="quarto-lightbox-gallery-1" title="Beach in Chilmark"><img src="../../images/mv-0.jpg" class="img-fluid figure-img" alt="Beach in Chilmark"></a></p>
+<p><a href="../../images/mv-0.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1;title:Beach in Chilmark;" title="Beach in Chilmark"><img src="../../images/mv-0.jpg" class="img-fluid figure-img" alt="Beach in Chilmark"></a></p>
 <figcaption>Beach in Chilmark</figcaption>
 </figure>
 </div>
@@ -446,7 +465,7 @@ window.Quarto = {
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../images/mv-1.jpg" class="lightbox" data-glightbox="description: .lightbox-desc-2;title:Aquinnah;" data-gallery="elsewhere" title="Aquinnah"><img src="../../images/mv-1.jpg" class="img-fluid figure-img" alt="Aquinnah"></a></p>
+<p><a href="../../images/mv-1.jpg" class="lightbox" data-gallery="elsewhere" data-glightbox="description: .lightbox-desc-2;title:Aquinnah;" title="Aquinnah"><img src="../../images/mv-1.jpg" class="img-fluid figure-img" alt="Aquinnah"></a></p>
 <figcaption>Aquinnah</figcaption>
 </figure>
 </div>
@@ -454,7 +473,7 @@ window.Quarto = {
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../images/mv-3.jpg" class="lightbox" data-glightbox="description: .lightbox-desc-3;title:Oak Bluffs;" data-gallery="elsewhere" title="Oak Bluffs"><img src="../../images/mv-3.jpg" class="img-fluid figure-img" alt="Oak Bluffs"></a></p>
+<p><a href="../../images/mv-3.jpg" class="lightbox" data-gallery="elsewhere" data-glightbox="description: .lightbox-desc-3;title:Oak Bluffs;" title="Oak Bluffs"><img src="../../images/mv-3.jpg" class="img-fluid figure-img" alt="Oak Bluffs"></a></p>
 <figcaption>Oak Bluffs</figcaption>
 </figure>
 </div>
@@ -464,7 +483,7 @@ window.Quarto = {
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../images/mv-2.jpg" class="lightbox" data-glightbox="description: .lightbox-desc-4;title:Vineyard lighthouse;" data-gallery="elsewhere" title="Vineyard lighthouse"><img src="../../images/mv-2.jpg" class="img-fluid figure-img" alt="Vineyard lighthouse"></a></p>
+<p><a href="../../images/mv-2.jpg" class="lightbox" data-gallery="elsewhere" data-glightbox="description: .lightbox-desc-4;title:Vineyard lighthouse;" title="Vineyard lighthouse"><img src="../../images/mv-2.jpg" class="img-fluid figure-img" alt="Vineyard lighthouse"></a></p>
 <figcaption>Vineyard lighthouse</figcaption>
 </figure>
 </div>
@@ -476,7 +495,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="c3">3. Math in caption and description</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../images/mv-4.jpg" class="lightbox" data-glightbox="description: .lightbox-desc-5;title:Caption with math e^{i\pi}+1=0;" data-gallery="quarto-lightbox-gallery-5" title="Caption with math e^{i\pi}+1=0"><img src="../../images/mv-4.jpg" class="img-fluid figure-img" alt="Caption with math e^{i\pi}+1=0"></a></p>
+<p><a href="../../images/mv-4.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" data-glightbox="description: .lightbox-desc-5;title:Caption with math e^{i\pi}+1=0;" title="Caption with math e^{i\pi}+1=0"><img src="../../images/mv-4.jpg" class="img-fluid figure-img" alt="Caption with math e^{i\pi}+1=0"></a></p>
 <figcaption>Caption with math <span class="math inline">\(e^{i\pi}+1=0\)</span></figcaption>
 </figure>
 </div>
@@ -581,7 +600,7 @@ Figure&nbsp;2: Two R subfigures.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="a-lightbox_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-10;title:Simple demo R plot;" data-gallery="r-graph" title="Simple demo R plot"><img src="a-lightbox_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672" alt="Simple demo R plot"></a></p>
+<p><a href="a-lightbox_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-gallery="r-graph" data-glightbox="description: .lightbox-desc-10;title:Simple demo R plot;" title="Simple demo R plot"><img src="a-lightbox_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672" alt="Simple demo R plot"></a></p>
 <figcaption>Simple demo R plot</figcaption>
 </figure>
 </div>
@@ -600,7 +619,7 @@ Figure&nbsp;2: Two R subfigures.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="a-lightbox_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-11;title:Plot about cars data;" data-gallery="r-graph" title="Plot about cars data"><img src="a-lightbox_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672" alt="Plot about cars data"></a></p>
+<p><a href="a-lightbox_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-gallery="r-graph" data-glightbox="description: .lightbox-desc-11;title:Plot about cars data;" title="Plot about cars data"><img src="a-lightbox_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672" alt="Plot about cars data"></a></p>
 <figcaption>Plot about cars data</figcaption>
 </figure>
 </div>
@@ -626,7 +645,7 @@ Figure&nbsp;2: Two R subfigures.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="a-lightbox_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-12;title:Caption for first plot;" data-gallery="cars" title="Caption for first plot"><img src="a-lightbox_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672" alt="Caption for first plot"></a></p>
+<p><a href="a-lightbox_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-gallery="cars" data-glightbox="description: .lightbox-desc-12;title:Caption for first plot;" title="Caption for first plot"><img src="a-lightbox_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672" alt="Caption for first plot"></a></p>
 <figcaption>Caption for first plot</figcaption>
 </figure>
 </div>
@@ -634,7 +653,7 @@ Figure&nbsp;2: Two R subfigures.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="a-lightbox_files/figure-html/unnamed-chunk-3-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-13;title:Caption for second plot;" data-gallery="cars" title="Caption for second plot"><img src="a-lightbox_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672" alt="Caption for second plot"></a></p>
+<p><a href="a-lightbox_files/figure-html/unnamed-chunk-3-2.png" class="lightbox" data-gallery="cars" data-glightbox="description: .lightbox-desc-13;title:Caption for second plot;" title="Caption for second plot"><img src="a-lightbox_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672" alt="Caption for second plot"></a></p>
 <figcaption>Caption for second plot</figcaption>
 </figure>
 </div>
@@ -1216,7 +1235,7 @@ Figure&nbsp;3: A plain cross-referenced R figure.
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "A: Quarto lightbox reference"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "A: R lightbox reference"</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
