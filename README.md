@@ -2,59 +2,13 @@
 
 **Live demo:** <https://sekoclancy.github.io/panzoom/>
 
-A [Quarto](https://quarto.org) filter extension for HTML formats that opens
-figures in a full-screen pan/zoom viewer, built on
-[Panzoom](https://github.com/timmywil/panzoom): scroll (or trackpad pinch)
-to zoom toward the cursor, drag or Shift+scroll to pan, double-click or
-the 0 key to reset, the + and - keys to zoom, Esc or a background click to
-close. The image stays on screen:
-panning stops at its edges, with a small bounce (or, when dragging, a
-stretch that springs back) to show you've reached one.
-
-It works from the keyboard too: marked images can be reached with Tab and
-opened with Enter or Space, the arrow keys pan, and closing returns focus
-to the image.
-
-It attempts to match, and extend, the feature set of Quarto's built-in
-[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
-
-## Features
-
-- **Zoom:** scroll or pinch toward the cursor, in steps up to `max-zoom`,
-  instead of one click between fit and real size (which the lightbox turns
-  off on screens 768 px wide or less).
-- **Pan:** drag, arrow keys or Shift+scroll at any zoom; the image stops
-  at its edges with a bounce.
-- **Captions:** math, citations and cross-references are rendered (the
-  lightbox shows raw TeX and `[@key]`); a subfigure shows its own caption
-  with the parent figure's caption below.
-- **Very wide or tall figures:** open at screen height (or width), at the
-  spot you clicked.
-- **Galleries:** ← and → change image, or pan one larger than the screen;
-  the on-screen ‹ › buttons always change image.
-- **Layouts:** figures in Quarto layouts (`layout-ncol`, `layout-nrow`,
-  layout divs) open one at a time; subfigures form a gallery.
-- **Linked images:** an image inside a link keeps its link.
-- **Without JavaScript:** each image links to its own file, as with the
-  lightbox (see [Without JavaScript](#without-javascript)).
-- **Light and dark themes:** the viewer is a dark overlay with light text
-  on either, so it looks the same whichever theme Quarto's light/dark
-  toggle shows.
-- **Self-contained documents:** works in a single HTML file
-  (`embed-resources: true`), opened straight from disk.
-- **Math libraries:** math in captions and descriptions shows as it does on
-  the page, with any `html-math-method` (MathJax, KaTeX, MathML, WebTeX,
-  plain).
-- **No internet needed:** the viewer and the Panzoom library it uses
-  are bundled; only math needs a connection, unless it is embedded (see
-  [Self-contained and offline documents](#self-contained-and-offline-documents)).
-
-Not offered (Quarto's lightbox has these):
-
-- **Caption position:** the caption and description are always below the
-  image; there is no `desc-position` (top, left, right).
-- **Opening effects:** the viewer opens and closes at once, with no fade
-  or zoom animation; there is no `effect`.
+A [Quarto](https://quarto.org) extension that opens figures in HTML
+documents in a full-screen viewer where you can zoom and pan, built on
+[Panzoom](https://github.com/timmywil/panzoom). Use it for every figure, or
+for the ones that need a closer look alongside Quarto's built-in
+[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html)
+for the rest. See [Compared with Quarto's lightbox](#compared-with-quartos-lightbox)
+for how the two differ.
 
 ## Installation
 
@@ -69,28 +23,13 @@ If you're using version control, you will want to check in this directory.
 
 ## Usage
 
-Turn the filter on for one document in its YAML header, or for every page
-of a Quarto project (website, book) in `_quarto.yml`:
+panzoom is a filter: turn it on for one document in its YAML header, or
+for every page of a Quarto project (website, book) in `_quarto.yml`:
 
 ```yaml
 filters:
   - panzoom
 ```
-
-Options, all optional, go under `panzoom:` in the same place:
-
-```yaml
-panzoom:
-  match: auto     # auto: all block images; omit this parameter for only marked images (default)
-  max-zoom: 4     # number: screen px per image px (default 4)
-  hint: true      # boolean: show the controls hint at the bottom (default true)
-  caption: true   # boolean: show the figure caption in the viewer (default true)
-  loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
-  fit: auto       # auto, contain, height or width (default auto, see below)
-```
-
-`max-zoom`, `hint`, `caption` and `fit` can also be set per cell under
-`#| panzoom:`, along with `group` and `description`.
 
 Then mark images in any of these ways.
 
@@ -100,19 +39,6 @@ Then mark images in any of these ways.
 ````markdown
 ```{r}
 #| panzoom: true
-
-plot(pressure)
-```
-````
-
-Give it options instead of `true` to override the document settings for that
-cell:
-
-````markdown
-```{r}
-#| panzoom:
-#|   max-zoom: 8
-#|   hint: false
 
 plot(pressure)
 ```
@@ -140,20 +66,75 @@ Some text with an inline image ![](image.jpg){.panzoom width=60px} in the middle
 :::
 ```
 
+**Every figure:** set `match: auto` (see [Options](#options)) to mark all
+block images, the same ones Quarto's `lightbox: auto` takes.
+
 To exclude one image (inside a `.panzoom` div, or with `match: auto`), give
 it `.nopanzoom`. To exclude a whole cell, use `#| panzoom: false`.
 
-Labeled figures and subfigure layouts (`fig-subcap`, `layout-ncol`) work as
-well.
+Labeled figures and figures in layouts (`layout-ncol`, `layout-nrow`,
+layout divs) work as well: each image opens on its own, and subfigures form
+a [gallery](#galleries). An image inside a link is left alone, so it keeps
+its link.
 
-`#| panzoom:` overrides `#| lightbox:` options.
+Marked images are left out of Quarto's lightbox, and `#| panzoom:`
+overrides `#| lightbox:` options, so the two can be used in one document.
 
-### Captions and galleries
+### Options
+
+Options, all optional, go under `panzoom:` next to `filters:`:
+
+```yaml
+panzoom:
+  match: auto     # auto: all block images; omit this parameter for only marked images (default)
+  max-zoom: 4     # number: screen px per image px (default 4)
+  hint: true      # boolean: show the controls hint at the bottom (default true)
+  caption: true   # boolean: show the figure caption in the viewer (default true)
+  loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
+  fit: auto       # auto, contain, height or width (default auto, see Very wide or tall figures)
+```
+
+`max-zoom`, `hint`, `caption` and `fit` can also be set per cell, along
+with `group` and `description`, by giving `#| panzoom:` options instead of
+`true`:
+
+````markdown
+```{r}
+#| panzoom:
+#|   max-zoom: 8
+#|   hint: false
+
+plot(pressure)
+```
+````
+
+## Using the viewer
+
+| To | Mouse or trackpad | Keyboard |
+|---|---|---|
+| Zoom | scroll, or pinch, toward the cursor | + and - |
+| Pan | drag, or Shift+scroll | arrow keys |
+| Go back to the opening view | double-click | 0 |
+| Change image in a gallery | the ‹ › buttons, or swipe sideways | ← and → |
+| Close | the × button, or click the background | Esc |
+
+Zoom goes in small steps, up to `max-zoom`. Panning stops at the image's
+edges, with a small bounce (or, when dragging, a stretch that springs back)
+to show you've reached one.
+
+From the keyboard, marked images can be reached with Tab and opened with
+Enter or Space; Tab moves between the viewer's buttons, and closing returns
+focus to the image.
+
+The viewer is a dark overlay with light text, so it looks the same under
+Quarto's light and dark themes.
+
+## Captions and descriptions
 
 The viewer shows the figure's caption under the image, including its
-"Figure N:" prefix and any math. A subfigure shows its own caption with
-the parent figure's caption below it. Turn captions off with
-`caption: false` (for the document or one cell).
+"Figure N:" prefix, math, citations and cross-references. A subfigure shows
+its own caption with the parent figure's caption below it. Turn captions
+off with `caption: false` (for the document or one cell).
 
 A description, written in Markdown (with math, links, emphasis,
 citations and cross-references), is shown under the caption, as for
@@ -175,10 +156,15 @@ plot(pressure)
 ```
 ````
 
-Images in the same group form a gallery: step through them with the
-on-screen ‹ › buttons, ←/→ or a horizontal swipe (the last two pan instead
-while the image is wider than the screen). Groups work like Quarto's
-lightbox:
+Math in captions and descriptions shows as it does on the page, with any
+`html-math-method` (MathJax, KaTeX, MathML, WebTeX, plain).
+
+## Galleries
+
+Images in the same group form a gallery, stepped through with the ‹ ›
+buttons, ←/→ or a sideways swipe. While an image is larger than the screen
+(zoomed in, or a wide figure), ←/→ and swipes pan it instead, and the
+buttons change image. Groups work like Quarto's lightbox:
 
 - subfigures of one figure are a gallery automatically,
 - `group="name"` on markdown images,
@@ -194,24 +180,26 @@ plot(pressure, log = "y")
 ```
 ````
 
-### Very wide or tall figures
+## Very wide or tall figures
 
 With `fit: auto`, the viewer opens most images whole. A strip, at least 3
 times wider than tall, that would show less than a quarter of the screen
 tall, such as a collage of many panels (`fig-width: 100`, `fig-height: 5`),
-opens filling the screen height instead; drag or use ←/→ to move along
-it. A strip at least 3 times taller than wide, that would show less than a quarter of the screen wide, opens
-filling the screen width, at its top. Ordinary photos and plots, portrait
-or landscape, always open whole, even on a very wide screen where a portrait
-photo is narrower than a quarter of it. No image is enlarged past
-its real size when it opens (as with Quarto's lightbox): a small image opens
-at its own size, and scrolling still zooms it in, up to `max-zoom`.
+opens filling the screen height instead; drag or use ←/→ to move along it.
+A strip at least 3 times taller than wide, that would show less than a
+quarter of the screen wide, opens filling the screen width, at its top.
+Ordinary photos and plots, portrait or landscape, always open whole, even
+on a very wide screen where a portrait photo is narrower than a quarter of
+it. No image is enlarged past its real size when it opens (as with
+Quarto's lightbox): a small image opens at its own size, and scrolling
+still zooms it in, up to `max-zoom`.
 
 **Focal point.** Where you click a strip on the page is its focal point:
 click panel 12 of a 20-panel collage and the viewer opens with panel 12 in
 the middle of the screen (or flush with the end, near either end). The 0
-key and double-click return to it. Opened from the keyboard, a strip starts at its left end (or top). Ordinary images open whole wherever
-you click. Zooming out still shows the whole figure.
+key and double-click return to it. Opened from the keyboard, a strip starts
+at its left end (or top). Ordinary images open whole wherever you click.
+Zooming out still shows the whole figure.
 
 Override it per figure with `fit: contain` (always open whole), `fit:
 height` or `fit: width`:
@@ -232,11 +220,7 @@ Shift+scroll (or a sideways trackpad swipe) pans along the direction the
 figure extends past the screen: sideways for a collage, up and down for a
 tall figure, sideways when zoomed in both ways.
 
-In a gallery, ←/→ and swipes pan an image that is larger than the screen
-(or do nothing, if it fits sideways); use the on-screen ‹ › buttons to
-change images.
-
-### Without JavaScript
+## Without JavaScript
 
 Each marked image is wrapped in a link to its own file, as Quarto's
 lightbox does. With JavaScript running, panzoom stops the link and opens
@@ -246,7 +230,7 @@ own image view fits it to the window and shows it at real size on a
 click; Back returns to the page. An image already inside a link keeps that
 link.
 
-### Self-contained and offline documents
+## Self-contained and offline documents
 
 panzoom works in a self-contained document, a single HTML file you can
 email or open from disk:
@@ -257,10 +241,11 @@ filters:
 embed-resources: true
 ```
 
-The viewer needs no internet access. Quarto loads MathJax and KaTeX from
-the web, though, so without a connection math in the page, and in the
-viewer's captions and descriptions, shows as raw TeX. To make a file whose
-math works offline too, render it (with a connection) using MathJax and
+The viewer needs no internet access: it and the Panzoom library are
+bundled with the extension. Quarto loads MathJax and KaTeX from the web,
+though, so without a connection math in the page, and in the viewer's
+captions and descriptions, shows as raw TeX. To make a file whose math
+works offline too, render it (with a connection) using MathJax and
 `self-contained-math`:
 
 ```yaml
@@ -276,6 +261,26 @@ With JavaScript off, the links around images in a self-contained file lead
 nowhere: Quarto embeds the images but not the files the links point to,
 and deletes those. Quarto's lightbox links have the same problem. With
 JavaScript on, the viewer shows the embedded image as usual.
+
+## Compared with Quarto's lightbox
+
+panzoom aims to match the lightbox's features and go further. It adds:
+
+- **Zoom** toward the cursor in steps up to `max-zoom`, instead of one
+  click between fit and real size (which the lightbox turns off on screens
+  768 px wide or less), and panning at any zoom.
+- **Captions** with math, citations and cross-references rendered; the
+  lightbox shows raw TeX and `[@key]`.
+- **Very wide or tall figures** that open readable, at the spot you
+  clicked.
+- **Linked images** that keep their link.
+
+It doesn't offer:
+
+- **Caption position:** the caption and description are always below the
+  image; there is no `desc-position` (top, left, right).
+- **Opening effects:** the viewer opens and closes at once, with no fade
+  or zoom animation; there is no `effect`.
 
 ## Development
 
