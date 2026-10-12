@@ -8,6 +8,7 @@
     "nojs": "node nojs.mjs",
     "contrast": "node contrast.mjs",
     "bench": "node bench.mjs",
+    "bench:save": "node bench.mjs --save",
     "offline": "node standalone.mjs --offline && node browser.mjs --offline ../docs/tests/pages/*.html standalone/*.html"
   },
   "type": "module",

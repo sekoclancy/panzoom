@@ -1,6 +1,6 @@
-The same images on each page: four photos and eight R plots, one by one,
-and a figure with two subfigures; nothing else differs between the pages
-but the viewer.
+Four photos and eight R plots, one by one, and a figure with two
+subfigures. Keep this page as it is: the benchmark compares each run with
+a baseline measured on it (see tests/README.md, Benchmark).
 
 ```{r}
 #| include: false

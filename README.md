@@ -352,5 +352,8 @@ A few more pages, outside the website, check a single self-contained HTML
 file opened from disk and math with each of Quarto's math methods, and the
 whole set can be run with no internet access. A separate script opens every
 page with JavaScript off and checks each image's link to its file.
+A benchmark weighs the viewer's files and times loading the page and
+opening and closing the viewer, and fails if any of it got heavier or
+slower than a saved baseline.
 
 See [tests/README.md](tests/README.md) for setup and running the tests.

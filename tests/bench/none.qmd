@@ -1,5 +1,0 @@
----
-title: "Benchmark: no viewer"
----
-
-{{< include _body.qmd >}}

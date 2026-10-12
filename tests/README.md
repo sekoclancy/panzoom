@@ -105,9 +105,9 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     ├── standalone.mjs     renders standalone/ (see Standalone pages)
     ├── nojs.mjs           the checks with JavaScript off (see Without JavaScript)
     ├── contrast.mjs       text contrast in light and dark mode (see Text contrast)
-    ├── bench.mjs          benchmark against Quarto's lightbox (see Benchmark)
-    ├── bench/             its pages: none, lightbox, panzoom .qmd and their shared
-    │                      _body.qmd; _extensions -> ../../_extensions (symlink)
+    ├── bench.mjs          benchmark against a saved baseline (see Benchmark)
+    ├── bench/             its page, panzoom.qmd (body in _body.qmd), baseline.json;
+    │                      _extensions -> ../../_extensions (symlink)
     ├── standalone/        pages outside the website: *.qmd, shared _*.qmd bodies,
     │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
@@ -232,20 +232,33 @@ measured.
 ### Benchmark
 
 ```bash
-npm run bench          # node bench.mjs: render and time panzoom against the lightbox
+npm run bench          # node bench.mjs: render, time, compare with the baseline
+npm run bench:save     # the same, then save this run as the new baseline
 node bench.mjs --rounds 10 --no-render   # more rounds; skip rendering
 ```
 
-`bench/` has three pages with the same knitr body (four photos, eight R
-plots, two subfigures): no viewer, Quarto's lightbox (`lightbox: auto`) and
-panzoom (`match: auto`). `bench.mjs` times `quarto render` for each (the
-pages taking turns), weighs the script and stylesheet files each viewer
-adds, times page load in headless Chrome with no cache, and times opening
-and closing the viewer on six images: until it's first visible, and until
-it has settled (image loaded, fully opaque, nothing moving), at full speed
-and with the CPU slowed 4x. It writes `results/bench/report.md`. Times
-depend on the machine: compare the rows, not the numbers. It checks
-nothing and always passes.
+The benchmark catches regressions: it compares panzoom with itself, not
+with Quarto's lightbox. `bench/panzoom.qmd` is one knitr page (four photos,
+eight R plots, two subfigures) with `match: auto`. `bench.mjs` renders it,
+weighs the viewer's script and stylesheet files and the page's HTML, times
+page load in headless Chrome with no cache, and times opening and closing
+the viewer on six images: until it's first visible, and until it has
+settled (image loaded, fully opaque, nothing moving), at full speed and
+with the CPU slowed 4x. It writes `results/bench/report.md`, with each
+number next to the one in `bench/baseline.json`.
+
+A number is a regression when it is more than 5% heavier, or 1.5 times as
+long and more than 10 ms longer (30 ms for page load and the slowed CPU):
+small times jitter by a few ms between runs. Any regression fails the run
+(exit 1). Render time is shown but not checked, since R makes it vary by
+a second or more. A slowdown under 10 ms in opening goes unnoticed.
+
+Times depend on the machine, so the baseline must come from the machine
+you compare on (the report warns when it doesn't). When a change is meant
+to make the viewer heavier or slower, or after moving to another machine
+or Quarto version, check the report and then run `npm run bench:save`;
+commit `bench/baseline.json` with the change. A run takes about a minute,
+most of it five renders; `--no-render` skips them.
 
 ### Without internet access
 

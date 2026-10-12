@@ -1,34 +1,39 @@
 /*
-  Benchmark: panzoom against Quarto's lightbox (GLightbox), with knitr.
+  Benchmark: panzoom against its own baseline, to catch regressions.
 
-  bench/none.qmd, bench/lightbox.qmd (`lightbox: auto`) and
-  bench/panzoom.qmd (`match: auto`) include the same body, bench/_body.qmd:
-  four photos, eight R plots and a figure with two subfigures. Only the
-  viewer differs, so each number is compared with the page without one.
+  bench/panzoom.qmd (`match: auto`, body in bench/_body.qmd: four photos,
+  eight R plots and a figure with two subfigures) is rendered and measured,
+  and each number is compared with bench/baseline.json, saved by an earlier
+  run with --save on the same machine.
 
   Measures:
-  - Render: `quarto render <page>.qmd` wall time, the pages taking turns,
-    `--rounds` times each (median and fastest). R runs in every render, the
-    same for each page; the difference from "none" is the viewer's cost.
-  - Weight: what each viewer adds to the page: its script and stylesheet
-    files (as written and gzipped, as a web server would send them) and
-    the HTML's growth.
+  - Render: `quarto render panzoom.qmd` wall time, `--rounds` times (median
+    and fastest). R dominates it and varies by a second or so, so it is
+    reported but not checked.
+  - Weight: the viewer's script and stylesheet files (as written and
+    gzipped, as a web server would send them) and the page's HTML.
   - Load: DOMContentLoaded and load, from navigation start, in a fresh
     browser context (no cache) each time.
   - Open and close: click an image, then time until the viewer is first
     visible and until it has settled (its image loaded, fully opaque and
-    nothing moving for 100 ms, so an opening animation counts); then click its close button
-    and time until it's gone. The first open (which builds the viewer) is
-    reported apart from the rest. Also with the CPU slowed 4x, roughly a
-    mid-range phone.
+    nothing moving for 100 ms); then click its close button and time until
+    it's gone. The first open (which builds the viewer) is reported apart
+    from the rest. Also with the CPU slowed 4x, roughly a mid-range phone.
 
-  Times depend on the machine; compare the rows, not the absolute numbers.
-  Chrome is headless and draws without a GPU.
+  A checked number is a regression when it is more than LIMITS allow above
+  the baseline: a file or page 5% heavier, or a time 1.5 times the
+  baseline and more than a few ms longer (small times jitter by a few ms).
+  Any regression, or a viewer that never settled, fails the run (exit 1).
+  Without a baseline, the run reports its numbers and passes.
+
+  Times depend on the machine: a baseline from another CPU is compared
+  anyway, with a warning. Chrome is headless and draws without a GPU.
 
   Usage, from tests/:
-    npm run bench                   # render and measure (rounds: 5)
+    npm run bench                   # render, measure, compare (rounds: 5)
     node bench.mjs --rounds 10
-    node bench.mjs --no-render      # measure the pages already rendered
+    node bench.mjs --no-render      # measure the page already rendered
+    node bench.mjs --save           # ...and save this run as the baseline
 
   Output: results/bench/report.md and results/bench/results.json.
 */
@@ -45,36 +50,41 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
 const DIR = path.join(HERE, "bench");
 const OUT = path.join(HERE, "results", "bench");
+const BASELINE = path.join(DIR, "baseline.json");
 const CHROME = process.env.CHROME || path.join(os.homedir(),
   ".local/share/quarto/chrome-headless-shell/chrome-headless-shell-linux64/chrome-headless-shell");
 const argv = process.argv.slice(2);
 const ROUNDS = Number(argv[argv.indexOf("--rounds") + 1]) || 5;
 const RENDER = !argv.includes("--no-render");
-const PAGES = ["none", "lightbox", "panzoom"];
-const OPENS = 6;   // images opened per page and CPU speed
+const SAVE = argv.includes("--save");
+const PAGE = "panzoom";
+const OPENS = 6;   // images opened per CPU speed
 const CPU = [1, 4];
+// How much worse than the baseline counts as a regression.
+const LIMITS = {
+  bytes: { ratio: 1.05, abs: 0 },
+  time: { ratio: 1.5, abs: 10 },     // ms
+  slowTime: { ratio: 1.5, abs: 30 }, // ms; at 4x CPU, and page load
+};
 
 const median = (xs) => {
   const s = [...xs].sort((a, b) => a - b), m = s.length >> 1;
   return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
 };
 const ms = (x) => (x === undefined || x === null ? "–" : `${Math.round(x)} ms`);
-const kb = (x) => `${(x / 1024).toFixed(1)} KB`;
+const kb = (x) => (x === undefined || x === null ? "–" : `${(x / 1024).toFixed(1)} KB`);
 
-// Render: the pages take turns, so a slow spell hits each of them alike.
 function render() {
-  const times = Object.fromEntries(PAGES.map((p) => [p, []]));
+  const times = [];
   for (let r = 0; r < ROUNDS; r++) {
-    for (const p of PAGES) {
-      const t0 = process.hrtime.bigint();
-      const res = spawnSync("quarto", ["render", `${p}.qmd`, "--to", "html"], { cwd: DIR, encoding: "utf8" });
-      const t = Number(process.hrtime.bigint() - t0) / 1e6;
-      if (res.status !== 0) {
-        console.error(`${p}.qmd: render failed\n${res.stdout}${res.stderr}`);
-        process.exit(1);
-      }
-      times[p].push(t);
+    const t0 = process.hrtime.bigint();
+    const res = spawnSync("quarto", ["render", `${PAGE}.qmd`, "--to", "html"], { cwd: DIR, encoding: "utf8" });
+    const t = Number(process.hrtime.bigint() - t0) / 1e6;
+    if (res.status !== 0) {
+      console.error(`${PAGE}.qmd: render failed\n${res.stdout}${res.stderr}`);
+      process.exit(1);
     }
+    times.push(t);
     process.stdout.write(`render round ${r + 1}/${ROUNDS}\r`);
   }
   process.stdout.write("\n");
@@ -82,13 +92,13 @@ function render() {
 }
 
 // Weight: the viewer's own files, under <page>_files/libs/quarto-contrib/.
-function weight(p) {
-  const html = fs.readFileSync(path.join(DIR, `${p}.html`));
-  const contrib = path.join(DIR, `${p}_files`, "libs", "quarto-contrib");
+function weight() {
+  const html = fs.readFileSync(path.join(DIR, `${PAGE}.html`));
+  const contrib = path.join(DIR, `${PAGE}_files`, "libs", "quarto-contrib");
   const files = [];
   if (fs.existsSync(contrib)) {
     for (const d of fs.readdirSync(contrib)) {
-      if (!/^(glightbox|panzoom)/.test(d)) continue;
+      if (!d.startsWith("panzoom")) continue;
       for (const f of fs.readdirSync(path.join(contrib, d), { recursive: true })) {
         const full = path.join(contrib, d, f);
         if (/\.(js|css)$/.test(f) && fs.statSync(full).isFile()) files.push(full);
@@ -97,7 +107,7 @@ function weight(p) {
   }
   const raw = files.reduce((a, f) => a + fs.statSync(f).size, 0);
   const gz = files.reduce((a, f) => a + zlib.gzipSync(fs.readFileSync(f)).length, 0);
-  return { html: html.length, htmlGz: zlib.gzipSync(html).length, files: files.map((f) => path.relative(DIR, f)), raw, gz };
+  return { html: html.length, files: files.map((f) => path.relative(DIR, f)), raw, gz };
 }
 
 function serve(root) {
@@ -115,12 +125,12 @@ function serve(root) {
   return new Promise((resolve) => server.listen(0, "127.0.0.1", () => resolve(server)));
 }
 
-// In the page: what is on screen. The viewer's container and image, their
-// opacity and geometry; `shown` once something of the viewer is visible.
+// In the page: what is on screen. The viewer and its image, their opacity
+// and geometry; `shown` once something of the viewer is visible.
 function viewerState() {
-  const box = document.querySelector(".panzoom-overlay.open") || document.querySelector(".glightbox-container");
+  const box = document.querySelector(".panzoom-overlay.open");
   if (!box) return { shown: false, key: "none" };
-  const img = box.querySelector(".panzoom-overlay img, .gslide.current img");
+  const img = box.querySelector("img");
   const cs = getComputedStyle(box);
   const op = (el) => { let o = 1; for (let e = el; e && e !== document.body; e = e.parentElement) o *= +getComputedStyle(e).opacity; return o; };
   const r = img && img.getBoundingClientRect();
@@ -136,10 +146,9 @@ function viewerState() {
 
 // In the page: does `act`, then watches every frame until the viewer is
 // `want` (open: shown, fully opaque, with its image loaded; closed: not
-// shown) and has
-// not changed for 100 ms. Returns the times, from just before `act`, of the
-// first frame the viewer was (or stopped being) shown and of the settled
-// state.
+// shown) and has not changed for 100 ms. Returns the times, from just
+// before `act`, of the first frame the viewer was (or stopped being) shown
+// and of the settled state.
 async function timed(page, act, want) {
   return page.evaluate((act, want, stateSrc) => {
     const state = new Function(`return (${stateSrc})()`);
@@ -161,119 +170,163 @@ async function timed(page, act, want) {
   }, act, want, viewerState.toString());
 }
 
-async function measure(browser, base) {
-  const out = {};
-  for (const p of PAGES) {
-    out[p] = { load: [], dcl: [] };
-    // Load: a fresh context each time, so nothing is cached.
-    for (let r = 0; r < ROUNDS; r++) {
-      const ctx = await browser.createBrowserContext();
-      const page = await ctx.newPage();
-      await page.setViewport({ width: 1280, height: 900 });
-      await page.goto(`${base}${p}.html`, { waitUntil: "load" });
-      const nav = await page.evaluate(() => {
-        const n = performance.getEntriesByType("navigation")[0];
-        return { dcl: n.domContentLoadedEventEnd, load: n.loadEventEnd || performance.now() };
-      });
-      out[p].dcl.push(nav.dcl);
-      out[p].load.push(nav.load);
-      await ctx.close();
+async function measure(browser, url) {
+  const out = { load: [], dcl: [] };
+  // Load: a fresh context each time, so nothing is cached.
+  for (let r = 0; r < ROUNDS; r++) {
+    const ctx = await browser.createBrowserContext();
+    const page = await ctx.newPage();
+    await page.setViewport({ width: 1280, height: 900 });
+    await page.goto(url, { waitUntil: "load" });
+    const nav = await page.evaluate(() => {
+      const n = performance.getEntriesByType("navigation")[0];
+      return { dcl: n.domContentLoadedEventEnd, load: n.loadEventEnd || performance.now() };
+    });
+    out.dcl.push(nav.dcl);
+    out.load.push(nav.load);
+    await ctx.close();
+  }
+  // Open and close, at each CPU speed.
+  for (const rate of CPU) {
+    const ctx = await browser.createBrowserContext();
+    const page = await ctx.newPage();
+    await page.setViewport({ width: 1280, height: 900 });
+    await page.goto(url, { waitUntil: "networkidle0" });
+    await page.emulateCPUThrottling(rate);
+    const sel = "a.panzoom-link img";
+    const n = Math.min(OPENS, await page.$$eval(sel, (els) => els.length));
+    const runs = [];
+    for (let i = 0; i < n; i++) {
+      await page.$$eval(sel, (els, i) => els[i].scrollIntoView({ block: "center" }), i);
+      await new Promise((r) => setTimeout(r, 200));
+      const open = await timed(page, `document.querySelectorAll(${JSON.stringify(sel)})[${i}].click()`, "open");
+      const shut = await timed(page, `document.querySelector(".panzoom-close").click()`, "closed");
+      runs.push({ open, close: shut });
+      await new Promise((r) => setTimeout(r, 300));
     }
-    if (p === "none") continue;
-    // Open and close, at each CPU speed.
-    for (const rate of CPU) {
-      const ctx = await browser.createBrowserContext();
-      const page = await ctx.newPage();
-      await page.setViewport({ width: 1280, height: 900 });
-      await page.goto(`${base}${p}.html`, { waitUntil: "networkidle0" });
-      await page.emulateCPUThrottling(rate);
-      const sel = p === "panzoom" ? "a.panzoom-link img" : "a.lightbox img";
-      const close = p === "panzoom" ? ".panzoom-close" : ".gclose";
-      const n = Math.min(OPENS, await page.$$eval(sel, (els) => els.length));
-      const runs = [];
-      for (let i = 0; i < n; i++) {
-        await page.$$eval(sel, (els, i) => els[i].scrollIntoView({ block: "center" }), i);
-        await new Promise((r) => setTimeout(r, 200));
-        const open = await timed(page, `document.querySelectorAll(${JSON.stringify(sel)})[${i}].click()`, "open");
-        const shut = await timed(page, `document.querySelector(${JSON.stringify(close)}).click()`, "closed");
-        runs.push({ open, close: shut });
-        await new Promise((r) => setTimeout(r, 300));
-      }
-      out[p][`cpu${rate}`] = runs;
-      await ctx.close();
-    }
+    out[`cpu${rate}`] = runs;
+    await ctx.close();
   }
   return out;
 }
 
-if (RENDER) console.log(`Rendering ${PAGES.length} pages, ${ROUNDS} rounds...`);
-const renderTimes = RENDER ? render() : null;
-for (const p of PAGES) {
-  if (!fs.existsSync(path.join(DIR, `${p}.html`))) {
-    console.error(`bench/${p}.html is missing; run without --no-render.`);
-    process.exit(1);
+// The checked numbers, by name: { value, kind }. `kind` picks the limit
+// (LIMITS) and the unit.
+function metrics(weights, timing) {
+  const m = {
+    "Viewer JS + CSS": { value: weights.raw, kind: "bytes" },
+    "Viewer JS + CSS, gzipped": { value: weights.gz, kind: "bytes" },
+    "Page HTML": { value: weights.html, kind: "bytes" },
+    "Page load: DOMContentLoaded": { value: median(timing.dcl), kind: "slowTime" },
+    "Page load: load": { value: median(timing.load), kind: "slowTime" },
+  };
+  for (const rate of CPU) {
+    const runs = timing[`cpu${rate}`] || [], rest = runs.slice(1);
+    const med = (f) => {
+      const xs = rest.map(f).filter((x) => x !== null);
+      return xs.length ? median(xs) : null;
+    };
+    const cpu = rate === 1 ? "full speed" : `CPU ${rate}x slower`;
+    const kind = rate === 1 ? "time" : "slowTime";
+    m[`First open, settled (${cpu})`] = { value: runs[0]?.open.settled ?? null, kind };
+    m[`Open, visible (${cpu})`] = { value: med((r) => r.open.first), kind };
+    m[`Open, settled (${cpu})`] = { value: med((r) => r.open.settled), kind };
+    m[`Close (${cpu})`] = { value: med((r) => r.close.settled), kind };
   }
+  return m;
 }
-const weights = Object.fromEntries(PAGES.map((p) => [p, weight(p)]));
+
+if (RENDER) console.log(`Rendering ${PAGE}.qmd, ${ROUNDS} rounds...`);
+const renderTimes = RENDER ? render() : null;
+if (!fs.existsSync(path.join(DIR, `${PAGE}.html`))) {
+  console.error(`bench/${PAGE}.html is missing; run without --no-render.`);
+  process.exit(1);
+}
+const weights = weight();
 
 const server = await serve(ROOT);
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ["--no-sandbox", "--disable-gpu"] });
 let timing;
 try {
   console.log("Measuring in Chrome...");
-  timing = await measure(browser, `http://127.0.0.1:${server.address().port}/tests/bench/`);
+  timing = await measure(browser, `http://127.0.0.1:${server.address().port}/tests/bench/${PAGE}.html`);
 } finally {
   await browser.close();
   server.close();
 }
 
 const quarto = spawnSync("quarto", ["--version"], { encoding: "utf8" }).stdout.trim();
+const machine = `${os.cpus()[0].model.trim()} (${os.cpus().length} threads)`;
+const now = metrics(weights, timing);
+const base = fs.existsSync(BASELINE) ? JSON.parse(fs.readFileSync(BASELINE, "utf8")) : null;
+const timeouts = CPU.flatMap((r) => timing[`cpu${r}`] || []).filter((r) => r.open.timeout || r.close.timeout).length;
+
 const lines = [
-  "# Benchmark: panzoom vs Quarto's lightbox (knitr)", "",
-  `${new Date().toISOString().slice(0, 16).replace("T", " ")} UTC; Quarto ${quarto}; ` +
-    `${os.cpus()[0].model.trim()} (${os.cpus().length} threads); headless Chrome, no GPU; ` +
-    `${ROUNDS} rounds. Compare the rows, not the absolute numbers.`, "",
+  "# Benchmark: panzoom against its baseline", "",
+  `${new Date().toISOString().slice(0, 16).replace("T", " ")} UTC; Quarto ${quarto}; ${machine}; ` +
+    `headless Chrome, no GPU; ${ROUNDS} rounds.`, "",
 ];
-const NAME = { none: "No viewer", lightbox: "Quarto's lightbox", panzoom: "panzoom" };
-if (renderTimes) {
-  const base = median(renderTimes.none);
-  lines.push("## Render (`quarto render`, R included)", "",
-    "| Page | Median | Fastest | Median vs no viewer |", "|---|---|---|---|",
-    ...PAGES.map((p) => `| ${NAME[p]} | ${ms(median(renderTimes[p]))} | ${ms(Math.min(...renderTimes[p]))} | ` +
-      (p === "none" ? "" : `${median(renderTimes[p]) - base >= 0 ? "+" : ""}${ms(median(renderTimes[p]) - base)}`) + " |"), "");
-}
-lines.push("## Weight (what the viewer adds)", "",
-  "| Page | Viewer's JS + CSS | gzipped | HTML | HTML vs no viewer |", "|---|---|---|---|---|",
-  ...PAGES.map((p) => {
-    const w = weights[p];
-    return `| ${NAME[p]} | ${p === "none" ? "" : kb(w.raw)} | ${p === "none" ? "" : kb(w.gz)} | ${kb(w.html)} | ` +
-      (p === "none" ? "" : `+${kb(w.html - weights.none.html)}`) + " |";
-  }), "",
-  ...PAGES.filter((p) => p !== "none").map((p) => `- ${NAME[p]}: ${weights[p].files.map((f) => `\`${f}\``).join(", ")}`), "");
-lines.push("## Page load (no cache, median)", "",
-  "| Page | DOMContentLoaded | load |", "|---|---|---|",
-  ...PAGES.map((p) => `| ${NAME[p]} | ${ms(median(timing[p].dcl))} | ${ms(median(timing[p].load))} |`), "");
-lines.push("## Open and close", "",
-  `Clicking ${OPENS} images in turn. *Visible*: the first frame showing the viewer; *settled*: its image ` +
-  "loaded, fully opaque and nothing moving (any opening animation finished). Close: until the viewer is gone. " +
-  "The first open builds the viewer; the others are the median of the rest.", "",
-  "| Viewer | CPU | First open: visible / settled | Open: visible / settled | Close |", "|---|---|---|---|---|");
-for (const p of PAGES.filter((p) => p !== "none")) {
-  for (const rate of CPU) {
-    const runs = timing[p][`cpu${rate}`];
-    if (!runs?.length) { lines.push(`| ${NAME[p]} | ${rate}x | no images opened | | |`); continue; }
-    const rest = runs.slice(1);
-    const med = (f) => (rest.length ? median(rest.map(f).filter((x) => x !== null)) : null);
-    const timeouts = runs.filter((r) => r.open.timeout || r.close.timeout).length;
-    lines.push(`| ${NAME[p]} | ${rate === 1 ? "full speed" : `${rate}x slower`} | ` +
-      `${ms(runs[0].open.first)} / ${ms(runs[0].open.settled)} | ${ms(med((r) => r.open.first))} / ${ms(med((r) => r.open.settled))} | ` +
-      `${ms(med((r) => r.close.settled))}${timeouts ? ` (**${timeouts} timed out**)` : ""} |`);
+if (!base) lines.push("No baseline yet (`bench/baseline.json`): run `node bench.mjs --save` to save this run as one.", "");
+else {
+  lines.push(`Baseline: ${base.date} UTC; Quarto ${base.quarto}; ${base.machine}.`, "");
+  if (base.machine !== machine) {
+    lines.push(`**Warning:** the baseline was measured on another machine; times are not comparable. ` +
+      "Save a new baseline here (`--save`) before relying on them.", "");
   }
 }
-lines.push("");
+if (renderTimes) {
+  lines.push("## Render (`quarto render`, R included; not checked)", "",
+    "| | Median | Fastest |", "|---|---|---|",
+    `| Now | ${ms(median(renderTimes))} | ${ms(Math.min(...renderTimes))} |`);
+  if (base?.render) lines.push(`| Baseline | ${ms(base.render.median)} | ${ms(base.render.fastest)} |`);
+  lines.push("");
+}
+const fmt = (v, kind) => (kind === "bytes" ? kb(v) : ms(v));
+const regressions = [];
+lines.push("## Checked",  "",
+  "Times are medians; *first open* builds the viewer, the others are the median of the rest " +
+  `(${OPENS} images opened at each CPU speed). *Visible*: the first frame showing the viewer; ` +
+  "*settled*: its image loaded, fully opaque and nothing moving. " +
+  `A regression is more than ${Math.round((LIMITS.bytes.ratio - 1) * 100)}% heavier, or ` +
+  `${LIMITS.time.ratio} times as long and over ${LIMITS.time.abs} ms ` +
+  `(${LIMITS.slowTime.abs} ms for page load and the slowed CPU) longer.`, "",
+  "| | Now | Baseline | Change | |", "|---|---|---|---|---|");
+for (const [name, { value, kind }] of Object.entries(now)) {
+  const b = base?.metrics?.[name]?.value;
+  let change = "", verdict = "";
+  if (value === null) verdict = "**no value**";
+  else if (b !== undefined && b !== null) {
+    const d = value - b, lim = LIMITS[kind];
+    change = `${d >= 0 ? "+" : "−"}${fmt(Math.abs(d), kind)}` + (b ? ` (${d >= 0 ? "+" : "−"}${Math.abs(Math.round(100 * d / b))}%)` : "");
+    const worse = value > b * lim.ratio && d > lim.abs;
+    verdict = worse ? "**REGRESSION**" : "ok";
+    if (worse) regressions.push(name);
+  }
+  lines.push(`| ${name} | ${fmt(value, kind)} | ${fmt(b, kind)} | ${change} | ${verdict} |`);
+}
+lines.push("", `- Viewer files: ${weights.files.map((f) => `\`${f}\``).join(", ")}`);
+if (timeouts) lines.push(`- **${timeouts} opens or closes never settled** (10 s).`);
+const failed = regressions.length > 0 || timeouts > 0;
+lines.push("", failed
+  ? `**FAILED:** ${[...regressions, ...(timeouts ? ["viewer never settled"] : [])].join("; ")}.`
+  : base ? "No regressions." : "Nothing to compare with.", "");
 
+const result = {
+  date: new Date().toISOString().slice(0, 16).replace("T", " "), quarto, machine, rounds: ROUNDS,
+  render: renderTimes && { median: median(renderTimes), fastest: Math.min(...renderTimes) },
+  metrics: now,
+};
 fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(path.join(OUT, "report.md"), lines.join("\n"));
-fs.writeFileSync(path.join(OUT, "results.json"), JSON.stringify({ renderTimes, weights, timing }, null, 2));
+fs.writeFileSync(path.join(OUT, "results.json"), JSON.stringify({ ...result, renderTimes, weights, timing }, null, 2));
 console.log(lines.join("\n"));
 console.log(`-> ${path.relative(process.cwd(), path.join(OUT, "report.md"))}`);
+if (SAVE) {
+  if (timeouts) {
+    console.error("Not saved as the baseline: the viewer never settled in some runs.");
+    process.exit(1);
+  }
+  fs.writeFileSync(BASELINE, JSON.stringify(result, null, 2) + "\n");
+  console.log(`Saved as the baseline: ${path.relative(process.cwd(), BASELINE)}`);
+}
+process.exit(failed && !SAVE ? 1 : 0);
