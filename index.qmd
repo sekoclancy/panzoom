@@ -67,7 +67,7 @@ invisible(dev.off())
 ## Captions and galleries
 
 The viewer shows the figure's caption. Plots with the same `group` form a
-gallery: use the ‹ › buttons, `←`/`→` or a swipe to step through them.
+gallery: use the previous and next buttons, `←`/`→` or a swipe to step through them.
 Subfigures of one figure are a gallery automatically.
 
 ```{r}

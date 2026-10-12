@@ -126,7 +126,7 @@ plot(pressure)
 | Zoom | scroll, or pinch, toward the cursor | + and - |
 | Pan | drag, or Shift+scroll | arrow keys |
 | Go back to the opening view | double-click | 0 |
-| Change image in a gallery | the ‹ › buttons, or swipe sideways | ← and → |
+| Change image in a gallery | the previous and next buttons, or swipe sideways | ← and → |
 | Close | the × button, or click the background | Esc |
 
 Zoom goes in small steps, up to `max-zoom`. Panning stops at the image's
@@ -173,10 +173,10 @@ Math in captions and descriptions shows as it does on the page, with any
 
 ## Galleries
 
-Images in the same group form a gallery, stepped through with the ‹ ›
-buttons, ←/→ or a sideways swipe. While an image is larger than the screen
-(zoomed in, or a wide figure), ←/→ and swipes pan it instead, and the
-buttons change image. Groups work like Quarto's lightbox:
+Images in the same group form a gallery, stepped through with the
+previous and next buttons, ←/→ or a sideways swipe. While an image is
+larger than the screen (zoomed in, or a wide figure), ←/→ and swipes pan
+it instead, and the buttons change image. Groups work like Quarto's lightbox:
 
 - subfigures of one figure are a gallery automatically,
 - `group="name"` on markdown images,

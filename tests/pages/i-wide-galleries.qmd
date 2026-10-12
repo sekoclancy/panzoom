@@ -21,7 +21,7 @@ Wide figures open at screen height from the left end, tall ones at
 screen width from the top. Headings carry `expect-fit`, the way each image
 should open. On the galleries, the browser test also checks that
 Left/Right pan (or, on a tall strip, do nothing) rather than switch, and
-that the ‹ › buttons switch.
+that the previous and next buttons switch.
 :::
 
 ```{r}
@@ -49,8 +49,8 @@ strip <- function(seed = 2, n = 8) {
 
 ## 1. Gallery of two collages {#c1 expect-fit="height"}
 
-Left/Right and drags pan along the collage; the ‹ › buttons switch
-collages.
+Left/Right and drags pan along the collage; the previous and next
+buttons switch collages.
 
 ```{r}
 #| panzoom:
@@ -69,7 +69,7 @@ collage(15)
 
 Each strip opens at screen width and extends downwards: Left/Right do
 nothing (there is nowhere to go sideways) rather than switch strips;
-the ‹ › buttons switch.
+the previous and next buttons switch.
 
 ```{r}
 #| panzoom:
