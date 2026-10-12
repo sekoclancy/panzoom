@@ -153,7 +153,7 @@ To exclude one image (inside a `.panzoom` div, or with `panzoom: true`),
 give it `.nopanzoom`. To exclude a whole cell, use `#| panzoom: false`. An
 image inside a link is left alone, so it keeps its link.
 
-## Using the viewer
+### Viewer controls
 
 | To | Mouse or trackpad | Keyboard |
 |---|---|---|
@@ -175,7 +175,7 @@ As with Quarto's lightbox, the page shows through a dark overlay, and the
 caption takes the page's own colours, so the viewer follows Quarto's light
 and dark themes.
 
-## Captions and descriptions
+### Captions and descriptions
 
 The viewer shows the figure's caption under the image, including its
 "Figure N:" prefix, math, citations and cross-references. A subfigure shows
@@ -202,7 +202,7 @@ plot(pressure)
 ```
 ````
 
-## Galleries and layouts
+### Galleries and layouts
 
 Images in the same group form a gallery, stepped through with the
 previous and next buttons, ←/→ or a sideways swipe. While an image is
@@ -227,7 +227,7 @@ Labeled figures and figures in layouts (`layout-ncol`, `layout-nrow`,
 layout divs) work too: each image in a layout opens on its own, and
 subfigures form a gallery.
 
-## Wide and tall figures
+### Wide and tall figures
 
 Most images open whole. A very wide figure, such as a collage of many
 panels, would be too thin to read that way, so it opens at screen height,
@@ -251,7 +251,7 @@ for (i in 1:12) plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i))
 ```
 ````
 
-## Math
+### Math
 
 Math in captions and descriptions shows as it does on the page, with any
 `html-math-method` (MathJax, KaTeX, MathML, WebTeX, plain).
@@ -270,7 +270,7 @@ Math is then typeset offline, in system fonts rather than MathJax's own
 (Quarto doesn't embed those). MathML (`html-math-method: mathml`) needs no
 library at all, so it works offline without embedding anything.
 
-## Self-contained documents
+### Self-contained documents
 
 panzoom works in a self-contained document, a single HTML file you can
 email or open from disk. The viewer needs no internet access: it and the
@@ -282,7 +282,7 @@ filters:
 embed-resources: true
 ```
 
-## Without JavaScript
+### Without JavaScript
 
 A click on a marked image opens the image file itself, as with Quarto's
 lightbox. (In a self-contained file that link leads nowhere, for both.)
