@@ -62,13 +62,19 @@ persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
 invisible(dev.off())
 ```
 
+Mark a markdown image with the `.panzoom` class:
+
+```markdown
+![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom}
+```
+
 ![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom}
 
 ## Captions and galleries
 
 The viewer shows the figure's caption. Plots with the same `group` form a
-gallery: use the previous and next buttons, `←`/`→` or a swipe to step through them.
-Subfigures of one figure are a gallery automatically.
+gallery: use the previous and next buttons, `←`/`→` or a swipe to step
+through them. Subfigures of one figure are a gallery automatically.
 
 ```{r}
 #| panzoom:
