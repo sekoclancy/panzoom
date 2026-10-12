@@ -17,8 +17,9 @@
   - Open and close: click an image, then time until the viewer is first
     visible and until it has settled (its image loaded, fully opaque and
     nothing moving for 100 ms); then click its close button and time until
-    it's gone. The first open (which builds the viewer) is reported apart
-    from the rest. Also with the CPU slowed 4x, roughly a mid-range phone.
+    it's gone. The first open (which builds the viewer) is reported apart:
+    the median over `--rounds` fresh page loads. Also with the CPU slowed
+    4x, roughly a mid-range phone.
 
   A checked number is a regression when it is more than LIMITS allow above
   the baseline: a file or page 5% heavier, or a time 1.5 times the
@@ -206,6 +207,22 @@ async function measure(browser, url) {
     }
     out[`cpu${rate}`] = runs;
     await ctx.close();
+    // The first open builds the viewer, so it happens once per page load:
+    // measure it on `--rounds` fresh loads and take the median, as one
+    // sample swings by 10 ms or more.
+    const firsts = [];
+    for (let r = 0; r < ROUNDS; r++) {
+      const c = await browser.createBrowserContext();
+      const pg = await c.newPage();
+      await pg.setViewport({ width: 1280, height: 900 });
+      await pg.goto(url, { waitUntil: "networkidle0" });
+      await pg.emulateCPUThrottling(rate);
+      await pg.$eval(sel, (el) => el.scrollIntoView({ block: "center" }));
+      await new Promise((res) => setTimeout(res, 200));
+      firsts.push(await timed(pg, `document.querySelector(${JSON.stringify(sel)}).click()`, "open"));
+      await c.close();
+    }
+    out[`first${rate}`] = firsts;
   }
   return out;
 }
@@ -228,7 +245,8 @@ function metrics(weights, timing) {
     };
     const cpu = rate === 1 ? "full speed" : `CPU ${rate}x slower`;
     const kind = rate === 1 ? "time" : "slowTime";
-    m[`First open, settled (${cpu})`] = { value: runs[0]?.open.settled ?? null, kind };
+    const firsts = (timing[`first${rate}`] || []).map((o) => o.settled).filter((x) => x !== null);
+    m[`First open, settled (${cpu})`] = { value: firsts.length ? median(firsts) : null, kind };
     m[`Open, visible (${cpu})`] = { value: med((r) => r.open.first), kind };
     m[`Open, settled (${cpu})`] = { value: med((r) => r.open.settled), kind };
     m[`Close (${cpu})`] = { value: med((r) => r.close.settled), kind };
@@ -284,8 +302,8 @@ if (renderTimes) {
 const fmt = (v, kind) => (kind === "bytes" ? kb(v) : ms(v));
 const regressions = [];
 lines.push("## Checked",  "",
-  "Times are medians; *first open* builds the viewer, the others are the median of the rest " +
-  `(${OPENS} images opened at each CPU speed). *Visible*: the first frame showing the viewer; ` +
+  `Times are medians; *first open* builds the viewer (median of ${ROUNDS} fresh page loads), the others ` +
+  `are the median of the rest (${OPENS} images opened at each CPU speed). *Visible*: the first frame showing the viewer; ` +
   "*settled*: its image loaded, fully opaque and nothing moving. " +
   `A regression is more than ${Math.round((LIMITS.bytes.ratio - 1) * 100)}% heavier, or ` +
   `${LIMITS.time.ratio} times as long and over ${LIMITS.time.abs} ms ` +
