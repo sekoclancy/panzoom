@@ -49,7 +49,8 @@ the lightbox, and `#| panzoom:` overrides `#| lightbox:` options.
 
 ## Installation
 
-You can install this extension using the Quarto CLI:
+You can install this extension using the Quarto CLI (it needs Quarto 1.9
+or later):
 
 ```bash
 quarto add sekoclancy/panzoom
