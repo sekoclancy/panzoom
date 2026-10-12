@@ -2,8 +2,7 @@
 title: "Benchmark: panzoom"
 filters:
   - panzoom
-panzoom:
-  match: auto
+panzoom: true
 ---
 
 {{< include _body.qmd >}}

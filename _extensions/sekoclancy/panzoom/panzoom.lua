@@ -7,8 +7,11 @@
 --     subfigure layouts,
 --   * carry the class themselves (`![](x.png){.panzoom}`), or
 --   * are block images (figures, or alone in a paragraph) in a document with
---     `panzoom: { match: auto }` -- the same images Quarto's auto lightbox takes.
--- `.nopanzoom` opts a single image out, `#| panzoom: false` a whole cell.
+--     `panzoom: true` (or `auto`, or `match: auto` in the options map) -- the
+--     same images Quarto's `lightbox: true` takes.
+-- `.nopanzoom` opts a single image out, `#| panzoom: false` a whole cell,
+-- and `panzoom: false` the whole document (as `lightbox: false` does).
+-- The document setting takes the forms Quarto's `lightbox:` does.
 --
 -- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`) become
 -- `data-panzoom-*` attributes on the cell's images; document options
@@ -35,6 +38,8 @@
 if not quarto.doc.is_format("html:js") then return {} end
 
 local match_auto = false
+-- `panzoom: false`: the filter does nothing at all.
+local off = false
 -- Descriptions waiting to be placed (see the last filter pass): id -> text.
 local descriptions = {}
 local n_descriptions = 0
@@ -86,6 +91,7 @@ end
 -- image (Quarto 1.9 bug), and the image would then open the viewer instead
 -- of following its link. `.nolightbox` keeps Quarto away, and the link.
 local function keep_link(link)
+  if off then return nil end
   local changed = false
   link.content = link.content:walk({
     Image = function(img)
@@ -217,11 +223,18 @@ local function cell_option(el)
   return true, attrs
 end
 
--- Reads the `panzoom:` metadata block and attaches the JS/CSS.
+-- Reads the `panzoom:` metadata and attaches the JS/CSS. Like Quarto's
+-- `lightbox:`, it is `true` or `auto` (every block image), `false` (off),
+-- or a map of options, where `match: auto` means every block image.
 local function setup(meta)
   local options = {}
   local cfg = meta.panzoom
-  if cfg ~= nil and pandoc.utils.type(cfg) == "table" then
+  if cfg == false then
+    off = true
+    return
+  elseif cfg == true or (pandoc.utils.type(cfg) == "Inlines" and pandoc.utils.stringify(cfg) == "auto") then
+    match_auto = true
+  elseif cfg ~= nil and pandoc.utils.type(cfg) == "table" then
     if cfg.match ~= nil then
       match_auto = pandoc.utils.stringify(cfg.match) == "auto"
     end
@@ -257,6 +270,7 @@ end
 
 -- In auto mode, marks an image alone in a paragraph.
 local function block_image(block)
+  if off then return nil end
   local img = sole_image(block)
   if img and match_auto and not wants_lightbox(img) then
     mark(img)
@@ -268,6 +282,7 @@ end
 -- Quarto has already turned into a FloatRefTarget). In auto mode, also stops
 -- at cells that carry their own `#| lightbox:` setting.
 local function container(el)
+  if off then return nil end
   local on, attrs = cell_option(el)
   if on == false then return el, false end
   if on or has(el.classes, "panzoom") then
@@ -308,7 +323,7 @@ return {
     end,
     -- Inline images, and block images outside auto mode: explicit class only.
     Image = function(img)
-      if has(img.classes, "panzoom") then
+      if has(img.classes, "panzoom") and not off then
         return mark(img)
       end
     end,
@@ -320,7 +335,7 @@ return {
     traverse = "topdown",
     Link = function() return nil, false end,
     Image = function(img)
-      if has(img.classes, "panzoom") and not has(img.classes, "nopanzoom") then
+      if has(img.classes, "panzoom") and not has(img.classes, "nopanzoom") and not off then
         return pandoc.Link({ img }, img.src, "", pandoc.Attr("", { "panzoom-link" })), false
       end
     end,

@@ -50,7 +50,7 @@ plot(pressure)
 ![Caption](figure.png){.panzoom}
 ```
 
-This also works for an image inside a line of text, which `match: auto`
+This also works for an image inside a line of text, which `panzoom: true`
 skips:
 
 ```markdown
@@ -66,11 +66,21 @@ Some text with an inline image ![](image.jpg){.panzoom width=60px} in the middle
 :::
 ```
 
-**Every figure:** set `match: auto` (see [Options](#options)) to mark all
-block images, the same ones Quarto's `lightbox: auto` takes.
+**Every figure:** set `panzoom: true` next to `filters:`. It marks every
+block image, the ones Quarto's `lightbox: true` takes.
 
-To exclude one image (inside a `.panzoom` div, or with `match: auto`), give
-it `.nopanzoom`. To exclude a whole cell, use `#| panzoom: false`.
+```yaml
+filters:
+  - panzoom
+panzoom: true
+```
+
+As with `lightbox:`, `panzoom: auto` is the same as `true`, and
+`panzoom: false` turns panzoom off for the document, even for marked
+images.
+
+To exclude one image (inside a `.panzoom` div, or with `panzoom: true`),
+give it `.nopanzoom`. To exclude a whole cell, use `#| panzoom: false`.
 
 Labeled figures and figures in layouts (`layout-ncol`, `layout-nrow`,
 layout divs) work as well: each image opens on its own, and subfigures form
@@ -82,11 +92,12 @@ overrides `#| lightbox:` options, so the two can be used in one document.
 
 ### Options
 
-Options, all optional, go under `panzoom:` next to `filters:`:
+Options, all optional, go under `panzoom:` in place of `true`. As with
+Quarto's lightbox, `match: auto` among them marks every block image:
 
 ```yaml
 panzoom:
-  match: auto     # auto: all block images; omit this parameter for only marked images (default)
+  match: auto     # every block image, as panzoom: true; leave out for only marked images
   max-zoom: 4     # number: screen px per image px (default 4)
   hint: true      # boolean: show the controls hint at the bottom (default true)
   caption: true   # boolean: show the figure caption in the viewer (default true)

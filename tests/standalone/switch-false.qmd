@@ -1,0 +1,39 @@
+---
+title: "Document setting"
+subtitle: "panzoom: false"
+filters:
+  - panzoom
+panzoom: false
+---
+
+::: {.callout-note}
+## About this page
+
+This page **tests the document-level `panzoom:` setting** in its short
+forms: `switch-<value>.qmd` sets `panzoom:` to `true`, `auto` or `false`
+(the subtitle says which). It is not part of the website. `panzoom: false` turns panzoom off for the whole document, even for images marked `.panzoom`, as Quarto's `lightbox: false` does. Nothing opens.
+The options map, with `match: auto`, is tested on page C.
+:::
+
+## 1. Unmarked figure {#c1 expect-open="nothing"}
+
+![A figure with no marker.](../../images/mv-0.jpg)
+
+## 2. Image marked `.panzoom` {#c2 expect-open="nothing"}
+
+![A marked image.](../../images/mv-1.jpg){.panzoom}
+
+## 3. Image in a `.panzoom` div {#c3 expect-open="nothing"}
+
+::: {.panzoom}
+![In a div.](../../images/mv-2.jpg)
+:::
+
+## 4. Opted out with `.nopanzoom` {#c4 expect-open="nothing"}
+
+![Opted out.](../../images/mv-3.jpg){.nopanzoom}
+
+## 5. Unmarked inline image {#c5 expect-open="nothing"}
+
+Text with an inline image ![](../../images/mv-4.jpg){width=60px} in it,
+which no setting marks.

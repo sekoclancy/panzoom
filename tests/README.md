@@ -59,6 +59,7 @@ Two more sets of pages are **not part of the website** (see
 | [standalone/self-contained](standalone/self-contained.qmd) | **A single HTML file**, `embed-resources: true`, opened from its `file://` address. `self-contained-math` also embeds MathJax (`self-contained-math: true`). |
 | [standalone/self-contained-lightbox](standalone/self-contained-lightbox.qmd) | **The same page with Quarto's lightbox** instead of panzoom, for comparison (a copy: keep it in step with `_self-contained.qmd`). |
 | [standalone/math-&lt;method&gt;](standalone/_math.qmd) | **Math in captions and descriptions** with each `html-math-method`: `mathjax`, `katex`, `mathml`, `webtex`, `plain`. |
+| [standalone/switch-&lt;value&gt;](standalone/switch-true.qmd) | **The document setting's short forms**, `panzoom: true`, `auto` and `false`: which images open the viewer (each case states what to expect). |
 
 Each website page starts with a note saying what it should show, has a **</> Code**
 button that shows its full source, and shows each R chunk with its options.
@@ -239,7 +240,7 @@ node bench.mjs --rounds 10 --no-render   # more rounds; skip rendering
 
 The benchmark catches regressions: it compares panzoom with itself, not
 with Quarto's lightbox. `bench/panzoom.qmd` is one knitr page (four photos,
-eight R plots, two subfigures) with `match: auto`. `bench.mjs` renders it,
+eight R plots, two subfigures) with `panzoom: true`. `bench.mjs` renders it,
 weighs the viewer's script and stylesheet files and the page's HTML, times
 page load in headless Chrome with no cache, and times opening and closing
 the viewer on six images: until it's first visible, and until it has

@@ -1,7 +1,7 @@
 /*
   Benchmark: panzoom against its own baseline, to catch regressions.
 
-  bench/panzoom.qmd (`match: auto`, body in bench/_body.qmd: four photos,
+  bench/panzoom.qmd (`panzoom: true`, body in bench/_body.qmd: four photos,
   eight R plots and a figure with two subfigures) is rendered and measured,
   and each number is compared with bench/baseline.json, saved by an earlier
   run with --save on the same machine.

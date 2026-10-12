@@ -87,6 +87,9 @@ async function checkPage(browser, base, file) {
     const marked = [...document.querySelectorAll(".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)")];
     marked.forEach((img, i) => { img.dataset.nojsIdx = i; });
     return {
+      // `panzoom: false`: the filter is off, so marked images get no link
+      // (and the page has no panzoom options script).
+      off: ![...document.scripts].some((s) => s.textContent.includes("PANZOOM_OPTIONS")),
       lightbox: [...document.querySelectorAll("a.lightbox")].filter((a) => a.querySelector("img")).map((a) => a.href),
       marked: marked.map((img, i) => {
         const a = img.closest("a[href]");
@@ -106,6 +109,11 @@ async function checkPage(browser, base, file) {
   const results = [];
   for (const img of images.marked) {
     const r = { ...img, problems: [] };
+    if (images.off) {
+      if (img.wrapper === "panzoom-link") r.problems.push("linked, though panzoom is off");
+      results.push(r);
+      continue;
+    }
     if (img.wrapper === "none") r.problems.push("no link");
     else if (img.wrapper === "lightbox") r.problems.push("in a lightbox link");
     else if (img.wrapper === "panzoom-link" && img.href !== img.src) {
@@ -143,7 +151,7 @@ async function checkPage(browser, base, file) {
   }
   await page.close();
   const lightboxDead = url.startsWith("file:") ? images.lightbox.filter(dead).length : 0;
-  return { name: path.relative(ROOT, file), lightbox: images.lightbox.length, lightboxDead, results };
+  return { name: path.relative(ROOT, file), off: images.off, lightbox: images.lightbox.length, lightboxDead, results };
 }
 
 const server = await serve(ROOT);
@@ -156,14 +164,14 @@ let failed = 0;
 try {
   const runs = PAGES.map((f) => checkPage(browser, base, f));
   for (const run of runs) {
-    const { name, lightbox, lightboxDead, results } = await run;
+    const { name, off, lightbox, lightboxDead, results } = await run;
     const bad = results.filter((r) => r.problems.length);
     failed += bad.length;
     const counts = results.reduce((a, r) => ((a[r.wrapper] = (a[r.wrapper] || 0) + 1), a), {});
     const deadNote = results.some((r) => r.dead) || lightboxDead
       ? `, dead links (self-contained, as Quarto's lightbox): ${results.filter((r) => r.dead).length} panzoom, ${lightboxDead} lightbox`
       : "";
-    console.log(`${name}: ${results.length} panzoom images ${JSON.stringify(counts)}, ${lightbox} lightbox images${deadNote}, ` +
+    console.log(`${name}: ${results.length} panzoom images ${JSON.stringify(counts)}${off ? " (panzoom off: no links expected)" : ""}, ${lightbox} lightbox images${deadNote}, ` +
       (bad.length ? `${bad.length} FAILED` : "ok"));
     for (const r of bad) {
       console.log(`  #${r.where} ${short(r.src.split("/").pop())}: ${r.problems.join(", ")}` +
