@@ -49,7 +49,7 @@ Six more pages have cases of their own:
 | [f-options](pages/f-options.qmd) | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `hint` and `max-zoom` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
 | [g-captions](pages/g-captions.qmd) | **Captions and descriptions.** Citations and cross-references in captions and descriptions, including a work cited only in a description (quarto-cli#10709's case); the per-cell `caption` and `description` options. | on | none |
 | [h-wide](pages/h-wide.qmd) | **Wide and tall figures.** Very wide collages (25 × 2 in), tall strips (4 × 15 in), a poster, a portrait photo and a small plot, each on its own; the `fit` option. | on | none |
-| [i-jupyter](pages/i-jupyter.qmd) | **The Jupyter engine.** matplotlib figures with the same cell options as the R pages (`panzoom: true`, nested options, a description, subfigures, a group, a strip, `panzoom: false`, `classes`, `lightbox`): Jupyter passes nested options to the filter differently from knitr. Needs the Python venv (see [One-time setup](#one-time-setup)). | on | none |
+| [i-jupyter](pages/i-jupyter.qmd) | **The Jupyter engine.** matplotlib figures with the same cell options as the R pages (`panzoom: true`, nested options, a description, subfigures, a group, a strip, `panzoom: false`, `classes`, `lightbox`, svg output): Jupyter passes nested options to the filter differently from knitr. Needs the Python venv (see [One-time setup](#one-time-setup)). | on | none |
 | [j-wide-galleries](pages/j-wide-galleries.qmd) | **Wide figures in galleries and layouts.** H's collages and tall strips as galleries, subfigures and in a layout div: how each opens, and that ←/→ pan rather than switch. Split from H to keep the test run short. | on | none |
 
 Two more sets of pages are **not part of the website** (see
@@ -375,9 +375,10 @@ the left end; on the first single tall strip, a click at 50% down must open
 with that point in the middle (`focal point ok`).
 
 **Options.** Cases with `expect-open` (`panzoom` or `nothing`),
-`expect-caption="none"`, `expect-hint` (`shown` or `hidden`) or
-`expect-max-zoom` (pages F and G) are checked: what opened, whether the caption
-and hint show in the viewer, and where zooming in stops (`options ok`).
+`expect-caption="none"`, `expect-hint` (`shown` or `hidden`),
+`expect-max-zoom` (pages F and G) or `expect-format="svg"` (page I) are
+checked: what opened, whether the caption and hint show in the viewer,
+where zooming in stops, and that the viewer got a vector image (`options ok`).
 With the page's `loop: true`, the gallery check expects `←` on the first
 image to wrap to the last.
 

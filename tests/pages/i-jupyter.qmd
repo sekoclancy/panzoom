@@ -28,7 +28,8 @@ on the page (knitr shows them); the **Code** button at the top shows the
 full source.
 
 Headings carry what the browser test checks, as on the other pages:
-`expect-open`, `expect-hint`, `expect-max-zoom` and `expect-fit`.
+`expect-open`, `expect-hint`, `expect-max-zoom`, `expect-fit` and
+`expect-format` (`svg`: the viewer got a vector image).
 :::
 
 ```{python}
@@ -193,4 +194,22 @@ anyway, unlike with knitr; `lightbox: true` works, as in case 9.)
 
 plt.plot(x, np.sin(6 * x))
 plt.show()
+```
+
+## 12. matplotlib as svg {#c12 expect-open="panzoom" expect-fit="contain" expect-format="svg"}
+
+The same figure path as case 1, written as svg instead of png: Jupyter
+saves the figure file itself, unlike knitr (svg from R is on
+[E: image formats](e-formats.html)). The viewer redraws svg at each zoom,
+so it stays sharp. Jupyter ignores a cell's `fig-format`, so the cell
+switches matplotlib's output to svg itself, and back to png after.
+
+```{python}
+#| panzoom: true
+#| fig-cap: "A damped wave, as svg."
+
+%config InlineBackend.figure_formats = ["svg"]
+plt.plot(x, np.exp(-x / 4) * np.sin(3 * x))
+plt.show()
+%config InlineBackend.figure_formats = ["png"]
 ```

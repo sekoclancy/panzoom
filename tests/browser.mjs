@@ -178,6 +178,7 @@ async function state(page) {
         opened: "panzoom",
         caption: caption.hidden ? "" : caption.textContent.trim().replace(/\s+/g, " "),
         fit: img.dataset.fit || "",
+        format: img.classList.contains("panzoom-vector") ? "svg" : "bitmap",
         hintShown: !pz.querySelector(".panzoom-hint").hidden,
         // Whether the image opened larger than the screen, sideways (overX)
         // or up and down (overY): a strip to scroll along.
@@ -670,6 +671,7 @@ async function checkPage(browser, base, file) {
           expectCaption: sec.dataset.expectCaption || null,
           expectHint: sec.dataset.expectHint || null,
           expectMaxZoom: sec.dataset.expectMaxZoom ? +sec.dataset.expectMaxZoom : null,
+          expectFormat: sec.dataset.expectFormat || null,
           expectReferences: "expectReferences" in sec.dataset,
           hasDescription: !!img.dataset.panzoomDesc,
           descriptionHasMath: !!document.getElementById(img.dataset.panzoomDesc || "-")?.querySelector(".math, math"),
@@ -1009,10 +1011,11 @@ function optionsOk(r) {
   if (r.expectCaption === "none" && r.caption) return false;
   if (r.expectHint && r.hintShown !== (r.expectHint === "shown")) return false;
   if (r.expectMaxZoom && !(Math.abs((r.maxScaleReached ?? 0) - r.expectMaxZoom) < 0.01)) return false;
+  if (r.expectFormat && r.format !== r.expectFormat) return false;
   return true;
 }
 function hasOptionChecks(r) {
-  return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom);
+  return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom || r.expectFormat);
 }
 
 // An image with a description shows it in the viewer.
@@ -1127,12 +1130,14 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         r.expectCaption && `caption ${r.expectCaption}`,
         r.expectHint && `hint ${r.expectHint}`,
         r.expectMaxZoom && `zoom stops at ${r.expectMaxZoom}`,
+        r.expectFormat && `as ${r.expectFormat}`,
       ].filter(Boolean).join(", ");
       const got = [
         `opened ${r.opened}`,
         r.expectCaption && `caption ${r.caption ? `"${r.caption}"` : "none"}`,
         r.expectHint && `hint ${r.hintShown ? "shown" : "hidden"}`,
         r.expectMaxZoom && `zoom stopped at ${r.maxScaleReached === null || r.maxScaleReached === undefined ? "?" : +r.maxScaleReached.toFixed(3)}`,
+        r.expectFormat && `as ${r.format}`,
       ].filter(Boolean).join(", ");
       lines.push(`- ${r.case}. ${r.caseTitle} (img ${r.n}): expected ${want}; ${got}: ${yes(optionsOk(r))}`);
     }
