@@ -23,9 +23,9 @@ Keep the cases in step with the other page of the pair. Each heading's
 at the top shows the full source.
 :::
 
-```{python}
-#| include: false
+The cases below share this setup:
 
+```{python}
 import matplotlib.pyplot as plt
 import numpy as np
 

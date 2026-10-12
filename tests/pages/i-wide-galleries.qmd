@@ -24,9 +24,9 @@ Left/Right pan (or, on a tall strip, do nothing) rather than switch, and
 that the previous and next buttons switch.
 :::
 
-```{r}
-#| include: false
+The cases below draw with these helpers:
 
+```{r}
 # A collage: `n` panels side by side, like a wide patchwork figure.
 collage <- function(n = 12) {
   set.seed(1)

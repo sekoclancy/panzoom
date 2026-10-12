@@ -28,9 +28,9 @@ device, and `agg_webp` needs `units = "in"` because knitr passes sizes in
 inches.
 :::
 
-```{r}
-#| include: false
+The cases below draw with this helper (`ragg` writes the webp files):
 
+```{r}
 library(ragg)
 
 # A collage: `n` panels side by side, like a wide patchwork figure.

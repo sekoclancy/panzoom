@@ -32,9 +32,9 @@ Headings carry what the browser test checks, as on the other pages:
 `expect-format` (`svg`: the viewer got a vector image).
 :::
 
-```{python}
-#| include: false
+The cases below share this setup and helper:
 
+```{python}
 import matplotlib.pyplot as plt
 import numpy as np
 

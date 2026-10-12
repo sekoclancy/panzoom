@@ -50,9 +50,9 @@ link to something on this page. Cases 6 and 7 test the per-cell `caption`
 and `description` options (`expect-caption`).
 :::
 
-```{r}
-#| include: false
+The cases below draw with this helper:
 
+```{r}
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
   plot(x, sin(k * x), type = "l", lwd = 2, col = hcl.colors(4)[k],

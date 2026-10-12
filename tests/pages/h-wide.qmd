@@ -33,9 +33,9 @@ already is the whole image). The first single collage and
 image shown whole also get the focal point and containment checks.
 :::
 
-```{r}
-#| include: false
+The cases below draw with these helpers:
 
+```{r}
 # A collage: `n` panels side by side, like a wide patchwork figure.
 collage <- function(n = 12) {
   set.seed(1)
