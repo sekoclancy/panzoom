@@ -5,15 +5,15 @@
 A [Quarto](https://quarto.org) filter extension for HTML formats that opens
 figures in a full-screen pan/zoom viewer, built on
 [Panzoom](https://github.com/timmywil/panzoom): scroll (or trackpad pinch)
-to zoom toward the cursor, drag or <kbd>Shift</kbd>+scroll to pan,
-double-click or <kbd>0</kbd> to reset, <kbd>+</kbd>/<kbd>-</kbd> to zoom,
-<kbd>Esc</kbd> or a background click to close. The image stays on screen:
+to zoom toward the cursor, drag or Shift+scroll to pan, double-click or
+the 0 key to reset, the + and - keys to zoom, Esc or a background click to
+close. The image stays on screen:
 panning stops at its edges, with a small bounce (or, when dragging, a
 stretch that springs back) to show you've reached one.
 
-It works from the keyboard too: marked images can be reached with
-<kbd>Tab</kbd> and opened with <kbd>Enter</kbd> or <kbd>Space</kbd>, the
-arrow keys pan, and closing returns focus to the image.
+It works from the keyboard too: marked images can be reached with Tab and
+opened with Enter or Space, the arrow keys pan, and closing returns focus
+to the image.
 
 It attempts to match, and extend, the feature set of Quarto's built-in
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
@@ -23,15 +23,15 @@ It attempts to match, and extend, the feature set of Quarto's built-in
 - **Zoom:** scroll or pinch toward the cursor, in steps up to `max-zoom`,
   instead of one click between fit and real size (which the lightbox turns
   off on screens 768 px wide or less).
-- **Pan:** drag, arrow keys or <kbd>Shift</kbd>+scroll at any zoom; the
-  image stops at its edges with a bounce.
+- **Pan:** drag, arrow keys or Shift+scroll at any zoom; the image stops
+  at its edges with a bounce.
 - **Captions:** math, citations and cross-references are rendered (the
   lightbox shows raw TeX and `[@key]`); a subfigure shows its own caption
   with the parent figure's caption below.
 - **Very wide or tall figures:** open at screen height (or width), at the
   spot you clicked.
-- **Galleries:** <kbd>←</kbd>/<kbd>→</kbd> pan an image larger than the
-  screen; <kbd>PageUp</kbd>/<kbd>PageDown</kbd> change image.
+- **Galleries:** ← and → change image, or pan one larger than the screen;
+  the on-screen ‹ › buttons always change image.
 - **Layouts:** figures in Quarto layouts (`layout-ncol`, `layout-nrow`,
   layout divs) open one at a time; subfigures form a gallery.
 - **Linked images:** an image inside a link keeps its link.
@@ -48,6 +48,13 @@ It attempts to match, and extend, the feature set of Quarto's built-in
 - **No internet needed:** the viewer and the Panzoom library it uses
   are bundled; only math needs a connection, unless it is embedded (see
   [Self-contained and offline documents](#self-contained-and-offline-documents)).
+
+Not offered (Quarto's lightbox has these):
+
+- **Caption position:** the caption and description are always below the
+  image; there is no `desc-position` (top, left, right).
+- **Opening effects:** the viewer opens and closes at once, with no fade
+  or zoom animation; there is no `effect`.
 
 ## Installation
 
@@ -169,8 +176,7 @@ plot(pressure)
 ````
 
 Images in the same group form a gallery: step through them with the
-on-screen ‹ › buttons, <kbd>PageUp</kbd>/<kbd>PageDown</kbd>,
-<kbd>←</kbd>/<kbd>→</kbd> or a horizontal swipe (the last two pan instead
+on-screen ‹ › buttons, ←/→ or a horizontal swipe (the last two pan instead
 while the image is wider than the screen). Groups work like Quarto's
 lightbox:
 
@@ -193,9 +199,8 @@ plot(pressure, log = "y")
 With `fit: auto`, the viewer opens most images whole. A strip, at least 3
 times wider than tall, that would show less than a quarter of the screen
 tall, such as a collage of many panels (`fig-width: 100`, `fig-height: 5`),
-opens filling the screen height instead; drag or use
-<kbd>←</kbd>/<kbd>→</kbd> to move along it. A strip at least 3 times taller
-than wide, that would show less than a quarter of the screen wide, opens
+opens filling the screen height instead; drag or use ←/→ to move along
+it. A strip at least 3 times taller than wide, that would show less than a quarter of the screen wide, opens
 filling the screen width, at its top. Ordinary photos and plots, portrait
 or landscape, always open whole, even on a very wide screen where a portrait
 photo is narrower than a quarter of it. No image is enlarged past
@@ -204,9 +209,8 @@ at its own size, and scrolling still zooms it in, up to `max-zoom`.
 
 **Focal point.** Where you click a strip on the page is its focal point:
 click panel 12 of a 20-panel collage and the viewer opens with panel 12 in
-the middle of the screen (or flush with the end, near either end).
-<kbd>0</kbd> and double-click return to it. Opened from the keyboard, a
-strip starts at its left end (or top). Ordinary images open whole wherever
+the middle of the screen (or flush with the end, near either end). The 0
+key and double-click return to it. Opened from the keyboard, a strip starts at its left end (or top). Ordinary images open whole wherever
 you click. Zooming out still shows the whole figure.
 
 Override it per figure with `fit: contain` (always open whole), `fit:
@@ -224,13 +228,12 @@ for (i in 1:12) plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i))
 ```
 ````
 
-<kbd>Shift</kbd>+scroll (or a sideways trackpad swipe) pans along the
-direction the figure extends past the screen: sideways for a collage, up and
-down for a tall figure, sideways when zoomed in both ways.
+Shift+scroll (or a sideways trackpad swipe) pans along the direction the
+figure extends past the screen: sideways for a collage, up and down for a
+tall figure, sideways when zoomed in both ways.
 
-In a gallery, <kbd>←</kbd>/<kbd>→</kbd> and swipes pan an image that is
-larger than the screen (or do nothing, if it fits sideways); use
-<kbd>PageUp</kbd>/<kbd>PageDown</kbd> or the on-screen ‹ › buttons to
+In a gallery, ←/→ and swipes pan an image that is larger than the screen
+(or do nothing, if it fits sideways); use the on-screen ‹ › buttons to
 change images.
 
 ### Without JavaScript

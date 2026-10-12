@@ -379,7 +379,7 @@ compared with the hidden math element panzoom adds for descriptions.
 **Network.** The report lists requests to other machines (CDNs) and any
 request that failed (`N FAILED REQUESTS`). On a gallery of images that open wider than
 the screen, the test also checks that `→` pans along the image and
-`PageDown` switches to the next one, and on a gallery of tall strips that
+the next button switches to the next one, and on a gallery of tall strips that
 `→` neither switches nor moves the strip (`large galleries ok`).
 
 **Zoom anchor.** In each of the five wheel steps (Anchor px), the image
@@ -402,8 +402,9 @@ image shown whole, arrow keys and a drag must not move it
 (`containment ok`). In galleries, `←` on the first image must do nothing.
 
 **Gallery navigation.** On the first image that opens whole as `1 / N` in a
-panzoom gallery, the test steps forward and back with `PageDown`/`PageUp`,
-`→`/`←`, the next/previous buttons and a swipe, checks that `→` pans
+panzoom gallery, the test checks that `PageDown`/`PageUp` don't change
+image, steps forward and back with `→`/`←`, the next/previous buttons and
+a swipe, checks that `→` pans
 instead when zoomed in, and that "previous" is disabled on the first image
 (no `loop`).
 

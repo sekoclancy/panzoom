@@ -131,9 +131,6 @@ local function mark_all(el, attrs)
   })
 end
 
--- Reads a cell's `#| panzoom:` option. Quarto passes it as an attribute:
--- "true"/"false", or JSON for the nested form. Returns false to opt the cell
--- out, otherwise true plus the per-image data attributes for its options.
 -- Reads the `#| panzoom: { ... }` attribute. It looks like JSON, but
 -- knitr/Quarto (1.9) write string values unescaped: a description with a
 -- quote or a backslash (`$\theta$`) is invalid JSON, or decodes to the
@@ -192,6 +189,9 @@ local function drop_option(el, key)
   if k then el.attributes[k] = nil end
 end
 
+-- Reads a cell's `#| panzoom:` option. Quarto passes it as an attribute:
+-- "true"/"false", or JSON for the nested form. Returns false to opt the cell
+-- out, otherwise true plus the per-image data attributes for its options.
 local function cell_option(el)
   local value = el.attributes["panzoom"]
   if value == nil then
@@ -205,20 +205,10 @@ local function cell_option(el)
   local attrs = {}
   if value:sub(1, 1) == "{" then
     local cfg = parse_options(value)
-    if cfg["max-zoom"] ~= nil then
-      attrs["data-panzoom-max-zoom"] = tostring(cfg["max-zoom"])
-    end
-    if cfg.hint ~= nil then
-      attrs["data-panzoom-hint"] = tostring(cfg.hint)
-    end
-    if cfg.caption ~= nil then
-      attrs["data-panzoom-caption"] = tostring(cfg.caption)
-    end
-    if cfg.group ~= nil then
-      attrs["data-panzoom-group"] = tostring(cfg.group)
-    end
-    if cfg.fit ~= nil then
-      attrs["data-panzoom-fit"] = tostring(cfg.fit)
+    for _, key in ipairs({ "max-zoom", "hint", "caption", "group", "fit" }) do
+      if cfg[key] ~= nil then
+        attrs["data-panzoom-" .. key] = tostring(cfg[key])
+      end
     end
     if type(cfg.description) == "string" and cfg.description ~= "" then
       attrs["data-panzoom-desc"] = add_description(cfg.description)
@@ -265,6 +255,15 @@ local function setup(meta)
   )
 end
 
+-- In auto mode, marks an image alone in a paragraph.
+local function block_image(block)
+  local img = sole_image(block)
+  if img and match_auto and not wants_lightbox(img) then
+    mark(img)
+    return block, false
+  end
+end
+
 -- Handles a `.panzoom` container (div, code cell, or a labeled figure that
 -- Quarto has already turned into a FloatRefTarget). In auto mode, also stops
 -- at cells that carry their own `#| lightbox:` setting.
@@ -294,20 +293,8 @@ return {
     Div = container,
     FloatRefTarget = container,
     Link = keep_link,
-    Para = function(para)
-      local img = sole_image(para)
-      if img and match_auto and not wants_lightbox(img) then
-        mark(img)
-        return para, false
-      end
-    end,
-    Plain = function(plain)
-      local img = sole_image(plain)
-      if img and match_auto and not wants_lightbox(img) then
-        mark(img)
-        return plain, false
-      end
-    end,
+    Para = block_image,
+    Plain = block_image,
     Figure = function(fig)
       if match_auto then
         return fig:walk({

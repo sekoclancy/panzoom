@@ -522,12 +522,12 @@ async function checkGallery(page, handle) {
     out.leftAtStartStill = (await counter()) === first && !!(t0 && tl) &&
       Math.abs(tl.x - t0.x) < 0.5 && Math.abs(tl.y - t0.y) < 0.5;
   }
+  // PageUp/PageDown don't change image (they are swallowed, as all keys).
   await page.keyboard.press("PageDown");
-  await settle(page);
-  out.pageDown = await counter();
   await page.keyboard.press("PageUp");
   await settle(page);
-  out.pageUpBack = (await counter()) === first;
+  out.pageKeysStill = (await counter()) === first;
+  const next = `${+m[1] + 1} / ${n}`;
   await page.keyboard.press("ArrowRight");
   await settle(page);
   out.arrowNext = await counter();
@@ -547,7 +547,7 @@ async function checkGallery(page, handle) {
   await page.mouse.up();
   await settle(page);
   out.swipeNext = await counter();
-  await page.keyboard.press("PageUp");
+  await page.click(".panzoom-prev");
   await settle(page);
   // Zoomed in, Right pans instead of switching.
   await page.keyboard.press("+");
@@ -562,9 +562,9 @@ async function checkGallery(page, handle) {
     ? await page.$eval(".panzoom-prev", (b) => b.disabled) : null;
   if (out.loop && out.prevDisabledAtStart !== null) out.prevDisabledAtStart = !out.prevDisabledAtStart;
   await closeAll(page);
-  out.ok = out.pageDown === `${+m[1] + 1} / ${n}` && out.pageUpBack &&
-    out.arrowNext === out.pageDown && out.arrowBack && out.buttonNext === out.pageDown &&
-    out.swipeNext === out.pageDown && out.zoomedArrowPans && out.prevDisabledAtStart !== false &&
+  out.ok = out.pageKeysStill &&
+    out.arrowNext === next && out.arrowBack && out.buttonNext === next &&
+    out.swipeNext === next && out.zoomedArrowPans && out.prevDisabledAtStart !== false &&
     out.leftAtStartStill;
   return out;
 }
@@ -745,7 +745,7 @@ async function checkPage(browser, base, file) {
   // Galleries of images that open larger than the screen: Left/Right pan
   // (a collage, opened at screen height) or do nothing (a tall strip,
   // opened at screen width: nowhere to go sideways), never switch;
-  // PageDown switches.
+  // the next button switches.
   const overflowGalleries = [];
   for (const fit of ["height", "width"]) {
     const first = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === fit &&
@@ -757,7 +757,7 @@ async function checkPage(browser, base, file) {
     await settle(page);
     const t1 = await viewerTransform(page);
     const s1 = await state(page);
-    await page.keyboard.press("PageDown");
+    await page.click(".panzoom-next");
     await settle(page);
     const s2 = await state(page);
     const moved = t0 && t1 ? t0.x - t1.x : null;
@@ -765,10 +765,10 @@ async function checkPage(browser, base, file) {
       fit, image: `${first.case}. ${first.caseTitle} (img ${first.n})`,
       arrowKeepsImage: s1.counter === first.counter,
       arrowMoves: fit === "height" ? moved > 1 : Math.abs(moved) < 0.5,
-      pageDownSwitches: s2.counter === first.counter.replace(/^1 /, "2 "),
+      nextSwitches: s2.counter === first.counter.replace(/^1 /, "2 "),
       nextFit: s2.fit,
     };
-    g.ok = g.arrowKeepsImage && g.arrowMoves && g.pageDownSwitches;
+    g.ok = g.arrowKeepsImage && g.arrowMoves && g.nextSwitches;
     overflowGalleries.push(g);
     await closeAll(page);
   }
@@ -1099,7 +1099,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
     const yes = (v) => (v ? "yes" : "**NO**");
     lines.push(
       `Opened on case ${gallery.image}: ${gallery.start}.`, "",
-      `- PageDown: ${gallery.pageDown}; PageUp goes back: ${yes(gallery.pageUpBack)}`,
+      `- PageDown/PageUp leave the image as it is: ${yes(gallery.pageKeysStill)}`,
       `- Right arrow (not zoomed): ${gallery.arrowNext}; Left goes back: ${yes(gallery.arrowBack)}`,
       `- Next button: ${gallery.buttonNext}`,
       `- Swipe left: ${gallery.swipeNext}`,
@@ -1115,7 +1115,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `Opened on case ${g.image} (opens at screen ${g.fit}).`, "",
       `- Right arrow keeps the same image: ${yes(g.arrowKeepsImage)}`,
       `- ...and ${g.fit === "height" ? "pans along it" : "doesn't move it (nowhere to go sideways)"}: ${yes(g.arrowMoves)}`,
-      `- PageDown switches to the next image: ${yes(g.pageDownSwitches)} (opens: ${g.nextFit})`, "");
+      `- The next button switches to the next image: ${yes(g.nextSwitches)} (opens: ${g.nextFit})`, "");
   }
   const optioned = results.filter(hasOptionChecks);
   if (optioned.length) {

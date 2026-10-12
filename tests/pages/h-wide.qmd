@@ -176,8 +176,8 @@ wave(4)
 
 ## 10. Gallery of two collages {#c10 expect-fit="height"}
 
-Left/Right and drags pan along the collage; PageDown, PageUp and the
-buttons switch collages.
+Left/Right and drags pan along the collage; the ‹ › buttons switch
+collages.
 
 ```{r}
 #| panzoom:
@@ -196,7 +196,7 @@ collage(15)
 
 Each strip opens at screen width and extends downwards: Left/Right do
 nothing (there is nowhere to go sideways) rather than switch strips;
-PageDown, PageUp and the buttons switch.
+the ‹ › buttons switch.
 
 ```{r}
 #| panzoom:

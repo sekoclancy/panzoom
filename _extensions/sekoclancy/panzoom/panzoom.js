@@ -16,9 +16,9 @@
   Quarto rendered with the page (citations, cross-references, math).
 
   Galleries: images with the same group are stepped through with the
-  prev/next buttons, PageUp/PageDown, Left/Right or a horizontal swipe
-  (the last two only while the image fits the screen; when it is larger in
-  either direction, they pan).
+  prev/next buttons, Left/Right or a horizontal swipe (the last two only
+  while the image fits the screen; when it is larger in either direction,
+  they pan).
 
   Panning: drag, arrow keys, Shift+wheel or sideways trackpad scrolling
   (along the direction the image extends past the screen; sideways if
@@ -99,15 +99,15 @@
     return cap ? cap.innerHTML.trim() : "";
   }
 
-  // The image's caption: its figure's caption and, for a subfigure, the
-  // parent figure's caption as a second line ("(a) Sub A" over "Figure 1:
-  // ..."), since the subfigure caption alone has no figure number.
   // The image's description, as rendered on the page (see the header).
   function descriptionOf(el) {
     var d = el.dataset.panzoomDesc && document.getElementById(el.dataset.panzoomDesc);
     return d ? d.innerHTML : "";
   }
 
+  // The image's caption: its figure's caption and, for a subfigure, the
+  // parent figure's caption as a second line ("(a) Sub A" over "Figure 1:
+  // ..."), since the subfigure caption alone has no figure number.
   function captionOf(el) {
     var fig = el.closest("figure");
     var html = figcaption(fig);
@@ -346,13 +346,7 @@
       x: whole || w * s > a.w ? null : fx - (fx - (w / 2 + s0 * p.x)) * f,
       y: whole || h * s > a.h ? null : fy - (fy - (h / 2 + s0 * p.y)) * f
     };
-    pz.zoom(s, {
-      animate: false,
-      focal: {
-        x: (px - box.left - img.naturalWidth / 2) * s,
-        y: (py - box.top - img.naturalHeight / 2) * s
-      }
-    });
+    pz.zoom(s, { animate: false, focal: { x: (fx - w / 2) * s, y: (fy - h / 2) * s } });
   }
 
   // Back to the opening view, without Panzoom's default animation: it
@@ -488,7 +482,7 @@
       '<div class="panzoom-description"></div>' +
       '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
       'double-click to reset &middot; Esc to close' +
-      '<span class="panzoom-hint-gallery"> &middot; PageUp/PageDown for other images</span></div>' +
+      '<span class="panzoom-hint-gallery"> &middot; &lsaquo; &rsaquo; for other images</span></div>' +
       '</div>';
     document.body.appendChild(overlay);
     img = overlay.querySelector("img");
@@ -584,8 +578,6 @@
     }
     else if (e.key === "Escape") close();
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
-    else if (e.key === "PageUp") step(-1);
-    else if (e.key === "PageDown") step(1);
     // Left/Right pan while the image is larger than the screen (doing
     // nothing if it fits sideways); otherwise they switch gallery images
     // (doing nothing at either end without `loop`).
