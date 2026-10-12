@@ -1,5 +1,5 @@
 ---
-title: "A: Quarto lightbox reference"
+title: "A: R lightbox reference"
 format:
   html:
     code-tools: true

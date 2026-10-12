@@ -121,10 +121,12 @@ would open nothing. For a whole code cell, use `#| panzoom: false`.
 
 ## Test pages
 
+### R (knitr)
+
 The same 12 lightbox situations (galleries, subfigures, captions with math,
 images in links, margin images, ...) rendered four ways:
 
-- [A: Quarto lightbox reference](tests/pages/a-lightbox.html): Quarto's
+- [A: R lightbox reference](tests/pages/a-lightbox.html): Quarto's
   built-in lightbox alone.
 - [B: marked images + lightbox](tests/pages/b-panzoom-lightbox.html): the
   usual setup, `lightbox: true` with some images marked for panzoom.
@@ -143,5 +145,14 @@ And pages of their own:
   and cross-references, and the `caption` and `description` options.
 - [H: wide and tall figures](tests/pages/h-wide.html): 25 × 2 inch
   collages, tall strips and other shapes, and the `fit` option.
-- [J: wide figures in galleries and layouts](tests/pages/j-wide-galleries.html):
+- [I: wide figures in galleries and layouts](tests/pages/i-wide-galleries.html):
   the same collages and strips in galleries and layouts.
+
+### Python (Jupyter)
+
+- [J: Python lightbox reference](tests/pages/j-jupyter-lightbox.html):
+  Quarto's lightbox alone on Python cells.
+- [K: Python, `panzoom: true` with the lightbox](tests/pages/k-jupyter-auto.html):
+  the same cells, with panzoom taking the images the lightbox would.
+- [L: Python cell options and svg](tests/pages/l-jupyter.html): the R
+  pages' cell options on matplotlib figures, and svg output.

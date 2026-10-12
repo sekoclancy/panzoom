@@ -41,7 +41,7 @@ The same 12 cases are rendered four ways:
 | [c-panzoom-auto](pages/c-panzoom-auto.qmd) | **`panzoom: match: auto`.** Same markup as A; panzoom picks the images itself. | on, auto | `match: auto` |
 | [d-panzoom-selective](pages/d-panzoom-selective.qmd) | **Explicit marking.** Images marked with `.panzoom` or `#\| classes: panzoom`. | on | none |
 
-Six more pages have cases of their own:
+Five more pages have cases of their own:
 
 | Page | What it is | panzoom filter | Lightbox |
 |---|---|---|---|
@@ -49,8 +49,15 @@ Six more pages have cases of their own:
 | [f-options](pages/f-options.qmd) | **Options.** `.nopanzoom`, `#\| panzoom: false`, and the per-cell `hint` and `max-zoom` options; a gallery with the page's `loop: true`. Each case states what to expect. | on | none |
 | [g-captions](pages/g-captions.qmd) | **Captions and descriptions.** Citations and cross-references in captions and descriptions, including a work cited only in a description (quarto-cli#10709's case); the per-cell `caption` and `description` options. | on | none |
 | [h-wide](pages/h-wide.qmd) | **Wide and tall figures.** Very wide collages (25 × 2 in), tall strips (4 × 15 in), a poster, a portrait photo and a small plot, each on its own; the `fit` option. | on | none |
-| [i-jupyter](pages/i-jupyter.qmd) | **The Jupyter engine.** matplotlib figures with the same cell options as the R pages (`panzoom: true`, nested options, a description, subfigures, a group, a strip, `panzoom: false`, `classes`, `lightbox`, svg output): Jupyter passes nested options to the filter differently from knitr. Needs the Python venv (see [One-time setup](#one-time-setup)). | on | none |
-| [j-wide-galleries](pages/j-wide-galleries.qmd) | **Wide figures in galleries and layouts.** H's collages and tall strips as galleries, subfigures and in a layout div: how each opens, and that ←/→ pan rather than switch. Split from H to keep the test run short. | on | none |
+| [i-wide-galleries](pages/i-wide-galleries.qmd) | **Wide figures in galleries and layouts.** H's collages and tall strips as galleries, subfigures and in a layout div: how each opens, and that ←/→ pan rather than switch. Split from H to keep the test run short. | on | none |
+
+Three pages use Python (the Jupyter engine). J and K compare panzoom with Quarto's lightbox, as A and C do for knitr, with the same eight Python and markdown cases each; unlike A and C, each case states what should open (`expect-open`), so the comparison is checked. L has cases of its own:
+
+| Page | What it is | panzoom filter | Lightbox |
+|---|---|---|---|
+| [j-jupyter-lightbox](pages/j-jupyter-lightbox.qmd) | **Reference.** What Quarto's lightbox does with each case. Also shows that, with Jupyter, it ignores nested `#\| lightbox:` options (case 4: no group, no description). | off | `true` |
+| [k-jupyter-auto](pages/k-jupyter-auto.qmd) | **`panzoom: true`.** Same cases as J; panzoom takes what the lightbox takes, except cells that ask for the lightbox. Keep in step with J. | on, `true` | `true` |
+| [l-jupyter](pages/l-jupyter.qmd) | **The Jupyter engine.** matplotlib figures with the same cell options as the R pages (`panzoom: true`, nested options, a description, subfigures, a group, a strip, `panzoom: false`, `classes`, `lightbox`, svg output): Jupyter passes nested options to the filter differently from knitr. Needs the Python venv (see [One-time setup](#one-time-setup)). | on | none |
 
 Two more sets of pages are **not part of the website** (see
 [Standalone pages](#standalone-pages)):
@@ -114,9 +121,10 @@ panzoom/                   the repo: a Quarto project (_quarto.yml)
     │                      _extensions -> ../../_extensions (symlink)
     ├── pages/             a-lightbox.qmd, b-panzoom-lightbox.qmd, c-panzoom-auto.qmd,
     │                      d-panzoom-selective.qmd, e-formats.qmd, f-options.qmd,
-    │                      g-captions.qmd, h-wide.qmd, i-jupyter.qmd,
-    │                      j-wide-galleries.qmd
-    ├── requirements.txt   Python packages for page I (matplotlib, Jupyter)
+    │                      g-captions.qmd, h-wide.qmd, l-jupyter.qmd,
+    │                      i-wide-galleries.qmd, j-jupyter-lightbox.qmd,
+    │                      k-jupyter-auto.qmd
+    ├── requirements.txt   Python packages for pages J, K and L (matplotlib, Jupyter)
     ├── node_modules/      installed by npm (git-ignored)
     └── results/           test output (git-ignored)
 ```
@@ -128,7 +136,7 @@ the root [_extensions/](../_extensions/) folder, and `quarto render` puts them i
 ## One-time setup
 
 You need Quarto (1.9 or later), R with the ragg package (the pages have R
-chunks; page E uses ragg for webp), Python 3 (page I runs Python), and
+chunks; page E uses ragg for webp), Python 3 (pages J, K and L run Python), and
 Node.js.
 
 ```bash
@@ -140,7 +148,7 @@ cd tests
 npm install
 cd ..
 
-# 3. Python packages for page I, in a venv at the repo root (git-ignored);
+# 3. Python packages for pages J, K and L, in a venv at the repo root (git-ignored);
 #    the project's _environment file points Quarto at it (QUARTO_PYTHON)
 python3 -m venv .venv
 .venv/bin/pip install -r tests/requirements.txt
@@ -376,7 +384,7 @@ with that point in the middle (`focal point ok`).
 
 **Options.** Cases with `expect-open` (`panzoom` or `nothing`),
 `expect-caption="none"`, `expect-hint` (`shown` or `hidden`),
-`expect-max-zoom` (pages F and G) or `expect-format="svg"` (page I) are
+`expect-max-zoom` (pages F and G) or `expect-format="svg"` (page L) are
 checked: what opened, whether the caption and hint show in the viewer,
 where zooming in stops, and that the viewer got a vector image (`options ok`).
 With the page's `loop: true`, the gallery check expects `←` on the first

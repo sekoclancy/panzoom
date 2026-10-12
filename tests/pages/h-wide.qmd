@@ -17,7 +17,7 @@ very wide collages (25 × 2 inches), tall strips, a poster, a portrait
 photo and a small plot, each on its own, and the `fit` option. All are
 png; other formats are on [E: image formats](e-formats.html), and the same
 shapes in galleries and layouts on
-[J: wide figures in galleries and layouts](j-wide-galleries.html).
+[I: wide figures in galleries and layouts](i-wide-galleries.html).
 
 By default (`fit: auto`) very wide figures open at screen height from the
 left end (or where they were clicked), very tall ones at screen width from

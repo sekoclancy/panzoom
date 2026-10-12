@@ -33,10 +33,10 @@ website:
     left:
       - href: index.qmd
         text: Example
-      - text: Test pages
+      - text: R tests
         menu:
           - href: tests/pages/a-lightbox.qmd
-            text: "A: Quarto lightbox reference"
+            text: "A: R lightbox reference"
           - href: tests/pages/b-panzoom-lightbox.qmd
             text: "B: marked images + lightbox"
           - href: tests/pages/c-panzoom-auto.qmd
@@ -51,10 +51,16 @@ website:
             text: "G: captions and descriptions"
           - href: tests/pages/h-wide.qmd
             text: "H: wide and tall figures"
-          - href: tests/pages/j-wide-galleries.qmd
-            text: "J: wide figures in galleries and layouts"
-          - href: tests/pages/i-jupyter.qmd
-            text: "I: Jupyter (Python) figures"
+          - href: tests/pages/i-wide-galleries.qmd
+            text: "I: wide figures in galleries and layouts"
+      - text: Python tests
+        menu:
+          - href: tests/pages/j-jupyter-lightbox.qmd
+            text: "J: Python lightbox reference"
+          - href: tests/pages/k-jupyter-auto.qmd
+            text: "K: Python, panzoom: true with the lightbox"
+          - href: tests/pages/l-jupyter.qmd
+            text: "L: Python cell options and svg"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom

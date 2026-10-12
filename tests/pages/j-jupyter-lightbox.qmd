@@ -1,0 +1,113 @@
+---
+title: "J: Python lightbox reference"
+engine: jupyter
+jupyter: python3
+format:
+  html:
+    code-tools: true
+lightbox: true
+---
+
+::: {.callout-note}
+## About this page
+
+This page is the **reference for page K**: Python (Jupyter) cells
+rendered with Quarto's built-in lightbox only, `lightbox: true`, and no
+panzoom filter. It shows what Quarto does with each case; K renders the
+same cases with `panzoom: true` as well. The knitr equivalents are pages A
+and C.
+
+Keep the cases in step with the other page of the pair. Each heading's
+`expect-open` says what should open. Jupyter leaves the `panzoom` and
+`lightbox` options out of the code shown on the page; the **Code** button
+at the top shows the full source.
+:::
+
+```{python}
+#| include: false
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 4 * np.pi, 400)
+```
+
+## 1. Figure with a caption {#c1 expect-open="glightbox"}
+
+```{python}
+#| fig-cap: "A sine wave."
+
+plt.plot(x, np.sin(x))
+plt.show()
+```
+
+## 2. Plot without a caption {#c2 expect-open="glightbox"}
+
+```{python}
+plt.plot(x, np.cos(x))
+plt.show()
+```
+
+## 3. Subfigures (fig-subcap, layout-ncol) {#c3 expect-open="glightbox"}
+
+```{python}
+#| label: fig-pair
+#| fig-cap: "Two waves."
+#| fig-subcap: ["Sine", "Cosine"]
+#| layout-ncol: 2
+
+plt.plot(x, np.sin(2 * x))
+plt.show()
+plt.plot(x, np.cos(2 * x))
+plt.show()
+```
+
+## 4. Nested `lightbox:` options {#c4 expect-open="glightbox"}
+
+A cell's own `lightbox:` options ask for Quarto's lightbox, so panzoom
+leaves the cell to it, as with knitr (page C, cases 6 and 7). With
+Jupyter, Quarto's lightbox ignores the options themselves: the group and
+description don't reach it.
+
+```{python}
+#| lightbox:
+#|   group: waves
+#|   description: "Ignored by Quarto's lightbox with Jupyter."
+
+plt.plot(x, np.sin(3 * x))
+plt.show()
+plt.plot(x, np.cos(3 * x))
+plt.show()
+```
+
+## 5. `lightbox: false` {#c5 expect-open="nothing"}
+
+Opted out of the lightbox; panzoom leaves an explicit lightbox setting
+alone too.
+
+```{python}
+#| lightbox: false
+
+plt.plot(x, np.sin(4 * x))
+plt.show()
+```
+
+## 6. `panzoom: true` on a cell {#c6 expect-open="glightbox"}
+
+Without the panzoom filter (K) the option means nothing, and the
+document's `lightbox: true` takes the plot.
+
+```{python}
+#| panzoom: true
+
+plt.plot(x, np.cos(4 * x))
+plt.show()
+```
+
+## 7. Markdown image alone in a paragraph {#c7 expect-open="glightbox"}
+
+![Chilmark.](../../images/mv-0.jpg)
+
+## 8. Markdown image with `.nolightbox` {#c8 expect-open="nothing"}
+
+![Opted out.](../../images/mv-1.jpg){.nolightbox}
