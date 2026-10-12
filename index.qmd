@@ -57,12 +57,12 @@ filled.contour(volcano, color.palette = terrain.colors)
 ```{r}
 #| include: false
 
-png("volcano.png", width = 1600, height = 1100)
+png("images/volcano.png", width = 1600, height = 1100)
 persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
 invisible(dev.off())
 ```
 
-![A markdown image with the `.panzoom` class.](volcano.png){.panzoom}
+![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom}
 
 ## Captions and galleries
 
@@ -111,12 +111,12 @@ would open nothing. For a whole code cell, use `#| panzoom: false`.
 
 ```markdown
 ::: {.panzoom}
-![Opted out.](volcano.png){.nopanzoom width=40%}
+![Opted out.](images/volcano.png){.nopanzoom width=40%}
 :::
 ```
 
 ::: {.panzoom}
-![Opted out.](volcano.png){.nopanzoom width=40%}
+![Opted out.](images/volcano.png){.nopanzoom width=40%}
 :::
 
 ## Test pages
