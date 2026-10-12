@@ -32,8 +32,8 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Example
-      - text: R tests
+        text: panzoom
+      - text: R
         menu:
           - href: tests/pages/a-lightbox.qmd
             text: "A: R lightbox reference"
@@ -53,7 +53,7 @@ website:
             text: "H: wide and tall figures"
           - href: tests/pages/i-wide-galleries.qmd
             text: "I: wide figures in galleries and layouts"
-      - text: Python tests
+      - text: Python
         menu:
           - href: tests/pages/j-jupyter-lightbox.qmd
             text: "J: Python lightbox reference"
