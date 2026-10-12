@@ -1239,6 +1239,7 @@ async function checkStill(base, file) {
   }
 }
 
+let failedPages = 0;
 for (const file of PAGES) {
   if (!file.startsWith(ROOT + path.sep) || !fs.existsSync(file)) {
     console.error(`${file} is not a file inside ${ROOT}; render first (quarto render, node standalone.mjs).`);
@@ -1317,10 +1318,18 @@ try {
         `- Closing brings the scrollbar back: ${yes(still.restored)}`, ""].join("\n"));
     }
     const wide = extra.join(", ");
+    // A check that failed is in capitals (FIT FAILED, CAPTION OVERLAP, ...).
+    // Console errors and failed requests are reported, not counted: offline
+    // runs and some math pages have them on purpose.
+    if ([iso, gal, fit, ...extra].some((t) => /[A-Z]{3,}/.test(t) && !/FAILED REQUESTS/.test(t))) failedPages++;
     console.log(`${name}: ${results.length} images, ${JSON.stringify(counts)}, ` +
       `${errors.length} console errors, ${iso}, ${gal}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
   }
 } finally {
   await Promise.all(browsers.map((b) => b.close()));
   server.close();
+}
+if (failedPages) {
+  console.log(`${failedPages} of ${PAGES.length} pages FAILED`);
+  process.exitCode = 1;
 }
