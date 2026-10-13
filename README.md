@@ -8,44 +8,33 @@ full-screen viewer to zoom and pan, built on
 
 ## Features
 
-- Zoom toward the cursor with scroll or pinch, up to `max-zoom`
-- Pan by dragging, with the arrow keys or Shift+scroll
+panzoom covers what Quarto's
+[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html)
+does and adds to it. The two work in one document: images panzoom marks
+are left out of the lightbox, and `#| panzoom:` overrides `#| lightbox:`.
+
+- Zoom toward the cursor with scroll or pinch, in steps up to `max-zoom`
+  (the lightbox only toggles between fit and real size, and not at all on
+  screens 768 px wide or less)
+- Pan at any zoom, by dragging, with the arrow keys or Shift+scroll
 - [Captions and descriptions](#captions-and-descriptions) with math,
-  citations and cross-references
+  citations and cross-references (the lightbox shows raw TeX and `[@key]`)
 - [Galleries and layouts](#galleries-and-layouts) from groups, subfigures
   and figure layouts
 - [Wide and tall figures](#wide-and-tall-figures) open readable, at the
   spot you clicked
-- Every figure (`panzoom: true`) or only marked ones
-- Code cells and markdown images
-- Keyboard access, and light and dark themes
-- [Math](#math) with any `html-math-method`, offline too
-- [Self-contained documents](#self-contained-documents)
-- Works [without JavaScript](#without-javascript)
+- Applies to every figure (`panzoom: true`) or only the images you mark,
+  in code cells or markdown
+- Keyboard access, and Quarto's light and dark themes
+- [Math](#math) in any `html-math-method`, offline too; works in
+  [self-contained documents](#self-contained-documents) and
+  [without JavaScript](#without-javascript)
 
-## Compared with Quarto's lightbox
+Not offered (the lightbox has these):
 
-panzoom aims to match the
-[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html)'s
-features and go further. It adds:
-
-- **Zoom** toward the cursor in steps up to `max-zoom`, instead of one
-  click between fit and real size (which the lightbox turns off on screens
-  768 px wide or less), and panning at any zoom.
-- **Captions** with math, citations and cross-references rendered; the
-  lightbox shows raw TeX and `[@key]`.
-- **Wide and tall figures** that open readable, at the spot you clicked.
-- **Linked images** that keep their link.
-
-It doesn't offer:
-
-- **Caption position:** the caption and description are always below the
-  image; there is no `desc-position` (top, left, right).
-- **Opening effects:** the viewer opens and closes at once, with no fade
-  or zoom animation; there is no `effect`.
-
-The two can be used in one document: images panzoom marks are left out of
-the lightbox, and `#| panzoom:` overrides `#| lightbox:` options.
+- Caption position: the caption is always below the image (no
+  `desc-position`)
+- Opening effects: the viewer opens and closes at once (no `effect`)
 
 ## Installation
 
