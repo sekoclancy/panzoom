@@ -11,13 +11,18 @@ a.panzoom-link:focus-visible { outline: none; }
 
 /* As Quarto's lightbox: the page shows through a dark overlay, and the
    caption takes the page's own colours, so it follows a light or dark
-   theme. The fallbacks are Bootstrap's light defaults. */
-.panzoom-overlay {
+   theme. The fallbacks are Bootstrap's light defaults. The variables are
+   for restyling the viewer; :where() gives them no specificity, so any
+   rule that sets them wins, whatever order the stylesheets load in. */
+:where(.panzoom-overlay) {
+  --panzoom-backdrop: rgba(0, 0, 0, 0.7);
   --panzoom-bg: var(--quarto-body-bg, #fff);
   --panzoom-fg: var(--quarto-body-color, #212529);
   --panzoom-link: var(--bs-link-color, #0d6efd);
+}
+.panzoom-overlay {
   position: fixed; inset: 0; z-index: 100000; display: none;
-  overflow: hidden; background: rgba(0, 0, 0, 0.7);
+  overflow: hidden; background: var(--panzoom-backdrop);
   touch-action: none; user-select: none; -webkit-user-select: none;
 }
 .panzoom-overlay.open { display: block; }

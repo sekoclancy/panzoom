@@ -1,0 +1,37 @@
+---
+title: "Restyling the viewer"
+subtitle: "panzoom: css-class"
+filters:
+  - panzoom
+panzoom:
+  css-class: dark-viewer
+include-in-header:
+  text: |
+    <style>
+    .dark-viewer {
+      --panzoom-backdrop: #000;
+      --panzoom-bg: #000;
+      --panzoom-fg: #eee;
+    }
+    </style>
+    <script>
+    // Quarto writes this after panzoom's stylesheet; move it before, where
+    // only the variables' zero specificity lets it win.
+    document.head.prepend(document.currentScript.previousElementSibling);
+    </script>
+---
+
+::: {.callout-note}
+## About this page
+
+This page **tests `css-class` and the viewer's CSS variables**:
+`css-class: dark-viewer` adds that class to the viewer, next to
+`panzoom-overlay`, and a rule on `.dark-viewer` sets the backdrop and the
+caption band to black. The rule is moved to the top of the page's
+header, before panzoom's stylesheet, so it also checks that the
+variables' defaults never win over it. It is not part of the website.
+:::
+
+## 1. Marked image {#c1 expect-class="dark-viewer" expect-overlay="rgb(0, 0, 0)" expect-band="rgb(0, 0, 0)"}
+
+![A marked image, on a black backdrop with a black caption band.](../../images/mv-0.jpg){.panzoom}

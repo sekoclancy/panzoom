@@ -46,7 +46,8 @@
 
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
   the document's `panzoom:` metadata): { maxZoom: 4, hint: true,
-  caption: true, loop: false, fit: "auto" }. A cell's `#| panzoom:` options
+  caption: true, loop: false, fit: "auto", cssClass: "" }; cssClass is
+  added to the viewer's classes, for styling it. A cell's `#| panzoom:` options
   override maxZoom, hint, caption and fit per image, via
   `data-panzoom-max-zoom`, `data-panzoom-hint`, `data-panzoom-caption` and
   `data-panzoom-fit` on the <img>.
@@ -466,6 +467,8 @@
   function build() {
     overlay = document.createElement("div");
     overlay.className = "panzoom-overlay";
+    var extra = (window.PANZOOM_OPTIONS || {}).cssClass;
+    if (extra) overlay.className += " " + extra;
     overlay.setAttribute("role", "dialog");
     overlay.setAttribute("aria-modal", "true");
     overlay.setAttribute("aria-label", "Image viewer");

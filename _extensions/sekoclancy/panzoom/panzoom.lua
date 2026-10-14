@@ -15,7 +15,7 @@
 --
 -- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`) become
 -- `data-panzoom-*` attributes on the cell's images; document options
--- (`max-zoom`, `hint`, `caption`, `loop`, `fit`) go to
+-- (`max-zoom`, `hint`, `caption`, `loop`, `fit`, `css-class`) go to
 -- `window.PANZOOM_OPTIONS`.
 -- Captions and galleries are built in panzoom.js from the rendered page.
 -- A description (`description` on an image or cell) becomes a hidden
@@ -252,6 +252,11 @@ local function setup(meta)
     end
     if cfg.fit ~= nil then
       options.fit = pandoc.utils.stringify(cfg.fit)
+    end
+    -- As Quarto's `lightbox: css-class:`, but added to the viewer as
+    -- written, next to `panzoom-overlay` (GLightbox replaces its skin).
+    if cfg["css-class"] ~= nil then
+      options.cssClass = pandoc.utils.stringify(cfg["css-class"])
     end
   end
 

@@ -180,6 +180,9 @@ async function state(page) {
         fit: img.dataset.fit || "",
         format: img.classList.contains("panzoom-vector") ? "svg" : "bitmap",
         hintShown: !pz.querySelector(".panzoom-hint").hidden,
+        overlayClass: pz.className,
+        overlayBg: getComputedStyle(pz).backgroundColor,
+        bandBg: getComputedStyle(pz.querySelector(".panzoom-footer")).backgroundColor,
         // Whether the image opened larger than the screen, sideways (overX)
         // or up and down (overY): a strip to scroll along.
         overX: r.width > pz.clientWidth + 1,
@@ -670,12 +673,15 @@ async function checkPage(browser, base, file) {
           shiftScroll: sec.dataset.shiftScroll || null,
           expectScale: sec.dataset.expectScale ? +sec.dataset.expectScale : null,
           expectZoomOut: sec.dataset.expectZoomOut || null,
-          // Option checks (pages F and G): on the image itself, or on its case.
+          // Option checks (pages F and G, css-class): on the image itself, or on its case.
           expectOpen: img.dataset.expectOpen || sec.dataset.expectOpen || null,
           expectCaption: sec.dataset.expectCaption || null,
           expectHint: sec.dataset.expectHint || null,
           expectMaxZoom: sec.dataset.expectMaxZoom ? +sec.dataset.expectMaxZoom : null,
           expectFormat: sec.dataset.expectFormat || null,
+          expectClass: sec.dataset.expectClass || null,
+          expectOverlay: sec.dataset.expectOverlay || null,
+          expectBand: sec.dataset.expectBand || null,
           expectReferences: "expectReferences" in sec.dataset,
           hasDescription: !!img.dataset.panzoomDesc,
           descriptionHasMath: !!document.getElementById(img.dataset.panzoomDesc || "-")?.querySelector(".math, math"),
@@ -1008,7 +1014,7 @@ function zoomOutOk(r) {
   return !r.expectZoomOut || (!!r.zoomOut && r.zoomOut.room === (r.expectZoomOut === "yes"));
 }
 
-// Option expectations (pages F and G): what opened, whether the caption and hint
+// Option expectations (pages F and G, css-class): what opened, whether the caption and hint
 // show, and where zooming stops.
 function optionsOk(r) {
   if (r.expectOpen && r.opened !== r.expectOpen) return false;
@@ -1016,10 +1022,14 @@ function optionsOk(r) {
   if (r.expectHint && r.hintShown !== (r.expectHint === "shown")) return false;
   if (r.expectMaxZoom && !(Math.abs((r.maxScaleReached ?? 0) - r.expectMaxZoom) < 0.01)) return false;
   if (r.expectFormat && r.format !== r.expectFormat) return false;
+  if (r.expectClass && !(r.overlayClass || "").split(/\s+/).includes(r.expectClass)) return false;
+  if (r.expectOverlay && r.overlayBg !== r.expectOverlay) return false;
+  if (r.expectBand && r.bandBg !== r.expectBand) return false;
   return true;
 }
 function hasOptionChecks(r) {
-  return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom || r.expectFormat);
+  return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom || r.expectFormat ||
+    r.expectClass || r.expectOverlay || r.expectBand);
 }
 
 // An image with a description shows it in the viewer.
@@ -1135,6 +1145,9 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         r.expectHint && `hint ${r.expectHint}`,
         r.expectMaxZoom && `zoom stops at ${r.expectMaxZoom}`,
         r.expectFormat && `as ${r.expectFormat}`,
+        r.expectClass && `viewer class ${r.expectClass}`,
+        r.expectOverlay && `backdrop ${r.expectOverlay}`,
+        r.expectBand && `caption band ${r.expectBand}`,
       ].filter(Boolean).join(", ");
       const got = [
         `opened ${r.opened}`,
@@ -1142,6 +1155,9 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         r.expectHint && `hint ${r.hintShown ? "shown" : "hidden"}`,
         r.expectMaxZoom && `zoom stopped at ${r.maxScaleReached === null || r.maxScaleReached === undefined ? "?" : +r.maxScaleReached.toFixed(3)}`,
         r.expectFormat && `as ${r.format}`,
+        r.expectClass && `classes "${r.overlayClass}"`,
+        r.expectOverlay && `backdrop ${r.overlayBg}`,
+        r.expectBand && `caption band ${r.bandBg}`,
       ].filter(Boolean).join(", ");
       lines.push(`- ${r.case}. ${r.caseTitle} (img ${r.n}): expected ${want}; ${got}: ${yes(optionsOk(r))}`);
     }

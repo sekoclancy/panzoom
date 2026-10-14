@@ -14,6 +14,7 @@
     self-contained-lightbox.qmd  self-contained.qmd with Quarto's lightbox
     math-<method>.qmd         each html-math-method
     switch-<value>.qmd        panzoom: true, auto or false
+    css-class.qmd             css-class and the viewer's CSS variables
 
   Usage, from tests/:
     node standalone.mjs              # render

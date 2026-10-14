@@ -27,7 +27,8 @@ are left out of the lightbox, and `#| panzoom:` overrides `#| lightbox:`.
   spot you clicked
 - Applies to every figure (`panzoom: true`) or only the images you mark,
   in code cells or markdown
-- Keyboard access, and Quarto's light and dark themes
+- Keyboard access, and Quarto's light and dark themes; [restyle it](#styling)
+  with CSS
 - [Math](#math) in any `html-math-method`, offline too; works in
   [self-contained documents](#self-contained-documents) and
   [without JavaScript](#without-javascript)
@@ -89,6 +90,7 @@ panzoom:
   caption: true   # boolean: show the figure caption in the viewer (default true)
   loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
   fit: auto       # auto, contain, height or width (default auto, see Wide and tall figures)
+  css-class: my-viewer  # a class added to the viewer, for styling it (see Styling)
 ```
 
 A code cell can set `max-zoom`, `hint`, `caption` and `fit` for its own
@@ -277,6 +279,52 @@ embed-resources: true
 
 A click on a marked image opens the image file itself, as with Quarto's
 lightbox. (In a self-contained file that link leads nowhere, for both.)
+
+### Styling
+
+The viewer takes the page's light or dark theme. To change its colours,
+set these variables in your own CSS (a `css:` file, or the theme's
+`.scss`):
+
+| Variable | Sets | Default |
+|---|---|---|
+| `--panzoom-backdrop` | The layer over the page | `rgba(0, 0, 0, 0.7)` |
+| `--panzoom-bg` | The caption band | The page's background |
+| `--panzoom-fg` | Caption, description and hint | The page's text colour |
+| `--panzoom-link` | Links in captions | The page's link colour |
+
+For every viewer on the site:
+
+```css
+.panzoom-overlay { --panzoom-backdrop: #000; }
+```
+
+For some documents only, give the viewer a class with `css-class`, as with
+Quarto's lightbox, and write the rule for that class:
+
+```yaml
+panzoom:
+  css-class: dark-viewer
+```
+
+```css
+.dark-viewer { --panzoom-backdrop: #000; --panzoom-bg: #000; --panzoom-fg: #eee; }
+```
+
+Unlike Quarto's lightbox, which turns `css-class: foo` into the class
+`glightbox-foo` and drops its default style, panzoom adds the class as
+written, next to its own.
+
+To set `css-class` (or any option) for a whole site, put it under
+`format: html:` in `_quarto.yml`. A top-level `panzoom:` there is replaced,
+not merged, by a page's own `panzoom:` options, as Quarto's `lightbox:` is.
+
+The viewer's parts have their own classes, for anything the variables
+don't cover: `.panzoom-footer` (the caption band), `.panzoom-caption`,
+`.panzoom-description`, `.panzoom-hint`, `.panzoom-close`, `.panzoom-prev`,
+`.panzoom-next` and `.panzoom-counter`. Start the selector with the
+viewer's class, as in `.dark-viewer .panzoom-caption`, so it wins over
+panzoom's own rules.
 
 ## Development
 
