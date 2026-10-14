@@ -163,6 +163,23 @@ run, since offline runs and some math pages have them on purpose. Each page gets
 `report.md` (a row per image, then each check in detail), a screenshot per
 click (`cNN-M.png`: image M of case NN) and `results.json`.
 
+For example, page B's summary line:
+
+```
+b-panzoom-lightbox: 18 images, {"panzoom":12,"glightbox":4,"nothing":1,"navigation":1}, 0 console errors, isolation ok, keyboard ok, gallery ok, fit n/a, backdrop ok, caption clear ok, fast zoom ok, zoom anchor ok, options ok, descriptions ok, references ok, math ok (page: typeset), 10 external requests, containment ok, page still ok -> results/b-panzoom-lightbox/report.md
+```
+
+and the first row of its `report.md`, for case 1 (the Classes and Wrapper
+columns left out):
+
+| Case | Img | Opened | Details | Zoom× | Anchor px | Drag px | Reset | Esc | Bg click |
+|---|---|---|---|---|---|---|---|---|---|
+| 1. Single image, markdown description, desc-position left | 1 | **panzoom** | caption: Beach in Chilmark; 1 / 1; 2400×1364 px, shown 1216×691, on rgb(255, 255, 255); opens: contain; description: Chilmark has some of the best beaches. credit: Chilmark Beach; hint hidden | 4.48 | 3 | 170 | yes | yes | yes |
+
+with its screenshot, `c01-1.png`, taken once the viewer opened:
+
+![The viewer open on case 1 of page B: the beach photo over the dimmed page, with its caption and description below.](images/example-screenshot.jpg)
+
 A–D aren't checked against each other automatically: A shows what Quarto
 does, and the note at the top of B, C and D lists where they should differ.
 A few cases open nothing on purpose: case 8 (`lightbox: false`), case 9 in
