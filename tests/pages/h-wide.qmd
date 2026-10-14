@@ -1,5 +1,6 @@
 ---
 title: "H: wide and tall figures"
+description: "25 × 2 inch collages, tall strips and other shapes, and the `fit` option."
 format:
   html:
     code-tools: true

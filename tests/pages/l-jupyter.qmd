@@ -1,5 +1,6 @@
 ---
 title: "L: Python cell options and svg"
+description: "The R pages' cell options on matplotlib figures, and svg output."
 engine: jupyter
 jupyter: python3
 format:

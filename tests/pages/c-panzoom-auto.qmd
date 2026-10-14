@@ -1,5 +1,6 @@
 ---
 title: "C: panzoom match: auto"
+description: "A's markup with `match: auto`: panzoom picks the images itself."
 format:
   html:
     code-tools: true

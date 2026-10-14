@@ -1,5 +1,6 @@
 ---
 title: "A: R lightbox reference"
+description: "Quarto's built-in lightbox alone, on the 12 cases B–D share."
 format:
   html:
     code-tools: true

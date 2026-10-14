@@ -1,5 +1,6 @@
 ---
 title: "J: Python lightbox reference"
+description: "Quarto's lightbox alone on Python cells."
 engine: jupyter
 jupyter: python3
 format:

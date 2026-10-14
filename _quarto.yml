@@ -3,6 +3,7 @@ project:
   output-dir: docs
   render:
     - index.qmd
+    - references.qmd
     - tests/pages/*.qmd
   preview:
     host: 127.0.0.1
@@ -33,6 +34,8 @@ website:
     left:
       - href: index.qmd
         text: panzoom
+      - href: references.qmd
+        text: References
       - text: R
         menu:
           - href: tests/pages/a-lightbox.qmd

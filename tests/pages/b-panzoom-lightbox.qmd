@@ -1,5 +1,6 @@
 ---
 title: "B: panzoom on marked images, Quarto's lightbox on for the rest"
+description: "The usual setup: `lightbox: true`, with some images marked for panzoom."
 format:
   html:
     code-tools: true

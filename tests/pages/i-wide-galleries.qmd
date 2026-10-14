@@ -1,5 +1,6 @@
 ---
 title: "I: wide figures in galleries and layouts"
+description: "The same collages and strips in galleries and layouts."
 format:
   html:
     code-tools: true

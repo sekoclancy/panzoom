@@ -1,0 +1,50 @@
+---
+title: "References"
+description: "Each example starts with a note on what it should do."
+listing:
+  - id: r-pages
+    contents:
+      - tests/pages/a-lightbox.qmd
+      - tests/pages/b-panzoom-lightbox.qmd
+      - tests/pages/c-panzoom-auto.qmd
+      - tests/pages/d-panzoom-selective.qmd
+      - tests/pages/e-formats.qmd
+      - tests/pages/f-options.qmd
+      - tests/pages/g-captions.qmd
+      - tests/pages/h-wide.qmd
+      - tests/pages/i-wide-galleries.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Page
+      description: What it shows
+    sort: filename
+    sort-ui: false
+    filter-ui: false
+  - id: python-pages
+    contents:
+      - tests/pages/j-jupyter-lightbox.qmd
+      - tests/pages/k-jupyter-auto.qmd
+      - tests/pages/l-jupyter.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Page
+      description: What it shows
+    sort: filename
+    sort-ui: false
+    filter-ui: false
+---
+
+## R
+
+A–D render the same 12 lightbox situations (galleries, subfigures, captions
+with math, images in links, margin images, ...) four ways.
+
+::: {#r-pages}
+:::
+
+## Python
+
+::: {#python-pages}
+:::

@@ -1,5 +1,6 @@
 ---
 title: "K: Python, panzoom: true with the lightbox"
+description: "J's cells with `panzoom: true`, taking the images the lightbox would."
 engine: jupyter
 jupyter: python3
 format:

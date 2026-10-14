@@ -2,6 +2,8 @@
 
 **Live demo:** <https://sekoclancy.github.io/panzoom/>
 
+**References:** <https://sekoclancy.github.io/panzoom/references.html>
+
 A [Quarto](https://quarto.org) extension that opens figures in a
 full-screen viewer to zoom and pan, built on
 [Panzoom](https://github.com/timmywil/panzoom).
