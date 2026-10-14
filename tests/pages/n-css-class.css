@@ -1,11 +1,14 @@
 /* Used by n-css-class.qmd, which shows this file: keep the two in step. */
-.slate-viewer {
-  --panzoom-backdrop: rgba(20, 24, 33, 0.95);
-  --panzoom-bg: #141821;
-  --panzoom-fg: #e6e6e6;
-  --panzoom-link: #8ab4f8;
+.plum-viewer {
+  --panzoom-backdrop: rgba(60, 20, 70, 0.9);
+  --panzoom-bg: #2d1236;
+  --panzoom-fg: #f3e8f7;
+  --panzoom-link: #ffb3d9;
 }
-.slate-viewer .panzoom-caption {
-  font-size: 1.1rem;
+.plum-viewer .panzoom-footer {
+  border-top: 4px solid #d58cf0;
+}
+.plum-viewer .panzoom-caption {
+  font-size: 1.15rem;
   font-style: italic;
 }

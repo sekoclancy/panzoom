@@ -8,15 +8,16 @@ format:
 filters:
   - panzoom
 panzoom:
-  css-class: slate-viewer
+  css-class: plum-viewer
 ---
 
 ::: {.callout-note}
 ## About this page
 
 This page **styles the viewer from a stylesheet**. `css-class:
-slate-viewer` adds that class to the viewer, and `n-css-class.css`, set
-with `css:` in the header, uses it to set the viewer's colours and to make
+plum-viewer` adds that class to the viewer, and `n-css-class.css`, set
+with `css:` in the header, uses it to set the viewer's colours (plum, with
+pink links), to draw a line along the top of the caption band and to make
 the caption larger and italic. Only pages with that class get the rules,
 so the other pages of the site keep the default viewer.
 :::
@@ -24,27 +25,30 @@ so the other pages of the site keep the default viewer.
 The stylesheet:
 
 ```css
-.slate-viewer {
-  --panzoom-backdrop: rgba(20, 24, 33, 0.95);
-  --panzoom-bg: #141821;
-  --panzoom-fg: #e6e6e6;
-  --panzoom-link: #8ab4f8;
+.plum-viewer {
+  --panzoom-backdrop: rgba(60, 20, 70, 0.9);
+  --panzoom-bg: #2d1236;
+  --panzoom-fg: #f3e8f7;
+  --panzoom-link: #ffb3d9;
 }
-.slate-viewer .panzoom-caption {
-  font-size: 1.1rem;
+.plum-viewer .panzoom-footer {
+  border-top: 4px solid #d58cf0;
+}
+.plum-viewer .panzoom-caption {
+  font-size: 1.15rem;
   font-style: italic;
 }
 ```
 
-## 1. Marked image {#c1 expect-open="panzoom" expect-class="slate-viewer" expect-overlay="rgba(20, 24, 33, 0.95)" expect-band="rgb(20, 24, 33)"}
+## 1. Marked image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 ![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-2.jpg){.panzoom}
 
-## 2. Code cell {#c2 expect-open="panzoom" expect-class="slate-viewer" expect-overlay="rgba(20, 24, 33, 0.95)" expect-band="rgb(20, 24, 33)"}
+## 2. Code cell {#c2 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 ```{r}
 #| panzoom: true
-#| fig-cap: "A code cell's plot, on the same slate viewer."
+#| fig-cap: "A code cell's plot, on the same plum viewer."
 
 plot(pressure, type = "b", pch = 19)
 ```
