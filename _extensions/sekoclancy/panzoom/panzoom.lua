@@ -600,7 +600,14 @@ return {
     Link = function() return nil, false end,
     Image = function(img)
       if has(img.classes, "panzoom") and not has(img.classes, "nopanzoom") and not off then
-        return pandoc.Link({ img }, img.src, "", pandoc.Attr("", { "panzoom-link" })), false
+        local link = pandoc.Link({ img }, img.src, "", pandoc.Attr("", { "panzoom-link" }))
+        -- An image with no alt text would leave the link with no name for
+        -- screen readers.
+        local alt = img.attributes["alt"]
+        if #img.caption == 0 and (alt == nil or alt == "") then
+          link.attributes["aria-label"] = "Open image"
+        end
+        return link, false
       end
     end,
   },

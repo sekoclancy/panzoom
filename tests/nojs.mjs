@@ -11,6 +11,8 @@
   not `.nopanzoom`):
     - it sits in an `a.panzoom-link` whose href is the image's own file,
       or in an author's link, which is left alone;
+    - panzoom's link has a name for screen readers (the image's alt text,
+      or `aria-label` when it has none);
     - clicking it (pages served over http) goes to that file, or to the
       author's link target.
   Quarto's lightbox images (`a.lightbox`) are counted for comparison.
@@ -101,6 +103,8 @@ async function checkPage(browser, base, file) {
           wrapper: !a ? "none" : a.classList.contains("panzoom-link") ? "panzoom-link"
             : a.classList.contains("lightbox") ? "lightbox" : "author",
           href: a ? a.href : null,
+          // What a screen reader announces for the link.
+          named: !!a && !!(a.getAttribute("aria-label") || a.textContent.trim() || img.getAttribute("alt")),
         };
       }),
     };
@@ -115,6 +119,7 @@ async function checkPage(browser, base, file) {
       continue;
     }
     if (img.wrapper === "none") r.problems.push("no link");
+    else if (img.wrapper === "panzoom-link" && !img.named) r.problems.push("link has no accessible name");
     else if (img.wrapper === "lightbox") r.problems.push("in a lightbox link");
     else if (img.wrapper === "panzoom-link" && img.href !== img.src) {
       // Self-contained: the image is a data: URL, the link its source file,
