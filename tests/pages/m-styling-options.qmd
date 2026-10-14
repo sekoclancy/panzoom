@@ -1,0 +1,37 @@
+---
+title: "M: colour options"
+description: "A dark viewer from the `backdrop`, `caption-background`, `caption-color` and `link-color` options, with no CSS."
+format:
+  html:
+    code-tools: true
+filters:
+  - panzoom
+panzoom:
+  backdrop: "#000"
+  caption-background: "#000"
+  caption-color: "#eee"
+  link-color: "#9cf"
+---
+
+::: {.callout-note}
+## About this page
+
+This page **sets the viewer's colours from its YAML header**, with no CSS:
+a black backdrop and caption band, light caption text and light blue
+links. Every image on the page gets them. Each option sets one of the
+viewer's CSS variables; [N: css-class and CSS](n-css-class.html) sets the
+same variables from a stylesheet, for some pages only.
+:::
+
+## 1. Marked image {#c1 expect-open="panzoom" expect-overlay="rgb(0, 0, 0)" expect-band="rgb(0, 0, 0)"}
+
+![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-0.jpg){.panzoom}
+
+## 2. Code cell {#c2 expect-open="panzoom" expect-overlay="rgb(0, 0, 0)" expect-band="rgb(0, 0, 0)"}
+
+```{r}
+#| panzoom: true
+#| fig-cap: "A code cell's plot, on the same dark viewer."
+
+plot(pressure, type = "b", pch = 19)
+```

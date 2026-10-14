@@ -16,7 +16,9 @@
 -- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`) become
 -- `data-panzoom-*` attributes on the cell's images; document options
 -- (`max-zoom`, `hint`, `caption`, `loop`, `fit`, `css-class`) go to
--- `window.PANZOOM_OPTIONS`.
+-- `window.PANZOOM_OPTIONS`; the colour options (`backdrop`,
+-- `caption-background`, `caption-color`, `link-color`) set the viewer's
+-- CSS variables in a <style> rule.
 -- Captions and galleries are built in panzoom.js from the rendered page.
 -- A description (`description` on an image or cell) becomes a hidden
 -- `.panzoom-desc` div after the image's top-level block, which Quarto
@@ -38,6 +40,32 @@
 if not quarto.doc.is_format("html:js") then return {} end
 
 local match_auto = false
+
+-- Colour options and the CSS variables they set (see panzoom.css).
+local COLOURS = {
+  { "backdrop", "--panzoom-backdrop" },
+  { "caption-background", "--panzoom-bg" },
+  { "caption-color", "--panzoom-fg" },
+  { "link-color", "--panzoom-link" },
+}
+
+-- The colour options as CSS declarations. A value that could end the rule
+-- (`;`, `{`, `}`, `<`) is left out, with a warning.
+local function colour_rules(cfg)
+  local decls = {}
+  for _, pair in ipairs(COLOURS) do
+    local key, var = pair[1], pair[2]
+    if cfg[key] ~= nil then
+      local value = pandoc.utils.stringify(cfg[key])
+      if value:find("[;{}<]") then
+        quarto.log.warning("panzoom: ignoring " .. key .. ": " .. value .. " (not a CSS colour)")
+      else
+        table.insert(decls, var .. ": " .. value .. ";")
+      end
+    end
+  end
+  return decls
+end
 -- `panzoom: false`: the filter does nothing at all.
 local off = false
 -- Descriptions waiting to be placed (see the last filter pass): id -> text.
@@ -228,6 +256,7 @@ end
 -- or a map of options, where `match: auto` means every block image.
 local function setup(meta)
   local options = {}
+  local colours = {}
   local cfg = meta.panzoom
   if cfg == false then
     off = true
@@ -258,6 +287,7 @@ local function setup(meta)
     if cfg["css-class"] ~= nil then
       options.cssClass = pandoc.utils.stringify(cfg["css-class"])
     end
+    colours = colour_rules(cfg)
   end
 
   quarto.doc.add_html_dependency({
@@ -271,6 +301,10 @@ local function setup(meta)
     "in-header",
     "<script>window.PANZOOM_OPTIONS = " .. quarto.json.encode(options) .. ";</script>"
   )
+  if #colours > 0 then
+    quarto.doc.include_text("in-header",
+      "<style>.panzoom-overlay { " .. table.concat(colours, " ") .. " }</style>")
+  end
 end
 
 -- In auto mode, marks an image alone in a paragraph.

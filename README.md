@@ -91,6 +91,10 @@ panzoom:
   loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
   fit: auto       # auto, contain, height or width (default auto, see Wide and tall figures)
   css-class: my-viewer  # a class added to the viewer, for styling it (see Styling)
+  backdrop: "#000"            # colours (see Styling): the layer over the page,
+  caption-background: "#000"  # the caption band,
+  caption-color: "#eee"       # caption, description and hint text,
+  link-color: "#9cf"          # and links in captions (defaults follow the theme)
 ```
 
 A code cell can set `max-zoom`, `hint`, `caption` and `fit` for its own
@@ -283,17 +287,25 @@ lightbox. (In a self-contained file that link leads nowhere, for both.)
 ### Styling
 
 The viewer takes the page's light or dark theme. To change its colours,
-set these variables in your own CSS (a `css:` file, or the theme's
-`.scss`):
+use the options, or set the CSS variables they stand for in your own CSS
+(a `css:` file, or the theme's `.scss`):
 
-| Variable | Sets | Default |
-|---|---|---|
-| `--panzoom-backdrop` | The layer over the page | `rgba(0, 0, 0, 0.7)` |
-| `--panzoom-bg` | The caption band | The page's background |
-| `--panzoom-fg` | Caption, description and hint | The page's text colour |
-| `--panzoom-link` | Links in captions | The page's link colour |
+| Option | CSS variable | Sets | Default |
+|---|---|---|---|
+| `backdrop` | `--panzoom-backdrop` | The layer over the page | `rgba(0, 0, 0, 0.7)` |
+| `caption-background` | `--panzoom-bg` | The caption band | The page's background |
+| `caption-color` | `--panzoom-fg` | Caption, description and hint | The page's text colour |
+| `link-color` | `--panzoom-link` | Links in captions | The page's link colour |
 
-For every viewer on the site:
+```yaml
+panzoom:
+  backdrop: "#000"
+  caption-background: "#000"
+  caption-color: "#eee"
+```
+
+The live demo's [Styling pages](https://sekoclancy.github.io/panzoom/reference.html#styling)
+show both ways. In CSS, for every viewer on the site:
 
 ```css
 .panzoom-overlay { --panzoom-backdrop: #000; }

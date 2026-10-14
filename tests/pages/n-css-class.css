@@ -1,0 +1,11 @@
+/* Used by n-css-class.qmd, which shows this file: keep the two in step. */
+.slate-viewer {
+  --panzoom-backdrop: rgba(20, 24, 33, 0.95);
+  --panzoom-bg: #141821;
+  --panzoom-fg: #e6e6e6;
+  --panzoom-link: #8ab4f8;
+}
+.slate-viewer .panzoom-caption {
+  font-size: 1.1rem;
+  font-style: italic;
+}

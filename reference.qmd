@@ -34,6 +34,18 @@ listing:
     sort: filename
     sort-ui: false
     filter-ui: false
+  - id: styling-pages
+    contents:
+      - tests/pages/m-styling-options.qmd
+      - tests/pages/n-css-class.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Page
+      description: What it shows
+    sort: filename
+    sort-ui: false
+    filter-ui: false
 ---
 
 ## R
@@ -47,4 +59,9 @@ with math, images in links, margin images, ...) four ways.
 ## Python
 
 ::: {#python-pages}
+:::
+
+## Styling
+
+::: {#styling-pages}
 :::

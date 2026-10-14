@@ -1,0 +1,50 @@
+---
+title: "N: css-class and CSS"
+description: "`css-class` and a stylesheet: the viewer's CSS variables, and a rule on one of its parts."
+format:
+  html:
+    code-tools: true
+    css: n-css-class.css
+filters:
+  - panzoom
+panzoom:
+  css-class: slate-viewer
+---
+
+::: {.callout-note}
+## About this page
+
+This page **styles the viewer from a stylesheet**. `css-class:
+slate-viewer` adds that class to the viewer, and `n-css-class.css`, set
+with `css:` in the header, uses it to set the viewer's colours and to make
+the caption larger and italic. Only pages with that class get the rules,
+so the other pages of the site keep the default viewer.
+:::
+
+The stylesheet:
+
+```css
+.slate-viewer {
+  --panzoom-backdrop: rgba(20, 24, 33, 0.95);
+  --panzoom-bg: #141821;
+  --panzoom-fg: #e6e6e6;
+  --panzoom-link: #8ab4f8;
+}
+.slate-viewer .panzoom-caption {
+  font-size: 1.1rem;
+  font-style: italic;
+}
+```
+
+## 1. Marked image {#c1 expect-open="panzoom" expect-class="slate-viewer" expect-overlay="rgba(20, 24, 33, 0.95)" expect-band="rgb(20, 24, 33)"}
+
+![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-2.jpg){.panzoom}
+
+## 2. Code cell {#c2 expect-open="panzoom" expect-class="slate-viewer" expect-overlay="rgba(20, 24, 33, 0.95)" expect-band="rgb(20, 24, 33)"}
+
+```{r}
+#| panzoom: true
+#| fig-cap: "A code cell's plot, on the same slate viewer."
+
+plot(pressure, type = "b", pch = 19)
+```

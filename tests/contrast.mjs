@@ -125,6 +125,15 @@ async function checkPage(browser, base, file, dark) {
       // The caption band in the page's colors (what the viewer shows over
       // the page, not the band's own declared value).
       theme = await page.evaluate(() => {
+        // Pages that restyle the viewer (panzoom's colour options, or their own
+        // --panzoom-* rules) are not expected to follow the theme.
+        const restyled = [...document.styleSheets].some((sheet) => {
+          try {
+            return [...sheet.cssRules].some((r) => r.selectorText && r.selectorText !== ":where(.panzoom-overlay)" &&
+              [...(r.style || [])].some((p) => p.startsWith("--panzoom-")));
+          } catch { return false; }
+        });
+        if (restyled) return "restyled";
         const cs = (sel) => getComputedStyle(document.querySelector(sel));
         const body = cs("body"), band = cs(".panzoom-overlay.open .panzoom-footer");
         const cap = cs(".panzoom-overlay.open .panzoom-caption");
@@ -150,8 +159,9 @@ try {
     const runs = PAGES.map((f) => checkPage(browser, base, f, dark));
     for (const run of runs) {
       const { name, scheme, checked, found, theme } = await run;
-      failed += found.length + (theme?.length ? 1 : 0);
-      const themeNote = theme === null ? "" : theme.length ? `, THEME FAILED (${theme.join("; ")})` : ", theme ok";
+      failed += found.length + (Array.isArray(theme) && theme.length ? 1 : 0);
+      const themeNote = theme === null ? "" : theme === "restyled" ? ", theme n/a (restyled)" :
+        theme.length ? `, THEME FAILED (${theme.join("; ")})` : ", theme ok";
       console.log(`${name} (${scheme}): ${checked.page} text runs on the page, ${checked.viewer} in the viewer${themeNote}, ` +
         (found.length ? `${found.length} LOW CONTRAST` : "ok"));
       for (const g of found.sort((a, b) => a.ratio - b.ratio)) {

@@ -64,6 +64,12 @@ website:
             text: "K: Python, panzoom: true with the lightbox"
           - href: tests/pages/l-jupyter.qmd
             text: "L: Python cell options and svg"
+      - text: Styling
+        menu:
+          - href: tests/pages/m-styling-options.qmd
+            text: "M: colour options"
+          - href: tests/pages/n-css-class.qmd
+            text: "N: css-class and CSS"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom
