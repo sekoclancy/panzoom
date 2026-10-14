@@ -38,11 +38,15 @@ collage <- function(n = 12) {
 }
 
 # A tall strip: `n` rows stacked, like a tall patchwork figure.
+# Each seed gets its own palette (without its lightest end), so different
+# strips look different.
 strip <- function(seed = 2, n = 8) {
   set.seed(seed)
+  palette <- c("Viridis", "Plasma", "Zissou 1", "Dark 3", "Sunset", "Cividis", "Dynamic", "Inferno")[(seed - 2) %% 8 + 1]
   par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))
   for (i in seq_len(n)) {
-    plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+    plot(cumsum(rnorm(100)), type = "l", main = paste0("Strip ", seed, ", row ", i),
+         xlab = "", ylab = "", col = hcl.colors(n + 2, palette)[i], lwd = 2)
   }
 }
 ```
@@ -80,11 +84,8 @@ the previous and next buttons switch.
 #|   - "First strip."
 #|   - "Second strip."
 
-for (k in 1:2) {
-  set.seed(10 + k)
-  par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
-  for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Strip", k, "row", i), xlab = "", ylab = "")
-}
+strip(seed = 8, n = 8)
+strip(seed = 9, n = 8)
 ```
 
 ## 3. Two collages stacked (layout-nrow: 2) {#c3 expect-fit="height"}

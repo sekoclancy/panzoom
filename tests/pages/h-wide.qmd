@@ -67,18 +67,24 @@ collage <- function(n = 12) {
 }
 
 # A tall strip: `n` rows stacked, like a tall patchwork figure.
+# Each seed gets its own palette (without its lightest end), so different
+# strips look different.
 strip <- function(seed = 2, n = 8) {
   set.seed(seed)
+  palette <- c("Viridis", "Plasma", "Zissou 1", "Dark 3", "Sunset", "Cividis", "Dynamic", "Inferno")[(seed - 2) %% 8 + 1]
   par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))
   for (i in seq_len(n)) {
-    plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+    plot(cumsum(rnorm(100)), type = "l", main = paste0("Strip ", seed, ", row ", i),
+         xlab = "", ylab = "", col = hcl.colors(n + 2, palette)[i], lwd = 2)
   }
 }
 
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
-  plot(x, sin(k * x), type = "l", lwd = 2, col = hcl.colors(4)[k],
-       main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
+  col <- hcl.colors(4, "Dark 3")[k]
+  plot(x, sin(k * x), type = "n", main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
+  polygon(c(x, rev(x)), c(sin(k * x), rep(0, length(x))), col = adjustcolor(col, 0.35), border = NA)
+  lines(x, sin(k * x), lwd = 2, col = col)
 }
 ```
 
@@ -128,9 +134,7 @@ collage(n = 4)
 #| fig-height: 15
 #| fig-cap: "A tall strip of 8 panels."
 
-set.seed(2)
-par(mfrow = c(8, 1), mar = c(2, 3, 2, 1))
-for (i in 1:8) plot(cumsum(rnorm(100)), type = "l", main = paste("Row", i), xlab = "", ylab = "")
+strip(seed = 2, n = 8)
 ```
 
 ## 5. Large poster (24 × 18 in) {#c5 expect-fit="contain" shift-scroll="zoomed-x"}

@@ -55,8 +55,10 @@ The cases below draw with this helper:
 ```{r}
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
-  plot(x, sin(k * x), type = "l", lwd = 2, col = hcl.colors(4)[k],
-       main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
+  col <- hcl.colors(4, "Dark 3")[k]
+  plot(x, sin(k * x), type = "n", main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
+  polygon(c(x, rev(x)), c(sin(k * x), rep(0, length(x))), col = adjustcolor(col, 0.35), border = NA)
+  lines(x, sin(k * x), lwd = 2, col = col)
 }
 ```
 
