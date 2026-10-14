@@ -15,7 +15,7 @@
 
   Usage: render first (`quarto render` from the repo root, into ../docs/),
   then from tests/:
-    npm test                                                          # checks the test pages
+    npm test                                                          # checks the demo and the test pages
     node browser.mjs ../docs/tests/pages/d-panzoom-selective.html ...   # checks the given pages
     node browser.mjs standalone/_output/*.html                        # pages from standalone.mjs
     node browser.mjs --offline [pages]                                # with no internet access
@@ -52,9 +52,12 @@ const OFFLINE = process.argv.includes("--offline");
 const ARGS = process.argv.slice(2).filter((a) => a !== "--offline");
 const PAGES = ARGS.length
   ? ARGS.map((p) => path.resolve(p))
-  : ["a-lightbox.html", "b-panzoom-lightbox.html", "c-panzoom-auto.html", "d-panzoom-selective.html", "e-formats.html", "f-options.html", "g-captions.html", "h-wide.html", "i-wide-galleries.html", "j-jupyter-lightbox.html", "k-jupyter-auto.html", "l-jupyter.html"]
-      .map((p) => path.join(ROOT, "docs", "tests", "pages", p));
+  : [path.join(ROOT, "docs", "index.html"),
+    ...fs.readdirSync(path.join(ROOT, "docs", "tests", "pages")).filter((f) => f.endsWith(".html")).sort()
+      .map((p) => path.join(ROOT, "docs", "tests", "pages", p))];
 const VIEWPORT = { width: 1280, height: 900 };
+// Windows the opening view (`expect-fit`) is also checked in.
+const FIT_SIZES = [[1440, 780], [1920, 950], [1920, 1080], [2560, 1300]];
 const RESULTS = path.join(HERE, "results", ...(OFFLINE ? ["offline"] : []));
 
 // A self-contained page has no script or stylesheet files of its own
@@ -656,11 +659,15 @@ async function checkPage(browser, base, file) {
   });
 
   // Every image in a numbered case section, tagged so we can find it again.
+  // An unnumbered section counts too if it states an expectation (as the
+  // demo's `## Wide figure {expect-fit="height"}`), numbered by its place
+  // on the page.
   const images = await page.evaluate(() => {
     const out = [];
-    document.querySelectorAll("section.level2").forEach((sec) => {
+    document.querySelectorAll("section.level2").forEach((sec, k) => {
       const h = sec.querySelector("h2");
-      const m = h && /^(\d+)\.\s*(.*)$/.exec(h.textContent.trim());
+      let m = h && /^(\d+)\.\s*(.*)$/.exec(h.textContent.trim());
+      if (!m && h && Object.keys(sec.dataset).some((d) => d.startsWith("expect"))) m = [null, String(k + 1), h.textContent.trim()];
       if (!m) return;
       // Not webtex's math images.
       [...sec.querySelectorAll("img")].filter((img) => !img.closest(".math")).forEach((img, i) => {
@@ -971,16 +978,20 @@ async function checkPage(browser, base, file) {
     await closeAll(page);
   }
 
-  // The opening view on a wide screen (2560 px): the size rule must still
-  // only pick out strips.
+  // The opening view in other windows: the size rule must give the same
+  // result in each (FIT_SIZES: laptops, a 1080p screen with and without
+  // browser toolbars, and a wide screen).
   const fitCases = results.filter((r) => r.opened === "panzoom" && r.expectFit);
   if (fitCases.length) {
-    await page.setViewport({ width: 2560, height: 1000 });
-    await settle(page);
-    for (const r of fitCases) {
-      await openImage(page, r);
-      r.wideFit = (await state(page)).fit;
-      await closeAll(page);
+    for (const r of fitCases) r.fitBySize = {};
+    for (const [width, height] of FIT_SIZES) {
+      await page.setViewport({ width, height });
+      await settle(page);
+      for (const r of fitCases) {
+        await openImage(page, r);
+        r.fitBySize[`${width}×${height}`] = (await state(page)).fit;
+        await closeAll(page);
+      }
     }
     await page.setViewport(VIEWPORT);
     await settle(page);
@@ -1010,8 +1021,13 @@ function scaleOk(r) {
 }
 
 function fitOk(r) {
-  return (!r.expectFit || (r.fit === r.expectFit && (r.wideFit === undefined || r.wideFit === r.expectFit))) &&
+  return (!r.expectFit || (r.fit === r.expectFit && Object.values(r.fitBySize || {}).every((f) => f === r.expectFit))) &&
     zoomOutOk(r);
+}
+
+// The windows where the opening view differs from what's expected.
+function fitMisses(r) {
+  return Object.entries(r.fitBySize || {}).filter(([, f]) => f !== r.expectFit).map(([size, f]) => `${f} at ${size}`);
 }
 
 function zoomOutOk(r) {
@@ -1080,7 +1096,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
     const details = r.opened === "glightbox"
       ? `title: ${r.title || "—"}; desc: ${r.description || "—"}; slides: ${r.slides}`
       : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}; ${r.size}; ` +
-        `opens: ${r.fit || "—"}` + (r.wideFit !== undefined ? `, ${r.wideFit} at 2560 px` : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}${r.expectZoomOut ? `, zoom-out ${r.expectZoomOut}` : ""}**)`) : "") +
+        `opens: ${r.fit || "—"}` + (r.fitBySize ? (fitMisses(r).length ? `, but ${fitMisses(r).join(", ")}` : `, the same in ${Object.keys(r.fitBySize).length} other windows`) : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}${r.expectZoomOut ? `, zoom-out ${r.expectZoomOut}` : ""}**)`) : "") +
         (r.zoomOut ? `; zooms out from ${+r.zoomOut.open.toFixed(3)} to ${+r.zoomOut.min.toFixed(3)}` : "") +
         (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "") +

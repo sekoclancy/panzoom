@@ -138,14 +138,17 @@ contour(volcano)
 image(volcano)
 ```
 
-## Wide figure
+## Wide figure {expect-fit="height"}
 
 A figure many times wider than tall would be too thin to read if it opened
-whole, so it opens at screen height, at the spot you clicked. Click the
-highlighted panel: the viewer opens right on it.
+whole, so it opens at screen height, at the spot you clicked. panzoom does
+this on its own for very wide figures; `fit: height` makes sure this one
+always does, whatever the window's shape. Click the highlighted panel: the
+viewer opens right on it.
 
 ```{r}
-#| panzoom: true
+#| panzoom:
+#|   fit: height
 #| fig-width: 16
 #| fig-height: 2
 #| fig-cap: "Eight random walks, side by side."
