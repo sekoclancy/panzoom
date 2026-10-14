@@ -673,8 +673,12 @@ async function checkPage(browser, base, file) {
           shiftScroll: sec.dataset.shiftScroll || null,
           expectScale: sec.dataset.expectScale ? +sec.dataset.expectScale : null,
           expectZoomOut: sec.dataset.expectZoomOut || null,
-          // Option checks (pages F and G, css-class): on the image itself, or on its case.
-          expectOpen: img.dataset.expectOpen || sec.dataset.expectOpen || null,
+          // Option checks (pages A-D, F, G, css-class): on the image itself, or on
+          // its case; a case's `expect-open` can list one value per image, in order.
+          expectOpen: img.dataset.expectOpen || (() => {
+            const list = (sec.dataset.expectOpen || "").split(/\s+/).filter(Boolean);
+            return list.length > 1 ? list[i] || null : list[0] || null;
+          })(),
           expectCaption: sec.dataset.expectCaption || null,
           expectHint: sec.dataset.expectHint || null,
           expectMaxZoom: sec.dataset.expectMaxZoom ? +sec.dataset.expectMaxZoom : null,
