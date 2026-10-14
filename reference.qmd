@@ -1,5 +1,5 @@
 ---
-title: "References"
+title: "Reference"
 description: "Each example starts with a note on what it should do."
 listing:
   - id: r-pages
