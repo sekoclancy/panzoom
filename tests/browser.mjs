@@ -694,6 +694,21 @@ async function checkPage(browser, base, file) {
           expectOverlay: sec.dataset.expectOverlay || null,
           expectBand: sec.dataset.expectBand || null,
           expectReferences: "expectReferences" in sec.dataset,
+          // `expect-anchors="fig-a fig-b"`: labelled figures that must keep their
+          // id, their number and a working cross-reference, with panzoom on.
+          anchors: (sec.dataset.expectAnchors || "").split(/\s+/).filter(Boolean).map((id) => {
+            const fig = document.getElementById(id);
+            const cap = fig && fig.querySelector("figcaption");
+            return {
+              id,
+              exists: !!fig,
+              numbered: !!cap && /^Figure\s+\d+/.test(cap.textContent.trim()),
+              marked: !!fig && !!fig.querySelector("img.panzoom:not(.nopanzoom), .panzoom img:not(.nopanzoom)"),
+              // Quarto's script turns cross-reference links into full URLs.
+              linked: [...document.querySelectorAll("a[href]")].some((a) => a.hash === `#${id}` &&
+                a.pathname === location.pathname && (!fig || !fig.contains(a))),
+            };
+          }),
           hasDescription: !!img.dataset.panzoomDesc,
           descriptionHasMath: !!document.getElementById(img.dataset.panzoomDesc || "-")?.querySelector(".math, math"),
           classes: img.className,
@@ -1060,6 +1075,10 @@ function descriptionOk(r) {
 // The viewer's caption and description have their citations and
 // cross-references resolved, linking to things on the page.
 // Cases marked `expect-references` (page G) must show at least one.
+function anchorOk(a) {
+  return a.exists && a.numbered && a.marked && a.linked;
+}
+
 function referencesOk(r) {
   return !r.unresolved?.length && !r.brokenLinks?.length && (!r.expectReferences || r.citations + r.crossrefs > 0);
 }
@@ -1180,6 +1199,15 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         r.expectBand && `caption band ${r.bandBg}`,
       ].filter(Boolean).join(", ");
       lines.push(`- ${r.case}. ${r.caseTitle} (img ${r.n}): expected ${want}; ${got}: ${yes(optionsOk(r))}`);
+    }
+  }
+  const anchors = [...new Map(results.flatMap((r) => r.anchors || []).map((a) => [a.id, a])).values()];
+  if (anchors.length) {
+    const yes = (v) => (v ? "yes" : "**NO**");
+    lines.push("", "## Labelled figures", "");
+    for (const a of anchors) {
+      lines.push(`- #${a.id}: on the page ${yes(a.exists)}, numbered ${yes(a.numbered)}, marked for panzoom ${yes(a.marked)}, ` +
+        `cross-referenced ${yes(a.linked)}: ${yes(anchorOk(a))}`);
     }
   }
   lines.push("", "## Focal point (opens where clicked)", "");
@@ -1332,6 +1360,8 @@ try {
     const described = opened.filter((r) => r.hasDescription);
     if (described.length) extra.push(described.every(descriptionOk) ? "descriptions ok" : "DESCRIPTIONS FAILED");
     if (opened.length) extra.push(opened.every(referencesOk) ? "references ok" : "REFERENCES FAILED");
+    const labelled = results.flatMap((r) => r.anchors || []);
+    if (labelled.length) extra.push(labelled.every(anchorOk) ? "anchors ok" : "ANCHORS FAILED");
     const withMath = results.filter(hasMath);
     if (withMath.length) extra.push((withMath.every((r) => mathOk(r, network.pageTeX)) ? "math ok" : "MATH FAILED") +
       ` (page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"})`);

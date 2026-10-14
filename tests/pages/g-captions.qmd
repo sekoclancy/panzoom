@@ -124,3 +124,19 @@ wave(k = 2)
 
 ::: {#refs}
 :::
+
+## 8. Labelled figures in a `.panzoom` div {#c8 expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}
+
+A labelled plot and a labelled markdown image inside a `.panzoom` div keep
+their numbers and anchors: see @fig-div-plot and @fig-div-image.
+
+::: {.panzoom layout-ncol="2"}
+```{r}
+#| label: fig-div-plot
+#| fig-cap: "A labelled plot in a `.panzoom` div."
+
+wave(k = 3)
+```
+
+![A labelled markdown image in a `.panzoom` div.](../../images/mv-2.jpg){#fig-div-image}
+:::
