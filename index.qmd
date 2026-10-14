@@ -4,6 +4,7 @@ subtitle: "A full-screen pan/zoom viewer for Quarto figures"
 format:
   html:
     code-tools: true
+    toc: true
 filters:
   - panzoom
 panzoom:
