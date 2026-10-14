@@ -4,7 +4,6 @@ subtitle: "A full-screen pan/zoom viewer for Quarto figures"
 format:
   html:
     code-tools: true
-    lightbox: true
 filters:
   - panzoom
 panzoom:
@@ -164,7 +163,7 @@ lines(x, dnorm(x), lwd = 2)
 
 ## Untouched figure
 
-Without the option, Quarto's own lightbox still handles the figure.
+Without the option, a figure is left as it is: clicking it does nothing.
 
 ```{r}
 contour(volcano)
@@ -173,10 +172,8 @@ contour(volcano)
 ## Opting out
 
 Inside a `.panzoom` div, every image gets the viewer except one marked
-`.nopanzoom`. panzoom then leaves that image to Quarto: this page has
-`lightbox: true`, so the image below opens in Quarto's lightbox instead
-(where a click toggles between fit and full size). Without a lightbox, it
-would open nothing. For a whole code cell, use `#| panzoom: false`.
+`.nopanzoom`, which is left as it is: clicking the image below does
+nothing. For a whole code cell, use `#| panzoom: false`.
 
 ```markdown
 ::: {.panzoom}
