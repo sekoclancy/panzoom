@@ -168,12 +168,12 @@ image inside a link is left alone, so it keeps its link.
 
 ### Viewer controls
 
-| To | Mouse or trackpad | Keyboard |
+| Action | Mouse | Keyboard |
 |---|---|---|
-| Zoom | scroll, or pinch, toward the cursor | + and - |
+| Zoom | scroll, toward the cursor | + and - |
 | Pan | drag, or Shift+scroll | arrow keys |
 | Go back to the opening view | double-click | 0 |
-| Change image in a gallery | the previous and next buttons, or swipe sideways | ← and → |
+| Change image in a gallery | the previous and next buttons | left and right arrow |
 | Close | the × button, or click the background | Esc |
 
 Zoom goes in small steps, up to `max-zoom`. Panning stops at the image's
@@ -218,9 +218,10 @@ plot(pressure)
 ### Galleries and layouts
 
 Images in the same group form a gallery, stepped through with the
-previous and next buttons, ←/→ or a sideways swipe. While an image is
-larger than the screen (zoomed in, or a wide figure), ←/→ and swipes pan
-it instead, and the buttons change image. Groups work like Quarto's lightbox:
+previous and next buttons, the left and right arrow keys or a sideways
+swipe. While an image is larger than the screen (zoomed in, or a wide
+figure), the arrow keys and swipes pan it instead, and the buttons change
+image. Groups work like Quarto's lightbox:
 
 - subfigures of one figure are a gallery automatically,
 - `group="name"` on markdown images,
@@ -244,9 +245,9 @@ subfigures form a gallery.
 
 Most images open whole. A very wide figure, such as a collage of many
 panels, would be too thin to read that way, so it opens at screen height,
-at the spot you clicked; drag or use ←/→ to move along it. A very tall
-figure opens at screen width, from its top. No image opens larger than its
-real size. The [live demo's page H](https://sekoclancy.github.io/panzoom/tests/pages/h-wide.html)
+at the spot you clicked; drag or use the left and right arrow keys to move
+along it. A very tall figure opens at screen width, from its top. No image
+opens larger than its real size. The [live demo's page H](https://sekoclancy.github.io/panzoom/tests/pages/h-wide.html)
 has the exact rules, with examples of each shape.
 
 Override it per figure with `fit: contain` (always open whole), `fit:
@@ -306,7 +307,7 @@ The viewer takes the page's light or dark theme. To change its colours,
 use the options, or set the CSS variables they stand for in your own CSS
 (a `css:` file, or the theme's `.scss`):
 
-| Option | CSS variable | Sets | Default |
+| Option | CSS variable | Element | Default |
 |---|---|---|---|
 | `backdrop` | `--panzoom-backdrop` | The layer over the page | `rgba(0, 0, 0, 0.7)` |
 | `caption-background` | `--panzoom-bg` | The caption band | The page's background |

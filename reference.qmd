@@ -17,7 +17,7 @@ listing:
     fields: [title, description]
     field-display-names:
       title: Page
-      description: What it shows
+      description: Description
     sort: filename
     sort-ui: false
     filter-ui: false
@@ -30,7 +30,7 @@ listing:
     fields: [title, description]
     field-display-names:
       title: Page
-      description: What it shows
+      description: Description
     sort: filename
     sort-ui: false
     filter-ui: false
@@ -42,7 +42,7 @@ listing:
     fields: [title, description]
     field-display-names:
       title: Page
-      description: What it shows
+      description: Description
     sort: filename
     sort-ui: false
     filter-ui: false

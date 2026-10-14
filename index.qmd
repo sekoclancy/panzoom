@@ -11,10 +11,8 @@ panzoom:
 ---
 
 This is a [Quarto](https://quarto.org) extension that opens figures in a
-full-screen viewer, built on [Panzoom](https://github.com/timmywil/panzoom):
-scroll to zoom toward the cursor, drag to pan, double-click or `0` to reset,
-Esc to close. It attempts to match, and extend, the feature set of Quarto's
-built-in
+full-screen viewer, built on [Panzoom](https://github.com/timmywil/panzoom).
+It attempts to match, and extend, the feature set of Quarto's built-in
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 Source and documentation: <https://github.com/sekoclancy/panzoom>.
 
@@ -22,10 +20,24 @@ Source and documentation: <https://github.com/sekoclancy/panzoom>.
 quarto add sekoclancy/panzoom
 ```
 
+## Controls
+
+Click a marked figure to open it, or reach it with Tab and press Enter.
+
+| Action | Mouse | Keyboard |
+|---|---|---|
+| Zoom | scroll, toward the cursor | + and - |
+| Pan | drag, or Shift+scroll | arrow keys |
+| Go back to the opening view | double-click | 0 |
+| Change image in a gallery | the previous and next buttons | left and right arrow |
+| Close | the × button, or click the background | Esc |
+
+A very wide figure opens at screen height, at the spot you clicked, and the
+opening view is that spot (see [Wide figure](#wide-figure)).
+
 ## Chunk output
 
-Mark a code cell with `#| panzoom: true`. Click the figure to open it, scroll
-to zoom toward the cursor, drag to pan, double-click to reset, Esc to close.
+Mark a code cell with `#| panzoom: true`:
 
 ```{r}
 #| panzoom: true
@@ -100,7 +112,7 @@ image(volcano, col = terrain.colors(100))
 ## Captions and galleries
 
 The viewer shows the figure's caption. Plots with the same `group` form a
-gallery: use the previous and next buttons, `←`/`→` or a swipe to step
+gallery: use the previous and next buttons, the left and right arrow keys or a swipe to step
 through them. Subfigures of one figure are a gallery automatically.
 
 ```{r}
@@ -130,10 +142,7 @@ image(volcano)
 
 A figure many times wider than tall would be too thin to read if it opened
 whole, so it opens at screen height, at the spot you clicked. Click the
-highlighted panel below: the viewer opens right on it, not at the start.
-Drag or use `←`/`→` to move along the figure, `0` or a double-click to
-return to the spot you clicked, and zoom out to see the whole figure. (On
-any image, scrolling zooms toward the cursor.)
+highlighted panel: the viewer opens right on it.
 
 ```{r}
 #| panzoom: true
