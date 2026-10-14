@@ -23,15 +23,16 @@ quarto render              # from the repo root; the tests check docs/ as render
 cd tests && npm test
 ```
 
-| Command | What it checks | Time |
+| Command | Checks | Time |
 |---|---|---|
-| `npm test` | The site's test pages (A–L): what each image opens, zoom, pan, keys, galleries, captions | ~45 s |
+| `npm test` | The demo and the site's pages (A–N): what each image opens, zoom, pan, keys, galleries, captions | ~1 min |
 | `npm run touch` | The viewer on an emulated phone: tap, pinch, drag, swipe | ~10 s |
 | `npm run nojs` | Every page with JavaScript off: each marked image links to its file | ~10 s |
 | `npm run contrast` | Text contrast in light and dark mode, and that the viewer follows the theme | ~7 s |
 | `npm run standalone` | Renders and checks the pages outside the site (self-contained, math, `panzoom:` forms) | ~25 s |
 | `npm run offline` | The standalone and site pages with no network | ~70 s |
 | `npm run bench` | Weight and speed against a saved baseline (`bench:save` saves a new one) | ~1 min |
+| `npm run options` | Misspelled and wrong options: each mistake reported, as Quarto words it, and the render stopped | ~15 s |
 
 Each prints one line per page (or check) and exits with an error if
 anything failed. Render again after changing the extension or a page: the
@@ -88,7 +89,7 @@ source.
 **R (knitr).** A–D render the same 12 cases (a gallery, subfigures, math in
 a caption, an image inside a link, a margin image, ...) four ways:
 
-| Page | What it is | panzoom | Lightbox |
+| Page | Description | panzoom | Lightbox |
 |---|---|---|---|
 | [a-lightbox](pages/a-lightbox.qmd) | **Reference:** what Quarto's lightbox does with each case | off | `match: auto` |
 | [b-panzoom-lightbox](pages/b-panzoom-lightbox.qmd) | **The usual setup:** marked images; the lightbox for the rest | on | `true` |
@@ -103,21 +104,30 @@ a caption, an image inside a link, a margin image, ...) four ways:
 **Python (Jupyter).** J and K compare panzoom with the lightbox on the same
 eight cases, as A and C do for knitr, but each case states what should open:
 
-| Page | What it is | panzoom | Lightbox |
+| Page | Description | panzoom | Lightbox |
 |---|---|---|---|
 | [j-jupyter-lightbox](pages/j-jupyter-lightbox.qmd) | **Reference:** the lightbox alone (it ignores nested `#\| lightbox:` options with Jupyter) | off | `true` |
 | [k-jupyter-auto](pages/k-jupyter-auto.qmd) | **`panzoom: true`:** J's cases; keep the two in step | `true` | `true` |
 | [l-jupyter](pages/l-jupyter.qmd) | The R pages' cell options on matplotlib figures, and svg output | on | none |
 
+**Styling.** The viewer restyled, checked with `expect-overlay` and
+`expect-band`:
+
+| Page | Description |
+|---|---|
+| [m-styling-options](pages/m-styling-options.qmd) | The colour options (`backdrop`, `caption-background`, `caption-color`, `link-color`), no CSS |
+| [n-css-class](pages/n-css-class.qmd) | `css-class` with a stylesheet, [n-css-class.css](pages/n-css-class.css): the CSS variables, and rules on the caption and the caption band |
+
 **Outside the site** ([standalone/](standalone/), rendered by `npm run
 standalone` as plain documents with their own YAML header):
 
-| Page | What it is |
+| Page | Description |
 |---|---|
 | [self-contained](standalone/self-contained.qmd) | A single HTML file (`embed-resources: true`) opened from disk; `self-contained-math` also embeds MathJax |
 | [self-contained-lightbox](standalone/self-contained-lightbox.qmd) | The same page with Quarto's lightbox, for comparison (a copy of `_self-contained.qmd`: keep in step) |
 | [math-&lt;method&gt;](standalone/_math.qmd) | Math in captions and descriptions with each `html-math-method` |
 | [switch-&lt;value&gt;](standalone/switch-true.qmd) | `panzoom: true`, `auto` and `false` |
+| [css-class](standalone/css-class.qmd) | `css-class` and the viewer's CSS variables, set by a rule loaded before panzoom's stylesheet |
 
 Cases 1, 2 and 6–8 on A–D come from the example document of
 [quarto-ext/lightbox](https://github.com/quarto-ext/lightbox) (MIT, © Posit
@@ -139,10 +149,10 @@ line as `... ok`, or in capitals when it fails. Attributes on a case's
 heading (`## 3. Title {#c3 expect-fit="height"}`) say what that case should
 do.
 
-| Summary | What must hold |
+| Summary | Assumptions |
 |---|---|
-| `options ok` | What opened matches `expect-open`; and `expect-caption="none"`, `expect-hint`, `expect-max-zoom`, `expect-format="svg"` where set |
-| `fit ok` | The opening view matches `expect-fit` (`contain`, `height`, `width`), at 1280 px and 2560 px wide; `expect-zoom-out` says whether it can zoom out further |
+| `options ok` | What opened matches `expect-open` (one value, or one per image); and `expect-caption="none"`, `expect-hint`, `expect-max-zoom`, `expect-format="svg"`, `expect-class` (on the viewer), `expect-overlay` and `expect-band` (backdrop and caption band colours) where set |
+| `fit ok` | The opening view matches `expect-fit` (`contain`, `height`, `width`), in a 1280 × 900 window and four others (1440 × 780, 1920 × 950, 1920 × 1080, 2560 × 1300); `expect-zoom-out` says whether it can zoom out further |
 | `real size ok` | `expect-scale="1"`: a small image opens at its own size |
 | `zoom anchor ok`, `fast zoom ok` | Wheel zoom keeps the point under the cursor within 3 px, also with several steps in one frame |
 | `containment ok` | Arrow keys and drags stop at a collage's ends (with a bounce or a stretch that springs back); an image shown whole doesn't move |
@@ -151,6 +161,7 @@ do.
 | `gallery ok` | ←/→, the buttons and a swipe step through a gallery; zoomed in, → pans instead; PageUp/PageDown don't change image; no wrap without `loop` |
 | `large galleries ok` | In a gallery of wide or tall figures, → pans and the next button switches |
 | `caption clear ok` | An image that fits the screen's height stays clear of the caption band |
+| `anchors ok` | `expect-anchors`: each labelled figure keeps its id and its number ("Figure N"), holds an image panzoom marked, and a cross-reference on the page links to it |
 | `descriptions ok`, `references ok`, `math ok` | Descriptions show; citations and cross-references are resolved and their links work; math is typeset wherever the page's is |
 | `backdrop ok` | Every image is shown on an opaque backdrop |
 | `isolation ok` | Keys pressed in the viewer don't reach the page behind it (Ctrl+key and function keys do), and a widget at z-index 10000 stays underneath |
@@ -180,11 +191,13 @@ with its screenshot, `c01-1.png`, taken once the viewer opened:
 
 ![The viewer open on case 1 of page B: the beach photo over the dimmed page, with its caption and description below.](images/example-screenshot.jpg)
 
-A–D aren't checked against each other automatically: A shows what Quarto
-does, and the note at the top of B, C and D lists where they should differ.
-A few cases open nothing on purpose: case 8 (`lightbox: false`), case 9 in
-A and C (Quarto drops the link around a captioned image), case 11 in A and
-C (inline images aren't automatic), and every unmarked image in D.
+Every case on A–D states what each of its images should open
+(`expect-open`, with one value per image where they differ, as in
+`expect-open="glightbox panzoom glightbox"`): Quarto's lightbox on A, and
+on B–D what the note at the top of each page says. A few cases open
+nothing on purpose: case 8 (`lightbox: false`), case 9 in A and C (Quarto
+drops the link around a captioned image), case 11 in A and C (inline
+images aren't automatic), and every unmarked image in D.
 
 ### Touch
 
@@ -213,7 +226,8 @@ image may be linked.
 and dark mode and measures the WCAG contrast of every piece of text on the
 page and in the viewer: below 4.5:1 (3:1 for large text) fails. It also
 checks that the viewer's caption band takes the page's background and text
-colours (`theme ok`). Text over images, typeset math and Quarto's navbar
+colours (`theme ok`), except on pages that restyle it (`theme n/a
+(restyled)`: M and N). Text over images, typeset math and Quarto's navbar
 and footer aren't measured.
 
 ### Without internet access
