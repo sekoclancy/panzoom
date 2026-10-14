@@ -49,22 +49,237 @@ local COLOURS = {
   { "link-color", "--panzoom-link" },
 }
 
--- The colour options as CSS declarations. A value that could end the rule
--- (`;`, `{`, `}`, `<`) is left out, with a warning.
+-- The colour options as CSS declarations (validate_document has already
+-- removed values that could end the rule).
 local function colour_rules(cfg)
   local decls = {}
   for _, pair in ipairs(COLOURS) do
     local key, var = pair[1], pair[2]
     if cfg[key] ~= nil then
-      local value = pandoc.utils.stringify(cfg[key])
-      if value:find("[;{}<]") then
-        quarto.log.warning("panzoom: ignoring " .. key .. ": " .. value .. " (not a CSS colour)")
-      else
-        table.insert(decls, var .. ": " .. value .. ";")
-      end
+      table.insert(decls, var .. ": " .. pandoc.utils.stringify(cfg[key]) .. ";")
     end
   end
   return decls
+end
+
+-- Option checks, worded as Quarto's own YAML validation, which extensions
+-- can't add to (Quarto 1.9). Each problem is recorded as it is found and
+-- all are reported together at the end, which then stops the render, as
+-- Quarto does for a bad `lightbox:` option. A filter only runs after the
+-- page's code has run, so the report comes after that.
+local problems = {}
+
+local function problem(lines)
+  table.insert(problems, lines)
+end
+
+-- Edit distance, for "Did you mean ...?".
+local function distance(a, b)
+  local prev = {}
+  for j = 0, #b do prev[j] = j end
+  for i = 1, #a do
+    local cur = { [0] = i }
+    for j = 1, #b do
+      local cost = a:sub(i, i) == b:sub(j, j) and 0 or 1
+      cur[j] = math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost)
+    end
+    prev = cur
+  end
+  return prev[#b]
+end
+
+local function closest(key, known)
+  local best, best_d = nil, 3
+  for _, k in ipairs(known) do
+    local d = distance(key, k)
+    if d < best_d then best, best_d = k, d end
+  end
+  return best
+end
+
+local function unknown_key(key, known, where)
+  local lines = { "property name " .. key .. " is invalid",
+    "\u{2139} The error happened in location " .. where .. "." }
+  local guess = closest(key, known)
+  if guess then table.insert(lines, "\u{2139} Did you mean " .. guess .. "?") end
+  problem(lines)
+end
+
+local function bad_value(key, shown, expected, where, text)
+  local lines = { 'Field "' .. key .. '" has value ' .. shown .. ", which must instead be " .. expected,
+    "\u{2139} The error happened in location " .. where .. "." }
+  -- Words YAML 1.1 read as booleans, or a quoted boolean.
+  local word = text and text:lower()
+  if word == "true" or word == "yes" or word == "on" or word == "false" or word == "no" or word == "off" then
+    table.insert(lines, "\u{2139} Quarto uses YAML 1.2, which interprets booleans strictly.")
+    local b = (word == "true" or word == "yes" or word == "on") and "true" or "false"
+    table.insert(lines, "\u{2139} Try using " .. b .. " instead.")
+  end
+  problem(lines)
+end
+
+local function one_of(values)
+  local quoted = {}
+  for _, v in ipairs(values) do table.insert(quoted, "`" .. v .. "`") end
+  return "one of: " .. table.concat(quoted, ", ")
+end
+
+local FITS = { "auto", "contain", "height", "width" }
+local BOOLEAN = "`true` or `false`"
+
+-- What each option accepts: a check on the value, given as
+-- { kind = "boolean" | "number" | "string" | "colour" | "enum", values = ... },
+-- for the document's `panzoom:` map and for a cell's `#| panzoom:` map.
+local DOCUMENT_OPTIONS = {
+  ["match"] = { kind = "enum", values = { "auto" } },
+  ["max-zoom"] = { kind = "number" },
+  ["hint"] = { kind = "boolean" },
+  ["caption"] = { kind = "boolean" },
+  ["loop"] = { kind = "boolean" },
+  ["fit"] = { kind = "enum", values = FITS },
+  ["css-class"] = { kind = "string" },
+}
+for _, pair in ipairs(COLOURS) do DOCUMENT_OPTIONS[pair[1]] = { kind = "colour" } end
+local CELL_OPTIONS = {
+  ["max-zoom"] = { kind = "number" },
+  ["hint"] = { kind = "boolean" },
+  ["caption"] = { kind = "boolean" },
+  ["group"] = { kind = "string" },
+  ["fit"] = { kind = "enum", values = FITS },
+  ["description"] = { kind = "string" },
+}
+
+local function names(options)
+  local list = {}
+  for k in pairs(options) do table.insert(list, k) end
+  table.sort(list)
+  return list
+end
+
+-- Checks one value against its spec. `value` is a Lua boolean, number or
+-- string, `text` its text (nil for a list or map), `shown` how to print it.
+-- Returns true if the value can be used.
+local function check(key, spec, value, text, shown, where)
+  local ok, expected
+  if spec.kind == "boolean" then
+    ok, expected = type(value) == "boolean", BOOLEAN
+  elseif spec.kind == "number" then
+    local n = text and tonumber(text)
+    ok, expected = n ~= nil and n > 0, "a number greater than 0"
+  elseif spec.kind == "string" then
+    ok, expected = text ~= nil and type(value) ~= "boolean", "a string"
+  elseif spec.kind == "colour" then
+    ok, expected = text ~= nil and type(value) ~= "boolean" and not text:find("[;{}<]"), "a CSS colour"
+  else
+    ok, expected = false, spec.values[1] == "auto" and #spec.values == 1 and "'auto'" or one_of(spec.values)
+    for _, v in ipairs(spec.values) do
+      if text == v then ok = true end
+    end
+  end
+  if not ok then bad_value(key, shown, expected, where, type(value) ~= "boolean" and text or nil) end
+  return ok
+end
+
+-- A metadata value as Lua: a boolean, the text of a string, or nil (a list
+-- or a map), and how Quarto would print it.
+local function meta_value(v)
+  local t = pandoc.utils.type(v)
+  if t == "boolean" then return v, tostring(v), tostring(v) end
+  if t == "Inlines" or t == "Blocks" or t == "string" then
+    local s = pandoc.utils.stringify(v)
+    -- A boolean written without quotes arrives as a boolean, so this one was
+    -- quoted.
+    if s == "true" or s == "false" then return s, s, '"' .. s .. '"' end
+    return s, s, s
+  end
+  if t == "List" then
+    local items = {}
+    for _, x in ipairs(v) do table.insert(items, pandoc.utils.stringify(x)) end
+    return nil, nil, "[" .. table.concat(items, ", ") .. "]"
+  end
+  return nil, nil, "a map"
+end
+
+-- Checks the document's `panzoom:` value, and removes the options that
+-- fail, so the rest of the filter uses their defaults until the report.
+local function validate_document(cfg)
+  local t = pandoc.utils.type(cfg)
+  if cfg == nil or t == "boolean" then return end
+  if t ~= "table" then
+    local value, text, shown = meta_value(cfg)
+    if text ~= "auto" then
+      bad_value("panzoom", shown, "`true`, `false`, `auto` or a map of options", "panzoom", text)
+    end
+    return
+  end
+  local known = names(DOCUMENT_OPTIONS)
+  -- Pandoc keeps no order for the map's keys: report them sorted.
+  for _, key in ipairs(names(cfg)) do
+    local v = cfg[key]
+    local spec = DOCUMENT_OPTIONS[key]
+    if spec == nil then
+      unknown_key(key, known, "panzoom:" .. key)
+      cfg[key] = nil
+    else
+      local value, text, shown = meta_value(v)
+      if not check(key, spec, value, text, shown, "panzoom:" .. key) then cfg[key] = nil end
+    end
+  end
+end
+
+-- Where a cell or div is, for the report: a cell's first line of code
+-- (Jupyter's cell ids are random), else its id.
+local function place(el)
+  local code
+  pandoc.Blocks({ pandoc.Div(el.content or {}) }):walk({
+    CodeBlock = function(c)
+      if code == nil then code = c.text:match("^%s*([^\n]*)") end
+    end,
+  })
+  if code and code ~= "" then return "the cell starting `" .. code .. "`" end
+  local id = el.identifier or el.attr and el.attr.identifier or ""
+  if id ~= "" then return "#" .. id end
+  return el.classes and el.classes:includes("cell") and "a code cell" or "a div"
+end
+
+-- Checks a cell's (or div's) parsed `#| panzoom:` map, and removes the
+-- options that fail. Values come from parse_options: booleans, numbers,
+-- quoted strings, or the raw text of anything else.
+local function validate_cell(cfg, raw, el)
+  local known = names(CELL_OPTIONS)
+  for _, key in ipairs(raw.order) do
+    local v = cfg[key]
+    local where = "panzoom:" .. key .. ", in " .. place(el)
+    local spec = CELL_OPTIONS[key]
+    if spec == nil then
+      unknown_key(key, known, where)
+      cfg[key] = nil
+    else
+      local text = tostring(v)
+      -- Quotes only where they matter: a quoted boolean or number.
+      local quoted = type(v) == "string" and raw[key]:match('^"')
+      local shown = (quoted and (text == "true" or text == "false" or tonumber(text))) and raw[key] or text
+      local value = v
+      -- A list or map written in the cell arrives as raw text.
+      if type(v) == "string" and not raw[key]:match('^"') and raw[key]:match("^[%[{]") then
+        value, text = nil, nil
+      end
+      if not check(key, spec, value, text, shown, where) then cfg[key] = nil end
+    end
+  end
+end
+
+-- Prints every problem, as Quarto prints YAML errors, and stops the render.
+local function report()
+  if #problems == 0 then return nil end
+  local file = quarto.doc.input_file and pandoc.path.filename(quarto.doc.input_file) or "the document"
+  io.stderr:write("ERROR: Validation of panzoom options failed.\n")
+  for _, lines in ipairs(problems) do
+    io.stderr:write("ERROR: In file " .. file .. "\n")
+    for _, line in ipairs(lines) do io.stderr:write(line .. "\n") end
+  end
+  io.stderr:write("ERROR: Render failed due to invalid panzoom options.\n")
+  os.exit(1)
 end
 -- `panzoom: false`: the filter does nothing at all.
 local off = false
@@ -172,7 +387,7 @@ end
 -- boundaries ourselves and keep strings exactly as written.
 local function parse_options(value)
   local body = value:match("^%s*{(.*)}%s*$")
-  if body == nil then return {} end
+  if body == nil then return {}, { order = {} } end
   local starts = {}
   local pos = 1
   while true do
@@ -185,10 +400,12 @@ local function parse_options(value)
     end
     pos = e + 1
   end
-  local cfg = {}
+  local cfg, raws = {}, { order = {} }
   for i, k in ipairs(starts) do
     local stop = starts[i + 1] and starts[i + 1].s - 1 or #body
     local raw = body:sub(k.e + 1, stop):gsub("^%s+", ""):gsub("[%s,]+$", "")
+    raws[k.key] = raw
+    table.insert(raws.order, k.key)
     if raw:sub(1, 1) == '"' and raw:sub(-1) == '"' and #raw >= 2 then
       cfg[k.key] = raw:sub(2, -2)
     elseif raw == "true" or raw == "false" then
@@ -199,7 +416,7 @@ local function parse_options(value)
       cfg[k.key] = raw
     end
   end
-  return cfg
+  return cfg, raws
 end
 
 -- Jupyter passes a nested cell option in an attribute of its own,
@@ -237,8 +454,15 @@ local function cell_option(el)
   el.attributes["panzoom"] = nil
   if value == "false" then return false end
   local attrs = {}
+  if value ~= "true" and value:sub(1, 1) ~= "{" then
+    -- The YAML hint only fits a code cell; a div's `panzoom=` isn't YAML.
+    local is_cell = el.classes and el.classes:includes("cell")
+    bad_value("panzoom", value, "`true`, `false` or a map of options", "panzoom, in " .. place(el),
+      is_cell and value or nil)
+  end
   if value:sub(1, 1) == "{" then
-    local cfg = parse_options(value)
+    local cfg, raws = parse_options(value)
+    validate_cell(cfg, raws, el)
     for _, key in ipairs({ "max-zoom", "hint", "caption", "group", "fit" }) do
       if cfg[key] ~= nil then
         attrs["data-panzoom-" .. key] = tostring(cfg[key])
@@ -258,6 +482,7 @@ local function setup(meta)
   local options = {}
   local colours = {}
   local cfg = meta.panzoom
+  validate_document(cfg)
   if cfg == false then
     off = true
     return
@@ -409,4 +634,6 @@ return {
       return doc
     end,
   },
+  -- Last: every bad option at once, then stop (see `problems`).
+  { Pandoc = report },
 }

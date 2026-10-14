@@ -1,0 +1,22 @@
+---
+title: "Bad cell options (Jupyter)"
+filters:
+  - panzoom
+jupyter: python3
+expect-errors:
+  - 'property name gruop is invalid'
+  - 'ℹ The error happened in location panzoom:gruop, in the cell starting `import matplotlib.pyplot as plt`.'
+  - 'ℹ Did you mean group?'
+  - 'Field "hint" has value maybe, which must instead be `true` or `false`'
+  - 'ℹ The error happened in location panzoom:hint, in the cell starting `import matplotlib.pyplot as plt`.'
+---
+
+Mistakes in `#| panzoom:` cell options, as Jupyter passes them.
+
+```{python}
+#| panzoom:
+#|   gruop: a
+#|   hint: maybe
+import matplotlib.pyplot as plt
+plt.plot([1, 2])
+```

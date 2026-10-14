@@ -10,6 +10,7 @@
 /tests/results/
 /tests/standalone/*.html
 /tests/bench/*.html
+/tests/options/*.html
 
 **/*.quarto_ipynb
 # Shell history

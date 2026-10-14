@@ -111,6 +111,22 @@ plot(pressure)
 ```
 ````
 
+A misspelled option or a wrong value stops the render, with the same kind
+of message Quarto gives for a bad `lightbox:` option, all mistakes at once:
+
+```
+ERROR: Validation of panzoom options failed.
+ERROR: In file index.qmd
+property name max-zom is invalid
+ℹ The error happened in location panzoom:max-zom.
+ℹ Did you mean max-zoom?
+```
+
+Cell options are checked too, which Quarto doesn't do for `#| lightbox:`.
+Unlike Quarto, which checks its options before running any code, panzoom
+can only check them once the page's code has run, and the message gives
+no line number.
+
 ### Marking images
 
 **Code cells** (R with knitr, or Python and others with Jupyter): use the

@@ -1,0 +1,40 @@
+---
+title: "Valid options"
+filters:
+  - panzoom
+panzoom:
+  match: auto
+  max-zoom: 6
+  hint: false
+  caption: true
+  loop: true
+  fit: contain
+  css-class: my-viewer
+  backdrop: "#000"
+  caption-background: "#111"
+  caption-color: "rgb(230, 230, 230)"
+  link-color: "#9cf"
+expect-errors: []
+---
+
+Every option, with a valid value: the page must render, with no errors.
+
+```{r}
+#| panzoom:
+#|   max-zoom: 8
+#|   hint: true
+#|   caption: false
+#|   group: walks
+#|   fit: width
+#|   description: "A plot, with $x^2$ in its description."
+plot(cumsum(rnorm(50)), type = "l")
+```
+
+```{r}
+#| panzoom: false
+plot(1)
+```
+
+::: {.panzoom panzoom="true"}
+![An image in a div.](../../images/mv-0.jpg)
+:::

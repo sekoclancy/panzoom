@@ -10,7 +10,8 @@
     "touch": "node touch.mjs",
     "bench": "node bench.mjs",
     "bench:save": "node bench.mjs --save",
-    "offline": "node standalone.mjs --offline && node browser.mjs --offline ../docs/tests/pages/*.html standalone/*.html"
+    "offline": "node standalone.mjs --offline && node browser.mjs --offline ../docs/tests/pages/*.html standalone/*.html",
+    "options": "node options.mjs"
   },
   "type": "module",
   "private": true,

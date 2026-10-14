@@ -1,0 +1,44 @@
+---
+title: "Bad cell and div options (knitr)"
+filters:
+  - panzoom
+expect-errors:
+  - 'property name gruop is invalid'
+  - 'ℹ The error happened in location panzoom:gruop, in the cell starting `plot(1)`.'
+  - 'ℹ Did you mean group?'
+  - 'Field "max-zoom" has value lots, which must instead be a number greater than 0'
+  - 'ℹ The error happened in location panzoom:max-zoom, in the cell starting `plot(1)`.'
+  - 'Field "hint" has value "true", which must instead be `true` or `false`'
+  - 'ℹ The error happened in location panzoom:hint, in the cell starting `plot(1)`.'
+  - 'ℹ Quarto uses YAML 1.2, which interprets booleans strictly.'
+  - 'ℹ Try using true instead.'
+  - 'Field "fit" has value sideways, which must instead be one of: `auto`, `contain`, `height`, `width`'
+  - 'ℹ The error happened in location panzoom:fit, in the cell starting `plot(1)`.'
+  - 'Field "description" has value ["a","b"], which must instead be a string'
+  - 'ℹ The error happened in location panzoom:description, in the cell starting `plot(1)`.'
+  - 'Field "panzoom" has value maybe, which must instead be `true`, `false` or a map of options'
+  - 'ℹ The error happened in location panzoom, in the cell starting `plot(2)`.'
+  - 'Field "panzoom" has value no, which must instead be `true`, `false` or a map of options'
+  - 'ℹ The error happened in location panzoom, in #gallery-div.'
+---
+
+Mistakes in `#| panzoom:` cell options, and in a div's `panzoom=`.
+
+```{r}
+#| panzoom:
+#|   gruop: a
+#|   max-zoom: lots
+#|   hint: "true"
+#|   fit: sideways
+#|   description: ["a", "b"]
+plot(1)
+```
+
+```{r}
+#| panzoom: maybe
+plot(2)
+```
+
+::: {.panzoom #gallery-div panzoom="no"}
+![An image in a div.](../../images/mv-0.jpg)
+:::

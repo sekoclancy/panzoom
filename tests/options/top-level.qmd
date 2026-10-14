@@ -1,0 +1,11 @@
+---
+title: "Bad document value"
+filters:
+  - panzoom
+panzoom: maybe
+expect-errors:
+  - 'Field "panzoom" has value maybe, which must instead be `true`, `false`, `auto` or a map of options'
+  - 'ℹ The error happened in location panzoom.'
+---
+
+`panzoom:` must be `true`, `false`, `auto` or a map.
