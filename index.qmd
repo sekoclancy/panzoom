@@ -70,6 +70,31 @@ Mark a markdown image with the `.panzoom` class:
 
 ![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom}
 
+## Div
+
+Wrap any block in a `.panzoom` div to mark every image in it, code cell
+output included:
+
+````markdown
+::: {.panzoom layout-ncol="2"}
+```{{r}}
+image(volcano, col = terrain.colors(100))
+```
+
+![A markdown image in a `.panzoom` div.](images/volcano.png)
+:::
+````
+
+::: {.panzoom layout-ncol="2"}
+```{r}
+#| echo: false
+
+image(volcano, col = terrain.colors(100))
+```
+
+![A markdown image in a `.panzoom` div.](images/volcano.png)
+:::
+
 ## Captions and galleries
 
 The viewer shows the figure's caption. Plots with the same `group` form a
