@@ -78,6 +78,8 @@ output included:
 ````markdown
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
+#| fig-cap: "A code cell's plot in a `.panzoom` div."
+
 image(volcano, col = terrain.colors(100))
 ```
 
@@ -88,6 +90,7 @@ image(volcano, col = terrain.colors(100))
 ::: {.panzoom layout-ncol="2"}
 ```{r}
 #| echo: false
+#| fig-cap: "A code cell's plot in a `.panzoom` div."
 
 image(volcano, col = terrain.colors(100))
 ```
