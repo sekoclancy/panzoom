@@ -7,6 +7,9 @@ full-screen viewer, built on
 [Panzoom](https://github.com/timmywil/panzoom) and inspired by the native Quarto
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 
+> [!WARNING]
+> This extension is experimental and not guaranteed to work. Its behaviour may change without notice.
+
 ## Installation
 
 You can install this extension using the Quarto CLI (Quarto >=1.9):
