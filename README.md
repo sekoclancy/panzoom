@@ -357,6 +357,14 @@ panzoom's own rules.
 
 ## Development
 
+Setup, with [uv](https://docs.astral.sh/uv/):
+
+```bash
+git clone https://github.com/sekoclancy/panzoom && cd panzoom
+uv venv .venv                               # creates the venv with Python 3.14
+uv pip install -r tests/requirements.txt    # matplotlib, ipykernel, etc.
+```
+
 ```bash
 quarto render              # build into docs/
 quarto preview             # build and open in a browser, re-rendering on save
