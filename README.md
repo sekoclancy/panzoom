@@ -4,9 +4,8 @@
 
 A [Quarto](https://quarto.org) extension that opens figures in a
 full-screen viewer, built on
-[Panzoom](https://github.com/timmywil/panzoom). It is inspired by Quarto's
-[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html),
-and `#| panzoom:` options override `#| lightbox:` ones.
+[Panzoom](https://github.com/timmywil/panzoom) and inspired by the native Quarto
+[lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 
 ## Installation
 
@@ -31,7 +30,7 @@ uv pip install -r tests/requirements.txt    # matplotlib, ipykernel, etc.
 quarto render                               # build into docs/
 ```
 
-The venv is only for the Python (Jupyter) examples; the rest need R, with the `ragg` package. See [Development](#development) for previewing and publishing.
+See [Development](#development) to preview and publish.
 
 ## Demo
 
@@ -71,8 +70,7 @@ focus to the image.
   in code cells or markdown
 - Keyboard access; [restyle it](#styling) with options or CSS
 - [Math](#math) in any `html-math-method`, offline too; works in
-  [self-contained documents](#self-contained-documents) and
-  [without JavaScript](#without-javascript)
+  [self-contained documents](#self-contained-documents)
 
 Not offered (lightbox has these):
 
@@ -108,8 +106,7 @@ images. Without the setting, only the images you mark open in the viewer.
 
 ### Marking images
 
-**Code cells** (R with knitr, or Python and others with Jupyter): use the
-`panzoom` cell option.
+**Code cells**: use the `panzoom` cell option.
 
 ````markdown
 ```{r}
@@ -147,11 +144,12 @@ link.
 
 ### Options
 
-Options go under `panzoom:` in place of `true`:
+Options go under `panzoom:` in the document's YAML header, in place of
+`true`:
 
 ```yaml
 panzoom:
-  match: auto     # every figure, same as panzoom: true; leave out for only marked images
+  match: auto     # every figure, same as panzoom: true; omit to only apply on marked images
   max-zoom: 4     # number: screen pixels per image pixel, at most (default 4)
   hint: true      # boolean: show the controls hint at the bottom (default true)
   caption: true   # boolean: show the figure caption in the viewer (default true)
@@ -166,7 +164,7 @@ panzoom:
 
 A code cell can set `max-zoom`, `hint`, `caption`, and `fit` for its own
 plots, as well as `group` and `description`, by giving `#| panzoom:`
-options instead of `true`:
+options instead of `true`. A cell's options win over the document's:
 
 ````markdown
 ```{r}
@@ -178,7 +176,7 @@ plot(pressure)
 ```
 ````
 
-A misspelled option or a wrong value stops the render to match Quarto `lightbox` behavior.
+A misspelled option or a wrong value stops the render (matching Quarto `lightbox` behavior).
 
 ```
 ERROR: Validation of panzoom options failed.
@@ -191,17 +189,17 @@ property name max-zom is invalid
 ### Captions
 
 The viewer shows the figure's caption, with its number, math, citations,
-and cross-references, under the image; turn it off with `caption: false`.
+and cross-references, under the image. Turn it off with `caption: false`.
 
 ### Descriptions
 
-A description, written in Markdown, is shown under the caption:
+A Markdown description is shown under the caption:
 
 ```markdown
 ![Beach](beach.jpg){.panzoom description="The best beaches. **Credit:** [Unsplash](https://unsplash.com)"}
 ```
 
-or for all of a cell's plots:
+or for a code cell's plots:
 
 ````markdown
 ```{r}
@@ -236,10 +234,12 @@ plot(pressure, log = "y")
 
 ### Layouts
 
-Figures in layouts (`layout-ncol`, `layout-nrow`, layout divs) work too:
-each image in a layout opens on its own, and subfigures form a gallery.
+Figures in layouts (`layout-ncol`, `layout-nrow`, layout divs) work too.
+Each image in a layout opens on its own, and subfigures form a gallery.
 
 ### Wide and tall figures
+
+Heuristic:
 
 | Figure | Opens | Same as |
 |---|---|---|
@@ -263,7 +263,7 @@ for (i in 1:12) plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i))
 ```
 ````
 
-or for a whole document, where a cell's own `fit:` still wins:
+or for a whole document:
 
 ```yaml
 panzoom:
@@ -273,9 +273,10 @@ panzoom:
 
 ### Math
 
-Math in captions and descriptions shows as it does on the page, with any
-`html-math-method`. MathJax and KaTeX need a connection; for a file whose
-math works offline, render it with MathJax and:
+Math in captions and descriptions is displayed in the viewer.
+
+MathJax and KaTeX are loaded from the web, so math needs a connection. To
+make math work offline, render with MathJax (Quarto's default) and:
 
 ```yaml
 embed-resources: true
@@ -292,11 +293,6 @@ filters:
 embed-resources: true
 ```
 
-### Without JavaScript
-
-A click on a marked image opens the image file itself, as with Quarto's
-lightbox. (In a self-contained file that link leads nowhere, for both.)
-
 ### Styling
 
 Set the viewer's colours with the options, or with the CSS variables they
@@ -312,43 +308,30 @@ stand for in your own CSS (a `css:` file, or the theme's `.scss`):
 ```yaml
 panzoom:
   backdrop: rgba(0, 0, 0, 0.9)   # any CSS colour: rgba(),
-  caption-background: "#222"    # hex (quoted, for YAML),
+  caption-background: "#222"     # hex (quoted, for YAML),
   caption-color: white           # or a name
 ```
 
-The examples' [Styling pages](https://sekoclancy.github.io/panzoom/reference.html#styling)
-show both ways. In CSS, for every viewer on the site:
+In CSS, for every viewer on the site:
 
 ```css
-.panzoom-overlay { --panzoom-backdrop: black; }
+.panzoom-overlay {
+  --panzoom-backdrop: black;
+  --panzoom-bg: black;
+  --panzoom-fg: white;
+}
 ```
 
-For some documents only, give the viewer a class with `css-class` and
-write the rule for that class:
-
-```yaml
-panzoom:
-  css-class: dark-viewer
-```
-
-```css
-.dark-viewer { --panzoom-backdrop: black; --panzoom-bg: black; --panzoom-fg: white; }
-```
-
-To set `css-class` (or any option) for a whole site, put it under
-`format: html:` in `_quarto.yml`: a top-level `panzoom:` there is replaced,
-not merged, by a page's own `panzoom:` options.
-
-For anything the variables don't cover, the viewer's parts have their own
-classes: `.panzoom-footer` (the caption band), `.panzoom-caption`,
-`.panzoom-description`, `.panzoom-hint`, `.panzoom-close`, `.panzoom-prev`,
-`.panzoom-next`, and `.panzoom-counter`. Start the selector with the
-viewer's class, as in `.dark-viewer .panzoom-caption`, so it wins over
-panzoom's own rules.
+For some documents only, set `css-class: dark-viewer` and write the same
+rule for `.dark-viewer`. The examples'
+[Styling pages](https://sekoclancy.github.io/panzoom/reference.html#styling)
+show both ways, and the classes of the viewer's parts.
 
 ## Development
 
-Set up a clone as in [From source](#from-source), then:
+Set up a clone as in [From source](#from-source). The venv is only for
+the Python (Jupyter) examples; the rest need R, with the `ragg` package.
+Then:
 
 ```bash
 quarto preview             # build and open in a browser, re-rendering on save
