@@ -34,7 +34,7 @@ See [Development](#development) to preview and publish.
 
 ## Demo
 
-![Opening a figure, zooming with the wheel, dragging, resetting with a double-click, stepping through a gallery, and opening a wide figure on its highlighted panel.](images/demo.gif)
+![Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with the arrow keys.](images/demo.gif)
 
 ## Viewer controls
 

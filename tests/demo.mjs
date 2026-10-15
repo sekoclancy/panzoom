@@ -2,11 +2,11 @@
   Records the README's demo GIF from the rendered demo page.
 
   Opens docs/index.html in headless Chrome, plays a short scripted session
-  (the top of the page; open the cross-referenced volcano, wheel-zoom, drag, double-click to
-  reset, Esc; step through a gallery; open the wide figure on its
-  highlighted panel and pan with the right arrow key), in page order, with
+  (the top of the page; open a gallery image, wheel-zoom, drag,
+  double-click to reset, next image, Esc; open the wide figure on its
+  highlighted panel and pan with the right and left arrow keys), with
   a drawn mouse pointer, since headless Chrome draws none, and a label
-  naming each key, scroll and double-click, which the pointer alone doesn't
+  naming each key, scroll, drag, and double-click, which the pointer alone doesn't
   show. Frames come from Chrome's screencast, each with its own timestamp,
   so the GIF plays at the session's real speed.
 
@@ -152,40 +152,29 @@ const WIDE = "#wide-figure img";
 const GALLERY = "#captions-and-galleries img";
 
 async function session(page) {
-  // 1. The top of the page, then the cross-referenced volcano: open, zoom,
-  // drag, reset, close.
+  // 1. The top of the page, then a gallery: open the first image, zoom,
+  // drag, reset, step to the next image, close.
   await wait(1200);
-  await scrollToEl(page, "#fig-volcano", 0.12);
-  let p = await pointIn(page, "#fig-volcano img", 0.42, 0.45);
-  await moveTo(page, p.x, p.y, 500);
-  await wait(200);
-  await page.mouse.click(p.x, p.y);
-  await wait(600);
-  if (!(await isOpen(page))) throw new Error("viewer didn't open on the volcano");
-  p = await pointIn(page, ".panzoom-overlay img", 0.35, 0.4);
-  await moveTo(page, p.x, p.y, 400);
-  await label(page, "scroll", 1000);
-  for (let i = 0; i < 4; i++) { await page.mouse.wheel({ deltaY: -120 }); await wait(120); }
-  await wait(200);
-  await page.mouse.down();
-  await moveTo(page, mouse.x + 200, mouse.y + 110, 250);
-  await page.mouse.up();
-  await wait(250);
-  await label(page, "double-click");
-  await page.mouse.click(mouse.x, mouse.y, { count: 2 });
-  await wait(800);
-  await label(page, "Esc", 700);
-  await page.keyboard.press("Escape");
-  await wait(400);
-
-  // 2. A gallery: open the first image, step to the next.
   await scrollToEl(page, GALLERY, 0.3);
-  p = await pointIn(page, GALLERY, 0.5, 0.5);
+  let p = await pointIn(page, GALLERY, 0.42, 0.45);
   await moveTo(page, p.x, p.y, 500);
   await wait(150);
   await page.mouse.click(p.x, p.y);
   await wait(600);
   if (!(await isOpen(page))) throw new Error("viewer didn't open on the gallery");
+  p = await pointIn(page, ".panzoom-overlay img", 0.35, 0.4);
+  await moveTo(page, p.x, p.y, 400);
+  await label(page, "scroll", 1000);
+  for (let i = 0; i < 4; i++) { await page.mouse.wheel({ deltaY: -120 }); await wait(120); }
+  await wait(200);
+  await label(page, "drag");
+  await page.mouse.down();
+  await moveTo(page, mouse.x + 200, mouse.y + 110, 450);
+  await page.mouse.up();
+  await wait(250);
+  await label(page, "double-click");
+  await page.mouse.click(mouse.x, mouse.y, { count: 2 });
+  await wait(800);
   p = await pointIn(page, ".panzoom-next");
   await moveTo(page, p.x, p.y, 450);
   await wait(100);
@@ -195,7 +184,7 @@ async function session(page) {
   await page.keyboard.press("Escape");
   await wait(300);
 
-  // 3. The wide figure: open on the highlighted panel, pan right.
+  // 2. The wide figure: open on the highlighted panel, pan right, then left.
   await scrollToEl(page, WIDE, 0.4);
   p = await pointIn(page, WIDE, 5.5 / 8, 0.55);
   await moveTo(page, p.x, p.y, 500);
@@ -203,14 +192,17 @@ async function session(page) {
   await page.mouse.click(p.x, p.y);
   await wait(700);
   if (!(await isOpen(page))) throw new Error("viewer didn't open on the wide figure");
-  await label(page, "right arrow", 2000);
-  for (let i = 0; i < 10; i++) { await page.keyboard.press("ArrowRight"); await wait(150); }
+  await label(page, "right arrow", 800);
+  for (let i = 0; i < 2; i++) { await page.keyboard.press("ArrowRight"); await wait(150); }
+  await wait(300);
+  await label(page, "left arrow", 900);
+  for (let i = 0; i < 4; i++) { await page.keyboard.press("ArrowLeft"); await wait(150); }
   await wait(400);
   await label(page, "Esc", 700);
   await page.keyboard.press("Escape");
   await wait(300);
 
-  // 4. Back to the opening view, pointer off screen, so the loop is seamless.
+  // 3. Back to the opening view, pointer off screen, so the loop is seamless.
   await Promise.all([scrollToEl(page, null), moveTo(page, START.x, START.y, 600)]);
   await wait(300);
 }
