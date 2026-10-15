@@ -396,6 +396,12 @@
     prevBtn.hidden = nextBtn.hidden = counter.hidden = !many;
     prevBtn.disabled = !opts.loop && i === 0;
     nextBtn.disabled = !opts.loop && i === n - 1;
+    // A disabled button loses focus to the page behind; keep it in the viewer.
+    var focused = document.activeElement;
+    if ((focused === prevBtn || focused === nextBtn) && focused.disabled) {
+      var other = focused === nextBtn ? prevBtn : nextBtn;
+      (other.disabled ? overlay : other).focus();
+    }
     counter.textContent = (i + 1) + " / " + n;
     caption.innerHTML = opts.caption ? captionOf(el) : "";
     caption.hidden = !caption.innerHTML;

@@ -572,11 +572,18 @@ async function checkGallery(page, handle) {
   out.prevDisabledAtStart = m[1] === "1"
     ? await page.$eval(".panzoom-prev", (b) => b.disabled) : null;
   if (out.loop && out.prevDisabledAtStart !== null) out.prevDisabledAtStart = !out.prevDisabledAtStart;
+  // Next to the last image: focus stays in the viewer, even when the
+  // focused next button becomes disabled there.
+  for (let i = +m[1]; i < n; i++) { await page.click(".panzoom-next"); await settle(page); }
+  out.focusAtEnd = await page.evaluate(() => {
+    const a = document.activeElement;
+    return a.closest(".panzoom-overlay") ? (a.className.split(" ")[0] || a.tagName) : a.tagName;
+  });
   await closeAll(page);
   out.ok = out.pageKeysStill &&
     out.arrowNext === next && out.arrowBack && out.buttonNext === next &&
     out.swipeNext === next && out.zoomedArrowPans && out.prevDisabledAtStart !== false &&
-    out.leftAtStartStill;
+    out.leftAtStartStill && out.focusAtEnd.startsWith("panzoom-");
   return out;
 }
 
@@ -1158,6 +1165,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- PageDown/PageUp leave the image as it is: ${yes(gallery.pageKeysStill)}`,
       `- Right arrow (not zoomed): ${gallery.arrowNext}; Left goes back: ${yes(gallery.arrowBack)}`,
       `- Next button: ${gallery.buttonNext}`,
+      `- Focus after the next button reaches the last image: ${gallery.focusAtEnd}`,
       `- Swipe left: ${gallery.swipeNext}`,
       `- Zoomed in, Right pans instead: ${yes(gallery.zoomedArrowPans)}`,
       `- On the first image, "previous" is ${gallery.loop ? "enabled (loop) and Left wraps to the last" : "disabled (no loop)"}: ${yes(gallery.prevDisabledAtStart && gallery.leftAtStartStill)}`,
