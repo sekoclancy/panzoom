@@ -25,6 +25,7 @@ cd tests && npm test
 |---|---|---|
 | `npm test` | The demo and the example pages (A–N): the viewer per image, zoom, pan, keys, galleries, captions | ~1 min |
 | `npm run touch` | The viewer on an emulated phone: tap, pinch, drag, swipe | ~10 s |
+| `npm run loading` | Slow and failed images: loading message, late arrivals, error message | ~5 s |
 | `npm run nojs` | Every page with JavaScript off: each marked image links to its file | ~10 s |
 | `npm run contrast` | Text contrast in light and dark mode, and that the viewer follows the theme | ~7 s |
 | `npm run standalone` | Renders and checks the pages outside the site (self-contained, math, `panzoom:` forms) | ~25 s |
@@ -164,6 +165,12 @@ inline images aren't automatic), and every unmarked image on D.
 emulated phone (390 × 844) and sends real multi-finger touch events: tap,
 pinch, one-finger pan, double-tap, swipe, tap outside, and a pinch with one
 finger on the background, which must not close the viewer.
+
+**Loading.** `npm run loading` ([loading.mjs](loading.mjs)) opens page B
+with a server that holds back or refuses chosen images. A slow image shows
+"Loading image" and then fits; one that arrives after the viewer closed, or
+after the gallery moved on, changes nothing; a failed one shows an error,
+and Esc still closes and gives focus back.
 
 **Without JavaScript.** `npm run nojs` ([nojs.mjs](nojs.mjs)) opens every
 page with JavaScript off. Each marked image must link to its own file (or

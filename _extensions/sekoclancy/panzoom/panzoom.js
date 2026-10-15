@@ -64,7 +64,8 @@
   var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
 
-  var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption, desc;
+  var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc;
+  var loadId = 0, loadTimer = null;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
   var bouncing = false, bounceTimer = null;
   // Where the image's center is held, on screen, along an axis where it is
@@ -419,12 +420,46 @@
     delete img.dataset.fit;
     img.alt = el.alt || "";
     img.style.backgroundColor = backdropOf(el);
-    img.onload = fit;
-    img.src = el.currentSrc || el.src;
+    load(el.currentSrc || el.src);
     // Vector images stay sharp when zoomed only if the browser may redraw
     // them at the new scale (see panzoom.css).
     img.classList.toggle("panzoom-vector", /\.svg([?#]|$)/i.test(img.src) || /^data:image\/svg/i.test(img.src));
-    if (img.complete && img.naturalWidth) fit();
+  }
+
+  // Loads `src` into the viewer and fits it once it has loaded. Each load
+  // gets a number, and only the latest one's events count: a slow image
+  // that finishes after the viewer closed, or after another image was
+  // shown, does nothing. While loading, the image is hidden, and after a
+  // moment "Loading image" shows; if it fails, a message says so.
+  function load(src) {
+    var id = ++loadId;
+    clearTimeout(loadTimer);
+    overlay.classList.remove("panzoom-error");
+    overlay.classList.add("panzoom-loading");
+    status.textContent = "";
+    loadTimer = setTimeout(function () {
+      if (id === loadId) status.textContent = "Loading image\u2026";
+    }, 300);
+    img.onload = function () { if (id === loadId) loaded(); };
+    img.onerror = function () { if (id === loadId) failed(); };
+    img.src = src;
+    if (img.complete && img.naturalWidth) loaded();
+  }
+
+  function loaded() {
+    // Once per load (a cached image is complete at once, and fires load too).
+    if (!overlay.classList.contains("panzoom-loading")) return;
+    clearTimeout(loadTimer);
+    overlay.classList.remove("panzoom-loading");
+    status.textContent = "";
+    fit();
+  }
+
+  function failed() {
+    clearTimeout(loadTimer);
+    overlay.classList.remove("panzoom-loading");
+    overlay.classList.add("panzoom-error");
+    status.textContent = "The image could not be loaded.";
   }
 
   // Steps through the gallery; returns false at either end without `loop`.
@@ -457,10 +492,18 @@
 
   function close() {
     stopBounce();
-    overlay.classList.remove("open");
+    if (pz) { pz.destroy(); pz = null; }
+    // Forget the image being loaded (see load()), and stop downloading it.
+    loadId++;
+    clearTimeout(loadTimer);
+    img.onload = img.onerror = null;
+    img.removeAttribute("src");
+    img.style.transform = "";
+    delete img.dataset.fit;
+    overlay.classList.remove("open", "panzoom-loading", "panzoom-error");
+    status.textContent = "";
     document.documentElement.style.overflow = "";
     document.documentElement.style.scrollbarGutter = "";
-    if (pz) { pz.destroy(); pz = null; }
     press = null;
     gallery = [];
     if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
@@ -522,6 +565,7 @@
     overlay.innerHTML =
       '<img alt="" draggable="false">' +
       '<div class="panzoom-counter panzoom-exclude" aria-live="polite"></div>' +
+      '<div class="panzoom-status panzoom-exclude" role="status"></div>' +
       '<button class="panzoom-close panzoom-exclude" aria-label="Close">&times;</button>' +
       '<button class="panzoom-prev panzoom-exclude" aria-label="Previous image">&lsaquo;</button>' +
       '<button class="panzoom-next panzoom-exclude" aria-label="Next image">&rsaquo;</button>' +
@@ -538,6 +582,7 @@
     prevBtn = overlay.querySelector(".panzoom-prev");
     nextBtn = overlay.querySelector(".panzoom-next");
     counter = overlay.querySelector(".panzoom-counter");
+    status = overlay.querySelector(".panzoom-status");
     footer = overlay.querySelector(".panzoom-footer");
     caption = overlay.querySelector(".panzoom-caption");
     desc = overlay.querySelector(".panzoom-description");
@@ -614,7 +659,7 @@
     window.addEventListener("resize", function () {
       if (!overlay.classList.contains("open")) return;
       markScrollable();
-      fit();
+      if (!overlay.classList.contains("panzoom-loading")) fit();
     });
   }
 

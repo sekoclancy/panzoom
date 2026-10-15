@@ -61,6 +61,17 @@ a.panzoom-link:focus-visible { outline: none; }
   color: #fff; outline: 2px solid #fff; outline-offset: 2px;
 }
 
+/* While an image loads it is hidden, so the last one doesn't show in its
+   place; "Loading image" (after a moment) or an error shows instead. */
+.panzoom-overlay.panzoom-loading img,
+.panzoom-overlay.panzoom-error img { visibility: hidden; }
+.panzoom-status {
+  position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+  border-radius: 4px; padding: 0.4em 0.8em;
+  background: rgba(0, 0, 0, 0.6); color: #eee; font-size: 1rem;
+}
+.panzoom-status:empty { display: none; }
+
 .panzoom-counter {
   position: absolute; top: 14px; left: 16px; z-index: 1;
   border-radius: 4px; padding: 0.15em 0.5em;
