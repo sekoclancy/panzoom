@@ -483,6 +483,14 @@ async function checkKeyboard(page, handle) {
   const movedX = before && after && after.x < before.x - 1;
   const movedY = before && after && after.y < before.y - 1;
   out.arrowsPan = (over.x || over.y) && (!over.x || !!movedX) && (!over.y || !!movedY);
+  // Left and Up pan back the other way.
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("ArrowUp");
+  await settle(page);
+  const back = await viewerTransform(page);
+  const backX = after && back && back.x > after.x + 1;
+  const backY = after && back && back.y > after.y + 1;
+  out.arrowsPanBack = (over.x || over.y) && (!over.x || !!backX) && (!over.y || !!backY);
 
   for (let i = 0; i < 3; i++) await page.keyboard.press("Tab");
   await page.keyboard.down("Shift");
@@ -564,9 +572,17 @@ async function checkGallery(page, handle) {
   await page.keyboard.press("+");
   await page.keyboard.press("+");
   await settle(page);
+  const wider = await page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay");
+    return o.querySelector("img").getBoundingClientRect().width > o.clientWidth + 1;
+  });
+  const z0 = await viewerTransform(page);
   await page.keyboard.press("ArrowRight");
   await settle(page);
-  out.zoomedArrowPans = (await counter()) === first;
+  const z1 = await viewerTransform(page);
+  // Same image, and moved left if it is wider than the screen.
+  out.zoomedArrowPans = (await counter()) === first &&
+    (!wider || !!(z0 && z1 && z1.x < z0.x - 1));
   // Without loop, the first image has no previous one.
   // Without loop, the first image has no previous one; with loop it does.
   out.prevDisabledAtStart = m[1] === "1"
@@ -592,7 +608,8 @@ const KEYBOARD_CHECKS = [
   ["oneTabStop", "One Tab stop per image"],
   ["enterOpens", "Enter on the image opens the viewer"],
   ["focusMovesIn", "Focus moves into the viewer"],
-  ["arrowsPan", "Arrow keys pan"],
+  ["arrowsPan", "Arrow keys pan (Right, Down)"],
+  ["arrowsPanBack", "Arrow keys pan back (Left, Up)"],
   ["tabTrapped", "Tab and Shift+Tab stay in the viewer"],
   ["closeButtonCloses", "Enter on the close button closes"],
   ["focusReturns", "Focus returns to the image"],

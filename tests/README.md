@@ -129,7 +129,7 @@ heading set its expected results, as in
 | `descriptions ok`, `references ok`, `math ok` | Descriptions show; citations and cross-references are resolved and their links work; math is typeset wherever the page's is |
 | `backdrop ok` | Every image is shown on an opaque backdrop |
 | `isolation ok` | Keys pressed in the viewer don't reach the page behind it (Ctrl+key and function keys do), and a widget at z-index 10000 stays underneath |
-| `keyboard ok` | Tab reaches the image, Enter or Space opens it, arrows pan, Tab stays in the viewer, Esc closes, focus returns |
+| `keyboard ok` | Tab reaches the image, Enter or Space opens it, zoomed in the arrows pan both ways, Tab stays in the viewer, Esc closes, focus returns |
 | `page still ok` | Opening the viewer doesn't shift the page behind it where scrollbars take up room |
 
 Console errors and outside requests are counted but don't fail the run.
