@@ -385,20 +385,30 @@ end
 -- quote or a backslash (`$\theta$`) is invalid JSON, or decodes to the
 -- wrong text (`\t` becomes a tab). So split it at the `,"key":`
 -- boundaries ourselves and keep strings exactly as written.
+--
+-- A description can itself contain `, "key":` (JSON-like text, say). Quarto
+-- writes its own boundaries with no space after the comma, and a string
+-- value ends in a quote, so a boundary counts only as `,"key":` straight
+-- after a complete value: a closing quote if the value is a string. Only
+-- a description containing `","key":` exactly is still split there.
 local function parse_options(value)
   local body = value:match("^%s*{(.*)}%s*$")
   if body == nil then return {}, { order = {} } end
   local starts = {}
-  local pos = 1
+  local first_s, first_e, first_key = body:find('^%s*"([%w_%-]+)"%s*:')
+  if first_s == nil then return {}, { order = {} } end
+  table.insert(starts, { s = first_s, e = first_e, key = first_key })
+  local pos = first_e + 1
   while true do
-    local s, e, key = body:find('"([%w_%-]+)"%s*:', pos)
+    local s, e, key = body:find(',"([%w_%-]+)":', pos)
     if s == nil then break end
-    -- a key starts the body or follows a comma
-    local before = body:sub(1, s - 1):match("(%S?)%s*$")
-    if s == 1 or before == "," then
-      table.insert(starts, { s = s, e = e, key = key })
+    local current = starts[#starts]
+    local raw = body:sub(current.e + 1, s - 1):gsub("^%s+", "")
+    local complete = raw ~= "" and (raw:sub(1, 1) ~= '"' or (#raw >= 2 and raw:sub(-1) == '"'))
+    if complete then
+      table.insert(starts, { s = s + 1, e = e, key = key })
     end
-    pos = e + 1
+    pos = s + 1
   end
   local cfg, raws = {}, { order = {} }
   for i, k in ipairs(starts) do

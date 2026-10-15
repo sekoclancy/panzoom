@@ -1,0 +1,56 @@
+---
+title: "Descriptions (Jupyter)"
+filters:
+  - panzoom
+jupyter: python3
+expect-errors: []
+expect-descriptions:
+  - 'Say “hi”, then stop.'
+  - 'Compare a, “hint”: true, and more.'
+  - '{“a”: 1, “b”: [2, 3]}'
+  - 'Braces } and ] and , “x”:'
+  - 'It’s a “quoted” one, with \(\theta = \alpha_1\)'
+---
+
+Descriptions that look like more options, as Jupyter passes them: each must
+come through whole.
+
+```{python}
+#| panzoom:
+#|   description: 'Say "hi", then stop.'
+#|   hint: false
+import matplotlib.pyplot as plt
+plt.plot([1, 2])
+```
+
+```{python}
+#| panzoom:
+#|   description: 'Compare a, "hint": true, and more.'
+#|   hint: false
+import matplotlib.pyplot as plt
+plt.plot([1, 2])
+```
+
+```{python}
+#| panzoom:
+#|   description: '{"a": 1, "b": [2, 3]}'
+#|   hint: false
+import matplotlib.pyplot as plt
+plt.plot([1, 2])
+```
+
+```{python}
+#| panzoom:
+#|   description: 'Braces } and ] and , "x":'
+#|   hint: false
+import matplotlib.pyplot as plt
+plt.plot([1, 2])
+```
+
+```{python}
+#| panzoom:
+#|   description: "It's a \"quoted\" one, with $\\theta = \\alpha_1$"
+#|   hint: false
+import matplotlib.pyplot as plt
+plt.plot([1, 2])
+```

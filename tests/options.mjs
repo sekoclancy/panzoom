@@ -11,6 +11,12 @@
     top-level.qmd      a panzoom: value that isn't true, false, auto or a map
     cells-r.qmd        mistakes in knitr cells' #| panzoom:, and a div's panzoom=
     cells-python.qmd   the same in Jupyter cells
+    descriptions-r.qmd, descriptions-python.qmd
+                       descriptions with quotes, commas, braces, and text
+                       like `, "hint":`, which must come through whole
+
+  A page can also list `expect-descriptions:`, the text of each description
+  in the rendered page, in order (Quarto's curly quotes included).
 
   options/_extensions is a symlink to the repo's _extensions/, as for
   standalone/. Usage, from tests/: node options.mjs
@@ -27,10 +33,11 @@ const PAGES = fs.readdirSync(DIR).filter((f) => f.endsWith(".qmd")).sort();
 const PYTHON = path.join(HERE, "..", ".venv", "bin", "python");
 const env = fs.existsSync(PYTHON) ? { ...process.env, QUARTO_PYTHON: PYTHON } : process.env;
 
-// The page's `expect-errors:` list: single-quoted YAML strings ('' is a quote).
-function expected(page) {
+// A list in the page's header, such as `expect-errors:`: single-quoted YAML
+// strings ('' is a quote).
+function expected(page, key = "expect-errors") {
   const head = fs.readFileSync(path.join(DIR, page), "utf8").split(/^---$/m)[1] || "";
-  const m = /^expect-errors:(.*)$/m.exec(head);
+  const m = new RegExp(`^${key}:(.*)$`, "m").exec(head);
   if (!m) return null;
   if (m[1].trim() === "[]") return [];
   const rest = head.slice(m.index + m[0].length).split("\n");
@@ -63,6 +70,16 @@ for (const { page, code, log } of await Promise.all(PAGES.map(render))) {
   if (want.length > 0 && code === 0) problems.push("rendered, but should have failed");
   for (let i = 0; i < Math.max(want.length, got.length); i++) {
     if (want[i] !== got[i]) problems.push(`line ${i + 1}: expected ${want[i] === undefined ? "nothing" : `"${want[i]}"`}, got ${got[i] === undefined ? "nothing" : `"${got[i]}"`}`);
+  }
+  const descs = expected(page, "expect-descriptions");
+  if (descs && code === 0) {
+    const html = fs.readFileSync(path.join(DIR, page.replace(/\.qmd$/, ".html")), "utf8");
+    const text = (h) => h.replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+      .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+    const shown = [...html.matchAll(/<div[^>]*class="panzoom-desc"[^>]*>([\s\S]*?)<\/div>/g)].map((m) => text(m[1]));
+    for (let i = 0; i < Math.max(descs.length, shown.length); i++) {
+      if (descs[i] !== shown[i]) problems.push(`description ${i + 1}: expected ${descs[i] === undefined ? "nothing" : `"${descs[i]}"`}, got ${shown[i] === undefined ? "nothing" : `"${shown[i]}"`}`);
+    }
   }
   if (problems.length) {
     failed++;
