@@ -91,7 +91,7 @@ eight cases:
 
 | Page | Description |
 |---|---|
-| [m-styling-options](pages/m-styling-options.qmd) | The colour options, no CSS |
+| [m-styling-options](pages/m-styling-options.qmd) | The color options, no CSS |
 | [n-css-class](pages/n-css-class.qmd) | `css-class` with a stylesheet, [n-css-class.css](pages/n-css-class.css): the CSS variables and the viewer's parts |
 
 **Outside the site** ([standalone/](standalone/)), rendered by
@@ -116,7 +116,7 @@ heading set its expected results, as in
 
 | Summary | Assumptions |
 |---|---|
-| `options ok` | The viewer opened matches `expect-open` (one value, or one per image); and `expect-caption="none"`, `expect-hint`, `expect-max-zoom`, `expect-format="svg"`, `expect-class` (on the viewer), `expect-overlay`, and `expect-band` (backdrop and caption band colours) where set |
+| `options ok` | The viewer opened matches `expect-open` (one value, or one per image); and `expect-caption="none"`, `expect-hint`, `expect-max-zoom`, `expect-format="svg"`, `expect-class` (on the viewer), `expect-overlay`, and `expect-band` (backdrop and caption band colors) where set |
 | `fit ok` | The opening view matches `expect-fit` (`contain`, `height`, `width`), in a 1280 × 900 window and four others (1440 × 780, 1920 × 950, 1920 × 1080, 2560 × 1300); `expect-zoom-out` says whether it can zoom out further |
 | `real size ok` | `expect-scale="1"`: a small image opens at its own size |
 | `zoom anchor ok`, `fast zoom ok` | Wheel zoom keeps the point under the cursor within 3 px, also with several steps in one frame |
@@ -126,7 +126,7 @@ heading set its expected results, as in
 | `gallery ok` | ←/→, the buttons, and a swipe step through a gallery; zoomed in, → pans instead; PageUp/PageDown don't change image; no wrap without `loop`; focus stays in the viewer at the last image |
 | `large galleries ok` | In a gallery of wide or tall figures, → pans and the next button switches |
 | `caption clear ok` | An image that fits the screen's height stays clear of the caption band |
-| `anchors ok` | `expect-anchors`: each labelled figure keeps its id and its number ("Figure N"), holds an image panzoom marked, and a cross-reference on the page links to it |
+| `anchors ok` | `expect-anchors`: each labeled figure keeps its id and its number ("Figure N"), holds an image panzoom marked, and a cross-reference on the page links to it |
 | `descriptions ok`, `references ok`, `math ok` | Descriptions show; citations and cross-references are resolved and their links work; math is typeset wherever the page's is |
 | `panel scroll ok` | A caption or description marked `expect-scroll` (page G) is reached with Tab and scrolled by the arrows, Page Up/Down, Home, End, and Space, without moving the image or the page |
 | `backdrop ok` | Every image is shown on an opaque backdrop |
@@ -181,7 +181,7 @@ failed. With `panzoom: false`, no image may be linked.
 **Text contrast.** `npm run contrast` ([contrast.mjs](contrast.mjs))
 measures the WCAG contrast of the text on the page and in the viewer, in
 light and dark mode; below 4.5:1 (3:1 for large text) fails. It also checks
-that the caption band takes the page's colours (`theme ok`), except on M
+that the caption band takes the page's colors (`theme ok`), except on M
 and N, which restyle it. Text over images, typeset math, and Quarto's navbar
 and footer aren't measured.
 

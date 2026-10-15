@@ -8,7 +8,7 @@ full-screen viewer, built on
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 
 > [!WARNING]
-> This extension is experimental and not guaranteed to work. Its behaviour may change without notice.
+> This extension is experimental and not guaranteed to work. Its behavior may change without notice.
 
 ## Installation
 
@@ -160,7 +160,7 @@ panzoom:
   loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
   fit: auto       # auto, contain, height, or width (default auto, see Wide and tall figures)
   css-class: my-viewer  # an extra class on the viewer, for styling it (default none; see Styling)
-  backdrop: black             # colours (see Styling): the layer over the page,
+  backdrop: black             # colors (see Styling): the layer over the page,
   caption-background: black   # the caption band,
   caption-color: white        # caption, description, and hint text,
   link-color: lightblue       # and links in captions (defaults follow the theme)
@@ -299,19 +299,19 @@ embed-resources: true
 
 ### Styling
 
-Set the viewer's colours with the options, or with the CSS variables they
+Set the viewer's colors with the options, or with the CSS variables they
 stand for in your own CSS (a `css:` file, or the theme's `.scss`):
 
 | Option | CSS variable | Element | Default |
 |---|---|---|---|
 | `backdrop` | `--panzoom-backdrop` | The layer over the page | `rgba(0, 0, 0, 0.7)` |
 | `caption-background` | `--panzoom-bg` | The caption band | The page's background |
-| `caption-color` | `--panzoom-fg` | Caption, description, and hint | The page's text colour |
-| `link-color` | `--panzoom-link` | Links in captions | The page's link colour |
+| `caption-color` | `--panzoom-fg` | Caption, description, and hint | The page's text color |
+| `link-color` | `--panzoom-link` | Links in captions | The page's link color |
 
 ```yaml
 panzoom:
-  backdrop: rgba(0, 0, 0, 0.9)   # any CSS colour: rgba(),
+  backdrop: rgba(0, 0, 0, 0.9)   # any CSS color: rgba(),
   caption-background: "#222"     # hex (quoted, for YAML),
   caption-color: white           # or a name
 ```

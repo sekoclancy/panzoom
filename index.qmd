@@ -18,7 +18,7 @@ It attempts to match, and extend, the feature set of Quarto's built-in
 Source and documentation: <https://github.com/sekoclancy/panzoom>.
 
 ::: {.callout-warning}
-This extension is experimental and not guaranteed to work. Its behaviour may change without notice.
+This extension is experimental and not guaranteed to work. Its behavior may change without notice.
 :::
 
 ```bash
