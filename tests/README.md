@@ -13,7 +13,7 @@ From the repo root, once (see [Setup](#setup)):
 ```bash
 quarto install chrome-headless-shell --no-prompt
 (cd tests && npm install)
-python3 -m venv .venv && .venv/bin/pip install -r tests/requirements.txt
+uv venv .venv && uv pip install -r tests/requirements.txt
 ```
 
 Then render, and run the tests from `tests/`:
@@ -70,13 +70,15 @@ cd tests && npm install
 ```
 
 **Python packages** for pages J–L, in a venv at the repo root
-(git-ignored); the project's `_environment` file points Quarto at it:
+(git-ignored), as in the main README's
+[From source](../README.md#from-source); the project's `_environment` file
+points Quarto at it. uv reads the Python version (3.14) from
+`.python-version`:
 
 ```bash
-python3 -m venv .venv
-.venv/bin/pip install -r tests/requirements.txt
-# or, with uv:
 uv venv .venv && uv pip install -r tests/requirements.txt
+# or, without uv (uses whichever python3 is on the PATH, ignoring .python-version):
+python3 -m venv .venv && .venv/bin/pip install -r tests/requirements.txt
 ```
 
 ## Test pages
