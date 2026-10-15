@@ -1,9 +1,8 @@
 # Tests
 
 These scripts open the rendered pages in a real browser (headless Chrome,
-driven with [Puppeteer](https://pptr.dev/)) and check what each image does:
-which viewer opens, and that panzoom's viewer zooms, pans and closes as it
-should. They read the results from the page and save a screenshot of each
+driven with [Puppeteer](https://pptr.dev/)) and click each image: the right
+viewer must open, and panzoom's must zoom, pan, and close. They read the results from the page and save a screenshot of each
 step for a person to look at; nothing is compared pixel by pixel.
 
 ## Quick start
@@ -25,7 +24,7 @@ cd tests && npm test
 
 | Command | Checks | Time |
 |---|---|---|
-| `npm test` | The demo and the site's pages (A–N): what each image opens, zoom, pan, keys, galleries, captions | ~1 min |
+| `npm test` | The demo and the site's pages (A–N): the viewer per image, zoom, pan, keys, galleries, captions | ~1 min |
 | `npm run touch` | The viewer on an emulated phone: tap, pinch, drag, swipe | ~10 s |
 | `npm run nojs` | Every page with JavaScript off: each marked image links to its file | ~10 s |
 | `npm run contrast` | Text contrast in light and dark mode, and that the viewer follows the theme | ~7 s |
@@ -85,7 +84,7 @@ python3 -m venv .venv && .venv/bin/pip install -r tests/requirements.txt
 
 The site's test pages are in [pages/](pages/), rendered with the site and
 published at <https://sekoclancy.github.io/panzoom/>. Each starts with a
-note saying what it should show, and has a **</> Code** button with its full
+note describing the expected result, and has a **</> Code** button with its full
 source.
 
 **R (knitr).** A–D render the same 12 cases (a gallery, subfigures, math in
@@ -93,18 +92,18 @@ a caption, an image inside a link, a margin image, ...) four ways:
 
 | Page | Description | panzoom | Lightbox |
 |---|---|---|---|
-| [a-lightbox](pages/a-lightbox.qmd) | **Reference:** what Quarto's lightbox does with each case | off | `match: auto` |
+| [a-lightbox](pages/a-lightbox.qmd) | **Reference:** Quarto's lightbox on each case | off | `match: auto` |
 | [b-panzoom-lightbox](pages/b-panzoom-lightbox.qmd) | **The usual setup:** marked images; the lightbox for the rest | on | `true` |
 | [c-panzoom-auto](pages/c-panzoom-auto.qmd) | **Every figure:** A's markup, panzoom with `match: auto` | auto | `match: auto` |
 | [d-panzoom-selective](pages/d-panzoom-selective.qmd) | **Marked images only**, no lightbox | on | none |
 | [e-formats](pages/e-formats.qmd) | webp, svg, png + pdf, and webp past its 16,383 px limit | on | none |
-| [f-options](pages/f-options.qmd) | Opting out, the `hint`, `max-zoom` and `loop` options | on | none |
+| [f-options](pages/f-options.qmd) | Opting out, the `hint`, `max-zoom`, and `loop` options | on | none |
 | [g-captions](pages/g-captions.qmd) | Citations and cross-references in captions and descriptions | on | none |
-| [h-wide](pages/h-wide.qmd) | Wide collages, tall strips and other shapes, each on its own; `fit` | on | none |
+| [h-wide](pages/h-wide.qmd) | Wide collages, tall strips, and other shapes, each on its own; `fit` | on | none |
 | [i-wide-galleries](pages/i-wide-galleries.qmd) | The same shapes in galleries and layouts, of different lengths | on | none |
 
 **Python (Jupyter).** J and K compare panzoom with the lightbox on the same
-eight cases, as A and C do for knitr, but each case states what should open:
+eight cases, as A and C do for knitr, but each case states its expected viewer:
 
 | Page | Description | panzoom | Lightbox |
 |---|---|---|---|
@@ -128,10 +127,10 @@ standalone` as plain documents with their own YAML header):
 | [self-contained](standalone/self-contained.qmd) | A single HTML file (`embed-resources: true`) opened from disk; `self-contained-math` also embeds MathJax |
 | [self-contained-lightbox](standalone/self-contained-lightbox.qmd) | The same page with Quarto's lightbox, for comparison (a copy of `_self-contained.qmd`: keep in step) |
 | [math-&lt;method&gt;](standalone/_math.qmd) | Math in captions and descriptions with each `html-math-method` |
-| [switch-&lt;value&gt;](standalone/switch-true.qmd) | `panzoom: true`, `auto` and `false` |
+| [switch-&lt;value&gt;](standalone/switch-true.qmd) | `panzoom: true`, `auto`, and `false` |
 | [css-class](standalone/css-class.qmd) | `css-class` and the viewer's CSS variables, set by a rule loaded before panzoom's stylesheet |
 
-Cases 1, 2 and 6–8 on A–D come from the example document of
+Cases 1, 2, and 6–8 on A–D come from the example document of
 [quarto-ext/lightbox](https://github.com/quarto-ext/lightbox) (MIT, © Posit
 Software) and Quarto's lightbox docs. The photos in [../images/](../images/)
 are quarto-ext/lightbox's, from Unsplash under the
@@ -145,22 +144,21 @@ are quarto-ext/lightbox's, from Unsplash under the
 ## Checks
 
 `npm test` ([browser.mjs](browser.mjs)) clicks every image on each page,
-records what opened (**panzoom**, **glightbox**, **navigation** for a link,
+records the result (**panzoom**, **glightbox**, **navigation** for a link,
 or **nothing**), and runs these checks. Each appears in the page's summary
 line as `... ok`, or in capitals when it fails. Attributes on a case's
-heading (`## 3. Title {#c3 expect-fit="height"}`) say what that case should
-do.
+heading (`## 3. Title {#c3 expect-fit="height"}`) set its expected results.
 
 | Summary | Assumptions |
 |---|---|
-| `options ok` | What opened matches `expect-open` (one value, or one per image); and `expect-caption="none"`, `expect-hint`, `expect-max-zoom`, `expect-format="svg"`, `expect-class` (on the viewer), `expect-overlay` and `expect-band` (backdrop and caption band colours) where set |
+| `options ok` | The viewer opened matches `expect-open` (one value, or one per image); and `expect-caption="none"`, `expect-hint`, `expect-max-zoom`, `expect-format="svg"`, `expect-class` (on the viewer), `expect-overlay`, and `expect-band` (backdrop and caption band colours) where set |
 | `fit ok` | The opening view matches `expect-fit` (`contain`, `height`, `width`), in a 1280 × 900 window and four others (1440 × 780, 1920 × 950, 1920 × 1080, 2560 × 1300); `expect-zoom-out` says whether it can zoom out further |
 | `real size ok` | `expect-scale="1"`: a small image opens at its own size |
 | `zoom anchor ok`, `fast zoom ok` | Wheel zoom keeps the point under the cursor within 3 px, also with several steps in one frame |
 | `containment ok` | Arrow keys and drags stop at a collage's ends (with a bounce or a stretch that springs back); an image shown whole doesn't move |
 | `focal point ok` | A strip clicked on the page opens at that spot; `0` returns there; from the keyboard it starts at its end |
 | `shift-scroll ok` | Shift+scroll pans the way `shift-scroll` says (`x`, `y`, `none`, `zoomed-x`) |
-| `gallery ok` | ←/→, the buttons and a swipe step through a gallery; zoomed in, → pans instead; PageUp/PageDown don't change image; no wrap without `loop` |
+| `gallery ok` | ←/→, the buttons, and a swipe step through a gallery; zoomed in, → pans instead; PageUp/PageDown don't change image; no wrap without `loop` |
 | `large galleries ok` | In a gallery of wide or tall figures, → pans and the next button switches |
 | `caption clear ok` | An image that fits the screen's height stays clear of the caption band |
 | `anchors ok` | `expect-anchors`: each labelled figure keeps its id and its number ("Figure N"), holds an image panzoom marked, and a cross-reference on the page links to it |
@@ -174,7 +172,7 @@ The line also counts console errors and requests to other machines
 (`N FAILED REQUESTS` if any failed); these are reported but don't fail the
 run, since offline runs and some math pages have them on purpose. Each page gets a folder in `results/`:
 `report.md` (a row per image, then each check in detail), a screenshot per
-click (`cNN-M.png`: image M of case NN) and `results.json`.
+click (`cNN-M.png`: image M of case NN), and `results.json`.
 
 For example, page B's summary line:
 
@@ -193,10 +191,9 @@ with its screenshot, `c01-1.png`, taken once the viewer opened:
 
 ![The viewer open on case 1 of page B: the beach photo over the dimmed page, with its caption and description below.](images/example-screenshot.jpg)
 
-Every case on A–D states what each of its images should open
-(`expect-open`, with one value per image where they differ, as in
-`expect-open="glightbox panzoom glightbox"`): Quarto's lightbox on A, and
-on B–D what the note at the top of each page says. A few cases open
+Every case on A–D sets `expect-open` for its images (one value per image
+where they differ, as in `expect-open="glightbox panzoom glightbox"`):
+Quarto's lightbox on A, and on B–D the result each page's note describes. A few cases open
 nothing on purpose: case 8 (`lightbox: false`), case 9 in A and C (Quarto
 drops the link around a captioned image), case 11 in A and C (inline
 images aren't automatic), and every unmarked image in D.
@@ -229,7 +226,7 @@ and dark mode and measures the WCAG contrast of every piece of text on the
 page and in the viewer: below 4.5:1 (3:1 for large text) fails. It also
 checks that the viewer's caption band takes the page's background and text
 colours (`theme ok`), except on pages that restyle it (`theme n/a
-(restyled)`: M and N). Text over images, typeset math and Quarto's navbar
+(restyled)`: M and N). Text over images, typeset math, and Quarto's navbar
 and footer aren't measured.
 
 ### Without internet access
@@ -264,7 +261,7 @@ report and run `npm run bench:save`, then commit the baseline.
 [images/demo.gif](../images/demo.gif) from the rendered demo page: a
 scripted session with a drawn pointer and a label for each key. It isn't a
 check, and nothing re-records it on its own: run it again after changing
-`index.qmd` or how the viewer looks or behaves, then commit the GIF. It
+`index.qmd` or the viewer, then commit the GIF. It
 needs ffmpeg, from `imageio-ffmpeg` in the repo's `.venv`
 (`.venv/bin/pip install imageio-ffmpeg`; not in `requirements.txt`), or
 `FFMPEG=/path/to/ffmpeg`.
@@ -283,9 +280,9 @@ re-renders on save; the test pages are linked from the front page.
 (Opening the HTML in `docs/` directly doesn't work: Quarto's script is a
 JavaScript module, which browsers refuse to load from `file://`.)
 
-What the scripts can't judge: whether zooming feels smooth on a wheel and a
-trackpad, touch on real phones and tablets, how sharp zoomed images look,
-and appearance in general.
+The scripts can't judge zoom smoothness on a wheel or a trackpad, touch on
+real phones and tablets, the sharpness of zoomed images, or appearance in
+general.
 
 ## Limitations
 
@@ -298,8 +295,8 @@ and appearance in general.
 
 - **Console errors about CORS or `file://`**: the page was opened as a
   file. Use `quarto preview` or the test scripts, which serve it over HTTP.
-- **`Failed to launch the browser process`**: Chrome isn't where the
-  scripts look. Run `quarto install chrome-headless-shell --no-prompt`, or
+- **`Failed to launch the browser process`**: the scripts can't find
+  Chrome. Run `quarto install chrome-headless-shell --no-prompt`, or
   set `CHROME=`.
 - **`... is not a file inside ...`**: the scripts only check rendered pages
   in this repo. Render first, and pass paths like

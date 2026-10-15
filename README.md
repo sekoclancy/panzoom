@@ -363,5 +363,4 @@ git branch gh-pages $(git commit-tree $(git hash-object -t tree /dev/null) -m "I
 git push origin gh-pages
 ```
 
-The tests, their extra setup (Chrome and Puppeteer), and what each one
-checks are in [tests/README.md](tests/README.md).
+See [tests/README.md](tests/README.md) for the tests and their setup.
