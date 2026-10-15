@@ -5,7 +5,10 @@
   `## N. ...` section, and records what opened: the panzoom viewer, GLightbox,
   a link navigation, or nothing. For the panzoom viewer it also tries wheel
   zoom, drag, Esc and a background click; for GLightbox it records the slide
-  title, description and gallery size. Console errors are collected per page.
+  title, description and gallery size. Console errors, page errors and
+  failed requests are collected per page; any of them fails the page,
+  except the known ones from Quarto or a math library (KNOWN_ERRORS,
+  KNOWN_FAILED_REQUESTS) and failed requests to other sites.
   Then, with the viewer open, checks that keys don't reach the page (as
   focus-mode's and Quarto search's shortcuts would), that Ctrl+key still
   does, and that a fixed widget at z-index 10000 stays below the viewer.
@@ -56,6 +59,29 @@ const PAGES = ARGS.length
     ...fs.readdirSync(path.join(ROOT, "docs", "tests", "pages")).filter((f) => f.endsWith(".html")).sort()
       .map((p) => path.join(ROOT, "docs", "tests", "pages", p))];
 const VIEWPORT = { width: 1280, height: 900 };
+
+// Errors expected on some pages, from Quarto or a math library rather than
+// the viewer: reported with their reason, not failed. `page` matches the
+// page's name; `offline` limits one to --offline runs.
+const KNOWN_ERRORS = [
+  { text: /katex is not defined/, offline: true,
+    why: "Quarto's KaTeX setup, with KaTeX's CDN blocked" },
+];
+const KNOWN_FAILED_REQUESTS = [
+  { url: /^file:\/\/\/output\/chtml\/fonts\/woff-v2\//, page: /^self-contained-math$/,
+    why: "MathJax's web fonts, which self-contained-math doesn't embed" },
+];
+
+// Splits a page's errors or failed requests into the expected ones (with
+// their reason) and the rest.
+function sortOut(list, known, field, name) {
+  const expected = [], unexpected = [];
+  for (const item of list) {
+    const k = known.find((k) => k[field].test(item) && (!k.page || k.page.test(name)) && (!k.offline || OFFLINE));
+    if (k) expected.push({ item, why: k.why }); else unexpected.push(item);
+  }
+  return { expected, unexpected };
+}
 // Windows the opening view (`expect-fit`) is also checked in.
 const FIT_SIZES = [[1440, 780], [1920, 950], [1920, 1080], [2560, 1300]];
 const RESULTS = path.join(HERE, "results", ...(OFFLINE ? ["offline"] : []));
@@ -641,7 +667,7 @@ async function checkPage(browser, base, file) {
   const short = (u) => (u.length > 120 ? u.slice(0, 120) + "..." : u);
   page.on("requestfailed", (req) => {
     if (OFFLINE && !isLocal(req.url())) return;
-    failed.add(`${short(req.url())} (${req.failure()?.errorText})`);
+    failed.add(`${isLocal(req.url()) ? "" : "external: "}${short(req.url())} (${req.failure()?.errorText})`);
   });
   if (OFFLINE) await page.setRequestInterception(true);
   page.on("request", (req) => {
@@ -1174,10 +1200,16 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
     `External requests${network.offline ? " (blocked)" : ""}: ${network.external.length ? "" : "none"}`,
     ...network.external.map((u) => `- \`${u}\``), "",
     `Failed requests${network.offline ? " (besides the blocked ones)" : ""}: ${network.failed.length ? "" : "none"}`,
-    ...network.failed.map((u) => `- \`${u}\``), "",
+    ...network.failed.map((u) => {
+      const k = KNOWN_FAILED_REQUESTS.find((k) => k.url.test(u) && (!k.page || k.page.test(path.basename(file, ".html"))));
+      return `- \`${u}\`` + (k ? ` (expected: ${k.why})` : u.startsWith("external: ") ? " (another site: not counted)" : " **(unexpected)**");
+    }), "",
     `Math on the page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"}`, "",
-    `Console errors: ${errors.length ? "" : "none"}`,
-    ...errors.map((e) => `- \`${e}\``), "",
+    `Console and page errors: ${errors.length ? "" : "none"}`,
+    ...errors.map((e) => {
+      const k = KNOWN_ERRORS.find((k) => k.text.test(e) && (!k.page || k.page.test(path.basename(file, ".html"))) && (!k.offline || OFFLINE));
+      return `- \`${e}\`` + (k ? ` (expected: ${k.why})` : " **(unexpected)**");
+    }), "",
     "| Case | Img | Classes | Wrapper | Opened | Details | Zoom× | Anchor px | Drag px | Reset | Esc | Bg click |",
     "|---|---|---|---|---|---|---|---|---|---|---|---|",
   ];
@@ -1437,7 +1469,11 @@ try {
     const withMath = results.filter(hasMath);
     if (withMath.length) extra.push((withMath.every((r) => mathOk(r, network.pageTeX)) ? "math ok" : "MATH FAILED") +
       ` (page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"})`);
-    if (network.failed.length) extra.push(`${network.failed.length} FAILED REQUESTS`);
+    const reqs = sortOut(network.failed.filter((u) => !u.startsWith("external: ")), KNOWN_FAILED_REQUESTS, "url", name);
+    const externalFailed = network.failed.length - reqs.expected.length - reqs.unexpected.length;
+    if (reqs.unexpected.length) extra.push(`${reqs.unexpected.length} FAILED REQUESTS`);
+    if (reqs.expected.length) extra.push(`${reqs.expected.length} expected failed requests`);
+    if (externalFailed) extra.push(`${externalFailed} failed requests to other sites`);
     if (network.external.length) extra.push(`${network.external.length} external requests${OFFLINE ? " blocked" : ""}`);
     if (overflowGalleries.length) extra.push(overflowGalleries.every((g) => g.ok) ? "large galleries ok" : "LARGE GALLERIES FAILED");
     if (containment) extra.push(containment.ok ? "containment ok" : "CONTAINMENT FAILED");
@@ -1458,12 +1494,13 @@ try {
         `- Closing brings the scrollbar back: ${yes(still.restored)}`, ""].join("\n"));
     }
     const wide = extra.join(", ");
+    const errs = sortOut(errors, KNOWN_ERRORS, "text", name);
+    const errText = errs.unexpected.length ? `${errs.unexpected.length} CONSOLE ERRORS` : `0 console errors` +
+      (errs.expected.length ? ` (${errs.expected.length} expected)` : "");
     // A check that failed is in capitals (FIT FAILED, CAPTION OVERLAP, ...).
-    // Console errors and failed requests are reported, not counted: offline
-    // runs and some math pages have them on purpose.
-    if ([iso, gal, fit, ...extra].some((t) => /[A-Z]{3,}/.test(t) && !/FAILED REQUESTS/.test(t))) failedPages++;
+    if ([errText, iso, gal, fit, ...extra].some((t) => /[A-Z]{3,}/.test(t))) failedPages++;
     console.log(`${name}: ${results.length} images, ${JSON.stringify(counts)}, ` +
-      `${errors.length} console errors, ${iso}, ${gal}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
+      `${errText}, ${iso}, ${gal}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
   }
 } finally {
   await Promise.all(browsers.map((b) => b.close()));

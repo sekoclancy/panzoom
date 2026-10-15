@@ -134,7 +134,11 @@ heading set its expected results, as in
 | `keyboard ok` | Tab reaches the image, Enter or Space opens it, zoomed in the arrows pan both ways, Tab stays in the viewer, Esc closes, focus returns |
 | `page still ok` | Opening the viewer doesn't shift the page behind it where scrollbars take up room |
 
-Console errors and outside requests are counted but don't fail the run.
+A console error, a page error, or a failed request for one of the page's
+own files fails the page, unless `KNOWN_ERRORS` or `KNOWN_FAILED_REQUESTS`
+in browser.mjs lists it as expected (from Quarto or a math library, with
+the reason). Requests to other sites are counted, and their failures
+reported, but don't fail the run.
 Each page gets a folder in `results/` with `report.md`, a screenshot per
 click (`cNN-M.png`: image M of case NN), and `results.json`.
 
@@ -225,6 +229,22 @@ real phones and tablets (iOS Safari especially), the sharpness of zoomed
 images, or appearance in general. Only Chrome is tested. Headless Chrome
 counts as a device without hover, so CSS that checks `(hover: hover)` or
 `(pointer: fine)` treats it as a touch device.
+
+On a phone (iOS Safari first) and in desktop Safari, open the live demo
+and pages B, G, and I:
+
+| Check | Where | Expected |
+|---|---|---|
+| Tap | any marked image | the viewer opens |
+| Pinch and drag | page B, case 6 | zooms toward the fingers, pans, stays on screen |
+| Pinch with a finger on the background | page B, case 6 | the viewer stays open |
+| Double-tap | a zoomed image | back to the opening view |
+| Swipe | page B, case 4 | the next image |
+| Scroll a long description | page G, case 9 | it scrolls; the image and page don't move |
+| Rotate the phone, or resize the window | any open image | refits; a long caption still scrolls |
+| Close | the × button, or tap the background | closes; the page is where it was |
+| Tab, Enter, and Esc (desktop Safari, with "Press Tab to highlight each item" on) | page G, case 9 | Tab reaches the description; Esc returns focus to the image |
+| Wide figure | page I | opens at screen height and pans sideways |
 
 ## Troubleshooting
 
