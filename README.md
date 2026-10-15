@@ -8,6 +8,10 @@ A [Quarto](https://quarto.org) extension that opens figures in a
 full-screen viewer to zoom and pan, built on
 [Panzoom](https://github.com/timmywil/panzoom).
 
+## Demo
+
+![Opening a figure, zooming with the wheel, dragging, resetting with a double-click, stepping through a gallery, and opening a wide figure on its highlighted panel.](images/demo.gif)
+
 ## Features
 
 panzoom covers what Quarto's

@@ -11,7 +11,8 @@
     "bench": "node bench.mjs",
     "bench:save": "node bench.mjs --save",
     "offline": "node standalone.mjs --offline && node browser.mjs --offline ../docs/tests/pages/*.html standalone/*.html",
-    "options": "node options.mjs"
+    "options": "node options.mjs",
+    "demo": "node demo.mjs"
   },
   "type": "module",
   "private": true,

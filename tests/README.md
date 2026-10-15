@@ -256,6 +256,17 @@ heavier or slower, or on another machine or Quarto version, check the
 report and run `npm run bench:save`, then commit the baseline.
 `--no-render` skips the renders; `--rounds N` changes their number.
 
+## Demo GIF
+
+`npm run demo` ([demo.mjs](demo.mjs)) records the README's
+[images/demo.gif](../images/demo.gif) from the rendered demo page: a
+scripted session with a drawn pointer and a label for each key. It isn't a
+check, and nothing re-records it on its own: run it again after changing
+`index.qmd` or how the viewer looks or behaves, then commit the GIF. It
+needs ffmpeg, from `imageio-ffmpeg` in the repo's `.venv`
+(`.venv/bin/pip install imageio-ffmpeg`; not in `requirements.txt`), or
+`FFMPEG=/path/to/ffmpeg`.
+
 ## Adding a case
 
 Add a `## N. Title {#cN}` section (the scripts find cases by these headings)
