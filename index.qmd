@@ -152,7 +152,7 @@ viewer opens right on it.
 #|   fit: height
 #| fig-width: 16
 #| fig-height: 2
-#| fig-cap: "Eight random walks, side by side."
+#| fig-cap: "Eight random walks, side by side. The viewer opens on the panel you clicked."
 
 set.seed(1)
 par(mfrow = c(1, 8), mar = c(3, 3, 2, 1), cex.main = 1.3)
