@@ -78,6 +78,7 @@ a.panzoom-link:focus-visible { outline: none; }
   user-select: text; -webkit-user-select: text; cursor: auto;
 }
 .panzoom-caption a, .panzoom-description a { color: var(--panzoom-link); }
+.panzoom-scrollable:focus-visible { outline: 2px solid var(--panzoom-link); outline-offset: 2px; }
 .panzoom-caption { max-height: 25vh; color: var(--panzoom-fg); font-size: 0.95rem; }
 .panzoom-caption-parent {
   margin-top: 0.2rem; font-size: 0.85rem;

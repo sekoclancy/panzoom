@@ -51,8 +51,9 @@ Zoom goes up to `max-zoom`. While an image is larger than the screen
 the buttons change image.
 
 From the keyboard, marked images can be reached with Tab and opened with
-Enter or Space; Tab moves between the viewer's buttons, and closing returns
-focus to the image.
+Enter or Space; Tab moves between the viewer's buttons, links, and any
+caption or description too long to fit, which the arrow keys then scroll.
+Closing returns focus to the image.
 
 ## Features
 

@@ -127,6 +127,7 @@ heading set its expected results, as in
 | `caption clear ok` | An image that fits the screen's height stays clear of the caption band |
 | `anchors ok` | `expect-anchors`: each labelled figure keeps its id and its number ("Figure N"), holds an image panzoom marked, and a cross-reference on the page links to it |
 | `descriptions ok`, `references ok`, `math ok` | Descriptions show; citations and cross-references are resolved and their links work; math is typeset wherever the page's is |
+| `panel scroll ok` | A caption or description marked `expect-scroll` (page G) is reached with Tab and scrolled by the arrows, Page Up/Down, Home, End, and Space, without moving the image or the page |
 | `backdrop ok` | Every image is shown on an opaque backdrop |
 | `isolation ok` | Keys pressed in the viewer don't reach the page behind it (Ctrl+key and function keys do), and a widget at z-index 10000 stays underneath |
 | `keyboard ok` | Tab reaches the image, Enter or Space opens it, zoomed in the arrows pan both ways, Tab stays in the viewer, Esc closes, focus returns |

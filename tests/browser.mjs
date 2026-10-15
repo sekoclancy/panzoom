@@ -704,6 +704,9 @@ async function checkPage(browser, base, file) {
           shiftScroll: sec.dataset.shiftScroll || null,
           expectScale: sec.dataset.expectScale ? +sec.dataset.expectScale : null,
           expectZoomOut: sec.dataset.expectZoomOut || null,
+          // `expect-scroll="description"` (or "caption"): that panel is too long
+          // to fit and must be reachable with Tab and scrolled by keys.
+          expectScroll: sec.dataset.expectScroll || null,
           // Option checks (pages A-D, F, G, css-class): on the image itself, or on
           // its case; a case's `expect-open` can list one value per image, in order.
           expectOpen: img.dataset.expectOpen || (() => {
@@ -1017,6 +1020,44 @@ async function checkPage(browser, base, file) {
     await closeAll(page);
   }
 
+  // Long caption or description panels (`expect-scroll`, page G): Tab
+  // reaches the panel, and while it has focus the scrolling keys scroll it,
+  // not the image or the page.
+  for (const r of results.filter((r) => r.opened === "panzoom" && r.expectScroll)) {
+    await openImage(page, r);
+    const sel = `.panzoom-${r.expectScroll}`;
+    const panel = () => page.evaluate((sel) => {
+      const p = document.querySelector(`.panzoom-overlay ${sel}`);
+      return { focused: document.activeElement === p, top: p.scrollTop,
+        max: p.scrollHeight - p.clientHeight, role: p.getAttribute("role") };
+    }, sel);
+    const view = await viewerTransform(page);
+    const pageY = await page.evaluate(() => scrollY);
+    const s = { overflows: (await panel()).max > 1 };
+    let tabs = 0;
+    while (!(await panel()).focused && tabs < 10) { await page.keyboard.press("Tab"); tabs++; }
+    s.reached = (await panel()).focused;
+    s.region = (await panel()).role === "region";
+    await page.keyboard.press("ArrowDown");
+    s.arrowScrolls = (await panel()).top > 0;
+    await page.keyboard.press("PageDown");
+    const afterLine = (await panel()).top;
+    s.pageScrolls = afterLine > 40;
+    await page.keyboard.press("End");
+    const end = await panel();
+    s.endReaches = Math.abs(end.top - end.max) <= 1;
+    await page.keyboard.press("Home");
+    s.homeReturns = (await panel()).top === 0;
+    await page.keyboard.press(" ");
+    s.spaceScrolls = (await panel()).top > 0;
+    const after = await viewerTransform(page);
+    s.imageStill = !!view && !!after && Math.abs(after.x - view.x) < 0.5 && Math.abs(after.y - view.y) < 0.5 && after.s === view.s;
+    s.pageStill = (await page.evaluate(() => scrollY)) === pageY;
+    s.stillOpen = (await state(page)).opened === "panzoom";
+    r.panelScroll = s;
+    await closeAll(page);
+  }
+
   // The opening view in other windows: the size rule must give the same
   // result in each (FIT_SIZES: laptops, a 1080p screen with and without
   // browser toolbars, and a wide screen).
@@ -1067,6 +1108,11 @@ function fitOk(r) {
 // The windows where the opening view differs from what's expected.
 function fitMisses(r) {
   return Object.entries(r.fitBySize || {}).filter(([, f]) => f !== r.expectFit).map(([size, f]) => `${f} at ${size}`);
+}
+
+function panelScrollOk(r) {
+  const s = r.panelScroll;
+  return !!s && Object.values(s).every((v) => v === true);
 }
 
 function zoomOutOk(r) {
@@ -1142,6 +1188,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         `opens: ${r.fit || "—"}` + (r.fitBySize ? (fitMisses(r).length ? `, but ${fitMisses(r).join(", ")}` : `, the same in ${Object.keys(r.fitBySize).length} other windows`) : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}${r.expectZoomOut ? `, zoom-out ${r.expectZoomOut}` : ""}**)`) : "") +
         (r.zoomOut ? `; zooms out from ${+r.zoomOut.open.toFixed(3)} to ${+r.zoomOut.min.toFixed(3)}` : "") +
         (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
+        (r.panelScroll ? `; long ${r.expectScroll} scrolls by keyboard: ` + (panelScrollOk(r) ? "yes" : `**NO** (${Object.entries(r.panelScroll).filter(([, v]) => !v).map(([k]) => k).join(", ")})`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "") +
         (r.captionHasMath ? ` (caption math ${TEX_LABEL[r.captionTeX]})` : "") +
         (r.citations ? `; ${r.citations} citations` : "") + (r.crossrefs ? `; ${r.crossrefs} cross-references` : "") +
@@ -1395,6 +1442,8 @@ try {
     if (overflowGalleries.length) extra.push(overflowGalleries.every((g) => g.ok) ? "large galleries ok" : "LARGE GALLERIES FAILED");
     if (containment) extra.push(containment.ok ? "containment ok" : "CONTAINMENT FAILED");
     if (clickOpen) extra.push(clickOpen.ok ? "focal point ok" : "FOCAL POINT FAILED");
+    const scrolled = opened.filter((r) => r.expectScroll);
+    if (scrolled.length) extra.push(scrolled.every(panelScrollOk) ? "panel scroll ok" : "PANEL SCROLL FAILED");
     const shift = results.filter((r) => r.shiftScroll && r.opened === "panzoom");
     if (shift.length) extra.push(shift.every((r) => r.shiftScrollOk) ? "shift-scroll ok" : "SHIFT-SCROLL FAILED");
     if (still) {

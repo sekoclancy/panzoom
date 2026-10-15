@@ -30,7 +30,9 @@
 
   Keyboard: marked images are focusable buttons that open on Enter or Space.
   The open viewer takes focus, keeps Tab inside it, and gives focus back to
-  what had it before when it closes.
+  what had it before when it closes. A caption or description too long for
+  its panel is a Tab stop too, and the arrows, Page Up/Down, Home, End and
+  Space scroll it while it has focus.
 
   Fit: by default (`fit: auto`) the viewer opens on the whole image, unless
   it is a strip (at least 3 times wider than tall, or 3 times taller than
@@ -409,6 +411,8 @@
     desc.hidden = !desc.innerHTML.trim();
     overlay.querySelector(".panzoom-hint").hidden = !opts.hint;
     overlay.querySelector(".panzoom-hint-gallery").hidden = !many;
+    caption.scrollTop = desc.scrollTop = 0;
+    markScrollable();
     overlay.setAttribute("aria-label", "Image viewer" + (many ? ", image " + (i + 1) + " of " + n : ""));
     if (pz) { pz.destroy(); pz = null; }
     img.style.transform = "";
@@ -463,11 +467,46 @@
     returnFocus = null;
   }
 
-  // The controls Tab moves between: visible, enabled buttons and caption links.
+  // The controls Tab moves between: visible, enabled buttons, caption links,
+  // and a caption or description panel that scrolls (see markScrollable()).
   function focusables() {
     return Array.prototype.filter.call(
-      overlay.querySelectorAll("button, a[href]"),
+      overlay.querySelectorAll("button, a[href], .panzoom-scrollable"),
       function (x) { return !x.disabled && x.offsetParent !== null; });
+  }
+
+  // A caption or description longer than its panel scrolls; make it a Tab
+  // stop, so it can be scrolled from the keyboard (see scrollPanel()).
+  // Checked again on resize, which changes what fits.
+  function markScrollable() {
+    [caption, desc].forEach(function (p) {
+      var on = !p.hidden && p.scrollHeight > p.clientHeight + 1;
+      p.classList.toggle("panzoom-scrollable", on);
+      if (on) {
+        p.tabIndex = 0;
+        p.setAttribute("role", "region");
+        p.setAttribute("aria-label", p === caption ? "Caption" : "Description");
+      } else {
+        p.removeAttribute("tabindex");
+        p.removeAttribute("role");
+        p.removeAttribute("aria-label");
+        if (document.activeElement === p) overlay.focus({ preventScroll: true });
+      }
+    });
+  }
+
+  // Scrolls a focused caption or description panel for a scrolling key, as
+  // the browser would (its own scrolling is prevented, see onKey()).
+  // Returns false for other keys.
+  function scrollPanel(p, e) {
+    var line = 40, page = Math.max(line, p.clientHeight - line);
+    var by = { ArrowDown: line, ArrowUp: -line, PageDown: page, PageUp: -page,
+      " ": e.shiftKey ? -page : page }[e.key];
+    if (e.key === "Home") p.scrollTop = 0;
+    else if (e.key === "End") p.scrollTop = p.scrollHeight;
+    else if (by !== undefined) p.scrollTop += by;
+    else return false;
+    return true;
   }
 
   function build() {
@@ -573,7 +612,9 @@
       if (!e.target.closest(".panzoom-exclude")) resetView();
     });
     window.addEventListener("resize", function () {
-      if (overlay.classList.contains("open")) fit();
+      if (!overlay.classList.contains("open")) return;
+      markScrollable();
+      fit();
     });
   }
 
@@ -601,6 +642,8 @@
       if (n) list[e.shiftKey ? (i <= 0 ? n - 1 : i - 1) : (i + 1) % n].focus();
     }
     else if (e.key === "Escape") close();
+    // A focused caption or description panel takes the scrolling keys.
+    else if (active.classList.contains("panzoom-scrollable") && scrollPanel(active, e)) return;
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
     // Left/Right pan while the image is larger than the screen (doing
     // nothing if it fits sideways); otherwise they switch gallery images
