@@ -2,7 +2,7 @@
   Records the README's demo GIF from the rendered demo page.
 
   Opens docs/index.html in headless Chrome, plays a short scripted session
-  (the top of the page; open a gallery image, wheel-zoom, drag,
+  (from the gallery: open its first image, wheel-zoom, drag,
   double-click to reset, next image, Esc; open the wide figure on its
   highlighted panel and pan with the right and left arrow keys), with
   a drawn mouse pointer, since headless Chrome draws none, and a label
@@ -91,6 +91,8 @@ function addPointer() {
     label.textContent = text; label.style.opacity = 1;
     clearTimeout(hide); hide = setTimeout(() => { label.style.opacity = 0; }, ms);
   };
+  // The mouse leaving the window sends no pointermove: park it by hand.
+  window.__hidePointer = () => { ptr.style.left = "-50px"; ptr.style.top = "-50px"; };
   document.documentElement.append(ring, ptr, label);
   window.addEventListener("pointermove", (e) => {
     ptr.style.left = e.clientX + "px"; ptr.style.top = e.clientY + "px";
@@ -131,13 +133,13 @@ async function pointIn(page, selector, fx = 0.5, fy = 0.5) {
 
 // Smooth-scrolls the page so the element sits at `at` of the window height,
 // or to the top with no element.
-async function scrollToEl(page, selector, at = 0.3) {
-  await page.evaluate((selector, at) => {
+async function scrollToEl(page, selector, at = 0.3, behavior = "smooth") {
+  await page.evaluate((selector, at, behavior) => {
     const y = selector
       ? document.querySelector(selector).getBoundingClientRect().top + window.scrollY - window.innerHeight * at
       : 0;
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }, selector, at);
+    window.scrollTo({ top: y, behavior });
+  }, selector, at, behavior);
   // Wait for the scroll to settle: a fixed wait is too short for long scrolls.
   let last = -1;
   for (let y = await page.evaluate(() => window.scrollY); y !== last; y = await page.evaluate(() => window.scrollY)) {
@@ -152,10 +154,9 @@ const WIDE = "#wide-figure img";
 const GALLERY = "#captions-and-galleries img";
 
 async function session(page) {
-  // 1. The top of the page, then a gallery: open the first image, zoom,
-  // drag, reset, step to the next image, close.
-  await wait(1200);
-  await scrollToEl(page, GALLERY, 0.3);
+  // 1. A gallery: open the first image, zoom, drag, reset, step to the
+  // next image, close.
+  await wait(600);
   let p = await pointIn(page, GALLERY, 0.42, 0.45);
   await moveTo(page, p.x, p.y, 500);
   await wait(150);
@@ -164,12 +165,16 @@ async function session(page) {
   if (!(await isOpen(page))) throw new Error("viewer didn't open on the gallery");
   p = await pointIn(page, ".panzoom-overlay img", 0.35, 0.4);
   await moveTo(page, p.x, p.y, 400);
-  await label(page, "scroll", 1000);
-  for (let i = 0; i < 4; i++) { await page.mouse.wheel({ deltaY: -120 }); await wait(120); }
+  await label(page, "scroll", 1300);
+  for (let i = 0; i < 7; i++) { await page.mouse.wheel({ deltaY: -120 }); await wait(110); }
   await wait(200);
-  await label(page, "drag");
+  // Drag right, down, left and up, to show panning every way.
+  await label(page, "drag", 1700);
   await page.mouse.down();
-  await moveTo(page, mouse.x + 200, mouse.y + 110, 450);
+  await moveTo(page, mouse.x + 250, mouse.y, 380);
+  await moveTo(page, mouse.x, mouse.y + 150, 320);
+  await moveTo(page, mouse.x - 300, mouse.y, 420);
+  await moveTo(page, mouse.x, mouse.y - 150, 320);
   await page.mouse.up();
   await wait(250);
   await label(page, "double-click");
@@ -202,9 +207,10 @@ async function session(page) {
   await page.keyboard.press("Escape");
   await wait(300);
 
-  // 3. Back to the opening view, pointer off screen, so the loop is seamless.
-  await Promise.all([scrollToEl(page, null), moveTo(page, START.x, START.y, 600)]);
-  await wait(300);
+  // 3. Back to the gallery, pointer off screen, so the loop is seamless.
+  await Promise.all([scrollToEl(page, GALLERY, 0.3), moveTo(page, START.x, START.y, 600)]);
+  await page.evaluate(() => window.__hidePointer());
+  await wait(200);
 }
 
 fs.rmSync(FRAMES, { recursive: true, force: true });
@@ -219,6 +225,11 @@ try {
   await page.goto(`http://127.0.0.1:${server.address().port}/index.html`, { waitUntil: "networkidle0" });
   await page.evaluate(addPointer);
   await page.mouse.move(mouse.x, mouse.y);
+  // Start at the gallery, where the session also ends, reached by scrolling
+  // up, as at the end, so Quarto shows the navbar both times.
+  await scrollToEl(page, GALLERY, 0.1, "instant");
+  await wait(300);
+  await scrollToEl(page, GALLERY, 0.3, "instant");
   await wait(500);
 
   // Screencast frames come only when the page changes, each with its time.
@@ -237,7 +248,7 @@ try {
 
   // Concat list: each frame shows until the next one arrived.
   const t0 = frames[0].t;
-  const t1 = frames.at(-1).t + Math.max(0.6, end - frames.at(-1).t - (Date.now() / 1000 - end));
+  const t1 = frames.at(-1).t + Math.max(0.3, end - frames.at(-1).t - (Date.now() / 1000 - end));
   let list = "";
   frames.forEach((f, i) => {
     const name = `f${String(i).padStart(4, "0")}.png`;
