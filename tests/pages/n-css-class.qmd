@@ -40,6 +40,15 @@ The stylesheet:
 }
 ```
 
+Rules on the viewer's parts start with the viewer's class, as above, so
+they win over panzoom's own. The parts: `.panzoom-footer` (the caption
+band), `.panzoom-caption`, `.panzoom-description`, `.panzoom-hint`,
+`.panzoom-close`, `.panzoom-prev`, `.panzoom-next`, and `.panzoom-counter`.
+
+For a whole site, put `css-class` (or any option) under `format: html:` in
+`_quarto.yml`: a top-level `panzoom:` there is replaced, not merged, by a
+page's own `panzoom:` options.
+
 ## 1. Marked image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 ![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-2.jpg){.panzoom}
