@@ -36,7 +36,7 @@ collage <- function(n = 12) {
 }
 ```
 
-## 1. Wide collage, webp (25 × 2 in) {#c1 expect-fit="height"}
+## 1. webp collage {#c1 expect-fit="height"}
 
 ```{r}
 #| panzoom: true
@@ -50,7 +50,7 @@ collage <- function(n = 12) {
 collage(n = 12)
 ```
 
-## 2. Wide collage, svg (25 × 2 in) {#c2 expect-fit="height"}
+## 2. svg collage {#c2 expect-fit="height"}
 
 ```{r}
 #| panzoom: true
@@ -84,7 +84,7 @@ filled.contour(volcano, color.palette = terrain.colors)
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 5. png + pdf (dev: [png, pdf]) {#c5 expect-fit="contain"}
+## 5. png and pdf {#c5 expect-fit="contain"}
 
 Both files are written; the page shows the png.
 
@@ -96,7 +96,7 @@ Both files are written; the page shows the png.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 6. png + cairo_pdf (dev: [png, cairo_pdf]) {#c6 expect-fit="contain"}
+## 6. png and cairo_pdf {#c6 expect-fit="contain"}
 
 Like case 5, with the cairo PDF device, which embeds fonts and handles
 Unicode (µ, Greek letters) and transparency better than `pdf`. The page
@@ -113,7 +113,7 @@ filled.contour(volcano, color.palette = terrain.colors,
                plot.title = title(main = "mu = 5, alpha = 0.05"))
 ```
 
-## 7. Wide collage, webp at 2× resolution (100 × 5 in) {#c7}
+## 7. webp past its size limit {#c7}
 
 At 192 dpi the collage is 19,200 px wide, beyond webp's limit of 16,383 px
 per side; this case records what happens.

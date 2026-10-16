@@ -5,6 +5,8 @@ format:
   html:
     code-tools: true
 filters:
+  - path: ../../_filters/show-source.lua
+    at: pre-ast
   - panzoom
 panzoom:
   loop: true
@@ -37,19 +39,21 @@ wave <- function(k = 1) {
 }
 ```
 
-## 1. `.nopanzoom` inside a `.panzoom` div {#c1}
+## 1. `.nopanzoom` {#c1 expect-open="nothing panzoom"}
 
 The first image is marked `.nopanzoom`, so panzoom leaves it alone. With no
 lightbox on this page, clicking it does nothing. The second opens the
 viewer.
 
+```{.markdown .show-source}
 ::: {.panzoom layout-ncol="2"}
-![Opted out.](../../images/mv-1.jpg){.nopanzoom expect-open="nothing"}
+![Opted out.](../../images/mv-1.jpg){.nopanzoom}
 
-![Not opted out.](../../images/mv-2.jpg){expect-open="panzoom"}
+![Not opted out.](../../images/mv-2.jpg)
 :::
+```
 
-## 2. `#| panzoom: false` inside a `.panzoom` div {#c2 expect-open="nothing"}
+## 2. `panzoom: false` in a div {#c2 expect-open="nothing"}
 
 The whole cell opts out.
 
@@ -75,7 +79,7 @@ The page shows the hint (the default); this cell hides it.
 wave(k = 3)
 ```
 
-## 4. Hint on by default {#c4 expect-open="panzoom" expect-hint="shown"}
+## 4. Default hint {#c4 expect-open="panzoom" expect-hint="shown"}
 
 ```{r}
 #| panzoom: true
@@ -94,7 +98,7 @@ Zooming in stops at 2 screen pixels per image pixel.
 wave(k = 1)
 ```
 
-## 6. Gallery with `loop: true` {#c6 expect-open="panzoom"}
+## 6. `loop: true` {#c6 expect-open="panzoom"}
 
 Three plots in one gallery. With the page's `loop: true`, `←` on the first
 goes to the last, and "previous" is never disabled.
@@ -112,9 +116,11 @@ wave(k = 2)
 wave(k = 3)
 ```
 
-## 7. Image with no alt text {#c7 expect-open="panzoom" expect-caption="none"}
+## 7. No alt text {#c7 expect-open="panzoom" expect-caption="none"}
 
 With no alt text, the link panzoom puts around the image is labeled "Open image"
 for screen readers (`npm run nojs` checks every link has a name).
 
+```{.markdown .show-source}
 ![](../../images/mv-4.jpg){.panzoom width=40%}
+```

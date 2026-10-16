@@ -13,7 +13,7 @@
 -- markdown written directly on the page:
 --
 --   filters:
---     - path: show-source.lua
+--     - path: ../../_filters/show-source.lua
 --       at: pre-ast
 
 function CodeBlock(el)

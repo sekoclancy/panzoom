@@ -216,7 +216,44 @@ or set `FFMPEG=/path/to/ffmpeg`.
 
 Add a `## N. Title {#cN}` section with any `expect-*` attributes, then
 render and run the tests. On A–D, add it to all four pages: A without
-panzoom markers, B and D with them, C with A's markup.
+panzoom markers, B and D with them, C with A's markup. Keep the title
+short, since the code shown below it carries the details.
+
+### Markdown cases
+
+Code cells show their own code, but Quarto has no way to show markdown
+source. Write a markdown case once, as a code block marked
+`.show-source`:
+
+````markdown
+```{.markdown .show-source}
+![Sub A](../../images/mv-1.jpg){#fig-md-a .panzoom}
+```
+````
+
+[_filters/show-source.lua](../_filters/show-source.lua) keeps the block on
+the page and renders its markdown right below it. Readers see the exact
+source of the image they click, and that source can't drift from the case
+the tests check, as a hand-made copy could. The filter belongs to the
+example site, not to the panzoom extension.
+
+List it first in the page's `filters:`, at `pre-ast`:
+
+```yaml
+filters:
+  - path: ../../_filters/show-source.lua
+    at: pre-ast
+  - panzoom
+```
+
+`pre-ast` runs it before Quarto builds figures and cross-references, so
+the rendered markdown behaves as if it were written on the page. As an
+ordinary filter it runs too late, so subfigure cross-references don't
+resolve and a linked image keeps a link Quarto would otherwise drop.
+
+Markdown around a code cell, such as a `.panzoom` div holding an R cell,
+can't use it, because the cell runs before the filter does. Those examples
+show their source in a plain `markdown` block next to a copy.
 
 ## Checking by hand
 

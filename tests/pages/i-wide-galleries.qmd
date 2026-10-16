@@ -85,7 +85,7 @@ strip(seed = 8, n = 8)
 strip(seed = 9, n = 8)
 ```
 
-## 3. Two collages stacked (layout-nrow: 2) {#c3 expect-fit="height"}
+## 3. Stacked collages {#c3 expect-fit="height"}
 
 Each subfigure in this layout opens on its own at screen height, and the
 two form a gallery.
@@ -103,7 +103,7 @@ collage(n = 12)
 collage(n = 15)
 ```
 
-## 4. Two tall strips side by side (layout-ncol: 2) {#c4 expect-fit="width"}
+## 4. Strips side by side {#c4 expect-fit="width"}
 
 ```{r}
 #| label: fig-strip-cols
@@ -142,7 +142,7 @@ strip(seed = 5, n = 8)
 :::
 
 
-## 6. Collages of different lengths in a gallery {#c6 expect-fit="height"}
+## 6. Collages of different lengths {#c6 expect-fit="height"}
 
 Two cells, a long collage (40 × 2 in, 24 panels) and a shorter one
 (24 × 2 in, 12 panels), joined by `group`. Each opens at screen height
@@ -177,7 +177,7 @@ collage(n = 24)
 collage(n = 12)
 ```
 
-## 7. Tall strips of different lengths side by side {#c7 expect-fit="width"}
+## 7. Strips of different lengths {#c7 expect-fit="width"}
 
 This is case 4 with strips of different sizes, 4 × 20 in (10 rows) and 3 ×
 12 in (6 rows), in a layout div, with captions of different lengths. Each

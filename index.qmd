@@ -6,6 +6,8 @@ format:
     code-tools: true
     toc: true
 filters:
+  - path: _filters/show-source.lua
+    at: pre-ast
   - panzoom
 panzoom:
   max-zoom: 6
@@ -81,11 +83,9 @@ invisible(dev.off())
 
 Mark a markdown image with the `.panzoom` class:
 
-```markdown
+```{.markdown .show-source}
 ![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom}
 ```
-
-![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom}
 
 ## Div
 
@@ -206,12 +206,8 @@ Inside a `.panzoom` div, every image gets the viewer except one marked
 `.nopanzoom`, so clicking the image below does nothing. For a whole code
 cell, use `#| panzoom: false`.
 
-```markdown
+```{.markdown .show-source}
 ::: {.panzoom}
 ![Opted out.](images/volcano.png){.nopanzoom width=40%}
 :::
 ```
-
-::: {.panzoom}
-![Opted out.](images/volcano.png){.nopanzoom width=40%}
-:::

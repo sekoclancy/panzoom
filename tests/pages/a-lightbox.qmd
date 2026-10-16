@@ -5,7 +5,7 @@ format:
   html:
     code-tools: true
 filters:
-  - path: show-source.lua
+  - path: ../../_filters/show-source.lua
     at: pre-ast
 lightbox:
   match: auto

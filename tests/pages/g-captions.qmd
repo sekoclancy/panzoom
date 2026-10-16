@@ -5,6 +5,8 @@ format:
   html:
     code-tools: true
 filters:
+  - path: ../../_filters/show-source.lua
+    at: pre-ast
   - panzoom
 panzoom:
   hint: false
@@ -64,19 +66,25 @@ wave <- function(k = 1) {
 
 The case from quarto-cli#10709.
 
+```{.markdown .show-source}
 ![Some claim [@fenner2012].](../../images/mv-0.jpg){.panzoom}
+```
 
-## 2. Citation only in a description {#c2 expect-references=""}
+## 2. Citation in a description {#c2 expect-references=""}
 
 Tufte is cited nowhere else on the page, but is listed under References.
 
+```{.markdown .show-source}
 ![Edgartown Light](../../images/mv-2.jpg){.panzoom description="Show the data [@tufte2001, p. 13]."}
+```
 
 ## 3. Cross-reference in a description {#c3 expect-references=""}
 
+```{.markdown .show-source}
 ![Aquinnah](../../images/mv-1.jpg){.panzoom description="Compare with @fig-pressure, and see [Section 1](#c1)."}
+```
 
-## 4. Cell description with citation and math {#c4 expect-references=""}
+## 4. Cell description {#c4 expect-references=""}
 
 ```{r}
 #| label: fig-pressure
@@ -87,11 +95,13 @@ Tufte is cited nowhere else on the page, but is listed under References.
 plot(pressure)
 ```
 
-## 5. Gallery with a reference in each description {#c5 expect-references=""}
+## 5. Gallery descriptions {#c5 expect-references=""}
 
+```{.markdown .show-source}
 ![Gingerbread](../../images/mv-3.jpg){.panzoom group="refs" description="As in @fig-pressure."}
 
 ![Sailboat](../../images/mv-4.jpg){.panzoom group="refs" description="As in @fenner2012."}
+```
 
 ## 6. `caption: false` {#c6 expect-open="panzoom" expect-caption="none"}
 
@@ -122,7 +132,7 @@ wave(k = 2)
 ::: {#refs}
 :::
 
-## 8. Labeled figures in a `.panzoom` div {#c8 expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}
+## 8. Labeled figures in a div {#c8 expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}
 
 A labeled plot and a labeled markdown image inside a `.panzoom` div keep
 their numbers and anchors (see @fig-div-plot and @fig-div-image).

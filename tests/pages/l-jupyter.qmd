@@ -44,7 +44,7 @@ plt.plot(x, np.sin(x))
 plt.show()
 ```
 
-## 2. Options overriding the defaults {#c2 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
+## 2. Cell options {#c2 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
 
 ```{python}
 #| panzoom:
@@ -56,7 +56,7 @@ plt.plot(x, np.cos(x))
 plt.show()
 ```
 
-## 3. Labeled figure with a description {#c3 expect-open="panzoom"}
+## 3. Labeled figure {#c3 expect-open="panzoom"}
 
 @fig-scatter has a description with math and a cross-reference to
 @fig-sub.
@@ -72,7 +72,7 @@ plt.scatter(pts, pts + rng.normal(scale=0.5, size=100))
 plt.show()
 ```
 
-## 4. Subfigures (fig-subcap, layout-ncol) {#c4 expect-open="panzoom"}
+## 4. Subfigures {#c4 expect-open="panzoom"}
 
 The two subfigures form a gallery.
 
@@ -90,7 +90,7 @@ plt.hist(rng.normal(size=500), bins=30)
 plt.show()
 ```
 
-## 5. Multi-plot cell with a group {#c5 expect-open="panzoom"}
+## 5. Plots in a group {#c5 expect-open="panzoom"}
 
 ```{python}
 #| panzoom:
@@ -105,7 +105,7 @@ for i in range(2):
     plt.show()
 ```
 
-## 6. Wide collage (8 × 0.8 in) {#c6 expect-open="panzoom" expect-fit="height"}
+## 6. Wide collage {#c6 expect-open="panzoom" expect-fit="height"}
 
 A strip, so it opens at screen height. Jupyter figures are shown at their
 size in inches × 96 px (Quarto writes it on the image), not shrunk to the
@@ -123,7 +123,7 @@ for ax in axes:
 plt.show()
 ```
 
-## 7. `panzoom: false` inside a `.panzoom` div {#c7 expect-open="nothing"}
+## 7. `panzoom: false` in a div {#c7 expect-open="nothing"}
 
 ::: {.panzoom}
 ```{python}
@@ -157,7 +157,7 @@ plt.plot(x, np.sin(4 * x))
 plt.show()
 ```
 
-## 10. Plain cell, no options {#c10 expect-open="nothing"}
+## 10. Plain cell {#c10 expect-open="nothing"}
 
 ```{python}
 #| fig-cap: "No options: not opened."
@@ -166,7 +166,7 @@ plt.plot(x, np.sin(5 * x))
 plt.show()
 ```
 
-## 11. `panzoom` and `lightbox` options on one cell {#c11 expect-open="panzoom"}
+## 11. Both options {#c11 expect-open="panzoom"}
 
 With both options, panzoom takes the image and drops the `lightbox:`
 options. (With Jupyter, lightbox ignores `#| lightbox:` with options under it
@@ -183,7 +183,7 @@ plt.plot(x, np.sin(6 * x))
 plt.show()
 ```
 
-## 12. matplotlib as svg {#c12 expect-open="panzoom" expect-fit="contain" expect-format="svg"}
+## 12. svg {#c12 expect-open="panzoom" expect-fit="contain" expect-format="svg"}
 
 This uses the same figure path as case 1, written as svg instead of png.
 Jupyter saves the figure file itself, unlike knitr (svg from R is on

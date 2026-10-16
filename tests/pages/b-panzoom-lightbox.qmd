@@ -6,7 +6,7 @@ format:
     code-tools: true
     lightbox: true
 filters:
-  - path: show-source.lua
+  - path: ../../_filters/show-source.lua
     at: pre-ast
   - panzoom
 panzoom:

@@ -6,6 +6,8 @@ format:
     code-tools: true
     css: n-css-class.css
 filters:
+  - path: ../../_filters/show-source.lua
+    at: pre-ast
   - panzoom
 panzoom:
   css-class: plum-viewer
@@ -58,7 +60,9 @@ page's own `panzoom:` options.
 
 ## 1. Marked image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
+```{.markdown .show-source}
 ![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-2.jpg){.panzoom}
+```
 
 ## 2. Code cell {#c2 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 

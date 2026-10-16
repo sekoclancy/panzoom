@@ -7,6 +7,9 @@ format:
   html:
     code-tools: true
 lightbox: true
+filters:
+  - path: ../../_filters/show-source.lua
+    at: pre-ast
 ---
 
 ## About
@@ -49,7 +52,7 @@ plt.plot(x, np.cos(x))
 plt.show()
 ```
 
-## 3. Subfigures (fig-subcap, layout-ncol) {#c3 expect-open="glightbox"}
+## 3. Subfigures {#c3 expect-open="glightbox"}
 
 ```{python}
 #| label: fig-pair
@@ -63,7 +66,7 @@ plt.plot(x, np.cos(2 * x))
 plt.show()
 ```
 
-## 4. Nested `lightbox:` options {#c4 expect-open="glightbox"}
+## 4. `lightbox:` options {#c4 expect-open="glightbox"}
 
 A cell's own `lightbox:` options ask for lightbox, so panzoom leaves the
 cell to it, as with knitr ([`c-panzoom-auto`](c-panzoom-auto.html), cases 6
@@ -105,10 +108,14 @@ plt.plot(x, np.cos(4 * x))
 plt.show()
 ```
 
-## 7. Markdown image alone in a paragraph {#c7 expect-open="glightbox"}
+## 7. Markdown image {#c7 expect-open="glightbox"}
 
+```{.markdown .show-source}
 ![Chilmark.](../../images/mv-0.jpg)
+```
 
-## 8. Markdown image with `.nolightbox` {#c8 expect-open="nothing"}
+## 8. `.nolightbox` {#c8 expect-open="nothing"}
 
+```{.markdown .show-source}
 ![Opted out.](../../images/mv-1.jpg){.nolightbox}
+```
