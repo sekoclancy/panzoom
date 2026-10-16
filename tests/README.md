@@ -226,7 +226,8 @@ browsers block Quarto's module script on `file://`.
 
 The scripts can't judge zoom smoothness on a wheel or a trackpad, touch on
 real phones and tablets (iOS Safari especially), the sharpness of zoomed
-images, or appearance in general. Only Chrome is tested. Headless Chrome
+images, or appearance in general. Only Chrome is tested, but desktop Firefox
+has been checked by hand. Headless Chrome
 counts as a device without hover, so CSS that checks `(hover: hover)` or
 `(pointer: fine)` treats it as a touch device.
 
