@@ -39,7 +39,7 @@ website:
       - text: R
         menu:
           - href: tests/pages/b-panzoom-lightbox.qmd
-            text: "Marked images with the lightbox"
+            text: "Marked images with lightbox"
           - href: tests/pages/c-panzoom-auto.qmd
             text: "match: auto"
           - href: tests/pages/d-panzoom-selective.qmd
@@ -57,7 +57,7 @@ website:
       - text: Python
         menu:
           - href: tests/pages/k-jupyter-auto.qmd
-            text: "panzoom: true with the lightbox"
+            text: "panzoom: true with lightbox"
           - href: tests/pages/l-jupyter.qmd
             text: "Cell options and svg"
       - text: Styling

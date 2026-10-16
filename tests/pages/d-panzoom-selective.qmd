@@ -13,14 +13,14 @@ panzoom:
 ## About
 
 Only images marked with `.panzoom` or `#| classes: panzoom` open panzoom.
-The document has no lightbox, so Quarto's lightbox applies only where a
+The document doesn't turn lightbox on, so it applies only where a
 cell asks for it with `#| lightbox:` options (cases 6 and 7).
-[`a-lightbox`](a-lightbox.html) has the same cases with Quarto's lightbox:
-compare each case with the same number there.
+[`a-lightbox`](a-lightbox.html) has the same cases with lightbox.
+Compare each case with the same number there.
 
 Case 6's first chunk has both `classes: panzoom` and `#| lightbox:`
-options: panzoom wins and drops the lightbox options, so that image doesn't
-join the lightbox gallery. Case 9's link still works, since images inside
+options. panzoom takes that image and drops the lightbox options, so it
+doesn't join the lightbox gallery. Case 9's link still works, since images inside
 links are left alone.
 
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="panzoom"}

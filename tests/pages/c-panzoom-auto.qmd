@@ -1,6 +1,6 @@
 ---
 title: "panzoom match: auto"
-description: "Unmarked images with `match: auto`: panzoom picks the images itself."
+description: "With `match: auto`, panzoom picks the images itself, and none are marked."
 format:
   html:
     code-tools: true
@@ -19,9 +19,9 @@ lightbox:
 
 ## About
 
-With `match: auto`, panzoom takes every image Quarto's lightbox would take
+With `match: auto`, panzoom takes every image lightbox would take
 on its own, so no image needs marking. The markup is the same as in
-[`a-lightbox`](a-lightbox.html), which has no panzoom: compare each case
+[`a-lightbox`](a-lightbox.html), which has no panzoom. Compare each case
 with the same number there.
 
 ```yaml
@@ -35,10 +35,10 @@ lightbox:
 
 Some cases stay out on purpose:
 
-- cases 6 and 7 set `#| lightbox:` options, so they open Quarto's lightbox;
+- cases 6 and 7 set `#| lightbox:` options, so they open lightbox;
 - case 8 sets `#| lightbox: false`, so it opens neither;
 - case 9 (an image inside a link) and case 11 (an inline image) are
-  skipped, as Quarto's lightbox skips them.
+  skipped, as lightbox skips them.
 
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="panzoom"}
 

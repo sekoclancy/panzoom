@@ -1,6 +1,6 @@
 ---
 title: "css-class and CSS"
-description: "`css-class` and a stylesheet: the viewer's CSS variables, and a rule on one of its parts."
+description: "A stylesheet for the `css-class` option sets the viewer's CSS variables and styles one of its parts."
 format:
   html:
     code-tools: true
@@ -29,7 +29,7 @@ panzoom:
 Only pages with that class get the rules, so the other pages of the site
 keep the default viewer.
 
-The stylesheet:
+The page uses this stylesheet:
 
 ```css
 .plum-viewer {
@@ -48,12 +48,12 @@ The stylesheet:
 ```
 
 Rules on the viewer's parts start with the viewer's class, as above, so
-they win over panzoom's own. The parts: `.panzoom-footer` (the caption
+they win over the defaults. The parts are `.panzoom-footer` (the caption
 band), `.panzoom-caption`, `.panzoom-description`, `.panzoom-hint`,
 `.panzoom-close`, `.panzoom-prev`, `.panzoom-next`, and `.panzoom-counter`.
 
 For a whole site, put `css-class` (or any option) under `format: html:` in
-`_quarto.yml`: a top-level `panzoom:` there is replaced, not merged, by a
+`_quarto.yml`. A top-level `panzoom:` there is replaced, not merged, by a
 page's own `panzoom:` options.
 
 ## 1. Marked image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}

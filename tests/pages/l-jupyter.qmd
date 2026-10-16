@@ -109,7 +109,7 @@ for i in range(2):
 
 A strip, so it opens at screen height. Jupyter figures are shown at their
 size in inches × 96 px (Quarto writes it on the image), not shrunk to the
-column as knitr's are: a 25 × 2 in collage would be 2,400 px wide on the
+column as with knitr. A 25 × 2 in collage would be 2,400 px wide on the
 page, cut off at the column's edge. This one fits.
 
 ```{python}
@@ -147,11 +147,11 @@ plt.show()
 
 ## 9. Lightbox cell option only {#c9 expect-open="glightbox"}
 
-Quarto's lightbox, not panzoom.
+This opens lightbox, not panzoom.
 
 ```{python}
 #| lightbox: true
-#| fig-cap: "Opened by Quarto's lightbox."
+#| fig-cap: "Opened by lightbox."
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -168,8 +168,8 @@ plt.show()
 
 ## 11. `panzoom` and `lightbox` options on one cell {#c11 expect-open="panzoom"}
 
-Both options: panzoom wins, and the `lightbox:` options are dropped. (With
-Jupyter, Quarto's lightbox ignores `#| lightbox:` with options under it
+With both options, panzoom takes the image and drops the `lightbox:`
+options. (With Jupyter, lightbox ignores `#| lightbox:` with options under it
 anyway, unlike with knitr; `lightbox: true` works, as in case 9.)
 
 ```{python}
@@ -177,7 +177,7 @@ anyway, unlike with knitr; `lightbox: true` works, as in case 9.)
 #| fig-cap: "Both options: panzoom."
 #| lightbox:
 #|   group: both
-#|   description: "Should not reach the lightbox."
+#|   description: "Should not reach lightbox."
 
 plt.plot(x, np.sin(6 * x))
 plt.show()
@@ -185,11 +185,11 @@ plt.show()
 
 ## 12. matplotlib as svg {#c12 expect-open="panzoom" expect-fit="contain" expect-format="svg"}
 
-The same figure path as case 1, written as svg instead of png: Jupyter
-saves the figure file itself, unlike knitr (svg from R is on
-[E: image formats](e-formats.html)). The viewer redraws svg at each zoom,
+This uses the same figure path as case 1, written as svg instead of png.
+Jupyter saves the figure file itself, unlike knitr (svg from R is on
+[`e-formats`](e-formats.html)). The viewer redraws svg at each zoom,
 so it stays sharp. Jupyter ignores a cell's `fig-format`, so the cell
-switches matplotlib's output to svg itself, and back to png after.
+switches the matplotlib output to svg itself, and back to png after.
 
 ```{python}
 #| panzoom: true

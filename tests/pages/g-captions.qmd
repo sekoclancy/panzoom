@@ -40,8 +40,8 @@ A caption is copied from the page, so whatever Quarto renders there comes
 through to the viewer. A description is rendered with the page too, in a
 hidden block the viewer copies, so its citations resolve, its
 cross-references get numbers, and a work cited only in a description is
-still listed under References. Quarto's own lightbox shows a citation in a
-caption as raw `[@key]`
+still listed under References. In a caption, lightbox shows a citation as raw
+ `[@key]`
 ([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
 
 Cases 6 and 7 set the per-cell `caption` and `description` options. Case
@@ -125,7 +125,7 @@ wave(k = 2)
 ## 8. Labeled figures in a `.panzoom` div {#c8 expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}
 
 A labeled plot and a labeled markdown image inside a `.panzoom` div keep
-their numbers and anchors: see @fig-div-plot and @fig-div-image.
+their numbers and anchors (see @fig-div-plot and @fig-div-image).
 
 ::: {.panzoom layout-ncol="2"}
 ```{r}
@@ -140,7 +140,7 @@ wave(k = 3)
 
 ## 9. Long description {#c9 expect-open="panzoom" expect-scroll="description"}
 
-A description longer than its panel: Tab reaches the panel, and the
-arrows, Page Up/Down, Home, End and Space scroll it (`expect-scroll`).
+This description is longer than its panel. Tab reaches the panel, and the
+arrows, Page Up/Down, Home, End, and Space scroll it (`expect-scroll`).
 
 ![Menemsha](../../images/mv-3.jpg){.panzoom description="This description is long on purpose: it is taller than the space the viewer gives a description, so its panel scrolls. With a mouse or trackpad, scrolling over the panel scrolls it. From the keyboard, Tab moves focus to the panel, and then the arrow keys, Page Up and Page Down, Home, End and Space scroll it, as they would scroll a page. The image stays where it is meanwhile, and the page behind the viewer doesn't move. Tab again moves on to the close button, and Esc still closes the viewer. Photographs like this one often come with long notes: who took them, when, and from where; what the light was like; what the harbor looked like then and what has changed since. Notes like these can run to several paragraphs, and a reader who uses the keyboard must be able to read all of them, not just the lines that fit. In a short window, or on a phone, the panel is smaller still, so even a description of two or three sentences can scroll there. The panel is a Tab stop only while it scrolls, so a short description adds no extra stop. The rest of this description only adds length, so that it scrolls in every window the tests use, including the wide screen, where the panel is tallest and its lines are longest. The harbor is busiest in the early morning, when the fishing boats go out, and again in the late afternoon, when they come back and the light turns gold over the water. Between those times it is quiet: a few sailboats at their moorings, gulls on the pilings, and the sound of halyards against the masts. In winter most of the boats are hauled out, and the harbor belongs to the ducks. The jetty at the harbor mouth was rebuilt more than once after storms, and the channel has to be dredged every few years to stay deep enough for the boats. On the far side of the channel, a small ferry carries bicycles and people across to the beach, a trip of a few minutes. Beyond the harbor the land rises to clay cliffs, red, white and gray, that change color with the light through the day. Sunsets over the water draw a crowd to the beach and the docks most evenings in summer, and on a clear evening the light lasts long after the sun has gone. By autumn the crowds are gone, the shacks on the docks close one by one, and the harbor returns to the people who work on it. Nothing in this description is needed for the test except its length: a description this long scrolls in any window."}

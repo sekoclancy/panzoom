@@ -1,6 +1,6 @@
 ---
-title: "panzoom: true with the lightbox"
-description: "Python cells with `panzoom: true`, taking the images the lightbox would."
+title: "panzoom: true with lightbox"
+description: "Python cells with `panzoom: true`, taking the images lightbox would."
 engine: jupyter
 jupyter: python3
 format:
@@ -14,11 +14,11 @@ lightbox: true
 
 ## About
 
-Python (Jupyter) cells with `panzoom: true`, next to Quarto's
-`lightbox: true`: panzoom takes every image the lightbox would, except
-where a case asks for the lightbox.
+These Python (Jupyter) cells have `panzoom: true`, next to the document's
+`lightbox: true`. panzoom takes every image lightbox would, except
+where a case asks for lightbox.
 [`j-jupyter-lightbox`](j-jupyter-lightbox.html) has the same cases without
-panzoom: compare each case with the same number there. The knitr
+panzoom. Compare each case with the same number there. The knitr
 equivalent is [`c-panzoom-auto`](c-panzoom-auto.html).
 
 ```yaml
@@ -72,15 +72,15 @@ plt.show()
 
 ## 4. Nested `lightbox:` options {#c4 expect-open="glightbox"}
 
-A cell's own `lightbox:` options ask for Quarto's lightbox, so panzoom
+A cell's own `lightbox:` options ask for lightbox, so panzoom
 leaves the cell to it, as with knitr ([`c-panzoom-auto`](c-panzoom-auto.html), cases 6 and 7). With
-Jupyter, Quarto's lightbox ignores the options themselves: the group and
+Jupyter, lightbox ignores the options themselves, so the group and
 description don't reach it.
 
 ```{python}
 #| lightbox:
 #|   group: waves
-#|   description: "Ignored by Quarto's lightbox with Jupyter."
+#|   description: "Ignored by lightbox with Jupyter."
 
 plt.plot(x, np.sin(3 * x))
 plt.show()
@@ -90,7 +90,7 @@ plt.show()
 
 ## 5. `lightbox: false` {#c5 expect-open="nothing"}
 
-Opted out of the lightbox; panzoom leaves an explicit lightbox setting
+Opted out of lightbox; panzoom leaves an explicit lightbox setting
 alone too.
 
 ```{python}

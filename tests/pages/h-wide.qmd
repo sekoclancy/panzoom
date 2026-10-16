@@ -12,35 +12,32 @@ panzoom:
 
 ## About
 
-Figures of different shapes, each on its own: very wide collages
-(25 × 2 inches), tall strips, a poster, a portrait photo, and a small plot,
-and the `fit` option. All are png; other formats are on
+This page opens figures of different shapes, each on its own, and shows
+the `fit` option. The shapes are very wide collages (25 × 2 inches), tall
+strips, a poster, a portrait photo, and a small plot. All are png; other formats are on
 [`e-formats`](e-formats.html), and the same shapes in galleries and
 layouts on [`i-wide-galleries`](i-wide-galleries.html).
 
-**The rules** (`fit: auto`, the default). The viewer opens most images
-whole. A strip at least 3 times wider than tall, that would show less than
+With `fit: auto`, the default, the viewer opens most images whole. A strip at least 3 times wider than tall, that would show less than
 a quarter of the screen tall, such as a collage of many panels
 (`fig-width: 100`, `fig-height: 5`), opens filling the screen height
 instead. A strip at least 3 times taller than wide, that would show less
 than a quarter of the screen wide, opens filling the screen width, at its
 top. Ordinary photos and plots, portrait or landscape, always open whole,
 even on a very wide screen where a portrait photo is narrower than a
-quarter of it. No image is enlarged past its real size when it opens (as
-with Quarto's lightbox): a small image opens at its own size, and
-scrolling still zooms it in, up to `max-zoom`. `fit: contain`, `height` or
+quarter of it. No image is enlarged past its real size when it opens , as
+with lightbox. A small image opens at its own size, and scrolling still zooms it in, up to `max-zoom`. `fit: contain`, `height` or
 `width` overrides the rule for one figure.
 
-**Focal point.** Where you click a strip on the page is its focal point:
-click panel 12 of a 20-panel collage and the viewer opens with panel 12 in
+Where you click a strip on the page is its focal point. Click panel 12 of
+a 20-panel collage, and the viewer opens with panel 12 in
 the middle of the screen (or flush with the end, near either end). The 0
 key and double-click return to it. Opened from the keyboard, a strip
 starts at its left end (or top). Ordinary images open whole wherever you
 click. Zooming out still shows the whole figure.
 
-Shift+scroll (or a sideways trackpad swipe) pans along the direction the
-figure extends past the screen: sideways for a collage, up and down for a
-tall figure, sideways when zoomed in both ways.
+Shift+scroll (or a sideways trackpad swipe) pans sideways along a collage
+and up and down along a tall figure. Zoomed in both ways, it pans sideways.
 
 The cases below draw with these helpers:
 
@@ -90,7 +87,8 @@ collage(n = 12)
 
 ## 2. Wide collage with `fit: contain` {#c2 expect-fit="contain" shift-scroll="none"}
 
-The override for case 1: the whole collage, as a strip.
+This is case 1 with `fit: contain`, so the viewer opens the whole collage,
+as a thin strip.
 
 ```{r}
 #| panzoom:
@@ -104,7 +102,7 @@ collage(n = 12)
 
 ## 3. Moderately wide figure (16 × 4 in) {#c3 expect-fit="contain"}
 
-Wide, but readable whole: the size rule leaves it alone.
+This figure is wide but readable whole, so the size rule leaves it alone.
 
 ```{r}
 #| panzoom: true
@@ -144,7 +142,7 @@ for (i in 1:48) plot(cumsum(rnorm(100)), type = "l", main = paste("Panel", i), x
 
 ## 6. Portrait photo {#c6 expect-fit="contain"}
 
-An ordinary 9:16 photo is not a strip: it opens whole, on any screen width
+An ordinary 9:16 photo is not a strip, so it opens whole on any screen width
 (the test also checks this in a 2560 px wide window).
 
 ![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30%}
@@ -179,8 +177,8 @@ wave(k = 3)
 
 ## 9. `fit: width` on an ordinary plot {#c9 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
 
-Filling the width makes the plot taller than the screen: it opens closer
-than the whole plot, and zooms out to it.
+Filling the width makes the plot taller than the screen, so it opens
+closer than the whole plot and zooms out to it.
 
 ```{r}
 #| panzoom:

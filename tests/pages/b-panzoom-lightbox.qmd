@@ -1,6 +1,6 @@
 ---
-title: "panzoom on marked images, Quarto's lightbox on for the rest"
-description: "The usual setup: `lightbox: true`, with some images marked for panzoom."
+title: "panzoom on marked images, lightbox for the rest"
+description: "`lightbox: true`, with some images marked for panzoom."
 format:
   html:
     code-tools: true
@@ -13,9 +13,8 @@ panzoom:
 
 ## About
 
-The usual setup: Quarto's lightbox is on for the document, and only images
-marked with `.panzoom` or `#| classes: panzoom` open panzoom. Every other
-image opens the lightbox, as in [`a-lightbox`](a-lightbox.html). The markup
+The document turns lightbox on, and only images marked with `.panzoom` or `#| classes: panzoom` open panzoom. Every other
+image opens lightbox, as in [`a-lightbox`](a-lightbox.html). The markup
 is the same as in [`d-panzoom-selective`](d-panzoom-selective.html), which
 has no lightbox.
 
@@ -28,7 +27,7 @@ filters:
 ```
 
 Case 6's first chunk has both `classes: panzoom` and `#| lightbox:`
-options: panzoom wins, so that image doesn't join the lightbox gallery.
+options. panzoom takes that image, so it doesn't join the lightbox gallery.
 Case 8 (`#| lightbox: false`) opens neither, and case 9's link still works,
 since images inside links are left alone.
 

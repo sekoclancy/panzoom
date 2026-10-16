@@ -15,7 +15,7 @@ panzoom:
 
 ## About
 
-The viewer's colors, set in the YAML header with no CSS: a deep blue
+The YAML header sets the viewer's colors without CSS, giving a deep blue
 backdrop, a cream caption band, dark brown caption text, and rust links.
 Every image on the page gets them.
 

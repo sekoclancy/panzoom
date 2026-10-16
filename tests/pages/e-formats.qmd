@@ -17,7 +17,7 @@ pdf, for a wide collage and a standard plot. Every figure is marked with
 `#| panzoom: true` and opens panzoom unless its case says otherwise. Figure
 shapes and how they open are on [`h-wide`](h-wide.html).
 
-knitr has no built-in webp device; these use ragg's `agg_webp`, which
+knitr has no built-in webp device, so these use `agg_webp` from ragg, which
 needs `units = "in"` because knitr passes sizes in inches.
 
 The cases below draw with this helper (`ragg` writes the webp files):
@@ -101,7 +101,7 @@ filled.contour(volcano, color.palette = terrain.colors)
 Like case 5, with the cairo PDF device, which embeds fonts and handles
 Unicode (µ, Greek letters) and transparency better than `pdf`. The page
 shows the png either way. With a PDF device alone, there is no image to
-open: Quarto embeds the PDF in a small box with the browser's PDF viewer,
+open. Quarto embeds the PDF in a small box with the browser's PDF viewer,
 which panzoom leaves alone.
 
 ```{r}

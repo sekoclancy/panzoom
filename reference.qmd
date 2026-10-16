@@ -77,9 +77,9 @@ up three ways.
 ::: {#styling-pages}
 :::
 
-## Compared with Quarto's lightbox
+## Compared with lightbox
 
-The same cases with panzoom off.
+These pages have the same cases with panzoom off.
 
 ::: {#lightbox-pages}
 :::

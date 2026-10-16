@@ -55,7 +55,7 @@ image(volcano, col = hcl.colors(100, "Viridis"), asp = 1 / 3)
 ## Cross-referenced figure
 
 Labeled figures work too (@fig-volcano). Options under `#| panzoom:` override
-the document's settings for one cell: this figure zooms to 10 instead of the
+the document's settings for one cell. This figure zooms to 10 instead of the
 page's 6, and hides the hint.
 
 ```{r}
@@ -117,7 +117,7 @@ image(volcano, col = terrain.colors(100))
 ## Captions and galleries
 
 The viewer shows the figure's caption. Plots with the same `group` form a
-gallery: use the previous and next buttons, the left and right arrow keys or a swipe to step
+gallery. Use the previous and next buttons, the left and right arrow keys, or a swipe to step
 through them. Subfigures of one figure are a gallery automatically.
 
 ```{r}
@@ -148,7 +148,7 @@ image(volcano)
 A figure many times wider than tall would be too thin to read if it opened
 whole, so it opens at screen height, at the spot you clicked. panzoom does
 this on its own for very wide figures; `fit: height` makes sure this one
-always does, whatever the window's shape. Click the highlighted panel: the
+always does, whatever the window's shape. Click the highlighted panel, and the
 viewer opens right on it.
 
 ```{r}
@@ -192,7 +192,7 @@ lines(x, dnorm(x), lwd = 2)
 
 ## Untouched figure
 
-Without the option, a figure is left as it is: clicking it does nothing.
+Without the option, a figure is left as it is, and clicking it does nothing.
 
 ```{r}
 contour(volcano)
@@ -201,8 +201,7 @@ contour(volcano)
 ## Opting out
 
 Inside a `.panzoom` div, every image gets the viewer except one marked
-`.nopanzoom`, which is left as it is: clicking the image below does
-nothing. For a whole code cell, use `#| panzoom: false`.
+`.nopanzoom`, so clicking the image below does nothing. For a whole code cell, use `#| panzoom: false`.
 
 ```markdown
 ::: {.panzoom}

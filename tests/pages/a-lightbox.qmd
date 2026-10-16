@@ -1,6 +1,6 @@
 ---
-title: "Quarto's lightbox on the R cases"
-description: "Quarto's built-in lightbox without panzoom, on the cases of the first three R examples."
+title: "lightbox on the R cases"
+description: "The cases of the first three R examples, opened by lightbox without panzoom."
 format:
   html:
     code-tools: true
@@ -14,11 +14,10 @@ lightbox:
 
 ## About
 
-Quarto's built-in lightbox without panzoom, on the same cases as
-[`b-panzoom-lightbox`](b-panzoom-lightbox.html),
+These are the cases of [`b-panzoom-lightbox`](b-panzoom-lightbox.html),
 [`c-panzoom-auto`](c-panzoom-auto.html), and
-[`d-panzoom-selective`](d-panzoom-selective.html): compare each case with
-the same number there. Every block image opens in the lightbox, with these
+[`d-panzoom-selective`](d-panzoom-selective.html), opened by lightbox
+without panzoom. Compare each case with the same number there. Every block image opens in lightbox, with these
 settings:
 
 ```yaml
