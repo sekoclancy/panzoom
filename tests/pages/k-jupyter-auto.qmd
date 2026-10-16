@@ -44,6 +44,8 @@ x = np.linspace(0, 4 * np.pi, 400)
 
 ## 1. Figure with a caption {#c1 expect-open="panzoom"}
 
+A Python figure with a caption. It opens in panzoom.
+
 ```{python}
 #| fig-cap: "A sine wave."
 
@@ -53,12 +55,16 @@ plt.show()
 
 ## 2. Plot without a caption {#c2 expect-open="panzoom"}
 
+A plot without a caption. It opens in panzoom.
+
 ```{python}
 plt.plot(x, np.cos(x))
 plt.show()
 ```
 
 ## 3. Subfigures {#c3 expect-open="panzoom"}
+
+Two subfigures from one cell. They open in panzoom as a two-image gallery.
 
 ```{python}
 #| label: fig-pair
@@ -74,10 +80,11 @@ plt.show()
 
 ## 4. `lightbox:` options {#c4 expect-open="glightbox"}
 
-A cell's own `lightbox:` options ask for lightbox, so panzoom leaves the
-cell to it, as with knitr ([`c-panzoom-auto`](c-panzoom-auto.html), cases 6
-and 7). With Jupyter, lightbox ignores the options themselves, so the group
-and description don't reach it.
+Two cells with `lightbox:` options for a group and a description. Asking for
+lightbox keeps them out of panzoom, as with knitr
+([`c-panzoom-auto`](c-panzoom-auto.html), cases 6 and 7). With Jupyter,
+lightbox ignores the options themselves, so each opens in lightbox on its
+own, without the group or description.
 
 ```{python}
 #| lightbox:
@@ -92,8 +99,8 @@ plt.show()
 
 ## 5. `lightbox: false` {#c5 expect-open="nothing"}
 
-Opted out of lightbox; panzoom leaves an explicit lightbox setting
-alone too.
+A cell with `lightbox: false`. panzoom leaves an explicit lightbox setting
+alone, so clicking it does nothing.
 
 ```{python}
 #| lightbox: false
@@ -104,8 +111,8 @@ plt.show()
 
 ## 6. `panzoom: true` on a cell {#c6 expect-open="panzoom"}
 
-With the panzoom filter loaded, the option marks the plot for panzoom
-ahead of the document's `lightbox: true`.
+A cell with `panzoom: true`. It opens in panzoom, ahead of the document's
+`lightbox: true`.
 
 ```{python}
 #| panzoom: true
@@ -116,11 +123,16 @@ plt.show()
 
 ## 7. Markdown image {#c7 expect-open="panzoom"}
 
+A markdown image alone in a paragraph. It opens in panzoom.
+
 ```{.markdown .show-source}
 ![Chilmark.](../../images/mv-0.jpg)
 ```
 
 ## 8. `.nolightbox` {#c8 expect-open="nothing"}
+
+A markdown image with `.nolightbox`. panzoom only takes images lightbox
+would, so clicking it does nothing.
 
 ```{.markdown .show-source}
 ![Opted out.](../../images/mv-1.jpg){.nolightbox}

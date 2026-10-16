@@ -41,9 +41,9 @@ wave <- function(k = 1) {
 
 ## 1. `.nopanzoom` {#c1 expect-open="nothing panzoom"}
 
-The first image is marked `.nopanzoom`, so panzoom leaves it alone. With no
-lightbox on this page, clicking it does nothing. The second opens the
-viewer.
+Two images in a `.panzoom` div, the first marked `.nopanzoom`. The first
+opens nothing, since there is no lightbox on this page, and the second opens
+in panzoom.
 
 ```{.markdown .show-source}
 ::: {.panzoom layout-ncol="2"}
@@ -55,7 +55,8 @@ viewer.
 
 ## 2. `panzoom: false` in a div {#c2 expect-open="nothing"}
 
-The whole cell opts out.
+An R cell with `panzoom: false` in a `.panzoom` div. The whole cell opts
+out, so clicking it does nothing.
 
 ::: {.panzoom}
 
@@ -70,7 +71,8 @@ wave(k = 1)
 
 ## 3. `hint: false` {#c3 expect-open="panzoom" expect-hint="hidden"}
 
-The page shows the hint (the default); this cell hides it.
+A cell with `hint: false`. It opens in panzoom without the controls hint,
+which the page shows by default.
 
 ```{r}
 #| panzoom:
@@ -81,6 +83,9 @@ wave(k = 3)
 
 ## 4. Default hint {#c4 expect-open="panzoom" expect-hint="shown"}
 
+A cell with no hint option. It opens in panzoom with the controls hint at
+the bottom.
+
 ```{r}
 #| panzoom: true
 
@@ -89,7 +94,8 @@ wave(k = 4)
 
 ## 5. `max-zoom: 2` {#c5 expect-open="panzoom" expect-max-zoom="2"}
 
-Zooming in stops at 2 screen pixels per image pixel.
+A cell with `max-zoom: 2`. It opens in panzoom, and zooming in stops at 2
+screen pixels per image pixel.
 
 ```{r}
 #| panzoom:
@@ -100,8 +106,9 @@ wave(k = 1)
 
 ## 6. `loop: true` {#c6 expect-open="panzoom"}
 
-Three plots in one gallery. With the page's `loop: true`, `←` on the first
-goes to the last, and "previous" is never disabled.
+Three plots in one gallery. With the page's `loop: true`, the left arrow key
+on the first plot goes to the last, and the previous button is never
+disabled.
 
 ```{r}
 #| panzoom:
@@ -118,8 +125,8 @@ wave(k = 3)
 
 ## 7. No alt text {#c7 expect-open="panzoom" expect-caption="none"}
 
-With no alt text, the link panzoom puts around the image is labeled "Open image"
-for screen readers (`npm run nojs` checks every link has a name).
+A marked image with no alt text. It opens in panzoom with no caption, and
+the link around it is labeled "Open image" for screen readers.
 
 ```{.markdown .show-source}
 ![](../../images/mv-4.jpg){.panzoom width=40%}

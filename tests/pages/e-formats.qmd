@@ -38,6 +38,8 @@ collage <- function(n = 12) {
 
 ## 1. webp collage {#c1 expect-fit="height"}
 
+A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
+
 ```{r}
 #| panzoom: true
 #| fig-width: 25
@@ -52,6 +54,8 @@ collage(n = 12)
 
 ## 2. svg collage {#c2 expect-fit="height"}
 
+The same collage written as svg. It opens in panzoom at screen height.
+
 ```{r}
 #| panzoom: true
 #| fig-width: 25
@@ -63,6 +67,8 @@ collage(n = 12)
 ```
 
 ## 3. webp plot {#c3 expect-fit="contain" shift-scroll="none" expect-scale="1"}
+
+A small plot written as webp. It opens in panzoom at its real size.
 
 ```{r}
 #| panzoom: true
@@ -76,6 +82,8 @@ filled.contour(volcano, color.palette = terrain.colors)
 
 ## 4. svg plot {#c4 expect-fit="contain" expect-scale="1"}
 
+The same plot written as svg. It opens in panzoom at its real size.
+
 ```{r}
 #| panzoom: true
 #| dev: svg
@@ -86,7 +94,8 @@ filled.contour(volcano, color.palette = terrain.colors)
 
 ## 5. png and pdf {#c5 expect-fit="contain"}
 
-Both files are written; the page shows the png.
+A plot written as both png and pdf. The page shows the png, which opens in
+panzoom.
 
 ```{r}
 #| panzoom: true
@@ -98,11 +107,11 @@ filled.contour(volcano, color.palette = terrain.colors)
 
 ## 6. png and cairo_pdf {#c6 expect-fit="contain"}
 
-Like case 5, with the cairo PDF device, which embeds fonts and handles
-Unicode (µ, Greek letters) and transparency better than `pdf`. The page
-shows the png either way. With a PDF device alone, there is no image to
-open. Quarto embeds the PDF in a small box with the browser's PDF viewer,
-which panzoom leaves alone.
+Case 5 with the cairo PDF device, which embeds fonts and handles Unicode (µ,
+Greek letters) and transparency better than `pdf`. The page shows the png,
+which opens in panzoom. With a PDF device alone, there is no image to open.
+Quarto embeds the PDF in a small box with the browser's PDF viewer, which
+panzoom leaves alone.
 
 ```{r}
 #| panzoom: true
@@ -115,8 +124,9 @@ filled.contour(volcano, color.palette = terrain.colors,
 
 ## 7. webp past its size limit {#c7}
 
-At 192 dpi the collage is 19,200 px wide, beyond webp's limit of 16,383 px
-per side; this case records what happens.
+A 100 × 5 inch collage as webp at 192 dpi. At 19,200 px wide it is past the
+webp limit of 16,383 px per side, so ragg can't write the file. The page
+shows a broken image, and clicking it opens an empty viewer.
 
 ```{r}
 #| panzoom: true

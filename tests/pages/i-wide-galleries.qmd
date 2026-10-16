@@ -50,8 +50,9 @@ strip <- function(seed = 2, n = 8) {
 
 ## 1. Gallery of two collages {#c1 expect-fit="height"}
 
-Left/Right and drags pan along the collage; the previous and next
-buttons switch collages.
+Two 25 × 2 inch collages in a gallery. Each opens at screen height. The left
+and right arrow keys and dragging pan along the collage, and the previous
+and next buttons change collages.
 
 ```{r}
 #| panzoom:
@@ -68,9 +69,9 @@ collage(n = 15)
 
 ## 2. Gallery of two tall strips {#c2 expect-fit="width"}
 
-Each strip opens at screen width and extends downwards. The left and right
-arrow keys do nothing (there is nowhere to go sideways) instead of
-changing strips; the previous and next buttons change them.
+Two tall strips in a gallery. Each opens at screen width and extends
+downwards. The left and right arrow keys do nothing, since there is nowhere
+to go sideways, and the previous and next buttons change strips.
 
 ```{r}
 #| panzoom:
@@ -87,8 +88,8 @@ strip(seed = 9, n = 8)
 
 ## 3. Stacked collages {#c3 expect-fit="height"}
 
-Each subfigure in this layout opens on its own at screen height, and the
-two form a gallery.
+Two collages stacked as subfigures. Each opens at screen height, and the two
+form a gallery.
 
 ```{r}
 #| label: fig-collage-rows
@@ -105,6 +106,9 @@ collage(n = 15)
 
 ## 4. Strips side by side {#c4 expect-fit="width"}
 
+Two tall strips side by side as subfigures. Each opens at screen width, and
+the two form a gallery.
+
 ```{r}
 #| label: fig-strip-cols
 #| panzoom: true
@@ -120,8 +124,8 @@ strip(seed = 3, n = 8)
 
 ## 5. Tall strips in a layout div {#c5 expect-fit="width"}
 
-A `.panzoom` div with a layout wraps two separate code cells. Each strip
-opens on its own, with no gallery, since they are not subfigures.
+Two code cells in a `.panzoom` div with a layout. Each strip opens at screen
+width on its own, with no gallery, since they aren't subfigures.
 
 ::: {.panzoom layout-ncol="2"}
 
@@ -141,18 +145,14 @@ strip(seed = 5, n = 8)
 
 :::
 
-
 ## 6. Collages of different lengths {#c6 expect-fit="height"}
 
-Two cells, a long collage (40 × 2 in, 24 panels) and a shorter one
-(24 × 2 in, 12 panels), joined by `group`. Each opens at screen height
-from its left end; stepping to the other image fits it afresh, so the
-short collage doesn't keep the long one's scale or position. Whether a
-figure counts as a strip depends only on its shape (much shorter, and
-the short one would open whole on the test's 2560 px wide screen), so
-`fig-dpi: 48` halves the resolution to keep the files small. The
-captions differ in length, so stepping between the two changes the caption
-band's height, and each collage must stay clear of it.
+A long collage (40 × 2 in, 24 panels) and a shorter one (24 × 2 in, 12
+panels) from two cells, joined by `group`. Each opens at screen height from
+its left end, and stepping to the other fits it afresh, so the short collage
+doesn't keep the scale or position of the long one. The captions differ in
+length, so the caption band changes height between them, and each collage
+stays clear of it. `fig-dpi: 48` only keeps the files small.
 
 ```{r}
 #| panzoom:
@@ -179,10 +179,10 @@ collage(n = 12)
 
 ## 7. Strips of different lengths {#c7 expect-fit="width"}
 
-This is case 4 with strips of different sizes, 4 × 20 in (10 rows) and 3 ×
-12 in (6 rows), in a layout div, with captions of different lengths. Each
-opens at screen width from its top, and the layout shows them at different
-heights on the page.
+Strips of different sizes, 4 × 20 in (10 rows) and 3 × 12 in (6 rows), in a
+layout div with captions of different lengths. Each opens at screen width
+from its top, on its own, and the layout shows them at different heights on
+the page.
 
 ::: {.panzoom layout-ncol="2"}
 

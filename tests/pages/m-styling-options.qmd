@@ -35,11 +35,17 @@ stylesheet, for some pages only.
 
 ## 1. Marked image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
+A marked image with a link in its caption. It opens in panzoom with the
+colors set on this page, a deep blue backdrop and a cream caption band with
+a rust link.
+
 ```{.markdown .show-source}
 ![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-0.jpg){.panzoom}
 ```
 
 ## 2. Code cell {#c2 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
+
+A marked R cell. It opens in panzoom with the same colors.
 
 ```{r}
 #| panzoom: true

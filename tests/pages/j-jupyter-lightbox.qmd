@@ -38,6 +38,8 @@ x = np.linspace(0, 4 * np.pi, 400)
 
 ## 1. Figure with a caption {#c1 expect-open="glightbox"}
 
+A Python figure with a caption. It opens in lightbox.
+
 ```{python}
 #| fig-cap: "A sine wave."
 
@@ -47,12 +49,16 @@ plt.show()
 
 ## 2. Plot without a caption {#c2 expect-open="glightbox"}
 
+A plot without a caption. It opens in lightbox.
+
 ```{python}
 plt.plot(x, np.cos(x))
 plt.show()
 ```
 
 ## 3. Subfigures {#c3 expect-open="glightbox"}
+
+Two subfigures from one cell. They open in lightbox as a two-image gallery.
 
 ```{python}
 #| label: fig-pair
@@ -68,10 +74,9 @@ plt.show()
 
 ## 4. `lightbox:` options {#c4 expect-open="glightbox"}
 
-A cell's own `lightbox:` options ask for lightbox, so panzoom leaves the
-cell to it, as with knitr ([`c-panzoom-auto`](c-panzoom-auto.html), cases 6
-and 7). With Jupyter, lightbox ignores the options themselves, so the group
-and description don't reach it.
+Two cells with `lightbox:` options for a group and a description. With
+Jupyter, lightbox ignores the options themselves, so each opens in lightbox
+on its own, without the group or description.
 
 ```{python}
 #| lightbox:
@@ -86,8 +91,7 @@ plt.show()
 
 ## 5. `lightbox: false` {#c5 expect-open="nothing"}
 
-Opted out of lightbox; panzoom leaves an explicit lightbox setting
-alone too.
+A cell with `lightbox: false`. Clicking it does nothing.
 
 ```{python}
 #| lightbox: false
@@ -98,8 +102,8 @@ plt.show()
 
 ## 6. `panzoom: true` on a cell {#c6 expect-open="glightbox"}
 
-The panzoom filter isn't loaded here, so the option means nothing, and the
-document's `lightbox: true` takes the plot.
+A cell with `panzoom: true`. The panzoom filter isn't loaded here, so the
+option means nothing, and the plot opens in lightbox.
 
 ```{python}
 #| panzoom: true
@@ -110,11 +114,15 @@ plt.show()
 
 ## 7. Markdown image {#c7 expect-open="glightbox"}
 
+A markdown image alone in a paragraph. It opens in lightbox.
+
 ```{.markdown .show-source}
 ![Chilmark.](../../images/mv-0.jpg)
 ```
 
 ## 8. `.nolightbox` {#c8 expect-open="nothing"}
+
+A markdown image with `.nolightbox`. Clicking it does nothing.
 
 ```{.markdown .show-source}
 ![Opted out.](../../images/mv-1.jpg){.nolightbox}

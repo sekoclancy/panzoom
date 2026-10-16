@@ -35,6 +35,8 @@ def walk(ax, n=200, title=None):
 
 ## 1. `panzoom: true` {#c1 expect-open="panzoom" expect-hint="shown"}
 
+A cell with `panzoom: true`. It opens in panzoom with the controls hint.
+
 ```{python}
 #| panzoom: true
 #| fig-cap: "A sine wave."
@@ -45,6 +47,9 @@ plt.show()
 ```
 
 ## 2. Cell options {#c2 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
+
+A cell with `max-zoom: 2` and `hint: false`. It opens in panzoom without the
+hint, and zooming in stops at 2.
 
 ```{python}
 #| panzoom:
@@ -58,8 +63,8 @@ plt.show()
 
 ## 3. Labeled figure {#c3 expect-open="panzoom"}
 
-@fig-scatter has a description with math and a cross-reference to
-@fig-sub.
+A labeled figure, @fig-scatter, with a description holding math and a
+cross-reference to @fig-sub. It opens in panzoom with both rendered.
 
 ```{python}
 #| label: fig-scatter
@@ -74,7 +79,7 @@ plt.show()
 
 ## 4. Subfigures {#c4 expect-open="panzoom"}
 
-The two subfigures form a gallery.
+Two subfigures from one cell. They open in panzoom as a two-image gallery.
 
 ```{python}
 #| label: fig-sub
@@ -92,6 +97,9 @@ plt.show()
 
 ## 5. Plots in a group {#c5 expect-open="panzoom"}
 
+One cell with two plots and `group: walks`. They open in panzoom as a
+two-image gallery.
+
 ```{python}
 #| panzoom:
 #|   group: walks
@@ -107,10 +115,11 @@ for i in range(2):
 
 ## 6. Wide collage {#c6 expect-open="panzoom" expect-fit="height"}
 
-A strip, so it opens at screen height. Jupyter figures are shown at their
-size in inches × 96 px (Quarto writes it on the image), not shrunk to the
-column as with knitr. A 25 × 2 in collage would be 2,400 px wide on the
-page, cut off at the column's edge. This one fits.
+An 8 × 0.8 inch collage. It is a strip, so it opens in panzoom at screen
+height. Jupyter figures are shown at their size in inches × 96 px (Quarto
+writes it on the image), not shrunk to the column as with knitr. A 25 × 2 in
+collage would be 2,400 px wide on the page, cut off at the edge of the
+column. This one fits.
 
 ```{python}
 #| panzoom: true
@@ -125,6 +134,8 @@ plt.show()
 
 ## 7. `panzoom: false` in a div {#c7 expect-open="nothing"}
 
+A cell with `panzoom: false` in a `.panzoom` div. Clicking it does nothing.
+
 ::: {.panzoom}
 ```{python}
 #| panzoom: false
@@ -137,6 +148,8 @@ plt.show()
 
 ## 8. `classes: panzoom` {#c8 expect-open="panzoom"}
 
+A cell marked with `classes: panzoom`. It opens in panzoom.
+
 ```{python}
 #| classes: panzoom
 #| fig-cap: "Marked with the classes cell option."
@@ -147,7 +160,7 @@ plt.show()
 
 ## 9. Lightbox cell option only {#c9 expect-open="glightbox"}
 
-This opens lightbox, not panzoom.
+A cell with only `lightbox: true`. It opens in lightbox, not panzoom.
 
 ```{python}
 #| lightbox: true
@@ -159,6 +172,9 @@ plt.show()
 
 ## 10. Plain cell {#c10 expect-open="nothing"}
 
+A cell with no options. With no lightbox on the page, clicking it does
+nothing.
+
 ```{python}
 #| fig-cap: "No options: not opened."
 
@@ -168,9 +184,10 @@ plt.show()
 
 ## 11. Both options {#c11 expect-open="panzoom"}
 
-With both options, panzoom takes the image and drops the `lightbox:`
-options. (With Jupyter, lightbox ignores `#| lightbox:` with options under it
-anyway, unlike with knitr; `lightbox: true` works, as in case 9.)
+A cell with both `panzoom` and `lightbox:` options. panzoom takes the image
+and drops the `lightbox:` options. (With Jupyter, lightbox ignores `#|
+lightbox:` with options under it anyway, unlike with knitr; `lightbox: true`
+works, as in case 9.)
 
 ```{python}
 #| panzoom: true
@@ -185,11 +202,11 @@ plt.show()
 
 ## 12. svg {#c12 expect-open="panzoom" expect-fit="contain" expect-format="svg"}
 
-This uses the same figure path as case 1, written as svg instead of png.
-Jupyter saves the figure file itself, unlike knitr (svg from R is on
-[`e-formats`](e-formats.html)). The viewer redraws svg at each zoom,
-so it stays sharp. Jupyter ignores a cell's `fig-format`, so the cell
-switches the matplotlib output to svg itself, and back to png after.
+The plot from case 1, written as svg. It opens in panzoom, and the viewer
+redraws svg at each zoom, so it stays sharp. Jupyter saves the figure file
+itself, unlike knitr (svg from R is on [`e-formats`](e-formats.html)), and
+ignores a cell's `fig-format`, so the cell switches the matplotlib output to
+svg itself, and back to png after.
 
 ```{python}
 #| panzoom: true
