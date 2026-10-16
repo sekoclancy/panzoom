@@ -33,25 +33,19 @@ lightbox:
 
 ## 1. Single image {#c1 expect-open="glightbox"}
 
-A markdown image with a description and `desc-position="left"`. It opens in
-lightbox with the description on the left.
-
 ```{.markdown .show-source}
-![Beach in Chilmark](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left"}
+![A markdown image with a description and `desc-position="left"`. It opens in lightbox with the description on the left.](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left"}
 ```
 
 ## 2. Gallery in a layout {#c2 expect-open="glightbox"}
 
-Three images in a custom layout, joined by `group`. They open in lightbox as
-a three-image gallery.
-
 ```{.markdown .show-source}
 ::: {layout="[[1, 1], [1]]"}
-![Aquinnah](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah."}
+![Aquinnah, one of three images joined by `group`. They open in lightbox as a three-image gallery.](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah."}
 
-![Oak Bluffs](../../images/mv-3.jpg){group="elsewhere" description="Gingerbread cottages."}
+![Oak Bluffs, in the same gallery.](../../images/mv-3.jpg){group="elsewhere" description="Gingerbread cottages."}
 
-![Vineyard lighthouse](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse."}
+![Vineyard lighthouse, in the same gallery.](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse."}
 :::
 ```
 
@@ -66,27 +60,21 @@ lightbox with both typeset.
 
 ## 4. Markdown subfigures {#c4 expect-open="glightbox"}
 
-Two markdown subfigures, the first cross-referenced in the caption. They
-open in lightbox as a two-image gallery.
-
 ```{.markdown .show-source}
 ::: {#fig-md-sub layout-ncol=2}
 ![Sub A](../../images/mv-1.jpg){#fig-md-a}
 
 ![Sub B](../../images/mv-2.jpg){#fig-md-b}
 
-Two markdown subfigures (see @fig-md-a).
+Two markdown subfigures, the first cross-referenced here (see @fig-md-a). They open in lightbox as a two-image gallery.
 :::
 ```
 
 ## 5. R subfigures {#c5 expect-open="glightbox"}
 
-Two subfigures from one R cell. They open in lightbox as a two-image
-gallery.
-
 ```{r}
 #| label: fig-r-sub
-#| fig-cap: "Two R subfigures."
+#| fig-cap: "Two subfigures from one R cell. They open in lightbox as a two-image gallery."
 #| fig-subcap: ["Pressure", "Cars"]
 #| layout-ncol: 2
 
@@ -96,11 +84,8 @@ plot(cars)
 
 ## 6. Cell options {#c6 expect-open="glightbox"}
 
-Two R cells with lightbox options for a group and a description. They open
-in lightbox as a two-image gallery, each plot with its description.
-
 ```{r}
-#| fig-cap: Simple demo R plot
+#| fig-cap: "An R cell with lightbox options for a group and a description. It opens in lightbox, in a two-image gallery with the next plot."
 #| lightbox:
 #|   group: r-graph
 #|   description: This is 1 to 10 plot
@@ -109,7 +94,7 @@ plot(1:10, rnorm(10))
 ```
 
 ```{r}
-#| fig-cap: Plot about cars data
+#| fig-cap: "The second R cell in the same group. It opens in lightbox, in the same gallery."
 #| lightbox:
 #|   group: r-graph
 #|   description: We see our cars data above
@@ -119,13 +104,10 @@ plot(cars)
 
 ## 7. Two plots in one cell {#c7 expect-open="glightbox"}
 
-One R cell with two plots, and a caption and description for each. They open
-in lightbox as a two-image gallery.
-
 ```{r}
 #| fig-cap:
-#|   - Caption for first plot
-#|   - Caption for second plot
+#|   - "One R cell with two plots, and a caption and description for each. They open in lightbox as a two-image gallery."
+#|   - "The second plot of the cell, in the same gallery."
 #| lightbox:
 #|   group: cars
 #|   description:
@@ -141,7 +123,7 @@ plot(cars)
 An R cell with `lightbox: false`. Clicking it does nothing.
 
 ```{r}
-#| fig-cap: mtcars, lightbox false
+#| fig-cap: "An R cell with `lightbox: false`. Clicking it does nothing."
 #| lightbox: false
 
 plot(mtcars)
@@ -158,10 +140,8 @@ clicking it does nothing.
 
 ## 10. Margin image {#c10 expect-open="glightbox"}
 
-A markdown image in the margin. It opens in lightbox.
-
 ```{.markdown .show-source}
-![Margin image](../../images/mv-3.jpg){.column-margin}
+![A markdown image in the margin. It opens in lightbox.](../../images/mv-3.jpg){.column-margin}
 ```
 
 ## 11. Inline image {#c11 expect-open="nothing"}
@@ -175,11 +155,9 @@ Some text with an inline image ![](../../images/mv-2.jpg){width=60px} in the mid
 
 ## 12. Plain R figure {#c12 expect-open="glightbox"}
 
-A cross-referenced R figure with no options. It opens in lightbox.
-
 ```{r}
 #| label: fig-plain
-#| fig-cap: A plain cross-referenced R figure.
+#| fig-cap: "A cross-referenced R figure with no options. It opens in lightbox."
 
 image(volcano)
 ```

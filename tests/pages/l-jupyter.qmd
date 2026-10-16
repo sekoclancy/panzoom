@@ -38,7 +38,7 @@ A cell with `panzoom: true`. It opens in panzoom with the controls hint.
 
 ```{python}
 #| panzoom: true
-#| fig-cap: "A sine wave."
+#| fig-cap: "A cell with `panzoom: true`. It opens in panzoom with the controls hint."
 
 x = np.linspace(0, 4 * np.pi, 400)
 plt.plot(x, np.sin(x))
@@ -47,14 +47,11 @@ plt.show()
 
 ## 2. Cell options {#c2 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
 
-A cell with `max-zoom: 2` and `hint: false`. It opens in panzoom without the
-hint, and zooming in stops at 2.
-
 ```{python}
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
-#| fig-cap: "Zoom stops at 2, no hint."
+#| fig-cap: "A cell with `max-zoom: 2` and `hint: false`. It opens in panzoom without the hint, and zooming in stops at 2."
 
 plt.plot(x, np.cos(x))
 plt.show()
@@ -62,14 +59,11 @@ plt.show()
 
 ## 3. Labeled figure {#c3 expect-open="panzoom"}
 
-A labeled figure, @fig-scatter, with a description holding math and a
-cross-reference to @fig-sub. It opens in panzoom with both rendered.
-
 ```{python}
 #| label: fig-scatter
 #| panzoom:
 #|   description: 'Points scattered around $y = x + \varepsilon$, with a "quote"; compare @fig-sub.'
-#| fig-cap: "A scatter plot, $n = 100$."
+#| fig-cap: "A labeled scatter plot, $n = 100$, with a description holding math and a cross-reference to @fig-sub. It opens in panzoom with both rendered."
 
 pts = rng.normal(size=100)
 plt.scatter(pts, pts + rng.normal(scale=0.5, size=100))
@@ -78,12 +72,10 @@ plt.show()
 
 ## 4. Subfigures {#c4 expect-open="panzoom"}
 
-Two subfigures from one cell. They open in panzoom as a two-image gallery.
-
 ```{python}
 #| label: fig-sub
 #| panzoom: true
-#| fig-cap: "Two subfigures."
+#| fig-cap: "Two subfigures from one cell. They open in panzoom as a two-image gallery."
 #| fig-subcap: ["A random walk", "A histogram"]
 #| layout-ncol: 2
 
@@ -96,15 +88,12 @@ plt.show()
 
 ## 5. Plots in a group {#c5 expect-open="panzoom"}
 
-One cell with two plots and `group: walks`. They open in panzoom as a
-two-image gallery.
-
 ```{python}
 #| panzoom:
 #|   group: walks
 #| fig-cap:
-#|   - "First walk."
-#|   - "Second walk."
+#|   - "First walk, one of two plots joined by `group: walks`. They open in panzoom as a two-image gallery."
+#|   - "Second walk, in the same gallery."
 
 for i in range(2):
     fig, ax = plt.subplots()
@@ -138,7 +127,7 @@ A cell with `panzoom: false` in a `.panzoom` div. Clicking it does nothing.
 ::: {.panzoom}
 ```{python}
 #| panzoom: false
-#| fig-cap: "Left alone."
+#| fig-cap: "A cell with `panzoom: false` inside a `.panzoom` div. Clicking it does nothing."
 
 plt.plot(x, np.sin(2 * x))
 plt.show()
@@ -151,7 +140,7 @@ A cell marked with `classes: panzoom`. It opens in panzoom.
 
 ```{python}
 #| classes: panzoom
-#| fig-cap: "Marked with the classes cell option."
+#| fig-cap: "A cell with `classes: panzoom`. It opens in panzoom."
 
 plt.plot(x, np.sin(3 * x))
 plt.show()
@@ -163,7 +152,7 @@ A cell with only `lightbox: true`. It opens in lightbox, not panzoom.
 
 ```{python}
 #| lightbox: true
-#| fig-cap: "Opened by lightbox."
+#| fig-cap: "A cell with only `lightbox: true`. It opens in lightbox, not panzoom."
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -171,11 +160,8 @@ plt.show()
 
 ## 10. Plain cell {#c10 expect-open="nothing"}
 
-A cell with no options. With no lightbox on the page, clicking it does
-nothing.
-
 ```{python}
-#| fig-cap: "No options: not opened."
+#| fig-cap: "A cell with no options. With no lightbox on the page, clicking it does nothing."
 
 plt.plot(x, np.sin(5 * x))
 plt.show()
@@ -183,14 +169,12 @@ plt.show()
 
 ## 11. Both options {#c11 expect-open="panzoom"}
 
-A cell with both `panzoom` and `lightbox:` options. panzoom takes the image
-and drops the `lightbox:` options. (With Jupyter, lightbox ignores `#|
-lightbox:` with options under it anyway, unlike with knitr; `lightbox: true`
-works, as in case 9.)
+With Jupyter, lightbox ignores `#| lightbox:` with options under it anyway,
+unlike with knitr; `lightbox: true` works, as in case 9.
 
 ```{python}
 #| panzoom: true
-#| fig-cap: "Both options: panzoom."
+#| fig-cap: "A cell with both `panzoom` and `lightbox:` options. panzoom takes it and drops the `lightbox:` options."
 #| lightbox:
 #|   group: both
 #|   description: "Should not reach lightbox."
@@ -201,15 +185,13 @@ plt.show()
 
 ## 12. svg {#c12 expect-open="panzoom" expect-fit="contain" expect-format="svg"}
 
-The plot from case 1, written as svg. It opens in panzoom, and the viewer
-redraws svg at each zoom, so it stays sharp. Jupyter saves the figure file
-itself, unlike knitr (svg from R is on [image formats](e-formats.html)), and
-ignores a cell's `fig-format`, so the cell switches the matplotlib output to
-svg itself, and back to png after.
+Jupyter saves the figure file itself, unlike knitr (svg from R is on [image
+formats](e-formats.html)), and ignores a cell's `fig-format`, so the cell
+switches the matplotlib output to svg itself, and back to png after.
 
 ```{python}
 #| panzoom: true
-#| fig-cap: "A damped wave, as svg."
+#| fig-cap: "The plot from case 1, written as svg. It opens in panzoom and stays sharp when zoomed, since the viewer redraws svg at each zoom."
 
 %config InlineBackend.figure_formats = ["svg"]
 plt.plot(x, np.exp(-x / 4) * np.sin(3 * x))

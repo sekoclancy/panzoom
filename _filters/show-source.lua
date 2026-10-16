@@ -22,6 +22,9 @@ function CodeBlock(el)
   end
   local shown = el:clone()
   shown.classes = shown.classes:filter(function(c) return c ~= "show-source" end)
+  -- Markdown examples have long lines (an image with its attributes): wrap
+  -- them instead of scrolling.
+  shown.classes:insert("code-overflow-wrap")
   local blocks = pandoc.List({ shown })
   blocks:extend(pandoc.read(el.text, "markdown").blocks)
   return blocks

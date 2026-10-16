@@ -47,9 +47,9 @@ in panzoom.
 
 ```{.markdown .show-source}
 ::: {.panzoom layout-ncol="2"}
-![Opted out.](../../images/mv-1.jpg){.nopanzoom}
+![An image with `.nopanzoom` inside a `.panzoom` div. With no lightbox on this page, clicking it does nothing.](../../images/mv-1.jpg){.nopanzoom}
 
-![Not opted out.](../../images/mv-2.jpg)
+![Inside the same div, not opted out. It opens in panzoom.](../../images/mv-2.jpg)
 :::
 ```
 
@@ -62,7 +62,7 @@ out, so clicking it does nothing.
 
 ```{r}
 #| panzoom: false
-#| fig-cap: "Opted out cell."
+#| fig-cap: "An R cell with `panzoom: false` inside a `.panzoom` div. The whole cell opts out, so clicking it does nothing."
 
 wave(k = 1)
 ```
@@ -77,17 +77,16 @@ which the page shows by default.
 ```{r}
 #| panzoom:
 #|   hint: false
+#| fig-cap: "A cell with `hint: false`. It opens in panzoom without the controls hint, which the page shows by default."
 
 wave(k = 3)
 ```
 
 ## 4. Default hint {#c4 expect-open="panzoom" expect-hint="shown"}
 
-A cell with no hint option. It opens in panzoom with the controls hint at
-the bottom.
-
 ```{r}
 #| panzoom: true
+#| fig-cap: "A cell with no hint option. It opens in panzoom with the controls hint at the bottom."
 
 wave(k = 4)
 ```
@@ -100,6 +99,7 @@ screen pixels per image pixel.
 ```{r}
 #| panzoom:
 #|   max-zoom: 2
+#| fig-cap: "A cell with `max-zoom: 2`. It opens in panzoom, and zooming in stops at 2 screen pixels per image pixel."
 
 wave(k = 1)
 ```
@@ -114,9 +114,9 @@ disabled.
 #| panzoom:
 #|   group: waves
 #| fig-cap:
-#|   - "Wave one."
-#|   - "Wave two."
-#|   - "Wave three."
+#|   - "Wave one, first of three plots in a gallery. With `loop: true` on this page, the left arrow key here goes to wave three, and the previous button is never disabled."
+#|   - "Wave two, in the same gallery."
+#|   - "Wave three. The right arrow key here goes back to wave one."
 
 wave(k = 1)
 wave(k = 2)

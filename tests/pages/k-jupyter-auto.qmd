@@ -43,10 +43,8 @@ x = np.linspace(0, 4 * np.pi, 400)
 
 ## 1. Figure with a caption {#c1 expect-open="panzoom"}
 
-A Python figure with a caption. It opens in panzoom.
-
 ```{python}
-#| fig-cap: "A sine wave."
+#| fig-cap: "A Python figure with a caption. It opens in panzoom."
 
 plt.plot(x, np.sin(x))
 plt.show()
@@ -63,11 +61,9 @@ plt.show()
 
 ## 3. Subfigures {#c3 expect-open="panzoom"}
 
-Two subfigures from one cell. They open in panzoom as a two-image gallery.
-
 ```{python}
 #| label: fig-pair
-#| fig-cap: "Two waves."
+#| fig-cap: "Two subfigures from one cell. They open in panzoom as a two-image gallery."
 #| fig-subcap: ["Sine", "Cosine"]
 #| layout-ncol: 2
 
@@ -103,6 +99,7 @@ alone, so clicking it does nothing.
 
 ```{python}
 #| lightbox: false
+#| fig-cap: "A cell with `lightbox: false`. panzoom leaves an explicit lightbox setting alone, so clicking it does nothing."
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -115,6 +112,7 @@ A cell with `panzoom: true`. It opens in panzoom, ahead of the document's
 
 ```{python}
 #| panzoom: true
+#| fig-cap: "A cell with `panzoom: true`. It opens in panzoom, ahead of the document's `lightbox: true`."
 
 plt.plot(x, np.cos(4 * x))
 plt.show()
@@ -125,7 +123,7 @@ plt.show()
 A markdown image alone in a paragraph. It opens in panzoom.
 
 ```{.markdown .show-source}
-![Chilmark.](../../images/mv-0.jpg)
+![A markdown image with `.nolightbox`. panzoom only takes images lightbox would, so clicking it does nothing.](../../images/mv-1.jpg){.nolightbox}
 ```
 
 ## 8. `.nolightbox` {#c8 expect-open="nothing"}

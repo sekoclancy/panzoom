@@ -77,41 +77,33 @@ viewer from the stylesheet, a pink link, a line along the top of the caption
 band, and a larger, italic caption.
 
 ```{.markdown .show-source}
-![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-2.jpg){.panzoom}
+![An image with `.panzoom`. It opens with the plum viewer from the stylesheet, a line along the top of the caption band, a larger, italic caption, and this pink [link](https://quarto.org).](../../images/mv-2.jpg){.panzoom}
 ```
 
 ## 2. Class for one image {#c2 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
-A marked image with a class of its own, `css-class="sea-viewer"`. It opens
-in panzoom with the `.sea-viewer` rules from the stylesheet, a dark teal
-viewer with an upright caption. The page's class stays on the viewer, so
-rules for `.sea-viewer` come after the `.plum-viewer` ones to win over
-them.
+The page's class stays on the viewer, so rules for `.sea-viewer` come after
+the `.plum-viewer` ones to win over them.
 
 ```{.markdown .show-source}
-![A marked image with its own class, and a [link](https://quarto.org) in its caption.](../../images/mv-3.jpg){.panzoom css-class="sea-viewer"}
+![An image with `.panzoom`, with a class of its own, `css-class="sea-viewer"`. It opens with the dark teal `.sea-viewer` rules and an upright caption, and this [link](https://quarto.org) is teal.](../../images/mv-3.jpg){.panzoom css-class="sea-viewer"}
 ```
 
 ## 3. Code cell {#c3 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
-A marked R cell. It opens in panzoom with the plum viewer, as case 1 does.
-
 ```{r}
 #| panzoom: true
-#| fig-cap: "A code cell's plot, on the same plum viewer."
+#| fig-cap: "A code cell with `panzoom: true`. It opens with the plum viewer, as case 1 does."
 
 plot(pressure, type = "b", pch = 19)
 ```
 
 ## 4. Class for one cell {#c4 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
-A marked R cell with `css-class: sea-viewer` under `#| panzoom:`. It opens
-in panzoom with the same teal viewer as case 2.
-
 ```{r}
 #| panzoom:
 #|   css-class: sea-viewer
-#| fig-cap: "A code cell's plot, with a class of its own."
+#| fig-cap: "A code cell with `css-class: sea-viewer` under `#| panzoom:`. It opens with the same teal viewer as case 2."
 
 plot(cars, pch = 19)
 ```

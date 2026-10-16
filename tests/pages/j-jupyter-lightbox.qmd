@@ -37,10 +37,8 @@ x = np.linspace(0, 4 * np.pi, 400)
 
 ## 1. Figure with a caption {#c1 expect-open="glightbox"}
 
-A Python figure with a caption. It opens in lightbox.
-
 ```{python}
-#| fig-cap: "A sine wave."
+#| fig-cap: "A Python figure with a caption. It opens in lightbox."
 
 plt.plot(x, np.sin(x))
 plt.show()
@@ -57,11 +55,9 @@ plt.show()
 
 ## 3. Subfigures {#c3 expect-open="glightbox"}
 
-Two subfigures from one cell. They open in lightbox as a two-image gallery.
-
 ```{python}
 #| label: fig-pair
-#| fig-cap: "Two waves."
+#| fig-cap: "Two subfigures from one cell. They open in lightbox as a two-image gallery."
 #| fig-subcap: ["Sine", "Cosine"]
 #| layout-ncol: 2
 
@@ -94,6 +90,7 @@ A cell with `lightbox: false`. Clicking it does nothing.
 
 ```{python}
 #| lightbox: false
+#| fig-cap: "A cell with `lightbox: false`. Clicking it does nothing."
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -106,6 +103,7 @@ option means nothing, and the plot opens in lightbox.
 
 ```{python}
 #| panzoom: true
+#| fig-cap: "A cell with `panzoom: true`. The panzoom filter isn't loaded here, so the option means nothing, and the plot opens in lightbox."
 
 plt.plot(x, np.cos(4 * x))
 plt.show()
@@ -116,7 +114,7 @@ plt.show()
 A markdown image alone in a paragraph. It opens in lightbox.
 
 ```{.markdown .show-source}
-![Chilmark.](../../images/mv-0.jpg)
+![A markdown image with `.nolightbox`. Clicking it does nothing.](../../images/mv-1.jpg){.nolightbox}
 ```
 
 ## 8. `.nolightbox` {#c8 expect-open="nothing"}
