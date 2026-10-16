@@ -21,10 +21,10 @@ lightbox:
 
 ## About
 
-With `match: auto`, panzoom takes every image lightbox would take
-on its own, so no image needs marking. The markup is the same as in
-[`a-lightbox`](a-lightbox.html), which has no panzoom. Compare each case
-with the same number there.
+With `match: auto`, panzoom takes every image lightbox would take on its
+own, so no image needs marking. The markup is the same as on the [lightbox
+version](a-lightbox.html), which has no panzoom. Compare each case with the
+same number there.
 
 ```yaml
 filters:

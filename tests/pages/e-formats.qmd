@@ -13,9 +13,9 @@ panzoom:
 ## About
 
 Figures from the knitr graphics devices used in practice, webp, svg, and
-pdf, for a wide collage and a standard plot. Every figure is marked with
-`#| panzoom: true` and opens panzoom unless its case says otherwise. Figure
-shapes and how they open are on [`h-wide`](h-wide.html).
+pdf, for a wide collage and a standard plot. Every figure is marked with `#|
+panzoom: true` and opens in panzoom unless its case says otherwise. Figure
+shapes and how they open are on [wide and tall figures](h-wide.html).
 
 knitr has no built-in webp device, so these use `agg_webp` from ragg, which
 needs `units = "in"` because knitr passes sizes in inches.

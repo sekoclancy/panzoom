@@ -14,11 +14,11 @@ panzoom:
 
 ## About
 
-Only images marked with `.panzoom` or `#| classes: panzoom` open panzoom.
-The document doesn't turn lightbox on, so it applies only where a
-cell asks for it with `#| lightbox:` options (cases 6 and 7).
-[`a-lightbox`](a-lightbox.html) has the same cases with lightbox.
-Compare each case with the same number there.
+Only images marked with `.panzoom` or `#| classes: panzoom` open in panzoom.
+The document doesn't turn lightbox on, so it applies only where a cell asks
+for it with `#| lightbox:` options (cases 6 and 7). The [lightbox
+version](a-lightbox.html) has the same cases without panzoom. Compare each
+case with the same number there.
 
 ## 1. Single image {#c1 expect-open="panzoom"}
 

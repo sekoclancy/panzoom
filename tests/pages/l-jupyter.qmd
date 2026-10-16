@@ -13,7 +13,7 @@ filters:
 ## About
 
 The cell options from the R examples, on matplotlib figures, and svg
-output. The document has no lightbox, so only marked cells open panzoom.
+output. The document has no lightbox, so only marked cells open in panzoom.
 
 Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
 on the page (knitr shows them); the **Code** button at the top shows the
@@ -204,7 +204,7 @@ plt.show()
 
 The plot from case 1, written as svg. It opens in panzoom, and the viewer
 redraws svg at each zoom, so it stays sharp. Jupyter saves the figure file
-itself, unlike knitr (svg from R is on [`e-formats`](e-formats.html)), and
+itself, unlike knitr (svg from R is on [image formats](e-formats.html)), and
 ignores a cell's `fig-format`, so the cell switches the matplotlib output to
 svg itself, and back to png after.
 

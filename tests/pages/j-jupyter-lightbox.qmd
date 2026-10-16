@@ -14,11 +14,11 @@ filters:
 
 ## About
 
-These Python (Jupyter) cells open in lightbox, without panzoom.
-[`k-jupyter-auto`](k-jupyter-auto.html) has the same cases with
-`panzoom: true`. Compare each case with the same number there. The knitr
-equivalents are [`a-lightbox`](a-lightbox.html) and
-[`c-panzoom-auto`](c-panzoom-auto.html).
+These Python (Jupyter) cells open in lightbox, without panzoom. The [panzoom
+version](k-jupyter-auto.html) has the same cases with `panzoom: true`.
+Compare each case with the same number there. The knitr equivalents are the
+R [lightbox version](a-lightbox.html) and [`match: auto`
+version](c-panzoom-auto.html).
 
 ```yaml
 lightbox: true

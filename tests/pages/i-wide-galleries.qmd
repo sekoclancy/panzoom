@@ -12,9 +12,9 @@ panzoom:
 
 ## About
 
-Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and
-in a layout div. The same shapes on their own, and the `fit` option, are
-on [`h-wide`](h-wide.html).
+Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and in
+a layout div. The same shapes on their own, and the `fit` option, are on
+[wide and tall figures](h-wide.html).
 
 Wide figures open at screen height from the left end, tall ones at screen
 width from the top. In a gallery, left and right arrow pan a wide figure

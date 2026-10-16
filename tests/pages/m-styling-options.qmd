@@ -29,9 +29,9 @@ panzoom:
   link-color: "#a0361b"
 ```
 
-Each option sets one of the viewer's CSS variables;
-[`n-css-class`](n-css-class.html) sets the same variables from a
-stylesheet, for some pages only.
+Each option sets one of the viewer's CSS variables; [css-class and
+CSS](n-css-class.html) sets the same variables from a stylesheet, for some
+pages only.
 
 ## 1. Marked image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 

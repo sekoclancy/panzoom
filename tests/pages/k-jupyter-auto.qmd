@@ -17,11 +17,11 @@ lightbox: true
 ## About
 
 These Python (Jupyter) cells have `panzoom: true`, next to the document's
-`lightbox: true`. panzoom takes every image lightbox would, except
-where a case asks for lightbox.
-[`j-jupyter-lightbox`](j-jupyter-lightbox.html) has the same cases without
-panzoom. Compare each case with the same number there. The knitr
-equivalent is [`c-panzoom-auto`](c-panzoom-auto.html).
+`lightbox: true`. panzoom takes every image lightbox would, except where a
+case asks for lightbox. The [lightbox version](j-jupyter-lightbox.html) has
+the same cases without panzoom. Compare each case with the same number
+there. The knitr equivalent is the R [`match: auto`
+version](c-panzoom-auto.html).
 
 ```yaml
 filters:
@@ -81,10 +81,10 @@ plt.show()
 ## 4. `lightbox:` options {#c4 expect-open="glightbox"}
 
 Two cells with `lightbox:` options for a group and a description. Asking for
-lightbox keeps them out of panzoom, as with knitr
-([`c-panzoom-auto`](c-panzoom-auto.html), cases 6 and 7). With Jupyter,
-lightbox ignores the options themselves, so each opens in lightbox on its
-own, without the group or description.
+lightbox keeps them out of panzoom, as with knitr (cases 6 and 7 of the R
+[`match: auto` version](c-panzoom-auto.html)). With Jupyter, lightbox
+ignores the options themselves, so each opens in lightbox on its own,
+without the group or description.
 
 ```{python}
 #| lightbox:
