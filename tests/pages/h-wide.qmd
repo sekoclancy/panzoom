@@ -10,7 +10,6 @@ panzoom:
   hint: false
 ---
 
-::: {.callout-note}
 ## About
 
 Figures of different shapes, each on its own: very wide collages
@@ -42,7 +41,6 @@ click. Zooming out still shows the whole figure.
 Shift+scroll (or a sideways trackpad swipe) pans along the direction the
 figure extends past the screen: sideways for a collage, up and down for a
 tall figure, sideways when zoomed in both ways.
-:::
 
 The cases below draw with these helpers:
 

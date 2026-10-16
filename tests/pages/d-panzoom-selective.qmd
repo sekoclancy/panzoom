@@ -10,7 +10,6 @@ panzoom:
   hint: false
 ---
 
-::: {.callout-note}
 ## About
 
 Only images marked with `.panzoom` or `#| classes: panzoom` open panzoom.
@@ -23,7 +22,6 @@ Case 6's first chunk has both `classes: panzoom` and `#| lightbox:`
 options: panzoom wins and drops the lightbox options, so that image doesn't
 join the lightbox gallery. Case 9's link still works, since images inside
 links are left alone.
-:::
 
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="panzoom"}
 

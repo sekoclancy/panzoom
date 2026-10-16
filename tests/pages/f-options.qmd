@@ -10,7 +10,6 @@ panzoom:
   loop: true
 ---
 
-::: {.callout-note}
 ## About
 
 Opting out with `.nopanzoom` and `#| panzoom: false`, and the `hint` and
@@ -25,7 +24,6 @@ panzoom:
 There is no lightbox, so an image panzoom leaves alone opens nothing. The
 `caption` and `description` options are on
 [`g-captions`](g-captions.html), and `fit` is on [`h-wide`](h-wide.html).
-:::
 
 The cases below draw with this helper:
 

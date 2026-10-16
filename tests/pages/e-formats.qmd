@@ -10,7 +10,6 @@ panzoom:
   hint: false
 ---
 
-::: {.callout-note}
 ## About
 
 Figures from the knitr graphics devices used in practice, webp, svg, and
@@ -20,7 +19,6 @@ shapes and how they open are on [`h-wide`](h-wide.html).
 
 knitr has no built-in webp device; these use ragg's `agg_webp`, which
 needs `units = "in"` because knitr passes sizes in inches.
-:::
 
 The cases below draw with this helper (`ragg` writes the webp files):
 

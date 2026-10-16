@@ -10,7 +10,6 @@ filters:
   - panzoom
 ---
 
-::: {.callout-note}
 ## About
 
 The cell options from the R examples, on matplotlib figures, and svg
@@ -19,7 +18,6 @@ output. The document has no lightbox, so only marked cells open panzoom.
 Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
 on the page (knitr shows them); the **Code** button at the top shows the
 full source.
-:::
 
 The cases below share this setup and helper:
 

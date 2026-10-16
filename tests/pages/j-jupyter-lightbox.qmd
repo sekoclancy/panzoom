@@ -9,7 +9,6 @@ format:
 lightbox: true
 ---
 
-::: {.callout-note}
 ## About
 
 Python (Jupyter) cells with Quarto's built-in lightbox, without panzoom.
@@ -24,7 +23,6 @@ lightbox: true
 
 Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
 on the page; the **Code** button at the top shows the full source.
-:::
 
 The cases below share this setup:
 

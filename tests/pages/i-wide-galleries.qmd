@@ -10,7 +10,6 @@ panzoom:
   hint: false
 ---
 
-::: {.callout-note}
 ## About
 
 Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and
@@ -21,7 +20,6 @@ Wide figures open at screen height from the left end, tall ones at screen
 width from the top. In a gallery, left and right arrow pan a wide figure
 (and do nothing on a tall strip) instead of changing the image; the
 previous and next buttons change it.
-:::
 
 The cases below draw with these helpers:
 

@@ -12,7 +12,6 @@ lightbox:
   css-class: my-lb
 ---
 
-::: {.callout-note}
 ## About
 
 Quarto's built-in lightbox without panzoom, on the same cases as
@@ -30,7 +29,6 @@ lightbox:
   loop: true
   css-class: my-lb
 ```
-:::
 
 <!-- CLAUDE: title too long, show the actual code in a markdown block -->
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="glightbox"}

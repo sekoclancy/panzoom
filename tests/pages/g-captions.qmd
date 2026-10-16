@@ -34,7 +34,6 @@ references:
         - [2001]
 ---
 
-::: {.callout-note}
 ## About
 
 A caption is copied from the page, so whatever Quarto renders there comes
@@ -48,7 +47,6 @@ caption as raw `[@key]`
 Cases 6 and 7 set the per-cell `caption` and `description` options. Case
 9's description is longer than its panel, so the panel scrolls, from the
 keyboard too.
-:::
 
 The cases below draw with this helper:
 

@@ -17,7 +17,6 @@ lightbox:
   css-class: my-lb
 ---
 
-::: {.callout-note}
 ## About
 
 With `match: auto`, panzoom takes every image Quarto's lightbox would take
@@ -40,7 +39,6 @@ Some cases stay out on purpose:
 - case 8 sets `#| lightbox: false`, so it opens neither;
 - case 9 (an image inside a link) and case 11 (an inline image) are
   skipped, as Quarto's lightbox skips them.
-:::
 
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="panzoom"}
 

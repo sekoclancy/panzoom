@@ -11,7 +11,6 @@ panzoom:
   css-class: plum-viewer
 ---
 
-::: {.callout-note}
 ## About
 
 The viewer styled from a stylesheet. `css-class` adds a class to the
@@ -29,7 +28,6 @@ panzoom:
 
 Only pages with that class get the rules, so the other pages of the site
 keep the default viewer.
-:::
 
 The stylesheet:
 
