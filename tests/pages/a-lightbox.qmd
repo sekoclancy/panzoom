@@ -133,7 +133,7 @@ An image inside a link. Quarto turns it into a figure and drops the link, so
 clicking it does nothing.
 
 ```{.markdown .show-source}
-[![Linked image](../../images/mv-4.jpg){width=30%}](https://quarto.org)
+[![Linked image](../../images/mv-4.jpg){width=30%}](https://quarto.org){aria-label="Quarto website"}
 ```
 
 ## 10. Margin image {#c10 expect-open="glightbox"}

@@ -125,7 +125,7 @@ An image with `.panzoom` inside a link. panzoom leaves images in links alone, so
 clicking it follows the link.
 
 ```{.markdown .show-source}
-[![Linked image](../../images/mv-4.jpg){.panzoom width=30%}](https://quarto.org)
+[![Linked image](../../images/mv-4.jpg){.panzoom width=30%}](https://quarto.org){aria-label="Quarto website"}
 ```
 
 ## 10. Margin image {#c10 expect-open="panzoom"}
