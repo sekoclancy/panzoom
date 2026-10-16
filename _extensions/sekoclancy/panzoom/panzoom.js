@@ -6,7 +6,8 @@
   Panzoom does the panning and zooming: drag (or one-finger drag) pans,
   two-finger pinch zooms. This file adds the viewer around it: click image ->
   overlay, wheel / trackpad pinch zooms toward the cursor, double-click or 0
-  resets to fit, +/- zoom, arrow keys pan, Esc / x / background click closes.
+  resets to fit, +/- zoom, arrow keys pan, Esc / x / background click closes,
+  c hides or shows the caption and description, h the hint line.
 
   Captions: the viewer shows the image's figure caption, taken from the
   rendered page (the nearest <figcaption>), so "Figure N:" prefixes and
@@ -73,7 +74,7 @@
     panzoomLinkColor: "--panzoom-link"
   };
 
-  var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc;
+  var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
   var loadId = 0, loadTimer = null;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
   var bouncing = false, bounceTimer = null;
@@ -89,6 +90,12 @@
   var gallery = [], index = 0;
   // The classes the shown image added to the viewer (see restyle()).
   var imageClasses = [];
+  // The c and h keys hide the caption (with the description) and the hint,
+  // for as long as the page is open, so a gallery stays that way.
+  var hideCaption = false, hideHint = false;
+  // The opening view fit() set ({ s, x, y }), to tell whether the reader
+  // has zoomed or panned since.
+  var opening = null;
 
   // Document-wide options, overridden by the image's data attributes.
   function options(el) {
@@ -245,6 +252,36 @@
     // now, so the image doesn't show at (0, 0) for a frame and an
     // immediate zoom or pan starts from the opening view.
     pz.pan((cx - w / 2) / s, (cy - h / 2) / s, { animate: false, force: true });
+    var p = pz.getPan();
+    opening = { s: pz.getScale(), x: p.x, y: p.y };
+  }
+
+  // Whether the view is still the opening one: not zoomed or panned.
+  function atOpening() {
+    if (!pz || !opening) return false;
+    var p = pz.getPan();
+    return Math.abs(pz.getScale() - opening.s) < 1e-6 &&
+      Math.abs(p.x - opening.x) < 0.5 && Math.abs(p.y - opening.y) < 0.5;
+  }
+
+  // Shows or hides the caption band's parts (see hideCaption), and the band
+  // itself when all of them are hidden.
+  function showFooter() {
+    caption.hidden = hideCaption || !caption.innerHTML;
+    desc.hidden = hideCaption || !desc.innerHTML.trim();
+    hint.hidden = hideHint || !opts.hint;
+    footer.hidden = caption.hidden && desc.hidden && hint.hidden;
+    markScrollable();
+  }
+
+  // c and h: hide or show the caption or the hint. The image gets the room
+  // the band gave up (or gives it back): an untouched view fits afresh, and
+  // a zoomed or panned one keeps its place, held within the new space.
+  function toggleFooter(key) {
+    if (key === "c") hideCaption = !hideCaption; else hideHint = !hideHint;
+    var refit = atOpening();
+    showFooter();
+    if (refit) fit(); else contain();
   }
 
   // The space the image is shown in: the overlay above the caption.
@@ -442,13 +479,10 @@
     }
     counter.textContent = (i + 1) + " / " + n;
     caption.innerHTML = opts.caption ? captionOf(el) : "";
-    caption.hidden = !caption.innerHTML;
     desc.innerHTML = opts.caption ? descriptionOf(el) : "";
-    desc.hidden = !desc.innerHTML.trim();
-    overlay.querySelector(".panzoom-hint").hidden = !opts.hint;
     overlay.querySelector(".panzoom-hint-gallery").hidden = !many;
     caption.scrollTop = desc.scrollTop = 0;
-    markScrollable();
+    showFooter();
     overlay.setAttribute("aria-label", "Image viewer" + (many ? ", image " + (i + 1) + " of " + n : ""));
     if (pz) { pz.destroy(); pz = null; }
     img.style.transform = "";
@@ -610,7 +644,7 @@
       '<div class="panzoom-caption"></div>' +
       '<div class="panzoom-description"></div>' +
       '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
-      'double-click to reset &middot; Esc to close' +
+      'double-click to reset &middot; c hides the caption, h this line &middot; Esc to close' +
       '<span class="panzoom-hint-gallery"> &middot; previous/next buttons for other images</span></div>' +
       '</div>';
     document.body.appendChild(overlay);
@@ -623,6 +657,7 @@
     footer = overlay.querySelector(".panzoom-footer");
     caption = overlay.querySelector(".panzoom-caption");
     desc = overlay.querySelector(".panzoom-description");
+    hint = overlay.querySelector(".panzoom-hint");
     closeBtn.addEventListener("click", close);
     img.addEventListener("panzoomchange", contain);
     prevBtn.addEventListener("click", function () { step(-1); });
@@ -737,6 +772,7 @@
     else if (e.key === "0") resetView();
     else if (e.key === "+" || e.key === "=") zoomAt(1.25, cx, cy);
     else if (e.key === "-") zoomAt(0.8, cx, cy);
+    else if (e.key === "c" || e.key === "h") toggleFooter(e.key);
   }
   window.addEventListener("keydown", onKey, true);
   window.addEventListener("keyup", onKey, true);

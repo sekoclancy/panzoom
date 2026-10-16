@@ -533,6 +533,33 @@ async function checkKeyboard(page, handle) {
   await page.keyboard.press(" ");
   await settle(page);
   out.spaceOpens = (await state(page)).opened === "panzoom";
+
+  // c and h hide the caption (with the description) and the hint, and show
+  // them again; with both hidden the caption band goes, and the image,
+  // still at its opening view, fits the room it leaves.
+  const band = () => page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay"), f = o.querySelector(".panzoom-footer");
+    const shown = (sel) => o.querySelector(sel).offsetParent !== null;
+    return {
+      caption: shown(".panzoom-caption"), desc: shown(".panzoom-description"), hint: shown(".panzoom-hint"),
+      band: f.offsetParent !== null && f.offsetHeight > 0,
+      imgH: o.querySelector("img").getBoundingClientRect().height,
+    };
+  });
+  const b0 = await band();
+  await page.keyboard.press("c");
+  await settle(page);
+  const b1 = await band();
+  await page.keyboard.press("h");
+  await settle(page);
+  const b2 = await band();
+  await page.keyboard.press("c");
+  await page.keyboard.press("h");
+  await settle(page);
+  const b3 = await band();
+  out.captionToggles = !b1.caption && !b1.desc && b3.caption === b0.caption && b3.desc === b0.desc;
+  out.hintToggles = !b2.hint && b3.hint === b0.hint;
+  out.bandGoes = !b2.band && b2.imgH >= b0.imgH - 1;
   await page.keyboard.press("Escape");
   await settle(page);
   out.escReturnsFocus = (await state(page)).opened !== "panzoom" && (await focusState()).onImage;
@@ -641,6 +668,9 @@ const KEYBOARD_CHECKS = [
   ["focusReturns", "Focus returns to the image"],
   ["spaceOpens", "Space on the image opens the viewer"],
   ["escReturnsFocus", "Esc closes and returns focus"],
+  ["captionToggles", "c hides the caption and description, and shows them again"],
+  ["hintToggles", "h hides the hint, and shows it again"],
+  ["bandGoes", "With both hidden, the caption band goes and the image keeps or gains room"],
 ];
 
 async function checkPage(browser, base, file) {

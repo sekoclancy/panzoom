@@ -38,6 +38,8 @@ Click a figure to open it, or reach it with Tab and press Enter.
 | Pan | drag, or Shift+scroll | arrow keys |
 | Go back to the opening view | double-click | 0 |
 | Change image in a gallery | the previous and next buttons | left and right arrow |
+| Hide or show the caption and description | | c |
+| Hide or show the hint line | | h |
 | Close | the × button, or click the background | Esc |
 
 A very wide figure opens at screen height, at the spot you clicked, and the

@@ -46,6 +46,8 @@ See [Development](#development) to preview and publish.
 | Pan | drag, or Shift+scroll | arrow keys |
 | Go back to the opening view | double-click | 0 |
 | Change image in a gallery | the previous and next buttons, or swipe | left and right arrow |
+| Hide or show the caption and description | | c |
+| Hide or show the hint line | | h |
 | Close | the × button, or click the background | Esc |
 
 Zoom goes up to `max-zoom`. While an image is larger than the screen
