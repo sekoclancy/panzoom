@@ -12,22 +12,23 @@ panzoom:
 
 ## About
 
-This page opens figures of different shapes, each on its own, and shows
-the `fit` option. The shapes are very wide collages (25 × 2 inches), tall
-strips, a poster, a portrait photo, and a small plot. All are png; other formats are on
-[`e-formats`](e-formats.html), and the same shapes in galleries and
-layouts on [`i-wide-galleries`](i-wide-galleries.html).
+This page opens figures of different shapes, each on its own, and shows the
+`fit` option. The shapes are very wide collages (25 × 2 inches), tall
+strips, a poster, a portrait photo, and a small plot. All are png; other
+formats are on [`e-formats`](e-formats.html), and the same shapes in
+galleries and layouts on [`i-wide-galleries`](i-wide-galleries.html).
 
-With `fit: auto`, the default, the viewer opens most images whole. A strip at least 3 times wider than tall, that would show less than
-a quarter of the screen tall, such as a collage of many panels
-(`fig-width: 100`, `fig-height: 5`), opens filling the screen height
-instead. A strip at least 3 times taller than wide, that would show less
-than a quarter of the screen wide, opens filling the screen width, at its
-top. Ordinary photos and plots, portrait or landscape, always open whole,
-even on a very wide screen where a portrait photo is narrower than a
-quarter of it. No image is enlarged past its real size when it opens , as
-with lightbox. A small image opens at its own size, and scrolling still zooms it in, up to `max-zoom`. `fit: contain`, `height` or
-`width` overrides the rule for one figure.
+With `fit: auto`, the default, the viewer opens most images whole. A strip
+at least 3 times wider than tall, that would show less than a quarter of the
+screen tall, such as a collage of many panels (`fig-width: 100`,
+`fig-height: 5`), opens filling the screen height instead. A strip at least
+3 times taller than wide, that would show less than a quarter of the screen
+wide, opens filling the screen width, at its top. Ordinary photos and plots,
+portrait or landscape, always open whole, even on a very wide screen where a
+portrait photo is narrower than a quarter of it. No image is enlarged past
+its real size when it opens , as with lightbox. A small image opens at its
+own size, and scrolling still zooms it in, up to `max-zoom`. `fit: contain`,
+`height` or `width` overrides the rule for one figure.
 
 Where you click a strip on the page is its focal point. Click panel 12 of
 a 20-panel collage, and the viewer opens with panel 12 in

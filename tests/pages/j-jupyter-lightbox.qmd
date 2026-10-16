@@ -65,10 +65,10 @@ plt.show()
 
 ## 4. Nested `lightbox:` options {#c4 expect-open="glightbox"}
 
-A cell's own `lightbox:` options ask for lightbox, so panzoom
-leaves the cell to it, as with knitr ([`c-panzoom-auto`](c-panzoom-auto.html), cases 6 and 7). With
-Jupyter, lightbox ignores the options themselves, so the group and
-description don't reach it.
+A cell's own `lightbox:` options ask for lightbox, so panzoom leaves the
+cell to it, as with knitr ([`c-panzoom-auto`](c-panzoom-auto.html), cases 6
+and 7). With Jupyter, lightbox ignores the options themselves, so the group
+and description don't reach it.
 
 ```{python}
 #| lightbox:

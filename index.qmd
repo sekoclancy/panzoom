@@ -18,7 +18,8 @@ It attempts to match, and extend, the feature set of Quarto's built-in
 Source and documentation: <https://github.com/sekoclancy/panzoom>.
 
 ::: {.callout-warning}
-This extension is experimental and not guaranteed to work. Its behavior may change without notice.
+This extension is experimental and not guaranteed to work. Its behavior may
+change without notice.
 :::
 
 ```bash
@@ -117,8 +118,9 @@ image(volcano, col = terrain.colors(100))
 ## Captions and galleries
 
 The viewer shows the figure's caption. Plots with the same `group` form a
-gallery. Use the previous and next buttons, the left and right arrow keys, or a swipe to step
-through them. Subfigures of one figure are a gallery automatically.
+gallery. Use the previous and next buttons, the left and right arrow keys,
+or a swipe to step through them. Subfigures of one figure are a gallery
+automatically.
 
 ```{r}
 #| panzoom:
@@ -201,7 +203,8 @@ contour(volcano)
 ## Opting out
 
 Inside a `.panzoom` div, every image gets the viewer except one marked
-`.nopanzoom`, so clicking the image below does nothing. For a whole code cell, use `#| panzoom: false`.
+`.nopanzoom`, so clicking the image below does nothing. For a whole code
+cell, use `#| panzoom: false`.
 
 ```markdown
 ::: {.panzoom}

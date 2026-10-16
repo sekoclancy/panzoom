@@ -179,9 +179,9 @@ collage(n = 12)
 
 ## 7. Tall strips of different lengths side by side {#c7 expect-fit="width"}
 
-This is case 4 with strips of different sizes, 4 × 20 in (10 rows) and
-3 × 12 in (6 rows), in a layout div, with captions of different lengths. Each opens
-at screen width from its top, and the layout shows them at different
+This is case 4 with strips of different sizes, 4 × 20 in (10 rows) and 3 ×
+12 in (6 rows), in a layout div, with captions of different lengths. Each
+opens at screen width from its top, and the layout shows them at different
 heights on the page.
 
 ::: {.panzoom layout-ncol="2"}

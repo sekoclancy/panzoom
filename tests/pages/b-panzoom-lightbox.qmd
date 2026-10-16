@@ -13,10 +13,10 @@ panzoom:
 
 ## About
 
-The document turns lightbox on, and only images marked with `.panzoom` or `#| classes: panzoom` open panzoom. Every other
-image opens lightbox, as in [`a-lightbox`](a-lightbox.html). The markup
-is the same as in [`d-panzoom-selective`](d-panzoom-selective.html), which
-has no lightbox.
+The document turns lightbox on, and only images marked with `.panzoom` or
+`#| classes: panzoom` open panzoom. Every other image opens lightbox, as in
+[`a-lightbox`](a-lightbox.html). The markup is the same as in
+[`d-panzoom-selective`](d-panzoom-selective.html), which has no lightbox.
 
 ```yaml
 format:
