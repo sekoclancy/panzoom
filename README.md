@@ -52,7 +52,7 @@ Zoom goes up to `max-zoom`. While an image is larger than the screen
 (zoomed in, or a wide figure), the arrow keys and swipes pan it, and only
 the buttons change image.
 
-From the keyboard, marked images can be reached with Tab and opened with
+From the keyboard, selected images can be reached with Tab and opened with
 Enter or Space; Tab moves between the viewer's buttons, links, and any
 caption or description too long to fit, which the arrow keys then scroll.
 Closing returns focus to the image.
@@ -69,7 +69,7 @@ Closing returns focus to the image.
   [layouts](#layouts)
 - [Wide and tall figures](#wide-and-tall-figures) open readable, at the
   spot you clicked
-- Applies to every figure (`panzoom: true`) or only the images you mark,
+- Applies to every figure (`panzoom: true`) or only the images you select,
   in code cells or markdown
 - Keyboard access; [restyle it](#styling) with options or CSS, for a
   page or a single image
@@ -105,10 +105,10 @@ panzoom: true
 ```
 
 `panzoom: auto` is the same as `true` (to match `lightbox:` options), and
-`panzoom: false` turns panzoom off for the document, even for marked
-images. Without the setting, only the images you mark open in the viewer.
+`panzoom: false` turns panzoom off for the document, even for selected
+images. Without the setting, only the images you select open in the viewer.
 
-### Marking images
+### Selecting images
 
 **Code cells**: use the `panzoom` cell option.
 
@@ -153,7 +153,7 @@ Options go under `panzoom:` in the document's YAML header, in place of
 
 ```yaml
 panzoom:
-  match: auto     # every figure, same as panzoom: true; omit to only apply on marked images
+  match: auto     # every figure, same as panzoom: true; omit to apply only to selected images
   max-zoom: 4     # number: screen pixels per image pixel, at most (default 4)
   hint: true      # boolean: show the controls hint at the bottom (default true)
   caption: true   # boolean: show the figure caption in the viewer (default true)
@@ -181,7 +181,8 @@ plot(pressure)
 ```
 ````
 
-A misspelled option or a wrong value stops the render (matching Quarto `lightbox` behavior).
+A misspelled option or a wrong value stops the render (matching Quarto
+`lightbox` behavior).
 
 ```
 ERROR: Validation of panzoom options failed.
@@ -252,9 +253,10 @@ Heuristic:
 | Very wide (e.g. a row of many panels) | at screen height, at the spot you clicked | `fit: height` |
 | Very tall | at screen width, from the top | `fit: width` |
 
-The [examples' page H](https://sekoclancy.github.io/panzoom/tests/pages/h-wide.html)
-has the exact rules and an example of each shape. Set `fit:` to choose
-for one figure:
+The [wide and tall figures
+example](https://sekoclancy.github.io/panzoom/tests/pages/h-wide.html) has
+the exact rules and an example of each shape. Set `fit:` to choose for one
+figure:
 
 ````markdown
 ```{r}

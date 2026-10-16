@@ -1,5 +1,5 @@
 ---
-title: "panzoom on marked images, lightbox for the rest"
+title: "Selected images, lightbox on"
 format:
   html:
     code-tools: true
@@ -14,11 +14,11 @@ panzoom:
 
 ## About
 
-The document turns lightbox on, and only images marked with `.panzoom` or
-`#| classes: panzoom` open in panzoom. Every other image opens in lightbox,
-as on the [lightbox version](a-lightbox.html). The markup is the same as on
-the [marked-images-only version](d-panzoom-selective.html), which has no
-lightbox.
+The document turns lightbox on, and only images with the `.panzoom` class or
+the `#| classes: panzoom` cell option open in panzoom. Every other image
+opens in lightbox, as on the [lightbox version](a-lightbox.html). The markup
+is the same as on the [selected-images-only
+version](d-panzoom-selective.html), which has no lightbox.
 
 ```yaml
 format:
@@ -48,8 +48,8 @@ filters:
 
 ## 3. Math {#c3 expect-open="panzoom"}
 
-A marked markdown image with math in its caption and description. It opens
-in panzoom with both typeset.
+A markdown image with `.panzoom` with math in its caption and description.
+It opens in panzoom with both typeset.
 
 ```{.markdown .show-source}
 ![Caption with math $e^{i\pi}+1=0$](../../images/mv-4.jpg){.panzoom description="Description with math $\\int_0^1 x^2\\,dx = 1/3$"}
@@ -129,7 +129,7 @@ plot(mtcars)
 
 ## 9. Image in a link {#c9 expect-open="navigation"}
 
-A marked image inside a link. panzoom leaves images in links alone, so
+An image with `.panzoom` inside a link. panzoom leaves images in links alone, so
 clicking it follows the link.
 
 ```{.markdown .show-source}
@@ -144,7 +144,7 @@ clicking it follows the link.
 
 ## 11. Inline image {#c11 expect-open="panzoom"}
 
-A marked image inside a sentence. It opens in panzoom.
+An image with `.panzoom` inside a sentence. It opens in panzoom.
 
 ```{.markdown .show-source}
 Some text with an inline image ![](../../images/mv-2.jpg){.panzoom width=60px} in the middle.

@@ -108,8 +108,8 @@ wave(k = 3)
 
 ## 7. No alt text {#c7 expect-open="panzoom" expect-caption="none"}
 
-A marked image with no alt text. It opens in panzoom with no caption, and
-the link around it is labeled "Open image" for screen readers.
+An image with `.panzoom` and no alt text. It opens in panzoom with no
+caption, and the link around it is labeled "Open image" for screen readers.
 
 ```{.markdown .show-source}
 ![](../../images/mv-4.jpg){.panzoom width=40%}

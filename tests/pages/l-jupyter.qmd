@@ -11,8 +11,9 @@ filters:
 
 ## About
 
-The cell options from the R examples, on matplotlib figures, and svg
-output. The document has no lightbox, so only marked cells open in panzoom.
+The cell options from the R examples, on matplotlib figures, and svg output.
+The document has no lightbox, so only cells with a panzoom cell option open
+in panzoom.
 
 Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
 on the page (knitr shows them); the **Code** button at the top shows the

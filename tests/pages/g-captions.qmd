@@ -63,8 +63,8 @@ wave <- function(k = 1) {
 
 ## 1. Citation in a caption {#c1 expect-references=""}
 
-A marked image with a citation in its caption. It opens in panzoom with the
-citation resolved, where lightbox shows it raw
+An image with `.panzoom`, with a citation in its caption. It opens in
+panzoom with the citation resolved, where lightbox shows it raw
 ([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
 
 ```{.markdown .show-source}
@@ -73,8 +73,8 @@ citation resolved, where lightbox shows it raw
 
 ## 2. Citation in a description {#c2 expect-references=""}
 
-A marked image citing Tufte only in its description. It opens in panzoom
-with the citation resolved, and Tufte is listed under References.
+An image with `.panzoom` citing Tufte only in its description. It opens in
+panzoom with the citation resolved, and Tufte is listed under References.
 
 ```{.markdown .show-source}
 ![Edgartown Light](../../images/mv-2.jpg){.panzoom description="Show the data [@tufte2001, p. 13]."}
@@ -82,8 +82,8 @@ with the citation resolved, and Tufte is listed under References.
 
 ## 3. Cross-reference in a description {#c3 expect-references=""}
 
-A marked image whose description cross-references the case 4 figure and
-links to case 1. It opens in panzoom with both links working.
+An image with `.panzoom` whose description cross-references the case 4
+figure and links to case 1. It opens in panzoom with both links working.
 
 ```{.markdown .show-source}
 ![Aquinnah](../../images/mv-1.jpg){.panzoom description="Compare with @fig-pressure, and see [Section 1](#c1)."}
@@ -105,9 +105,9 @@ plot(pressure)
 
 ## 5. Gallery descriptions {#c5 expect-references=""}
 
-Two marked images in a gallery, each with a reference in its description.
-They open in panzoom as a two-image gallery, each description with its
-reference resolved.
+Two images with `.panzoom` in a gallery, each with a reference in its
+description. They open in panzoom as a two-image gallery, each description
+with its reference resolved.
 
 ```{.markdown .show-source}
 ![Gingerbread](../../images/mv-3.jpg){.panzoom group="refs" description="As in @fig-pressure."}
@@ -165,7 +165,7 @@ wave(k = 3)
 
 ## 9. Long description {#c9 expect-open="panzoom" expect-scroll="description"}
 
-A marked image with a description longer than its panel. It opens in
+An image with `.panzoom`, with a description longer than its panel. It opens in
 panzoom, and the description panel scrolls. Tab reaches the panel, and the
 arrow keys, Page Up and Page Down, Home, End, and Space scroll it.
 

@@ -39,11 +39,11 @@ website:
       - text: R
         menu:
           - href: tests/pages/b-panzoom-lightbox.qmd
-            text: "Marked images with lightbox"
+            text: "Selected images, lightbox on"
           - href: tests/pages/c-panzoom-auto.qmd
             text: "Global panzoom"
           - href: tests/pages/d-panzoom-selective.qmd
-            text: "Marked images only (default)"
+            text: "Selected images only (default)"
           - href: tests/pages/e-formats.qmd
             text: "Image formats"
           - href: tests/pages/f-options.qmd
