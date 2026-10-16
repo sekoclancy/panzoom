@@ -18,19 +18,28 @@ lightbox:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests panzoom's `match: auto` mode**. The markup is identical to
-[`a-lightbox`](a-lightbox.html) (no panzoom markers at all); both `panzoom: match: auto` and
-`lightbox: match: auto` are on. panzoom should take every image that Quarto's
-auto lightbox would take, except where a case asks for something explicit:
+With `match: auto`, panzoom takes every image Quarto's lightbox would take
+on its own, so no image needs marking. The markup is the same as in
+[`a-lightbox`](a-lightbox.html), which has no panzoom: compare each case
+with the same number there.
 
-- cases 6 and 7 set `#| lightbox:` options, so they stay with GLightbox;
-- case 8 sets `#| lightbox: false`, so it gets neither;
-- case 9 (image inside a link) and case 11 (inline image) are skipped, as
-  Quarto's auto mode skips them.
+```yaml
+filters:
+  - panzoom
+panzoom:
+  match: auto
+lightbox:
+  match: auto
+```
 
-Compare each case with the same numbered case in [`a-lightbox`](a-lightbox.html).
+Some cases stay out on purpose:
+
+- cases 6 and 7 set `#| lightbox:` options, so they open Quarto's lightbox;
+- case 8 sets `#| lightbox: false`, so it opens neither;
+- case 9 (an image inside a link) and case 11 (an inline image) are
+  skipped, as Quarto's lightbox skips them.
 :::
 
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="panzoom"}

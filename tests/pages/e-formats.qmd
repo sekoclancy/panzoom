@@ -11,22 +11,15 @@ panzoom:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests the panzoom extension** with the knitr graphics devices
-used in practice: webp, svg and pdf output, for a wide collage and a
-standard plot. Every figure is marked with `#| panzoom: true` and should
-open the pan/zoom viewer, except where a case says otherwise. Figure
-shapes and how they open are on [H: wide and tall figures](h-wide.html).
+Figures from the knitr graphics devices used in practice, webp, svg, and
+pdf, for a wide collage and a standard plot. Every figure is marked with
+`#| panzoom: true` and opens panzoom unless its case says otherwise. Figure
+shapes and how they open are on [`h-wide`](h-wide.html).
 
-Headings carry what the browser test checks: `expect-fit` (the opening
-view: `contain`, `height` or `width`), `shift-scroll` (which way
-Shift+scroll moves the image: `x`, `y` or `none`) and `expect-scale="1"`
-(opens at real size, not enlarged).
-
-webp comes from ragg's `agg_webp` device: knitr has no built-in webp
-device, and `agg_webp` needs `units = "in"` because knitr passes sizes in
-inches.
+knitr has no built-in webp device; these use ragg's `agg_webp`, which
+needs `units = "in"` because knitr passes sizes in inches.
 :::
 
 The cases below draw with this helper (`ragg` writes the webp files):

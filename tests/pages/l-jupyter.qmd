@@ -11,26 +11,14 @@ filters:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests the panzoom extension with the Jupyter engine**: the
-same cell options as the R pages, on matplotlib figures. knitr and
-Jupyter hand figures to Quarto differently (knitr writes the image
-markdown itself; Jupyter cells come back as notebook outputs), so the
-filter has to find the figures and their cell options either way. The
-document has no `lightbox:` key, and only marked cells should open the
-viewer.
-
-Rendering it needs Python with matplotlib and ipykernel: see
-[tests/README.md](https://github.com/sekoclancy/panzoom/blob/main/tests/README.md).
+The cell options from the R examples, on matplotlib figures, and svg
+output. The document has no lightbox, so only marked cells open panzoom.
 
 Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
 on the page (knitr shows them); the **Code** button at the top shows the
 full source.
-
-Headings carry what the browser test checks, as on the other pages:
-`expect-open`, `expect-hint`, `expect-max-zoom`, `expect-fit` and
-`expect-format` (`svg`: the viewer got a vector image).
 :::
 
 The cases below share this setup and helper:

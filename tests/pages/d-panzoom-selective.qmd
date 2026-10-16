@@ -11,18 +11,18 @@ panzoom:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests the panzoom extension**. The panzoom filter is on, and the
-images marked with `.panzoom` or `#| classes: panzoom` should open the pan/zoom
-viewer. The document has no `lightbox:` key, so Quarto's lightbox only applies
-where a case asks for it (the `#| lightbox:` cell options in cases 6 and 7).
-Case 6's first chunk has both on purpose: panzoom should win, and its
-`#| lightbox:` options are dropped, so it doesn't join GLightbox's gallery.
-Case 9's link should still work (images inside links are left alone).
+Only images marked with `.panzoom` or `#| classes: panzoom` open panzoom.
+The document has no lightbox, so Quarto's lightbox applies only where a
+cell asks for it with `#| lightbox:` options (cases 6 and 7).
+[`a-lightbox`](a-lightbox.html) has the same cases with Quarto's lightbox:
+compare each case with the same number there.
 
-Compare each case with the same numbered case in [`a-lightbox`](a-lightbox.html), which
-renders the same cases with Quarto's lightbox alone.
+Case 6's first chunk has both `classes: panzoom` and `#| lightbox:`
+options: panzoom wins and drops the lightbox options, so that image doesn't
+join the lightbox gallery. Case 9's link still works, since images inside
+links are left alone.
 :::
 
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="panzoom"}

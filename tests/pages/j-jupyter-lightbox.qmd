@@ -1,6 +1,6 @@
 ---
 title: "Quarto's lightbox on the Python cases"
-description: "Quarto's lightbox alone on Python cells."
+description: "Quarto's lightbox without panzoom, on Python cells."
 engine: jupyter
 jupyter: python3
 format:
@@ -10,18 +10,20 @@ lightbox: true
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page is the **reference for [`k-jupyter-auto`](k-jupyter-auto.html)**: Python (Jupyter) cells
-rendered with Quarto's built-in lightbox only, `lightbox: true`, and no
-panzoom filter. It shows what Quarto does with each case; `k-jupyter-auto` renders the
-same cases with `panzoom: true` as well. The knitr equivalents are
-[`a-lightbox`](a-lightbox.html) and [`c-panzoom-auto`](c-panzoom-auto.html).
+Python (Jupyter) cells with Quarto's built-in lightbox, without panzoom.
+[`k-jupyter-auto`](k-jupyter-auto.html) has the same cases with
+`panzoom: true`: compare each case with the same number there. The knitr
+equivalents are [`a-lightbox`](a-lightbox.html) and
+[`c-panzoom-auto`](c-panzoom-auto.html).
 
-Keep the cases in step with the other page of the pair. Each heading's
-`expect-open` says what should open. Jupyter leaves the `panzoom` and
-`lightbox` options out of the code shown on the page; the **Code** button
-at the top shows the full source.
+```yaml
+lightbox: true
+```
+
+Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
+on the page; the **Code** button at the top shows the full source.
 :::
 
 The cases below share this setup:

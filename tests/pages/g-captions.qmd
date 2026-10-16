@@ -35,21 +35,19 @@ references:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests citations and cross-references in the viewer**. A
-caption is copied from the page, so whatever Quarto renders there comes
-through. A description is rendered with the page too, in a hidden block
-the viewer copies, so its citations resolve, its cross-references get
-numbers, and a work cited only in a description is still listed under
-References. Quarto's own lightbox shows a citation in a caption as raw
-`[@key]` ([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
+A caption is copied from the page, so whatever Quarto renders there comes
+through to the viewer. A description is rendered with the page too, in a
+hidden block the viewer copies, so its citations resolve, its
+cross-references get numbers, and a work cited only in a description is
+still listed under References. Quarto's own lightbox shows a citation in a
+caption as raw `[@key]`
+([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
 
-Cases 1–5 have the `expect-references` attribute: the viewer must show
-at least one citation or cross-reference, none unresolved, and each must
-link to something on this page. Cases 6 and 7 test the per-cell `caption`
-and `description` options (`expect-caption`). Case 9 has a description
-too long for its panel, scrolled from the keyboard (`expect-scroll`).
+Cases 6 and 7 set the per-cell `caption` and `description` options. Case
+9's description is longer than its panel, so the panel scrolls, from the
+keyboard too.
 :::
 
 The cases below draw with this helper:

@@ -14,13 +14,23 @@ panzoom:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **sets the viewer's colors from its YAML header**, with no CSS:
-a deep blue backdrop, a cream caption band, dark brown caption text and
-rust links. Every image on the page gets them. Each option sets one of the
-viewer's CSS variables; [N: css-class and CSS](n-css-class.html) sets the
-same variables from a stylesheet, for some pages only.
+The viewer's colors, set in the YAML header with no CSS: a deep blue
+backdrop, a cream caption band, dark brown caption text, and rust links.
+Every image on the page gets them.
+
+```yaml
+panzoom:
+  backdrop: "rgba(18, 52, 86, 0.92)"
+  caption-background: "#f4e9d8"
+  caption-color: "#3b2a1a"
+  link-color: "#a0361b"
+```
+
+Each option sets one of the viewer's CSS variables;
+[`n-css-class`](n-css-class.html) sets the same variables from a
+stylesheet, for some pages only.
 :::
 
 ## 1. Marked image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}

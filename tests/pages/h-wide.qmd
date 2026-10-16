@@ -11,14 +11,13 @@ panzoom:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests how the viewer opens figures of different shapes**:
-very wide collages (25 × 2 inches), tall strips, a poster, a portrait
-photo and a small plot, each on its own, and the `fit` option. All are
-png; other formats are on [E: image formats](e-formats.html), and the same
-shapes in galleries and layouts on
-[I: wide figures in galleries and layouts](i-wide-galleries.html).
+Figures of different shapes, each on its own: very wide collages
+(25 × 2 inches), tall strips, a poster, a portrait photo, and a small plot,
+and the `fit` option. All are png; other formats are on
+[`e-formats`](e-formats.html), and the same shapes in galleries and
+layouts on [`i-wide-galleries`](i-wide-galleries.html).
 
 **The rules** (`fit: auto`, the default). The viewer opens most images
 whole. A strip at least 3 times wider than tall, that would show less than
@@ -43,15 +42,6 @@ click. Zooming out still shows the whole figure.
 Shift+scroll (or a sideways trackpad swipe) pans along the direction the
 figure extends past the screen: sideways for a collage, up and down for a
 tall figure, sideways when zoomed in both ways.
-
-Headings carry what the browser test checks: `expect-fit` (`contain`,
-`height` or `width`), `shift-scroll` (which way Shift+scroll moves the
-image: `x` sideways, `y` up and down, `none`, or `zoomed-x`: sideways
-after zooming in until the image extends past the screen both ways) and
-`expect-scale="1"` (opens at real size), `expect-zoom-out` (`yes`: the
-opening view is closer than the whole image, so it zooms out; `no`: it
-already is the whole image). The first single collage and
-image shown whole also get the focal point and containment checks.
 :::
 
 The cases below draw with these helpers:

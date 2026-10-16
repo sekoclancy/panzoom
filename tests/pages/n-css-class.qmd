@@ -12,14 +12,23 @@ panzoom:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **styles the viewer from a stylesheet**. `css-class:
-plum-viewer` adds that class to the viewer, and `n-css-class.css`, set
-with `css:` in the header, uses it to set the viewer's colors (plum, with
-pink links), to draw a line along the top of the caption band and to make
-the caption larger and italic. Only pages with that class get the rules,
-so the other pages of the site keep the default viewer.
+The viewer styled from a stylesheet. `css-class` adds a class to the
+viewer, and `n-css-class.css` uses it to set the viewer's colors (plum,
+with pink links), draw a line along the top of the caption band, and make
+the caption larger and italic.
+
+```yaml
+format:
+  html:
+    css: n-css-class.css
+panzoom:
+  css-class: plum-viewer
+```
+
+Only pages with that class get the rules, so the other pages of the site
+keep the default viewer.
 :::
 
 The stylesheet:

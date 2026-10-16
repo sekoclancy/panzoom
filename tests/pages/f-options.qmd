@@ -11,19 +11,20 @@ panzoom:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests panzoom's options** one at a time: opting out with
-`.nopanzoom` and `#| panzoom: false`, and the per-cell `hint` and
-`max-zoom` options. The page itself sets `loop: true`, so the gallery in
-case 6 wraps around. There is no lightbox, so an image panzoom leaves alone
-opens nothing. The `caption` and `description` options are on
-[G: captions and descriptions](g-captions.html), `fit` on
-[H: wide and tall figures](h-wide.html).
+Opting out with `.nopanzoom` and `#| panzoom: false`, and the `hint` and
+`max-zoom` options set on one cell. The page sets `loop`, so the gallery in
+case 6 wraps around:
 
-Each case says what to expect in its heading's attributes (`expect-open`,
-`expect-hint`, `expect-max-zoom`), or on a
-single image, and the browser test checks them.
+```yaml
+panzoom:
+  loop: true
+```
+
+There is no lightbox, so an image panzoom leaves alone opens nothing. The
+`caption` and `description` options are on
+[`g-captions`](g-captions.html), and `fit` is on [`h-wide`](h-wide.html).
 :::
 
 The cases below draw with this helper:

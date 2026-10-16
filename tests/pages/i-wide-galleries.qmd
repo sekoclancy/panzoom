@@ -11,18 +11,16 @@ panzoom:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests very wide and tall figures in galleries and layouts**:
-collages (25 × 2 inches) and tall strips grouped into galleries, as
-subfigures and in a layout div. The same shapes on their own, and the
-`fit` option, are on [H: wide and tall figures](h-wide.html).
+Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and
+in a layout div. The same shapes on their own, and the `fit` option, are
+on [`h-wide`](h-wide.html).
 
-Wide figures open at screen height from the left end, tall ones at
-screen width from the top. Headings carry `expect-fit`, the way each image
-should open. On the galleries, the browser test also checks that
-Left/Right pan (or, on a tall strip, do nothing) rather than switch, and
-that the previous and next buttons switch.
+Wide figures open at screen height from the left end, tall ones at screen
+width from the top. In a gallery, left and right arrow pan a wide figure
+(and do nothing on a tall strip) instead of changing the image; the
+previous and next buttons change it.
 :::
 
 The cases below draw with these helpers:

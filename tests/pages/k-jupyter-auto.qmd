@@ -13,18 +13,24 @@ lightbox: true
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests `panzoom: true` with the Jupyter engine**, next to
-Quarto's `lightbox: true`. The cases are the same as on
-[`j-jupyter-lightbox`](j-jupyter-lightbox.html), the lightbox-only reference: panzoom should
-take every image the lightbox takes there, except where a case asks for the
-lightbox explicitly. The knitr equivalent is [`c-panzoom-auto`](c-panzoom-auto.html).
+Python (Jupyter) cells with `panzoom: true`, next to Quarto's
+`lightbox: true`: panzoom takes every image the lightbox would, except
+where a case asks for the lightbox.
+[`j-jupyter-lightbox`](j-jupyter-lightbox.html) has the same cases without
+panzoom: compare each case with the same number there. The knitr
+equivalent is [`c-panzoom-auto`](c-panzoom-auto.html).
 
-Keep the cases in step with the other page of the pair. Each heading's
-`expect-open` says what should open. Jupyter leaves the `panzoom` and
-`lightbox` options out of the code shown on the page; the **Code** button
-at the top shows the full source.
+```yaml
+filters:
+  - panzoom
+panzoom: true
+lightbox: true
+```
+
+Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
+on the page; the **Code** button at the top shows the full source.
 :::
 
 The cases below share this setup:

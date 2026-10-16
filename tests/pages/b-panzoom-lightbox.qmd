@@ -12,19 +12,26 @@ panzoom:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This page **tests the usual setup**: Quarto's lightbox is on for the
-document (`lightbox: true`), and only some images are marked for panzoom,
-with `.panzoom` or `#| classes: panzoom`. The markup is the same as in
-[`d-panzoom-selective`](d-panzoom-selective.html), which has no lightbox.
+The usual setup: Quarto's lightbox is on for the document, and only images
+marked with `.panzoom` or `#| classes: panzoom` open panzoom. Every other
+image opens the lightbox, as in [`a-lightbox`](a-lightbox.html). The markup
+is the same as in [`d-panzoom-selective`](d-panzoom-selective.html), which
+has no lightbox.
 
-The marked images should open the pan/zoom viewer; every other image
-should open Quarto's lightbox, as in [`a-lightbox`](a-lightbox.html).
-Case 6's first chunk has both `classes: panzoom` and `#| lightbox:` options
-on purpose: panzoom should win, so it doesn't join GLightbox's gallery.
-Case 8 (`#| lightbox: false`) gets neither. Case 9's link should still work
-(images inside links are left alone).
+```yaml
+format:
+  html:
+    lightbox: true
+filters:
+  - panzoom
+```
+
+Case 6's first chunk has both `classes: panzoom` and `#| lightbox:`
+options: panzoom wins, so that image doesn't join the lightbox gallery.
+Case 8 (`#| lightbox: false`) opens neither, and case 9's link still works,
+since images inside links are left alone.
 :::
 
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="panzoom"}

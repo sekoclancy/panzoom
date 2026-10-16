@@ -1,6 +1,6 @@
 ---
 title: "Quarto's lightbox on the R cases"
-description: "Quarto's built-in lightbox alone, on the 12 cases shared by the R examples."
+description: "Quarto's built-in lightbox without panzoom, on the cases of the first three R examples."
 format:
   html:
     code-tools: true
@@ -13,17 +13,26 @@ lightbox:
 ---
 
 ::: {.callout-note}
-## About this page
+## About
 
-This is the **reference**: the same 12 cases as [`d-panzoom-selective`](d-panzoom-selective.html),
-rendered with Quarto's built-in lightbox only. The panzoom filter is not loaded
-and no image carries a panzoom marker. Every block image gets the lightbox via
-`lightbox: match: auto`, with `effect: fade`, `desc-position: right`,
-`loop: true` and `css-class: my-lb` set to exercise those options.
+Quarto's built-in lightbox without panzoom, on the same cases as
+[`b-panzoom-lightbox`](b-panzoom-lightbox.html),
+[`c-panzoom-auto`](c-panzoom-auto.html), and
+[`d-panzoom-selective`](d-panzoom-selective.html): compare each case with
+the same number there. Every block image opens in the lightbox, with these
+settings:
 
-Compare each case with the same numbered case in [`d-panzoom-selective`](d-panzoom-selective.html).
+```yaml
+lightbox:
+  match: auto
+  effect: fade
+  desc-position: right
+  loop: true
+  css-class: my-lb
+```
 :::
 
+<!-- CLAUDE: title too long, show the actual code in a markdown block -->
 ## 1. Single image, markdown description, desc-position left {#c1 expect-open="glightbox"}
 
 ![Beach in Chilmark](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left"}
