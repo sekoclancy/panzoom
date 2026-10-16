@@ -109,9 +109,7 @@ plot(mtcars)
 plot(cars)
 ```
 
-## 8. Opt-out {#c8 expect-open="nothing"}
-
-An R cell with `lightbox: false`. Clicking it does nothing.
+## 8. Opt out {#c8 expect-open="nothing"}
 
 ```{r}
 #| fig-cap: "An R cell with `lightbox: false`. Clicking it does nothing."

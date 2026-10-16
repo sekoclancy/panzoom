@@ -28,16 +28,12 @@ panzoom:
   link-color: "#a0361b"
 ```
 
-Each option sets one of the viewer's CSS variables; [css-class and
+Each option sets one of the viewer's CSS variables; [styling with
 CSS](n-css-class.html) sets the same variables from a stylesheet, for some
 pages only. A single image or code cell can set its own colors, as cases 2
 and 4 show; they apply while that image is open.
 
-## 1. Marked image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
-
-A marked image with a link in its caption. It opens in panzoom with the
-colors set on this page, a deep blue backdrop and a cream caption band with
-a rust link.
+## 1. Markdown image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
 ```{.markdown .show-source}
 ![An image with `.panzoom`. It opens with the colors set on this page, a deep blue backdrop and a cream caption band, and this [link](https://quarto.org) is rust.](../../images/mv-0.jpg){.panzoom}

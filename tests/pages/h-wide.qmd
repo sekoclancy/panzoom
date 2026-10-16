@@ -90,7 +90,7 @@ Shift+scroll moves sideways.
 collage(n = 12)
 ```
 
-## 2. `fit: contain` {#c2 expect-fit="contain" shift-scroll="none"}
+## 2. Whole figure {#c2 expect-fit="contain" shift-scroll="none"}
 
 The collage from case 1 with `fit: contain`. It opens whole, as a thin
 strip.
@@ -173,7 +173,7 @@ enlarged to fill the screen, and scrolling still zooms in, up to `max-zoom`.
 plot(pressure)
 ```
 
-## 8. `fit: height` {#c8 expect-open="panzoom" expect-fit="height" expect-zoom-out="no"}
+## 8. Fit to height {#c8 expect-open="panzoom" expect-fit="height" expect-zoom-out="no"}
 
 An ordinary plot with `fit: height`. On a screen wider than the plot
 (1.4:1), filling the height already shows the whole plot, so it opens like
@@ -187,7 +187,7 @@ makes a difference.
 wave(k = 3)
 ```
 
-## 9. `fit: width` {#c9 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
+## 9. Fit to width {#c9 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
 
 An ordinary plot with `fit: width`. Filling the width makes the plot taller
 than the screen, so it opens closer than the whole plot and zooms out to it.
@@ -199,7 +199,7 @@ than the screen, so it opens closer than the whole plot and zooms out to it.
 wave(k = 4)
 ```
 
-## 10. `fit: height` on a wide figure {#c10 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+## 10. Fit to height on a wide figure {#c10 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
 A 12 × 4.5 inch figure with `fit: height`. It isn't a strip, since shown
 whole it is over a quarter of the screen tall, so `fit: auto` would open it

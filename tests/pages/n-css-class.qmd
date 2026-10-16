@@ -1,5 +1,5 @@
 ---
-title: "css-class and CSS"
+title: "Styling with CSS"
 format:
   html:
     code-tools: true

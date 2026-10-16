@@ -1,5 +1,5 @@
 ---
-title: "panzoom: true with lightbox"
+title: "panzoom with lightbox"
 engine: jupyter
 jupyter: python3
 format:
@@ -73,7 +73,7 @@ plt.plot(x, np.cos(2 * x))
 plt.show()
 ```
 
-## 4. `lightbox:` options {#c4 expect-open="glightbox"}
+## 4. lightbox options {#c4 expect-open="glightbox"}
 
 Two cells with `lightbox:` options for a group and a description. Asking for
 lightbox keeps them out of panzoom, as with knitr (cases 6 and 7 of the R
@@ -92,10 +92,7 @@ plt.plot(x, np.cos(3 * x))
 plt.show()
 ```
 
-## 5. `lightbox: false` {#c5 expect-open="nothing"}
-
-A cell with `lightbox: false`. panzoom leaves an explicit lightbox setting
-alone, so clicking it does nothing.
+## 5. lightbox off {#c5 expect-open="nothing"}
 
 ```{python}
 #| lightbox: false
@@ -105,10 +102,7 @@ plt.plot(x, np.sin(4 * x))
 plt.show()
 ```
 
-## 6. `panzoom: true` on a cell {#c6 expect-open="panzoom"}
-
-A cell with `panzoom: true`. It opens in panzoom, ahead of the document's
-`lightbox: true`.
+## 6. panzoom on a cell {#c6 expect-open="panzoom"}
 
 ```{python}
 #| panzoom: true
@@ -120,17 +114,12 @@ plt.show()
 
 ## 7. Markdown image {#c7 expect-open="panzoom"}
 
-A markdown image alone in a paragraph. It opens in panzoom.
+```{.markdown .show-source}
+![A markdown image alone in a paragraph. It opens in panzoom.](../../images/mv-0.jpg)
+```
+
+## 8. Opt out of lightbox {#c8 expect-open="nothing"}
 
 ```{.markdown .show-source}
 ![A markdown image with `.nolightbox`. panzoom only takes images lightbox would, so clicking it does nothing.](../../images/mv-1.jpg){.nolightbox}
-```
-
-## 8. `.nolightbox` {#c8 expect-open="nothing"}
-
-A markdown image with `.nolightbox`. panzoom only takes images lightbox
-would, so clicking it does nothing.
-
-```{.markdown .show-source}
-![Opted out.](../../images/mv-1.jpg){.nolightbox}
 ```

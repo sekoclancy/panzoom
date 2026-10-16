@@ -32,9 +32,7 @@ def walk(ax, n=200, title=None):
         ax.set_title(title)
 ```
 
-## 1. `panzoom: true` {#c1 expect-open="panzoom" expect-hint="shown"}
-
-A cell with `panzoom: true`. It opens in panzoom with the controls hint.
+## 1. panzoom on a cell {#c1 expect-open="panzoom" expect-hint="shown"}
 
 ```{python}
 #| panzoom: true
@@ -120,9 +118,7 @@ for ax in axes:
 plt.show()
 ```
 
-## 7. `panzoom: false` in a div {#c7 expect-open="nothing"}
-
-A cell with `panzoom: false` in a `.panzoom` div. Clicking it does nothing.
+## 7. Opt out a cell {#c7 expect-open="nothing"}
 
 ::: {.panzoom}
 ```{python}
@@ -134,9 +130,7 @@ plt.show()
 ```
 :::
 
-## 8. `classes: panzoom` {#c8 expect-open="panzoom"}
-
-A cell marked with `classes: panzoom`. It opens in panzoom.
+## 8. Select with a class {#c8 expect-open="panzoom"}
 
 ```{python}
 #| classes: panzoom
@@ -146,9 +140,7 @@ plt.plot(x, np.sin(3 * x))
 plt.show()
 ```
 
-## 9. Lightbox cell option only {#c9 expect-open="glightbox"}
-
-A cell with only `lightbox: true`. It opens in lightbox, not panzoom.
+## 9. lightbox only {#c9 expect-open="glightbox"}
 
 ```{python}
 #| lightbox: true

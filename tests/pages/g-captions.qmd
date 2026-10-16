@@ -115,7 +115,7 @@ reference resolved.
 ![Sailboat](../../images/mv-4.jpg){.panzoom group="refs" description="As in @fenner2012."}
 ```
 
-## 6. `caption: false` {#c6 expect-open="panzoom" expect-caption="none"}
+## 6. No caption {#c6 expect-open="panzoom" expect-caption="none"}
 
 A cell with `caption: false`. The figure has a caption on the page, but it
 opens in panzoom without one.
@@ -128,7 +128,7 @@ opens in panzoom without one.
 wave(k = 2)
 ```
 
-## 7. `description` cell option {#c7 expect-open="panzoom"}
+## 7. Description option {#c7 expect-open="panzoom"}
 
 A cell with the `description` option, written in markdown with math. It
 opens in panzoom with the description under the caption.
