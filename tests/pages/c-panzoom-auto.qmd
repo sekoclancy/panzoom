@@ -5,6 +5,8 @@ format:
   html:
     code-tools: true
 filters:
+  - path: show-source.lua
+    at: pre-ast
   - panzoom
 panzoom:
   match: auto
@@ -40,12 +42,15 @@ Some cases stay out on purpose:
 - case 9 (an image inside a link) and case 11 (an inline image) are
   skipped, as lightbox skips them.
 
-## 1. Single image, markdown description, desc-position left {#c1 expect-open="panzoom"}
+## 1. Single image {#c1 expect-open="panzoom"}
 
+```{.markdown .show-source}
 ![Beach in Chilmark](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left"}
+```
 
-## 2. Gallery via group=, custom layout {#c2 expect-open="panzoom"}
+## 2. Gallery in a layout {#c2 expect-open="panzoom"}
 
+```{.markdown .show-source}
 ::: {layout="[[1, 1], [1]]"}
 ![Aquinnah](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah."}
 
@@ -53,13 +58,17 @@ Some cases stay out on purpose:
 
 ![Vineyard lighthouse](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse."}
 :::
+```
 
-## 3. Math in caption and description {#c3 expect-open="panzoom"}
+## 3. Math {#c3 expect-open="panzoom"}
 
+```{.markdown .show-source}
 ![Caption with math $e^{i\pi}+1=0$](../../images/mv-4.jpg){description="Description with math $\\int_0^1 x^2\\,dx = 1/3$"}
+```
 
-## 4. Markdown subfigures with cross-ref {#c4 expect-open="panzoom"}
+## 4. Markdown subfigures {#c4 expect-open="panzoom"}
 
+```{.markdown .show-source}
 ::: {#fig-md-sub layout-ncol=2}
 ![Sub A](../../images/mv-1.jpg){#fig-md-a}
 
@@ -67,8 +76,9 @@ Some cases stay out on purpose:
 
 Two markdown subfigures (see @fig-md-a).
 :::
+```
 
-## 5. R subfigures (fig-subcap, layout-ncol) {#c5 expect-open="panzoom"}
+## 5. R subfigures {#c5 expect-open="panzoom"}
 
 ```{r}
 #| label: fig-r-sub
@@ -80,7 +90,7 @@ plot(pressure)
 plot(cars)
 ```
 
-## 6. R chunks with lightbox cell options (group + description) {#c6 expect-open="glightbox"}
+## 6. Cell options {#c6 expect-open="glightbox"}
 
 This chunk sets a lightbox group and description.
 
@@ -104,7 +114,7 @@ So does this one, in the same group.
 plot(cars)
 ```
 
-## 7. Multi-plot cell, list-valued options {#c7 expect-open="glightbox"}
+## 7. Two plots in one cell {#c7 expect-open="glightbox"}
 
 ```{r}
 #| fig-cap:
@@ -120,7 +130,7 @@ plot(mtcars)
 plot(cars)
 ```
 
-## 8. lightbox: false on a chunk {#c8 expect-open="nothing"}
+## 8. Opt-out {#c8 expect-open="nothing"}
 
 ```{r}
 #| fig-cap: mtcars, lightbox false
@@ -129,19 +139,25 @@ plot(cars)
 plot(mtcars)
 ```
 
-## 9. Image inside a link {#c9 expect-open="nothing"}
+## 9. Image in a link {#c9 expect-open="nothing"}
 
+```{.markdown .show-source}
 [![Linked image](../../images/mv-4.jpg){width=30%}](https://quarto.org)
+```
 
 ## 10. Margin image {#c10 expect-open="panzoom"}
 
+```{.markdown .show-source}
 ![Margin image](../../images/mv-3.jpg){.column-margin}
+```
 
-## 11. Inline image in text {#c11 expect-open="nothing"}
+## 11. Inline image {#c11 expect-open="nothing"}
 
+```{.markdown .show-source}
 Some text with an inline image ![](../../images/mv-2.jpg){width=60px} in the middle.
+```
 
-## 12. Plain R chunk figure, no options {#c12 expect-open="panzoom"}
+## 12. Plain R figure {#c12 expect-open="panzoom"}
 
 ```{r}
 #| label: fig-plain
