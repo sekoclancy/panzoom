@@ -28,9 +28,8 @@ To build the demo site and examples from a clone, with
 
 ```bash
 git clone https://github.com/sekoclancy/panzoom && cd panzoom
-uv venv .venv                               # creates the venv with Python 3.14
-uv pip install -r tests/requirements.txt    # matplotlib, ipykernel, etc.
-quarto render                               # build into docs/
+uv sync          # creates .venv with Python 3.14 and the locked packages
+quarto render    # build into docs/
 ```
 
 See [Development](#development) to preview and publish.
@@ -334,12 +333,14 @@ show both ways, and the classes of the viewer's parts.
 ## Development
 
 Set up a clone as in [From source](#from-source). The venv is only for
-the Python (Jupyter) examples; the rest need R, with the `ragg` package.
-Then:
+the Python (Jupyter) examples, with its packages listed in
+[pyproject.toml](pyproject.toml) and pinned in [uv.lock](uv.lock). The
+rest need R, with the `ragg` package. Then:
 
 ```bash
 quarto preview             # build and open in a browser, re-rendering on save
 quarto publish gh-pages --no-prompt --no-browser   # build and publish to GitHub Pages
+uv lock --upgrade && uv sync   # update the Python packages, then commit uv.lock
 ```
 
 Before the first publish, create an empty `gh-pages` branch once

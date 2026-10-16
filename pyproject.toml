@@ -1,0 +1,20 @@
+[project]
+name = "panzoom-examples"
+version = "0"
+description = "Python environment for rendering panzoom's Jupyter example pages; not a package"
+requires-python = ">=3.14"
+dependencies = [
+  "ipykernel",
+  "matplotlib",
+  "nbclient",
+  "nbformat",
+  "numpy",
+  "pyyaml",
+]
+
+[dependency-groups]
+# ffmpeg for tests/demo.mjs, which records images/demo.gif
+demo = ["imageio-ffmpeg"]
+
+[tool.uv]
+package = false

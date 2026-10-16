@@ -16,9 +16,9 @@
   Nothing re-records it on its own: run it again after changing the demo
   page (index.qmd) or how the viewer looks or behaves, and commit the GIF.
 
-  ffmpeg: from `imageio-ffmpeg` in the repo's .venv
-  (`.venv/bin/pip install imageio-ffmpeg`; dev only, not in
-  requirements.txt), or set FFMPEG=/path/to/ffmpeg.
+  ffmpeg: from `imageio-ffmpeg` in the repo's .venv (`uv sync --group
+  demo`, from the `demo` group in pyproject.toml), or set
+  FFMPEG=/path/to/ffmpeg.
 
   Output: ../images/demo.gif; frames in results/demo/.
 

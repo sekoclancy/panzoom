@@ -1,5 +1,0 @@
-matplotlib
-ipykernel
-nbformat
-nbclient
-pyyaml

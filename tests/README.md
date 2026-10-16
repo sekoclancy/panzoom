@@ -48,15 +48,12 @@ node browser.mjs ../docs/tests/pages/d-panzoom-selective.html     # from tests/
 |---|---|---|
 | [Quarto](https://quarto.org) 1.9 or later | Rendering | |
 | R with the `ragg` package | The R pages (`ragg` for page E's webp figures) | |
-| Python 3.14 venv | Pages J–L | [From source](../README.md#from-source) |
+| Python 3.14 venv | Pages J–L | `uv sync` ([From source](../README.md#from-source)) |
 | [Node.js](https://nodejs.org) 22.12 or later | The scripts | |
 | Chrome Headless Shell (about 115 MB) | The browser the tests drive | `quarto install chrome-headless-shell --no-prompt` |
 | Puppeteer (`puppeteer-core`, pinned in [package-lock.json](package-lock.json)) | Controlling Chrome | `cd tests && npm install` |
 
-Set `CHROME=/path/to/chrome` to use another Chrome or Chromium. Without
-uv, make the venv with
-`python3 -m venv .venv && .venv/bin/pip install -r tests/requirements.txt`;
-it uses the `python3` on your PATH and ignores `.python-version`.
+Set `CHROME=/path/to/chrome` to use another Chrome or Chromium.
 
 ## Example pages
 
@@ -209,8 +206,8 @@ number.
 `npm run demo` ([demo.mjs](demo.mjs)) records the README's
 [images/demo.gif](../images/demo.gif) from the rendered demo page. Run it
 again after changing `index.qmd` or the viewer, then commit the GIF. It
-needs ffmpeg: `uv pip install imageio-ffmpeg` (not in `requirements.txt`),
-or set `FFMPEG=/path/to/ffmpeg`.
+needs ffmpeg, from `uv sync --group demo` or `FFMPEG=/path/to/ffmpeg`. A
+later plain `uv sync` removes it again.
 
 ## Adding a case
 
