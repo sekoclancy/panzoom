@@ -96,6 +96,7 @@ math and a citation. It opens in panzoom with all of them rendered.
 
 ```{r}
 #| label: fig-pressure
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| fig-cap: "Vapor pressure of mercury [@fenner2012]."
 #| panzoom:
 #|   description: "Rises roughly as $p \\propto e^{-1/T}$ [@tufte2001]."
@@ -155,12 +156,13 @@ in panzoom on its own, and both keep their numbers and anchors (see
 ::: {.panzoom layout-ncol="2"}
 ```{r}
 #| label: fig-div-plot
+#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 #| fig-cap: "A labeled plot in a `.panzoom` div."
 
 wave(k = 3)
 ```
 
-![A labeled markdown image in a `.panzoom` div.](../../images/mv-2.jpg){#fig-div-image}
+![A labeled markdown image in a `.panzoom` div.](../../images/mv-2.jpg){#fig-div-image fig-alt="A white lighthouse against a blue sky"}
 :::
 
 ## 9. Long description {#c9 expect-open="panzoom" expect-scroll="description"}

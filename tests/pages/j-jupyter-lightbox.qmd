@@ -49,6 +49,7 @@ plt.show()
 A plot without a caption. It opens in lightbox.
 
 ```{python}
+#| fig-alt: "Line plot of a cosine wave"
 plt.plot(x, np.cos(x))
 plt.show()
 ```
@@ -59,6 +60,9 @@ plt.show()
 #| label: fig-pair
 #| fig-cap: "Two subfigures from one cell. They open in lightbox as a two-image gallery."
 #| fig-subcap: ["Sine", "Cosine"]
+#| fig-alt:
+#|   - "Line plot of a sine wave"
+#|   - "Line plot of a cosine wave"
 #| layout-ncol: 2
 
 plt.plot(x, np.sin(2 * x))
@@ -77,6 +81,9 @@ on its own, without the group or description.
 #| lightbox:
 #|   group: waves
 #|   description: "Ignored by lightbox with Jupyter."
+#| fig-alt:
+#|   - "Line plot of a sine wave"
+#|   - "Line plot of a cosine wave"
 
 plt.plot(x, np.sin(3 * x))
 plt.show()
@@ -88,6 +95,7 @@ plt.show()
 
 ```{python}
 #| lightbox: false
+#| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A cell with `lightbox: false`. Clicking it does nothing."
 
 plt.plot(x, np.sin(4 * x))
@@ -113,5 +121,5 @@ plt.show()
 ## 8. Opt out of lightbox {#c8 expect-open="nothing"}
 
 ```{.markdown .show-source}
-![A markdown image with `.nolightbox`. Clicking it does nothing.](../../images/mv-1.jpg){.nolightbox}
+![A markdown image with `.nolightbox`. Clicking it does nothing.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```

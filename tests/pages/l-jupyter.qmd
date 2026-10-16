@@ -60,6 +60,7 @@ plt.show()
 
 ```{python}
 #| label: fig-scatter
+#| fig-alt: "Scatter plot of 100 points along a rising diagonal"
 #| panzoom:
 #|   description: 'Points scattered around $y = x + \varepsilon$, with a "quote"; compare @fig-sub.'
 #| fig-cap: "A labeled scatter plot, $n = 100$, with a description holding math and a cross-reference to @fig-sub. It opens in panzoom with both rendered."
@@ -76,6 +77,9 @@ plt.show()
 #| panzoom: true
 #| fig-cap: "Two subfigures from one cell. They open in panzoom as a two-image gallery."
 #| fig-subcap: ["A random walk", "A histogram"]
+#| fig-alt:
+#|   - "Line plot of a random walk"
+#|   - "Histogram of 500 normal draws, peaked at zero"
 #| layout-ncol: 2
 
 fig, ax = plt.subplots()
@@ -124,6 +128,7 @@ plt.show()
 ::: {.panzoom}
 ```{python}
 #| panzoom: false
+#| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A cell with `panzoom: false` inside a `.panzoom` div. Clicking it does nothing."
 
 plt.plot(x, np.sin(2 * x))
@@ -155,6 +160,7 @@ plt.show()
 
 ```{python}
 #| fig-cap: "A cell with no options. With no lightbox on the page, clicking it does nothing."
+#| fig-alt: "Line plot of a sine wave"
 
 plt.plot(x, np.sin(5 * x))
 plt.show()

@@ -43,9 +43,9 @@ wave <- function(k = 1) {
 
 ```{.markdown .show-source}
 ::: {.panzoom layout-ncol="2"}
-![An image with `.nopanzoom` inside a `.panzoom` div. With no lightbox on this page, clicking it does nothing.](../../images/mv-1.jpg){.nopanzoom}
+![An image with `.nopanzoom` inside a `.panzoom` div. With no lightbox on this page, clicking it does nothing.](../../images/mv-1.jpg){.nopanzoom fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![Inside the same div, not opted out. It opens in panzoom.](../../images/mv-2.jpg)
+![Inside the same div, not opted out. It opens in panzoom.](../../images/mv-2.jpg){fig-alt="A white lighthouse against a blue sky"}
 :::
 ```
 
@@ -55,6 +55,7 @@ wave <- function(k = 1) {
 
 ```{r}
 #| panzoom: false
+#| fig-alt: "Plot titled Wave 1: a sine curve with its area to the axis shaded"
 #| fig-cap: "An R cell with `panzoom: false` inside a `.panzoom` div. The whole cell opts out, so clicking it does nothing."
 
 wave(k = 1)

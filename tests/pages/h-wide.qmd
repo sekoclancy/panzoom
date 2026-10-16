@@ -183,6 +183,7 @@ makes a difference.
 ```{r}
 #| panzoom:
 #|   fit: height
+#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 
 wave(k = 3)
 ```
@@ -195,6 +196,7 @@ than the screen, so it opens closer than the whole plot and zooms out to it.
 ```{r}
 #| panzoom:
 #|   fit: width
+#| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
 
 wave(k = 4)
 ```
@@ -211,6 +213,7 @@ real size, at the spot you clicked, and zooms out to the whole figure.
 #|   fit: height
 #| fig-width: 12
 #| fig-height: 4.5
+#| fig-alt: "A row of 6 small line plots of random walks, each in its own color"
 
 collage(n = 6)
 ```

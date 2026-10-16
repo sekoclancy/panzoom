@@ -38,11 +38,11 @@ filters:
 
 ```{.markdown .show-source}
 ::: {layout="[[1, 1], [1]]"}
-![Aquinnah, joined by `group` with the lighthouse. The two open in lightbox as a two-image gallery.](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah."}
+![Aquinnah, joined by `group` with the lighthouse. The two open in lightbox as a two-image gallery.](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![Oak Bluffs, the only one of the three with `.panzoom`. It opens in panzoom on its own.](../../images/mv-3.jpg){.panzoom group="elsewhere" description="Gingerbread cottages."}
+![Oak Bluffs, the only one of the three with `.panzoom`. It opens in panzoom on its own.](../../images/mv-3.jpg){.panzoom group="elsewhere" description="Gingerbread cottages." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
-![Vineyard lighthouse, in the lightbox gallery with Aquinnah.](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse."}
+![Vineyard lighthouse, in the lightbox gallery with Aquinnah.](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse." fig-alt="A white lighthouse against a blue sky"}
 :::
 ```
 
@@ -59,9 +59,9 @@ It opens in panzoom with both typeset.
 
 ```{.markdown .show-source}
 ::: {#fig-md-sub layout-ncol=2}
-![Sub A](../../images/mv-1.jpg){#fig-md-a .panzoom}
+![Sub A](../../images/mv-1.jpg){#fig-md-a .panzoom fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![Sub B](../../images/mv-2.jpg){#fig-md-b .panzoom}
+![Sub B](../../images/mv-2.jpg){#fig-md-b .panzoom fig-alt="A white lighthouse against a blue sky"}
 
 Two markdown subfigures with `.panzoom`, the first cross-referenced here (see @fig-md-a). They open in panzoom as a two-image gallery.
 :::
@@ -73,6 +73,9 @@ Two markdown subfigures with `.panzoom`, the first cross-referenced here (see @f
 #| label: fig-r-sub
 #| fig-cap: "Two subfigures from one R cell with `classes: panzoom`. They open in panzoom as a two-image gallery."
 #| fig-subcap: ["Pressure", "Cars"]
+#| fig-alt:
+#|   - "Scatter plot of vapor pressure rising steeply with temperature"
+#|   - "Scatter plot of stopping distance against speed for 50 cars"
 #| layout-ncol: 2
 #| classes: panzoom
 
@@ -123,6 +126,7 @@ plot(cars)
 ```{r}
 #| fig-cap: "An R cell with `lightbox: false`. Clicking it does nothing."
 #| lightbox: false
+#| fig-alt: "Scatterplot matrix of the mtcars data, each variable plotted against every other"
 
 plot(mtcars)
 ```
@@ -147,13 +151,14 @@ clicking it follows the link.
 An image with `.panzoom` inside a sentence. It opens in panzoom.
 
 ```{.markdown .show-source}
-Some text with an inline image ![](../../images/mv-2.jpg){.panzoom width=60px} in the middle.
+Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){.panzoom width=60px} in the middle.
 ```
 
 ## 12. Plain R figure {#c12 expect-open="glightbox"}
 
 ```{r}
 #| label: fig-plain
+#| fig-alt: "Heat map of the Maunga Whau volcano's heights, in yellow, orange, and red"
 #| fig-cap: "A cross-referenced R figure with no options. It opens in lightbox, which the document turns on."
 
 image(volcano)

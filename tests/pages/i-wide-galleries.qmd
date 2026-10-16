@@ -97,6 +97,9 @@ form a gallery.
 #| fig-height: 2
 #| fig-cap: "Two collages, stacked."
 #| fig-subcap: ["First collage", "Second collage"]
+#| fig-alt:
+#|   - "A row of 12 small line plots of random walks, each in its own color"
+#|   - "A row of 12 small line plots of random walks, each in its own color"
 #| layout-nrow: 2
 
 collage(n = 12)
@@ -115,6 +118,9 @@ the two form a gallery.
 #| fig-height: 15
 #| fig-cap: "Two tall strips, side by side."
 #| fig-subcap: ["First strip", "Second strip"]
+#| fig-alt:
+#|   - "A column of 8 small line plots of random walks"
+#|   - "A column of 8 small line plots of random walks"
 #| layout-ncol: 2
 
 strip(seed = 2, n = 8)
@@ -131,6 +137,7 @@ width on its own, with no gallery, since they aren't subfigures.
 ```{r}
 #| fig-width: 4
 #| fig-height: 15
+#| fig-alt: "A column of 8 small line plots of random walks"
 
 strip(seed = 4, n = 8)
 ```
@@ -138,6 +145,7 @@ strip(seed = 4, n = 8)
 ```{r}
 #| fig-width: 4
 #| fig-height: 15
+#| fig-alt: "A column of 8 small line plots of random walks"
 
 strip(seed = 5, n = 8)
 ```
