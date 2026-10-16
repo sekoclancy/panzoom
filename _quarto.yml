@@ -67,7 +67,7 @@ website:
       - text: Styling
         menu:
           - href: tests/pages/m-styling-options.qmd
-            text: "M: colour options"
+            text: "M: color options"
           - href: tests/pages/n-css-class.qmd
             text: "N: css-class and CSS"
     right:

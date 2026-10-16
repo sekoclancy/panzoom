@@ -14,7 +14,7 @@ panzoom:
   css-class: [a, b]
   backdrop: "red; } body {"
 expect-errors:
-  - 'Field "backdrop" has value red; } body {, which must instead be a CSS colour'
+  - 'Field "backdrop" has value red; } body {, which must instead be a CSS color'
   - 'ℹ The error happened in location panzoom:backdrop.'
   - 'Field "caption" has value on, which must instead be `true` or `false`'
   - 'ℹ The error happened in location panzoom:caption.'

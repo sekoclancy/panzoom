@@ -10,7 +10,7 @@ a.panzoom-link:focus-visible img {
 a.panzoom-link:focus-visible { outline: none; }
 
 /* As Quarto's lightbox: the page shows through a dark overlay, and the
-   caption takes the page's own colours, so it follows a light or dark
+   caption takes the page's own colors, so it follows a light or dark
    theme. The fallbacks are Bootstrap's light defaults. The variables are
    for restyling the viewer; :where() gives them no specificity, so any
    rule that sets them wins, whatever order the stylesheets load in. */

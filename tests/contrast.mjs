@@ -125,7 +125,7 @@ async function checkPage(browser, base, file, dark) {
       // The caption band in the page's colors (what the viewer shows over
       // the page, not the band's own declared value).
       theme = await page.evaluate(() => {
-        // Pages that restyle the viewer (panzoom's colour options, or their own
+        // Pages that restyle the viewer (panzoom's color options, or their own
         // --panzoom-* rules) are not expected to follow the theme.
         const restyled = [...document.styleSheets].some((sheet) => {
           try {

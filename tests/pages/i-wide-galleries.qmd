@@ -172,7 +172,7 @@ collage(n = 24)
 ```{r}
 #| panzoom:
 #|   group: mixed-collages
-#|   description: "A longer text under the short collage, so that the caption band grows when the gallery steps to it. Each panel is a random walk of 200 steps, coloured along a single palette from the first panel to the last, and titled with its panel number so the order can be read at any zoom."
+#|   description: "A longer text under the short collage, so that the caption band grows when the gallery steps to it. Each panel is a random walk of 200 steps, colored along a single palette from the first panel to the last, and titled with its panel number so the order can be read at any zoom."
 #| fig-width: 24
 #| fig-height: 2
 #| fig-dpi: 48

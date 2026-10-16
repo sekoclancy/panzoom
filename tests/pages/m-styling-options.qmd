@@ -1,5 +1,5 @@
 ---
-title: "M: colour options"
+title: "M: color options"
 description: "A blue and cream viewer from the `backdrop`, `caption-background`, `caption-color` and `link-color` options, with no CSS."
 format:
   html:
@@ -16,7 +16,7 @@ panzoom:
 ::: {.callout-note}
 ## About this page
 
-This page **sets the viewer's colours from its YAML header**, with no CSS:
+This page **sets the viewer's colors from its YAML header**, with no CSS:
 a deep blue backdrop, a cream caption band, dark brown caption text and
 rust links. Every image on the page gets them. Each option sets one of the
 viewer's CSS variables; [N: css-class and CSS](n-css-class.html) sets the

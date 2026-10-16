@@ -115,7 +115,7 @@ wave(k = 3)
 
 ## 7. Image with no alt text {#c7 expect-open="panzoom" expect-caption="none"}
 
-With no alt text, panzoom's link around the image is labelled "Open image"
+With no alt text, panzoom's link around the image is labeled "Open image"
 for screen readers (`npm run nojs` checks every link has a name).
 
 ![](../../images/mv-4.jpg){.panzoom width=40%}

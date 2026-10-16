@@ -16,7 +16,7 @@ panzoom:
 
 This page **styles the viewer from a stylesheet**. `css-class:
 plum-viewer` adds that class to the viewer, and `n-css-class.css`, set
-with `css:` in the header, uses it to set the viewer's colours (plum, with
+with `css:` in the header, uses it to set the viewer's colors (plum, with
 pink links), to draw a line along the top of the caption band and to make
 the caption larger and italic. Only pages with that class get the rules,
 so the other pages of the site keep the default viewer.

@@ -747,7 +747,7 @@ async function checkPage(browser, base, file) {
           expectOverlay: sec.dataset.expectOverlay || null,
           expectBand: sec.dataset.expectBand || null,
           expectReferences: "expectReferences" in sec.dataset,
-          // `expect-anchors="fig-a fig-b"`: labelled figures that must keep their
+          // `expect-anchors="fig-a fig-b"`: labeled figures that must keep their
           // id, their number and a working cross-reference, with panzoom on.
           anchors: (sec.dataset.expectAnchors || "").split(/\s+/).filter(Boolean).map((id) => {
             const fig = document.getElementById(id);
@@ -1308,7 +1308,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
   const anchors = [...new Map(results.flatMap((r) => r.anchors || []).map((a) => [a.id, a])).values()];
   if (anchors.length) {
     const yes = (v) => (v ? "yes" : "**NO**");
-    lines.push("", "## Labelled figures", "");
+    lines.push("", "## Labeled figures", "");
     for (const a of anchors) {
       lines.push(`- #${a.id}: on the page ${yes(a.exists)}, numbered ${yes(a.numbered)}, marked for panzoom ${yes(a.marked)}, ` +
         `cross-referenced ${yes(a.linked)}: ${yes(anchorOk(a))}`);
@@ -1464,8 +1464,8 @@ try {
     const described = opened.filter((r) => r.hasDescription);
     if (described.length) extra.push(described.every(descriptionOk) ? "descriptions ok" : "DESCRIPTIONS FAILED");
     if (opened.length) extra.push(opened.every(referencesOk) ? "references ok" : "REFERENCES FAILED");
-    const labelled = results.flatMap((r) => r.anchors || []);
-    if (labelled.length) extra.push(labelled.every(anchorOk) ? "anchors ok" : "ANCHORS FAILED");
+    const labeled = results.flatMap((r) => r.anchors || []);
+    if (labeled.length) extra.push(labeled.every(anchorOk) ? "anchors ok" : "ANCHORS FAILED");
     const withMath = results.filter(hasMath);
     if (withMath.length) extra.push((withMath.every((r) => mathOk(r, network.pageTeX)) ? "math ok" : "MATH FAILED") +
       ` (page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"})`);

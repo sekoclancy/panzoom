@@ -227,7 +227,7 @@ image keeps at least about half.
 ```{r}
 #| panzoom:
 #|   fit: height
-#|   description: "A long description, to take room below the image. Each panel is a random walk of 200 steps, drawn with base R's `plot()` in a one-row layout (`par(mfrow = c(1, 6))`), coloured along the `hcl.colors()` palette. The figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864 px). With `fit: height` the viewer opens it as tall as the space above this text allows, and no taller than its real size. Drag or use the arrow keys to move along the figure, scroll or press - to zoom out to the whole of it, and 0 to come back to this opening view."
+#|   description: "A long description, to take room below the image. Each panel is a random walk of 200 steps, drawn with base R's `plot()` in a one-row layout (`par(mfrow = c(1, 6))`), colored along the `hcl.colors()` palette. The figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864 px). With `fit: height` the viewer opens it as tall as the space above this text allows, and no taller than its real size. Drag or use the arrow keys to move along the figure, scroll or press - to zoom out to the whole of it, and 0 to come back to this opening view."
 #| fig-cap: "Six random walks side by side, opened with `fit: height` under a long description."
 #| fig-width: 12
 #| fig-height: 4.5

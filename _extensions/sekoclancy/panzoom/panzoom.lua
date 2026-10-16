@@ -16,7 +16,7 @@
 -- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`) become
 -- `data-panzoom-*` attributes on the cell's images; document options
 -- (`max-zoom`, `hint`, `caption`, `loop`, `fit`, `css-class`) go to
--- `window.PANZOOM_OPTIONS`; the colour options (`backdrop`,
+-- `window.PANZOOM_OPTIONS`; the color options (`backdrop`,
 -- `caption-background`, `caption-color`, `link-color`) set the viewer's
 -- CSS variables in a <style> rule.
 -- Captions and galleries are built in panzoom.js from the rendered page.
@@ -41,19 +41,19 @@ if not quarto.doc.is_format("html:js") then return {} end
 
 local match_auto = false
 
--- Colour options and the CSS variables they set (see panzoom.css).
-local COLOURS = {
+-- Color options and the CSS variables they set (see panzoom.css).
+local COLORS = {
   { "backdrop", "--panzoom-backdrop" },
   { "caption-background", "--panzoom-bg" },
   { "caption-color", "--panzoom-fg" },
   { "link-color", "--panzoom-link" },
 }
 
--- The colour options as CSS declarations (validate_document has already
+-- The color options as CSS declarations (validate_document has already
 -- removed values that could end the rule).
-local function colour_rules(cfg)
+local function color_rules(cfg)
   local decls = {}
-  for _, pair in ipairs(COLOURS) do
+  for _, pair in ipairs(COLORS) do
     local key, var = pair[1], pair[2]
     if cfg[key] ~= nil then
       table.insert(decls, var .. ": " .. pandoc.utils.stringify(cfg[key]) .. ";")
@@ -128,7 +128,7 @@ local FITS = { "auto", "contain", "height", "width" }
 local BOOLEAN = "`true` or `false`"
 
 -- What each option accepts: a check on the value, given as
--- { kind = "boolean" | "number" | "string" | "colour" | "enum", values = ... },
+-- { kind = "boolean" | "number" | "string" | "color" | "enum", values = ... },
 -- for the document's `panzoom:` map and for a cell's `#| panzoom:` map.
 local DOCUMENT_OPTIONS = {
   ["match"] = { kind = "enum", values = { "auto" } },
@@ -139,7 +139,7 @@ local DOCUMENT_OPTIONS = {
   ["fit"] = { kind = "enum", values = FITS },
   ["css-class"] = { kind = "string" },
 }
-for _, pair in ipairs(COLOURS) do DOCUMENT_OPTIONS[pair[1]] = { kind = "colour" } end
+for _, pair in ipairs(COLORS) do DOCUMENT_OPTIONS[pair[1]] = { kind = "color" } end
 local CELL_OPTIONS = {
   ["max-zoom"] = { kind = "number" },
   ["hint"] = { kind = "boolean" },
@@ -168,8 +168,8 @@ local function check(key, spec, value, text, shown, where)
     ok, expected = n ~= nil and n > 0, "a number greater than 0"
   elseif spec.kind == "string" then
     ok, expected = text ~= nil and type(value) ~= "boolean", "a string"
-  elseif spec.kind == "colour" then
-    ok, expected = text ~= nil and type(value) ~= "boolean" and not text:find("[;{}<]"), "a CSS colour"
+  elseif spec.kind == "color" then
+    ok, expected = text ~= nil and type(value) ~= "boolean" and not text:find("[;{}<]"), "a CSS color"
   else
     ok, expected = false, spec.values[1] == "auto" and #spec.values == 1 and "'auto'" or one_of(spec.values)
     for _, v in ipairs(spec.values) do
@@ -490,7 +490,7 @@ end
 -- or a map of options, where `match: auto` means every block image.
 local function setup(meta)
   local options = {}
-  local colours = {}
+  local colors = {}
   local cfg = meta.panzoom
   validate_document(cfg)
   if cfg == false then
@@ -522,7 +522,7 @@ local function setup(meta)
     if cfg["css-class"] ~= nil then
       options.cssClass = pandoc.utils.stringify(cfg["css-class"])
     end
-    colours = colour_rules(cfg)
+    colors = color_rules(cfg)
   end
 
   quarto.doc.add_html_dependency({
@@ -536,9 +536,9 @@ local function setup(meta)
     "in-header",
     "<script>window.PANZOOM_OPTIONS = " .. quarto.json.encode(options) .. ";</script>"
   )
-  if #colours > 0 then
+  if #colors > 0 then
     quarto.doc.include_text("in-header",
-      "<style>.panzoom-overlay { " .. table.concat(colours, " ") .. " }</style>")
+      "<style>.panzoom-overlay { " .. table.concat(colors, " ") .. " }</style>")
   end
 end
 
