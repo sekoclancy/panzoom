@@ -1,10 +1,9 @@
 ---
-title: "Reference"
+title: "Examples"
 description: "Each example starts with a note on what it should do."
 listing:
   - id: r-pages
     contents:
-      - tests/pages/a-lightbox.qmd
       - tests/pages/b-panzoom-lightbox.qmd
       - tests/pages/c-panzoom-auto.qmd
       - tests/pages/d-panzoom-selective.qmd
@@ -18,12 +17,11 @@ listing:
     field-display-names:
       title: Page
       description: Description
-    sort: filename
+    sort: false
     sort-ui: false
     filter-ui: false
   - id: python-pages
     contents:
-      - tests/pages/j-jupyter-lightbox.qmd
       - tests/pages/k-jupyter-auto.qmd
       - tests/pages/l-jupyter.qmd
     type: table
@@ -31,7 +29,7 @@ listing:
     field-display-names:
       title: Page
       description: Description
-    sort: filename
+    sort: false
     sort-ui: false
     filter-ui: false
   - id: styling-pages
@@ -43,15 +41,28 @@ listing:
     field-display-names:
       title: Page
       description: Description
-    sort: filename
+    sort: false
+    sort-ui: false
+    filter-ui: false
+  - id: lightbox-pages
+    contents:
+      - tests/pages/a-lightbox.qmd
+      - tests/pages/j-jupyter-lightbox.qmd
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: Page
+      description: Description
+    sort: false
     sort-ui: false
     filter-ui: false
 ---
 
 ## R
 
-A–D render the same 12 lightbox situations (galleries, subfigures, captions
-with math, images in links, margin images, ...) four ways.
+The first three pages show the same 12 cases (galleries, subfigures,
+captions with math, images in links, margin images, ...) with panzoom set
+up three ways.
 
 ::: {#r-pages}
 :::
@@ -64,4 +75,11 @@ with math, images in links, margin images, ...) four ways.
 ## Styling
 
 ::: {#styling-pages}
+:::
+
+## Compared with Quarto's lightbox
+
+The same cases with panzoom off.
+
+::: {#lightbox-pages}
 :::

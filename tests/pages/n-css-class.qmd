@@ -1,5 +1,5 @@
 ---
-title: "N: css-class and CSS"
+title: "css-class and CSS"
 description: "`css-class` and a stylesheet: the viewer's CSS variables, and a rule on one of its parts."
 format:
   html:

@@ -35,41 +35,37 @@ website:
       - href: index.qmd
         text: panzoom
       - href: reference.qmd
-        text: Reference
+        text: Examples
       - text: R
         menu:
-          - href: tests/pages/a-lightbox.qmd
-            text: "A: R lightbox reference"
           - href: tests/pages/b-panzoom-lightbox.qmd
-            text: "B: marked images + lightbox"
+            text: "Marked images with the lightbox"
           - href: tests/pages/c-panzoom-auto.qmd
-            text: "C: match: auto"
+            text: "match: auto"
           - href: tests/pages/d-panzoom-selective.qmd
-            text: "D: explicit marking"
+            text: "Marked images only"
           - href: tests/pages/e-formats.qmd
-            text: "E: image formats"
+            text: "Image formats"
           - href: tests/pages/f-options.qmd
-            text: "F: options"
+            text: "Options"
           - href: tests/pages/g-captions.qmd
-            text: "G: captions and descriptions"
+            text: "Captions and descriptions"
           - href: tests/pages/h-wide.qmd
-            text: "H: wide and tall figures"
+            text: "Wide and tall figures"
           - href: tests/pages/i-wide-galleries.qmd
-            text: "I: wide figures in galleries and layouts"
+            text: "Wide figures in galleries and layouts"
       - text: Python
         menu:
-          - href: tests/pages/j-jupyter-lightbox.qmd
-            text: "J: Python lightbox reference"
           - href: tests/pages/k-jupyter-auto.qmd
-            text: "K: Python, panzoom: true with the lightbox"
+            text: "panzoom: true with the lightbox"
           - href: tests/pages/l-jupyter.qmd
-            text: "L: Python cell options and svg"
+            text: "Cell options and svg"
       - text: Styling
         menu:
           - href: tests/pages/m-styling-options.qmd
-            text: "M: color options"
+            text: "Color options"
           - href: tests/pages/n-css-class.qmd
-            text: "N: css-class and CSS"
+            text: "css-class and CSS"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom

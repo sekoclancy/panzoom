@@ -1,5 +1,5 @@
 ---
-title: "D: panzoom filter, no document lightbox key (selective mode)"
+title: "panzoom filter, no document lightbox key (selective mode)"
 description: "Images marked with `.panzoom` or `#| classes: panzoom`, and no lightbox."
 format:
   html:
