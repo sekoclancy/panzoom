@@ -1,6 +1,5 @@
 ---
 title: "Captions and descriptions"
-description: "Citations and cross-references, and the `caption` and `description` options."
 format:
   html:
     code-tools: true

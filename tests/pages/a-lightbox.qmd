@@ -1,6 +1,5 @@
 ---
 title: "lightbox on the R cases"
-description: "The cases of the first three R examples, opened by lightbox without panzoom."
 format:
   html:
     code-tools: true
@@ -18,7 +17,7 @@ lightbox:
 ## About
 
 These are the cases of the three R setups, [marked images with
-lightbox](b-panzoom-lightbox.html), [`match: auto`](c-panzoom-auto.html),
+lightbox](b-panzoom-lightbox.html), [global panzoom](c-panzoom-auto.html),
 and [marked images only](d-panzoom-selective.html), opened by lightbox
 without panzoom. Compare each case with the same number there. Every block
 image opens in lightbox, with these settings:

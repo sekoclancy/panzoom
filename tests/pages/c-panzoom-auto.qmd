@@ -1,6 +1,5 @@
 ---
-title: "panzoom match: auto"
-description: "With `match: auto`, panzoom picks the images itself, and none are marked."
+title: "Global panzoom"
 format:
   html:
     code-tools: true

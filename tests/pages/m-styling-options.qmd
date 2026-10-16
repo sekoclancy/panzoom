@@ -1,6 +1,5 @@
 ---
 title: "Color options"
-description: "A blue and cream viewer from the `backdrop`, `caption-background`, `caption-color` and `link-color` options, with no CSS."
 format:
   html:
     code-tools: true

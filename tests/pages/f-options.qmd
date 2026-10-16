@@ -1,6 +1,5 @@
 ---
 title: "Options"
-description: "Opting out, and the `hint`, `max-zoom` and `loop` options."
 format:
   html:
     code-tools: true

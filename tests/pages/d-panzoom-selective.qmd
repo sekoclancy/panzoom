@@ -1,6 +1,5 @@
 ---
-title: "panzoom filter, no document lightbox key (selective mode)"
-description: "Images marked with `.panzoom` or `#| classes: panzoom`, and no lightbox."
+title: "Marked images only (default)"
 format:
   html:
     code-tools: true

@@ -1,6 +1,5 @@
 ---
 title: "css-class and CSS"
-description: "A stylesheet for the `css-class` option sets the viewer's CSS variables and styles one of its parts."
 format:
   html:
     code-tools: true

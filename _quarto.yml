@@ -41,9 +41,9 @@ website:
           - href: tests/pages/b-panzoom-lightbox.qmd
             text: "Marked images with lightbox"
           - href: tests/pages/c-panzoom-auto.qmd
-            text: "match: auto"
+            text: "Global panzoom"
           - href: tests/pages/d-panzoom-selective.qmd
-            text: "Marked images only"
+            text: "Marked images only (default)"
           - href: tests/pages/e-formats.qmd
             text: "Image formats"
           - href: tests/pages/f-options.qmd

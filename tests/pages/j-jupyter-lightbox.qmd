@@ -1,6 +1,5 @@
 ---
 title: "lightbox on the Python cases"
-description: "Python cells opened by lightbox, without panzoom."
 engine: jupyter
 jupyter: python3
 format:
@@ -17,7 +16,7 @@ filters:
 These Python (Jupyter) cells open in lightbox, without panzoom. The [panzoom
 version](k-jupyter-auto.html) has the same cases with `panzoom: true`.
 Compare each case with the same number there. The knitr equivalents are the
-R [lightbox version](a-lightbox.html) and [`match: auto`
+R [lightbox version](a-lightbox.html) and [global panzoom
 version](c-panzoom-auto.html).
 
 ```yaml

@@ -1,6 +1,5 @@
 ---
 title: "Image formats"
-description: "webp, svg and pdf output, and webp past its 16,383 px limit."
 format:
   html:
     code-tools: true

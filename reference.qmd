@@ -13,10 +13,9 @@ listing:
       - tests/pages/h-wide.qmd
       - tests/pages/i-wide-galleries.qmd
     type: table
-    fields: [title, description]
+    fields: [title]
     field-display-names:
       title: Page
-      description: Description
     sort: false
     sort-ui: false
     filter-ui: false
@@ -25,10 +24,9 @@ listing:
       - tests/pages/k-jupyter-auto.qmd
       - tests/pages/l-jupyter.qmd
     type: table
-    fields: [title, description]
+    fields: [title]
     field-display-names:
       title: Page
-      description: Description
     sort: false
     sort-ui: false
     filter-ui: false
@@ -37,10 +35,9 @@ listing:
       - tests/pages/m-styling-options.qmd
       - tests/pages/n-css-class.qmd
     type: table
-    fields: [title, description]
+    fields: [title]
     field-display-names:
       title: Page
-      description: Description
     sort: false
     sort-ui: false
     filter-ui: false
@@ -49,10 +46,9 @@ listing:
       - tests/pages/a-lightbox.qmd
       - tests/pages/j-jupyter-lightbox.qmd
     type: table
-    fields: [title, description]
+    fields: [title]
     field-display-names:
       title: Page
-      description: Description
     sort: false
     sort-ui: false
     filter-ui: false
