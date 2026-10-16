@@ -3,7 +3,6 @@ title: "Styling with CSS"
 format:
   html:
     code-tools: true
-    css: n-css-class.css
 filters:
   - path: ../../_filters/show-source.lua
     at: pre-ast
@@ -14,15 +13,12 @@ panzoom:
 
 ## About
 
-The viewer styled from a stylesheet. `css-class` adds a class to the
-viewer, and `n-css-class.css` uses it to set the viewer's colors (plum,
-with pink links), draw a line along the top of the caption band, and make
-the caption larger and italic.
+The viewer styled with CSS. `css-class` adds a class to the viewer, and
+the rules below use it to set the viewer's colors (plum, with pink links),
+draw a line along the top of the caption band, and make the caption larger
+and italic.
 
 ```yaml
-format:
-  html:
-    css: n-css-class.css
 panzoom:
   css-class: plum-viewer
 ```
@@ -31,9 +27,12 @@ Only pages with that class get the rules, so the other pages of the site
 keep the default viewer. A single image or code cell can add a class of
 its own, as cases 2 and 4 show; it applies while that image is open.
 
-The page uses this stylesheet:
+The rules are in a raw HTML block on this page, which styles it. The
+same block works in any Quarto document:
 
-```css
+````{.markdown .show-source}
+```{=html}
+<style>
 .plum-viewer {
   --panzoom-backdrop: rgba(60, 20, 70, 0.9);
   --panzoom-bg: #2d1236;
@@ -59,22 +58,39 @@ The page uses this stylesheet:
 .sea-viewer .panzoom-caption {
   font-style: normal;
 }
+</style>
+```
+````
+
+The same rules can also go in a stylesheet file, or in the page's header:
+
+```yaml
+format:
+  html:
+    css: viewer.css   # a file holding the rules above
 ```
 
-Rules on the viewer's parts start with the viewer's class, as above, so
-they win over the defaults. The parts are `.panzoom-footer` (the caption
-band), `.panzoom-caption`, `.panzoom-description`, `.panzoom-hint`,
-`.panzoom-close`, `.panzoom-prev`, `.panzoom-next`, and `.panzoom-counter`.
+```yaml
+format:
+  html:
+    include-in-header:
+      text: |
+        <style>
+        .plum-viewer { --panzoom-backdrop: rgba(60, 20, 70, 0.9); }
+        </style>
+```
+
+A theme's `.scss` file works too. Rules on the viewer's parts start with the
+viewer's class, as above, so they win over the defaults. The parts are
+`.panzoom-footer` (the caption band), `.panzoom-caption`,
+`.panzoom-description`, `.panzoom-hint`, `.panzoom-close`, `.panzoom-prev`,
+`.panzoom-next`, and `.panzoom-counter`.
 
 For a whole site, put `css-class` (or any option) under `format: html:` in
 `_quarto.yml`. A top-level `panzoom:` there is replaced, not merged, by a
 page's own `panzoom:` options.
 
-## 1. Marked image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
-
-A marked image with a link in its caption. It opens in panzoom with the plum
-viewer from the stylesheet, a pink link, a line along the top of the caption
-band, and a larger, italic caption.
+## 1. Markdown image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 ```{.markdown .show-source}
 ![An image with `.panzoom`. It opens with the plum viewer from the stylesheet, a line along the top of the caption band, a larger, italic caption, and this pink [link](https://quarto.org).](../../images/mv-2.jpg){.panzoom}

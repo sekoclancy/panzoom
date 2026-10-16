@@ -89,7 +89,7 @@ eight cases:
 | Page | Description |
 |---|---|
 | [m-styling-options](pages/m-styling-options.qmd) | The color options, no CSS |
-| [n-css-class](pages/n-css-class.qmd) | `css-class` with a stylesheet, [n-css-class.css](pages/n-css-class.css): the CSS variables and the viewer's parts |
+| [n-css-class](pages/n-css-class.qmd) | `css-class` with CSS rules in a raw HTML block: the CSS variables and the viewer's parts |
 
 **Outside the site** ([standalone/](standalone/)), rendered by
 `npm run standalone` as plain documents:
