@@ -30,7 +30,8 @@ panzoom:
 
 Each option sets one of the viewer's CSS variables; [css-class and
 CSS](n-css-class.html) sets the same variables from a stylesheet, for some
-pages only.
+pages only. A single image or code cell can set its own colors, as cases 2
+and 4 show; they apply while that image is open.
 
 ## 1. Marked image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
@@ -42,13 +43,39 @@ a rust link.
 ![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-0.jpg){.panzoom}
 ```
 
-## 2. Code cell {#c2 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
+## 2. Colors for one image {#c2 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
 
-A marked R cell. It opens in panzoom with the same colors.
+A marked image with colors of its own, written as attributes on the image.
+It opens in panzoom with a deep green backdrop and a pale green caption
+band, instead of the colors set on this page.
+
+```{.markdown .show-source}
+![A marked image with its own colors, and a [link](https://quarto.org) in its caption.](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" link-color="#0b6b3a"}
+```
+
+## 3. Code cell {#c3 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
+
+A marked R cell. It opens in panzoom with the colors set on this page, as
+case 1 does.
 
 ```{r}
 #| panzoom: true
 #| fig-cap: "A code cell's plot, on the same blue and cream viewer."
 
 plot(pressure, type = "b", pch = 19)
+```
+
+## 4. Colors for one cell {#c4 expect-open="panzoom" expect-overlay="rgba(70, 25, 15, 0.92)" expect-band="rgb(251, 233, 220)"}
+
+A marked R cell with colors of its own, under `#| panzoom:`. It opens in
+panzoom with a dark red backdrop and a peach caption band.
+
+```{r}
+#| panzoom:
+#|   backdrop: "rgba(70, 25, 15, 0.92)"
+#|   caption-background: "#fbe9dc"
+#|   caption-color: "#4a1f10"
+#| fig-cap: "A code cell's plot, with colors of its own."
+
+plot(cars, pch = 19)
 ```

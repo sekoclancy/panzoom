@@ -71,7 +71,8 @@ Closing returns focus to the image.
   spot you clicked
 - Applies to every figure (`panzoom: true`) or only the images you mark,
   in code cells or markdown
-- Keyboard access; [restyle it](#styling) with options or CSS
+- Keyboard access; [restyle it](#styling) with options or CSS, for a
+  page or a single image
 - [Math](#math) in any `html-math-method`, offline too; works in
   [self-contained documents](#self-contained-documents)
 
@@ -165,9 +166,10 @@ panzoom:
   link-color: lightblue       # and links in captions (defaults follow the theme)
 ```
 
-A code cell can set `max-zoom`, `hint`, `caption`, and `fit` for its own
-plots, as well as `group` and `description`, by giving `#| panzoom:`
-options instead of `true`. A cell's options win over the document's:
+A code cell can set `max-zoom`, `hint`, `caption`, `fit`, `css-class`, and
+the colors for its own plots, as well as `group` and `description`, by
+giving `#| panzoom:` options instead of `true`. A cell's options win over
+the document's:
 
 ````markdown
 ```{r}
@@ -326,9 +328,27 @@ In CSS, for every viewer on the site:
 ```
 
 For some documents only, set `css-class: dark-viewer` and write the same
-rule for `.dark-viewer`. The examples'
+rule for `.dark-viewer`.
+
+For one image, give its code cell the same options under `#| panzoom:`, or
+write them as attributes on a markdown image. They apply while that image
+is open, on top of the document's:
+
+````markdown
+```{r}
+#| panzoom:
+#|   backdrop: darkred
+#|   css-class: poster-viewer
+
+plot(pressure)
+```
+
+![A photo.](photo.jpg){.panzoom caption-background="#222" caption-color="white"}
+````
+
+The examples'
 [Styling pages](https://sekoclancy.github.io/panzoom/reference.html#styling)
-show both ways, and the classes of the viewer's parts.
+show each way, and the classes of the viewer's parts.
 
 ## Development
 

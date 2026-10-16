@@ -16,13 +16,18 @@ expect-errors:
   - 'ℹ The error happened in location panzoom:fit, in the cell starting `plot(1)`.'
   - 'Field "description" has value ["a","b"], which must instead be a string'
   - 'ℹ The error happened in location panzoom:description, in the cell starting `plot(1)`.'
+  - 'Field "backdrop" has value red; } body {, which must instead be a CSS color'
+  - 'ℹ The error happened in location panzoom:backdrop, in the cell starting `plot(1)`.'
   - 'Field "panzoom" has value maybe, which must instead be `true`, `false` or a map of options'
   - 'ℹ The error happened in location panzoom, in the cell starting `plot(2)`.'
   - 'Field "panzoom" has value no, which must instead be `true`, `false` or a map of options'
   - 'ℹ The error happened in location panzoom, in #gallery-div.'
+  - 'Field "link-color" has value red; }, which must instead be a CSS color'
+  - 'ℹ The error happened in location link-color, on the image ../../images/mv-1.jpg.'
 ---
 
-Mistakes in `#| panzoom:` cell options, and in a div's `panzoom=`.
+Mistakes in `#| panzoom:` cell options, in a div's `panzoom=`, and in an
+image's styling attributes.
 
 ```{r}
 #| panzoom:
@@ -31,6 +36,7 @@ Mistakes in `#| panzoom:` cell options, and in a div's `panzoom=`.
 #|   hint: "true"
 #|   fit: sideways
 #|   description: ["a", "b"]
+#|   backdrop: "red; } body {"
 plot(1)
 ```
 
@@ -42,3 +48,5 @@ plot(2)
 ::: {.panzoom #gallery-div panzoom="no"}
 ![An image in a div.](../../images/mv-0.jpg)
 :::
+
+![A marked image.](../../images/mv-1.jpg){.panzoom link-color="red; }"}

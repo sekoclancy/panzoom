@@ -52,7 +52,9 @@
   added to the viewer's classes, for styling it. A cell's `#| panzoom:` options
   override maxZoom, hint, caption and fit per image, via
   `data-panzoom-max-zoom`, `data-panzoom-hint`, `data-panzoom-caption` and
-  `data-panzoom-fit` on the <img>.
+  `data-panzoom-fit` on the <img>. The styling options of a cell or an
+  image (`data-panzoom-css-class` and the colors, see STYLES) apply while
+  that image is shown, on top of the document's.
 */
 (function () {
   var SELECTOR = ".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)";
@@ -63,6 +65,13 @@
   var STRETCH = 80; // px a drag can pull an image past its end, at most
   var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
+  // Per-image color options: data attribute (as in `dataset`) -> CSS variable.
+  var STYLES = {
+    panzoomBackdrop: "--panzoom-backdrop",
+    panzoomCaptionBackground: "--panzoom-bg",
+    panzoomCaptionColor: "--panzoom-fg",
+    panzoomLinkColor: "--panzoom-link"
+  };
 
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc;
   var loadId = 0, loadTimer = null;
@@ -78,6 +87,8 @@
   // keyboard).
   var clicked = null;
   var gallery = [], index = 0;
+  // The classes the shown image added to the viewer (see restyle()).
+  var imageClasses = [];
 
   // Document-wide options, overridden by the image's data attributes.
   function options(el) {
@@ -134,6 +145,29 @@
       if (/^rgb\(/.test(bg) || (m && +m[1] >= 1)) return bg;
     }
     return "#fff";
+  }
+
+  // A class list as written in an option: names separated by spaces.
+  function classList(s) {
+    return (s || "").split(/\s+/).filter(Boolean);
+  }
+
+  // Styles the viewer for `el` (or for no image): its `css-class` and
+  // colors, replacing the previous image's. Inline variables beat the
+  // document's, which are set on `.panzoom-overlay` and its classes.
+  function restyle(el) {
+    var d = (el && el.dataset) || {};
+    imageClasses.forEach(function (c) { overlay.classList.remove(c); });
+    // Classes the viewer already has from the document stay as they are.
+    var page = classList((window.PANZOOM_OPTIONS || {}).cssClass).concat("panzoom-overlay");
+    imageClasses = classList(d.panzoomCssClass).filter(function (c) {
+      return page.indexOf(c) < 0;
+    });
+    imageClasses.forEach(function (c) { overlay.classList.add(c); });
+    for (var key in STYLES) {
+      if (d[key]) overlay.style.setProperty(STYLES[key], d[key]);
+      else overlay.style.removeProperty(STYLES[key]);
+    }
   }
 
   function groupOf(el) {
@@ -395,6 +429,7 @@
     var el = gallery[i];
     index = i;
     opts = options(el);
+    restyle(el);
     var n = gallery.length, many = n > 1;
     prevBtn.hidden = nextBtn.hidden = counter.hidden = !many;
     prevBtn.disabled = !opts.loop && i === 0;
@@ -501,6 +536,7 @@
     img.style.transform = "";
     delete img.dataset.fit;
     overlay.classList.remove("open", "panzoom-loading", "panzoom-error");
+    restyle(null);
     status.textContent = "";
     document.documentElement.style.overflow = "";
     document.documentElement.style.scrollbarGutter = "";
@@ -555,8 +591,9 @@
   function build() {
     overlay = document.createElement("div");
     overlay.className = "panzoom-overlay";
-    var extra = (window.PANZOOM_OPTIONS || {}).cssClass;
-    if (extra) overlay.className += " " + extra;
+    classList((window.PANZOOM_OPTIONS || {}).cssClass).forEach(function (c) {
+      overlay.classList.add(c);
+    });
     overlay.setAttribute("role", "dialog");
     overlay.setAttribute("aria-modal", "true");
     overlay.setAttribute("aria-label", "Image viewer");

@@ -13,12 +13,15 @@
 -- and `panzoom: false` the whole document (as `lightbox: false` does).
 -- The document setting takes the forms Quarto's `lightbox:` does.
 --
--- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`) become
--- `data-panzoom-*` attributes on the cell's images; document options
--- (`max-zoom`, `hint`, `caption`, `loop`, `fit`, `css-class`) go to
--- `window.PANZOOM_OPTIONS`; the color options (`backdrop`,
--- `caption-background`, `caption-color`, `link-color`) set the viewer's
--- CSS variables in a <style> rule.
+-- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`, and the
+-- styling options below) become `data-panzoom-*` attributes on the cell's
+-- images; document options (`max-zoom`, `hint`, `caption`, `loop`, `fit`,
+-- `css-class`) go to `window.PANZOOM_OPTIONS`; the document's color options
+-- (`backdrop`, `caption-background`, `caption-color`, `link-color`) set the
+-- viewer's CSS variables in a <style> rule. The styling options
+-- (`css-class` and the colors) also work for one cell, or for one markdown
+-- image as attributes (`![](x.png){.panzoom backdrop="black"}`); panzoom.js
+-- applies them while that image is shown.
 -- Captions and galleries are built in panzoom.js from the rendered page.
 -- A description (`description` on an image or cell) becomes a hidden
 -- `.panzoom-desc` div after the image's top-level block, which Quarto
@@ -148,6 +151,11 @@ local CELL_OPTIONS = {
   ["fit"] = { kind = "enum", values = FITS },
   ["description"] = { kind = "string" },
 }
+-- Options that style the viewer for one image: a cell option, or an
+-- attribute on a markdown image.
+local STYLE_OPTIONS = { ["css-class"] = { kind = "string" } }
+for _, pair in ipairs(COLORS) do STYLE_OPTIONS[pair[1]] = { kind = "color" } end
+for k, spec in pairs(STYLE_OPTIONS) do CELL_OPTIONS[k] = spec end
 
 local function names(options)
   local list = {}
@@ -307,6 +315,17 @@ local function mark(img)
   if desc ~= nil and desc ~= "" then
     img.attributes["data-panzoom-desc"] = add_description(desc)
     img.attributes["description"] = nil
+  end
+  -- Styling options written on the image itself.
+  for _, key in ipairs(names(STYLE_OPTIONS)) do
+    local v = img.attributes[key]
+    if v ~= nil then
+      img.attributes[key] = nil
+      local where = key .. ", on the image " .. img.src
+      if check(key, STYLE_OPTIONS[key], v, v, v, where) then
+        img.attributes["data-panzoom-" .. key] = v
+      end
+    end
   end
   img.classes = img.classes:filter(function(c) return c ~= "lightbox" end)
   if not has(img.classes, "panzoom") then img.classes:insert("panzoom") end
@@ -473,7 +492,9 @@ local function cell_option(el)
   if value:sub(1, 1) == "{" then
     local cfg, raws = parse_options(value)
     validate_cell(cfg, raws, el)
-    for _, key in ipairs({ "max-zoom", "hint", "caption", "group", "fit" }) do
+    local keys = { "max-zoom", "hint", "caption", "group", "fit" }
+    for _, key in ipairs(names(STYLE_OPTIONS)) do table.insert(keys, key) end
+    for _, key in ipairs(keys) do
       if cfg[key] ~= nil then
         attrs["data-panzoom-" .. key] = tostring(cfg[key])
       end

@@ -28,7 +28,8 @@ panzoom:
 ```
 
 Only pages with that class get the rules, so the other pages of the site
-keep the default viewer.
+keep the default viewer. A single image or code cell can add a class of
+its own, as cases 2 and 4 show; it applies while that image is open.
 
 The page uses this stylesheet:
 
@@ -45,6 +46,18 @@ The page uses this stylesheet:
 .plum-viewer .panzoom-caption {
   font-size: 1.15rem;
   font-style: italic;
+}
+.sea-viewer {
+  --panzoom-backdrop: rgba(10, 50, 60, 0.9);
+  --panzoom-bg: #0f3640;
+  --panzoom-fg: #e0f4f7;
+  --panzoom-link: #7fe0d0;
+}
+.sea-viewer .panzoom-footer {
+  border-top-color: #4fc3c9;
+}
+.sea-viewer .panzoom-caption {
+  font-style: normal;
 }
 ```
 
@@ -67,13 +80,38 @@ band, and a larger, italic caption.
 ![A marked image, with a [link](https://quarto.org) in its caption.](../../images/mv-2.jpg){.panzoom}
 ```
 
-## 2. Code cell {#c2 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
+## 2. Class for one image {#c2 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
-A marked R cell. It opens in panzoom with the same styles.
+A marked image with a class of its own, `css-class="sea-viewer"`. It opens
+in panzoom with the `.sea-viewer` rules from the stylesheet, a dark teal
+viewer with an upright caption. The page's class stays on the viewer, so
+rules for `.sea-viewer` come after the `.plum-viewer` ones to win over
+them.
+
+```{.markdown .show-source}
+![A marked image with its own class, and a [link](https://quarto.org) in its caption.](../../images/mv-3.jpg){.panzoom css-class="sea-viewer"}
+```
+
+## 3. Code cell {#c3 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
+
+A marked R cell. It opens in panzoom with the plum viewer, as case 1 does.
 
 ```{r}
 #| panzoom: true
 #| fig-cap: "A code cell's plot, on the same plum viewer."
 
 plot(pressure, type = "b", pch = 19)
+```
+
+## 4. Class for one cell {#c4 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
+
+A marked R cell with `css-class: sea-viewer` under `#| panzoom:`. It opens
+in panzoom with the same teal viewer as case 2.
+
+```{r}
+#| panzoom:
+#|   css-class: sea-viewer
+#| fig-cap: "A code cell's plot, with a class of its own."
+
+plot(cars, pch = 19)
 ```
