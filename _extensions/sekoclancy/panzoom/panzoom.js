@@ -637,9 +637,9 @@
       '<img alt="" draggable="false">' +
       '<div class="panzoom-counter panzoom-exclude" aria-live="polite"></div>' +
       '<div class="panzoom-status panzoom-exclude" role="status"></div>' +
-      '<button class="panzoom-close panzoom-exclude" aria-label="Close">&times;</button>' +
-      '<button class="panzoom-prev panzoom-exclude" aria-label="Previous image">&lsaquo;</button>' +
-      '<button class="panzoom-next panzoom-exclude" aria-label="Next image">&rsaquo;</button>' +
+      '<button class="panzoom-close panzoom-exclude" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+      '<button class="panzoom-prev panzoom-exclude" aria-label="Previous image"><span aria-hidden="true">&lsaquo;</span></button>' +
+      '<button class="panzoom-next panzoom-exclude" aria-label="Next image"><span aria-hidden="true">&rsaquo;</span></button>' +
       '<div class="panzoom-footer panzoom-exclude">' +
       '<div class="panzoom-caption"></div>' +
       '<div class="panzoom-description"></div>' +
