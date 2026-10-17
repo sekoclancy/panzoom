@@ -11,14 +11,14 @@ panzoom:
 
 ## About
 
-Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and in
-a layout div. The same shapes on their own, and the `fit` option, are on
-[wide and tall figures](h-wide.html).
+Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and in a
+layout div. The same shapes on their own, and the `fit` option, are on [wide and
+tall figures](h-wide.html).
 
-Wide figures open at screen height from the left end, tall ones at screen
-width from the top. In a gallery, left and right arrow pan a wide figure
-(and do nothing on a tall strip) instead of changing the image; the
-previous and next buttons change it.
+Wide figures open at screen height from the left end, tall ones at screen width
+from the top. In a gallery, left and right arrow pan a wide figure (and do
+nothing on a tall strip) instead of changing the image; the previous and next
+buttons change it.
 
 The cases below draw with these helpers:
 
@@ -28,8 +28,15 @@ collage <- function(n = 12) {
   set.seed(1)
   par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
   for (i in seq_len(n)) {
-    plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i),
-         xlab = "", ylab = "", col = hcl.colors(n)[i], lwd = 2)
+    plot(
+      cumsum(rnorm(200)),
+      type = "l",
+      main = paste("Panel", i),
+      xlab = "",
+      ylab = "",
+      col = hcl.colors(n)[i],
+      lwd = 2
+    )
   }
 }
 
@@ -38,20 +45,36 @@ collage <- function(n = 12) {
 # strips look different.
 strip <- function(seed = 2, n = 8) {
   set.seed(seed)
-  palette <- c("Viridis", "Plasma", "Zissou 1", "Dark 3", "Sunset", "Cividis", "Dynamic", "Inferno")[(seed - 2) %% 8 + 1]
+  palette <- c(
+    "Viridis",
+    "Plasma",
+    "Zissou 1",
+    "Dark 3",
+    "Sunset",
+    "Cividis",
+    "Dynamic",
+    "Inferno"
+  )[(seed - 2) %% 8 + 1]
   par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))
   for (i in seq_len(n)) {
-    plot(cumsum(rnorm(100)), type = "l", main = paste0("Strip ", seed, ", row ", i),
-         xlab = "", ylab = "", col = hcl.colors(n + 2, palette)[i], lwd = 2)
+    plot(
+      cumsum(rnorm(100)),
+      type = "l",
+      main = paste0("Strip ", seed, ", row ", i),
+      xlab = "",
+      ylab = "",
+      col = hcl.colors(n + 2, palette)[i],
+      lwd = 2
+    )
   }
 }
 ```
 
 ## 1. Gallery of two collages {#c1 expect-fit="height"}
 
-Two 25 × 2 inch collages in a gallery. Each opens at screen height. The left
-and right arrow keys and dragging pan along the collage, and the previous
-and next buttons change collages.
+Two 25 × 2 inch collages in a gallery. Each opens at screen height. The left and
+right arrow keys and dragging pan along the collage, and the previous and next
+buttons change collages.
 
 ```{r}
 #| panzoom:
@@ -68,9 +91,9 @@ collage(n = 15)
 
 ## 2. Gallery of two tall strips {#c2 expect-fit="width"}
 
-Two tall strips in a gallery. Each opens at screen width and extends
-downwards. The left and right arrow keys do nothing, since there is nowhere
-to go sideways, and the previous and next buttons change strips.
+Two tall strips in a gallery. Each opens at screen width and extends downwards.
+The left and right arrow keys do nothing, since there is nowhere to go sideways,
+and the previous and next buttons change strips.
 
 ```{r}
 #| panzoom:
@@ -108,8 +131,8 @@ collage(n = 15)
 
 ## 4. Strips side by side {#c4 expect-fit="width"}
 
-Two tall strips side by side as subfigures. Each opens at screen width, and
-the two form a gallery.
+Two tall strips side by side as subfigures. Each opens at screen width, and the
+two form a gallery.
 
 ```{r}
 #| label: fig-strip-cols
@@ -133,7 +156,6 @@ Two code cells in a `.panzoom` div with a layout. Each strip opens at screen
 width on its own, with no gallery, since they aren't subfigures.
 
 ::: {.panzoom layout-ncol="2"}
-
 ```{r}
 #| fig-width: 4
 #| fig-height: 15
@@ -149,17 +171,16 @@ strip(seed = 4, n = 8)
 
 strip(seed = 5, n = 8)
 ```
-
 :::
 
 ## 6. Collages of different lengths {#c6 expect-fit="height"}
 
-A long collage (40 × 2 in, 24 panels) and a shorter one (24 × 2 in, 12
-panels) from two cells, joined by `group`. Each opens at screen height from
-its left end, and stepping to the other fits it afresh, so the short collage
-doesn't keep the scale or position of the long one. The captions differ in
-length, so the caption band changes height between them, and each collage
-stays clear of it. `fig-dpi: 48` only keeps the files small.
+A long collage (40 × 2 in, 24 panels) and a shorter one (24 × 2 in, 12 panels)
+from two cells, joined by `group`. Each opens at screen height from its left
+end, and stepping to the other fits it afresh, so the short collage doesn't keep
+the scale or position of the long one. The captions differ in length, so the
+caption band changes height between them, and each collage stays clear of it.
+`fig-dpi: 48` only keeps the files small.
 
 ```{r}
 #| panzoom:
@@ -175,7 +196,11 @@ collage(n = 24)
 ```{r}
 #| panzoom:
 #|   group: mixed-collages
-#|   description: "A longer text under the short collage, so that the caption band grows when the gallery steps to it. Each panel is a random walk of 200 steps, colored along a single palette from the first panel to the last, and titled with its panel number so the order can be read at any zoom."
+#|   description: >-
+#|     A longer text under the short collage, so that the caption band grows
+#|     when the gallery steps to it. Each panel is a random walk of 200 steps,
+#|     colored along a single palette from the first panel to the last, and
+#|     titled with its panel number so the order can be read at any zoom.
 #| fig-width: 24
 #| fig-height: 2
 #| fig-dpi: 48
@@ -187,12 +212,10 @@ collage(n = 12)
 ## 7. Strips of different lengths {#c7 expect-fit="width"}
 
 Strips of different sizes, 4 × 20 in (10 rows) and 3 × 12 in (6 rows), in a
-layout div with captions of different lengths. Each opens at screen width
-from its top, on its own, and the layout shows them at different heights on
-the page.
+layout div with captions of different lengths. Each opens at screen width from
+its top, on its own, and the layout shows them at different heights on the page.
 
 ::: {.panzoom layout-ncol="2"}
-
 ```{r}
 #| fig-width: 4
 #| fig-height: 20
@@ -204,9 +227,10 @@ strip(seed = 6, n = 10)
 ```{r}
 #| fig-width: 3
 #| fig-height: 12
-#| fig-cap: "The short strip, with a caption long enough to wrap onto a second line in the viewer."
+#| fig-cap: >-
+#|   The short strip, with a caption long enough to wrap onto a second line in
+#|   the viewer.
 
 strip(seed = 7, n = 6)
 ```
-
 :::

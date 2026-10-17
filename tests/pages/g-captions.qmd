@@ -38,16 +38,15 @@ references:
 ## About
 
 A caption is copied from the page, so whatever Quarto renders there comes
-through to the viewer. A description is rendered with the page too, in a
-hidden block the viewer copies, so its citations resolve, its
-cross-references get numbers, and a work cited only in a description is
-still listed under References. In a caption, lightbox shows a citation as raw
- `[@key]`
+through to the viewer. A description is rendered with the page too, in a hidden
+block the viewer copies, so its citations resolve, its cross-references get
+numbers, and a work cited only in a description is still listed under
+References. In a caption, lightbox shows a citation as raw `[@key]`
 ([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
 
-Cases 6 and 7 set the per-cell `caption` and `description` options. Case
-9's description is longer than its panel, so the panel scrolls, from the
-keyboard too.
+Cases 6 and 7 set the per-cell `caption` and `description` options. Case 9's
+description is longer than its panel, so the panel scrolls, from the keyboard
+too.
 
 The cases below draw with this helper:
 
@@ -55,19 +54,31 @@ The cases below draw with this helper:
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
   col <- hcl.colors(4, "Dark 3")[k]
-  plot(x, sin(k * x), type = "n", main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
-  polygon(c(x, rev(x)), c(sin(k * x), rep(0, length(x))), col = adjustcolor(col, 0.35), border = NA)
+  plot(
+    x,
+    sin(k * x),
+    type = "n",
+    main = paste("Wave", k),
+    xlab = "x",
+    ylab = "sin(kx)"
+  )
+  polygon(
+    c(x, rev(x)),
+    c(sin(k * x), rep(0, length(x))),
+    col = adjustcolor(col, 0.35),
+    border = NA
+  )
   lines(x, sin(k * x), lwd = 2, col = col)
 }
 ```
 
 ## 1. Citation in a caption {#c1 expect-references=""}
 
-An image with `.panzoom`, with a citation in its caption. It opens in
-panzoom with the citation resolved, where lightbox shows it raw
+An image with `.panzoom`, with a citation in its caption. It opens in panzoom
+with the citation resolved, where lightbox shows it raw
 ([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![Some claim [@fenner2012].](../../images/mv-0.jpg){.panzoom}
 ```
 
@@ -76,23 +87,23 @@ panzoom with the citation resolved, where lightbox shows it raw
 An image with `.panzoom` citing Tufte only in its description. It opens in
 panzoom with the citation resolved, and Tufte is listed under References.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![Edgartown Light](../../images/mv-2.jpg){.panzoom description="Show the data [@tufte2001, p. 13]."}
 ```
 
 ## 3. Cross-reference in a description {#c3 expect-references=""}
 
-An image with `.panzoom` whose description cross-references the case 4
-figure and links to case 1. It opens in panzoom with both links working.
+An image with `.panzoom` whose description cross-references the case 4 figure
+and links to case 1. It opens in panzoom with both links working.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![Aquinnah](../../images/mv-1.jpg){.panzoom description="Compare with @fig-pressure, and see [Section 1](#c1)."}
 ```
 
 ## 4. Cell description {#c4 expect-references=""}
 
-A labeled R figure with a citation in its caption, and a description with
-math and a citation. It opens in panzoom with all of them rendered.
+A labeled R figure with a citation in its caption, and a description with math
+and a citation. It opens in panzoom with all of them rendered.
 
 ```{r}
 #| label: fig-pressure
@@ -107,10 +118,10 @@ plot(pressure)
 ## 5. Gallery descriptions {#c5 expect-references=""}
 
 Two images with `.panzoom` in a gallery, each with a reference in its
-description. They open in panzoom as a two-image gallery, each description
-with its reference resolved.
+description. They open in panzoom as a two-image gallery, each description with
+its reference resolved.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![Gingerbread](../../images/mv-3.jpg){.panzoom group="refs" description="As in @fig-pressure."}
 
 ![Sailboat](../../images/mv-4.jpg){.panzoom group="refs" description="As in @fenner2012."}
@@ -118,8 +129,8 @@ with its reference resolved.
 
 ## 6. No caption {#c6 expect-open="panzoom" expect-caption="none"}
 
-A cell with `caption: false`. The figure has a caption on the page, but it
-opens in panzoom without one.
+A cell with `caption: false`. The figure has a caption on the page, but it opens
+in panzoom without one.
 
 ```{r}
 #| panzoom:
@@ -131,8 +142,8 @@ wave(k = 2)
 
 ## 7. Description option {#c7 expect-open="panzoom"}
 
-A cell with the `description` option, written in markdown with math. It
-opens in panzoom with the description under the caption.
+A cell with the `description` option, written in markdown with math. It opens in
+panzoom with the description under the caption.
 
 ```{r}
 #| panzoom:
@@ -149,9 +160,9 @@ wave(k = 2)
 
 ## 8. Labeled figures in a div {#c8 expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}
 
-A labeled plot and a labeled markdown image in a `.panzoom` div. Each opens
-in panzoom on its own, and both keep their numbers and anchors (see
-@fig-div-plot and @fig-div-image).
+A labeled plot and a labeled markdown image in a `.panzoom` div. Each opens in
+panzoom on its own, and both keep their numbers and anchors (see @fig-div-plot
+and @fig-div-image).
 
 ::: {.panzoom layout-ncol="2"}
 ```{r}
@@ -168,19 +179,18 @@ wave(k = 3)
 ## 9. Long description {#c9 expect-open="panzoom" expect-scroll="description"}
 
 An image with `.panzoom`, with a description longer than its panel. It opens in
-panzoom, and the description panel scrolls. Tab reaches the panel, and the
-arrow keys, Page Up and Page Down, Home, End, and Space scroll it.
+panzoom, and the description panel scrolls. Tab reaches the panel, and the arrow
+keys, Page Up and Page Down, Home, End, and Space scroll it.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![Menemsha](../../images/mv-3.jpg){.panzoom description="This description is long on purpose: it is taller than the space the viewer gives a description, so its panel scrolls. With a mouse or trackpad, scrolling over the panel scrolls it. From the keyboard, Tab moves focus to the panel, and then the arrow keys, Page Up and Page Down, Home, End and Space scroll it, as they would scroll a page. The image stays where it is meanwhile, and the page behind the viewer doesn't move. Tab again moves on to the close button, and Esc still closes the viewer. Photographs like this one often come with long notes: who took them, when, and from where; what the light was like; what the harbor looked like then and what has changed since. Notes like these can run to several paragraphs, and a reader who uses the keyboard must be able to read all of them, not just the lines that fit. In a short window, or on a phone, the panel is smaller still, so even a description of two or three sentences can scroll there. The panel is a Tab stop only while it scrolls, so a short description adds no extra stop. The rest of this description only adds length, so that it scrolls in every window the tests use, including the wide screen, where the panel is tallest and its lines are longest. The harbor is busiest in the early morning, when the fishing boats go out, and again in the late afternoon, when they come back and the light turns gold over the water. Between those times it is quiet: a few sailboats at their moorings, gulls on the pilings, and the sound of halyards against the masts. In winter most of the boats are hauled out, and the harbor belongs to the ducks. The jetty at the harbor mouth was rebuilt more than once after storms, and the channel has to be dredged every few years to stay deep enough for the boats. On the far side of the channel, a small ferry carries bicycles and people across to the beach, a trip of a few minutes. Beyond the harbor the land rises to clay cliffs, red, white and gray, that change color with the light through the day. Sunsets over the water draw a crowd to the beach and the docks most evenings in summer, and on a clear evening the light lasts long after the sun has gone. By autumn the crowds are gone, the shacks on the docks close one by one, and the harbor returns to the people who work on it. Nothing in this description is needed for the test except its length: a description this long scrolls in any window."}
 ```
 
 ## 10. Long caption {#c10 expect-open="panzoom" expect-scroll="caption"}
 
 An image with `.panzoom` and a caption of placeholder text, from Quarto's
-`lipsum` shortcode, longer than the caption panel. It opens in panzoom, and
-the caption panel scrolls, from the keyboard too, while the image keeps its
-room.
+`lipsum` shortcode, longer than the caption panel. It opens in panzoom, and the
+caption panel scrolls, from the keyboard too, while the image keeps its room.
 
 ```markdown
 ![{{{< lipsum 4 >}}}](../../images/mv-0.jpg){.panzoom}

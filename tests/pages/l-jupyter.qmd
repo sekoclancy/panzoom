@@ -11,13 +11,12 @@ filters:
 
 ## About
 
-The cell options from the R examples, on matplotlib figures, and svg output.
-The document has no lightbox, so only cells with a panzoom cell option open
-in panzoom.
+The cell options from the R examples, on matplotlib figures, and svg output. The
+document has no lightbox, so only cells with a panzoom cell option open in
+panzoom.
 
-Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
-on the page (knitr shows them); the **Code** button at the top shows the
-full source.
+Jupyter leaves the `panzoom` and `lightbox` options out of the code shown on the
+page (knitr shows them); the **Code** button at the top shows the full source.
 
 The cases below share this setup and helper:
 
@@ -26,6 +25,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 rng = np.random.default_rng(1)
+
 
 def walk(ax, n=200, title=None):
     ax.plot(np.cumsum(rng.normal(size=n)))
@@ -50,7 +50,9 @@ plt.show()
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
-#| fig-cap: "A cell with `max-zoom: 2` and `hint: false`. It opens in panzoom without the hint, and zooming in stops at 2."
+#| fig-cap: >-
+#|   A cell with `max-zoom: 2` and `hint: false`. It opens in panzoom without
+#|   the hint, and zooming in stops at 2.
 
 plt.plot(x, np.cos(x))
 plt.show()
@@ -63,7 +65,9 @@ plt.show()
 #| fig-alt: "Scatter plot of 100 points along a rising diagonal"
 #| panzoom:
 #|   description: 'Points scattered around $y = x + \varepsilon$, with a "quote"; compare @fig-sub.'
-#| fig-cap: "A labeled scatter plot, $n = 100$, with a description holding math and a cross-reference to @fig-sub. It opens in panzoom with both rendered."
+#| fig-cap: >-
+#|   A labeled scatter plot, $n = 100$, with a description holding math and a
+#|   cross-reference to @fig-sub. It opens in panzoom with both rendered.
 
 pts = rng.normal(size=100)
 plt.scatter(pts, pts + rng.normal(scale=0.5, size=100))
@@ -95,7 +99,9 @@ plt.show()
 #| panzoom:
 #|   group: walks
 #| fig-cap:
-#|   - "First walk, one of two plots joined by `group: walks`. They open in panzoom as a two-image gallery."
+#|   - >-
+#|     First walk, one of two plots joined by `group: walks`. They open in
+#|     panzoom as a two-image gallery.
 #|   - "Second walk, in the same gallery."
 
 for i in range(2):
@@ -106,11 +112,10 @@ for i in range(2):
 
 ## 6. Wide collage {#c6 expect-open="panzoom" expect-fit="height"}
 
-An 8 × 0.8 inch collage. It is a strip, so it opens in panzoom at screen
-height. Jupyter figures are shown at their size in inches × 96 px (Quarto
-writes it on the image), not shrunk to the column as with knitr. A 25 × 2 in
-collage would be 2,400 px wide on the page, cut off at the edge of the
-column. This one fits.
+An 8 × 0.8 inch collage. It is a strip, so it opens in panzoom at screen height.
+Jupyter figures are shown at their size in inches × 96 px (Quarto writes it on
+the image), not shrunk to the column as with knitr. A 25 × 2 in collage would be
+2,400 px wide on the page, cut off at the edge of the column. This one fits.
 
 ```{python}
 #| panzoom: true
@@ -129,7 +134,9 @@ plt.show()
 ```{python}
 #| panzoom: false
 #| fig-alt: "Line plot of a sine wave"
-#| fig-cap: "A cell with `panzoom: false` inside a `.panzoom` div. Clicking it does nothing."
+#| fig-cap: >-
+#|   A cell with `panzoom: false` inside a `.panzoom` div. Clicking it does
+#|   nothing.
 
 plt.plot(x, np.sin(2 * x))
 plt.show()
@@ -159,7 +166,9 @@ plt.show()
 ## 10. Plain cell {#c10 expect-open="nothing"}
 
 ```{python}
-#| fig-cap: "A cell with no options. With no lightbox on the page, clicking it does nothing."
+#| fig-cap: >-
+#|   A cell with no options. With no lightbox on the page, clicking it does
+#|   nothing.
 #| fig-alt: "Line plot of a sine wave"
 
 plt.plot(x, np.sin(5 * x))
@@ -173,7 +182,9 @@ unlike with knitr; `lightbox: true` works, as in case 9.
 
 ```{python}
 #| panzoom: true
-#| fig-cap: "A cell with both `panzoom` and `lightbox:` options. panzoom takes it and drops the `lightbox:` options."
+#| fig-cap: >-
+#|   A cell with both `panzoom` and `lightbox:` options. panzoom takes it and
+#|   drops the `lightbox:` options.
 #| lightbox:
 #|   group: both
 #|   description: "Should not reach lightbox."
@@ -190,7 +201,9 @@ switches the matplotlib output to svg itself, and back to png after.
 
 ```{python}
 #| panzoom: true
-#| fig-cap: "The plot from case 1, written as svg. It opens in panzoom and stays sharp when zoomed, since the viewer redraws svg at each zoom."
+#| fig-cap: >-
+#|   The plot from case 1, written as svg. It opens in panzoom and stays sharp
+#|   when zoomed, since the viewer redraws svg at each zoom.
 
 %config InlineBackend.figure_formats = ["svg"]
 plt.plot(x, np.exp(-x / 4) * np.sin(3 * x))

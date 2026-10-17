@@ -17,8 +17,8 @@ panzoom:
 ## About
 
 The YAML header sets the viewer's colors without CSS, giving a deep blue
-backdrop, a cream caption band, dark brown caption text, and rust links.
-Every image on the page gets them.
+backdrop, a cream caption band, dark brown caption text, and rust links. Every
+image on the page gets them.
 
 ```yaml
 panzoom:
@@ -29,19 +29,19 @@ panzoom:
 ```
 
 Each option sets one of the viewer's CSS variables; [styling with
-CSS](n-css-class.html) sets the same variables from a stylesheet, for some
-pages only. A single image or code cell can set its own colors, as cases 2
-and 4 show; they apply while that image is open.
+CSS](n-css-class.html) sets the same variables from a stylesheet, for some pages
+only. A single image or code cell can set its own colors, as cases 2 and 4 show;
+they apply while that image is open.
 
 ## 1. Markdown image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![An image with `.panzoom`. It opens with the colors set on this page, a deep blue backdrop and a cream caption band, and this [link](https://quarto.org) is rust.](../../images/mv-0.jpg){.panzoom}
 ```
 
 ## 2. Colors for one image {#c2 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![An image with `.panzoom`, with colors of its own, set as attributes. It opens with a deep green backdrop and a pale green caption band instead of the colors set on this page, and this [link](https://quarto.org) is dark green.](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" link-color="#0b6b3a"}
 ```
 
@@ -49,7 +49,9 @@ and 4 show; they apply while that image is open.
 
 ```{r}
 #| panzoom: true
-#| fig-cap: "A code cell with `panzoom: true`. It opens with the blue and cream colors set on this page, as case 1 does."
+#| fig-cap: >-
+#|   A code cell with `panzoom: true`. It opens with the blue and cream colors
+#|   set on this page, as case 1 does.
 
 plot(pressure, type = "b", pch = 19)
 ```
@@ -61,7 +63,9 @@ plot(pressure, type = "b", pch = 19)
 #|   backdrop: "rgba(70, 25, 15, 0.92)"
 #|   caption-background: "#fbe9dc"
 #|   caption-color: "#4a1f10"
-#| fig-cap: "A code cell with colors of its own, under `#| panzoom:`. It opens with a dark red backdrop and a peach caption band."
+#| fig-cap: >-
+#|   A code cell with colors of its own, under `#| panzoom:`. It opens with a
+#|   dark red backdrop and a peach caption band.
 
 plot(cars, pch = 19)
 ```

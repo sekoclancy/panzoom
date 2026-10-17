@@ -11,11 +11,10 @@ panzoom:
 
 ## About
 
-Figures from the knitr graphics devices used in practice, webp, svg, and
-pdf, for a wide collage and a standard plot. Every figure has the `#|
-panzoom: true` cell option and opens in panzoom unless its case says
-otherwise. Figure shapes and how they open are on [wide and tall
-figures](h-wide.html).
+Figures from the knitr graphics devices used in practice, webp, svg, and pdf,
+for a wide collage and a standard plot. Every figure has the `#| panzoom: true`
+cell option and opens in panzoom unless its case says otherwise. Figure shapes
+and how they open are on [wide and tall figures](h-wide.html).
 
 knitr has no built-in webp device, so these use `agg_webp` from ragg, which
 needs `units = "in"` because knitr passes sizes in inches.
@@ -30,8 +29,15 @@ collage <- function(n = 12) {
   set.seed(1)
   par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
   for (i in seq_len(n)) {
-    plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i),
-         xlab = "", ylab = "", col = hcl.colors(n)[i], lwd = 2)
+    plot(
+      cumsum(rnorm(200)),
+      type = "l",
+      main = paste("Panel", i),
+      xlab = "",
+      ylab = "",
+      col = hcl.colors(n)[i],
+      lwd = 2
+    )
   }
 }
 ```
@@ -108,25 +114,28 @@ filled.contour(volcano, color.palette = terrain.colors)
 ## 6. png and cairo_pdf {#c6 expect-fit="contain"}
 
 Case 5 with the cairo PDF device, which embeds fonts and handles Unicode (µ,
-Greek letters) and transparency better than `pdf`. The page shows the png,
-which opens in panzoom. With a PDF device alone, there is no image to open.
-Quarto embeds the PDF in a small box with the browser's PDF viewer, which
-panzoom leaves alone.
+Greek letters) and transparency better than `pdf`. The page shows the png, which
+opens in panzoom. With a PDF device alone, there is no image to open. Quarto
+embeds the PDF in a small box with the browser's PDF viewer, which panzoom
+leaves alone.
 
 ```{r}
 #| panzoom: true
 #| dev: !expr c("png", "cairo_pdf")
 #| fig-cap: "png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
 
-filled.contour(volcano, color.palette = terrain.colors,
-               plot.title = title(main = "mu = 5, alpha = 0.05"))
+filled.contour(
+  volcano,
+  color.palette = terrain.colors,
+  plot.title = title(main = "mu = 5, alpha = 0.05")
+)
 ```
 
 ## 7. webp past its size limit {#c7}
 
-A 100 × 5 inch collage as webp at 192 dpi. At 19,200 px wide it is past the
-webp limit of 16,383 px per side, so ragg can't write the file. The page
-shows a broken image, and clicking it opens an empty viewer.
+A 100 × 5 inch collage as webp at 192 dpi. At 19,200 px wide it is past the webp
+limit of 16,383 px per side, so ragg can't write the file. The page shows a
+broken image, and clicking it opens an empty viewer.
 
 ```{r}
 #| panzoom: true

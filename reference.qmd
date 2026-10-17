@@ -56,9 +56,8 @@ listing:
 
 ## R
 
-The first three pages show the same cases (galleries, subfigures,
-captions with math, images in links, margin images, ...) with panzoom set
-up three ways.
+The first three pages show the same cases (galleries, subfigures, captions with
+math, images in links, margin images, ...) with panzoom set up three ways.
 
 ::: {#r-pages}
 :::

@@ -14,8 +14,8 @@ panzoom:
 ## About
 
 Opting out with `.nopanzoom` and `#| panzoom: false`, and the `hint` and
-`max-zoom` options set on one cell. The page sets `loop`, so the gallery in
-case 6 wraps around:
+`max-zoom` options set on one cell. The page sets `loop`, so the gallery in case
+6 wraps around:
 
 ```yaml
 panzoom:
@@ -33,15 +33,27 @@ The cases below draw with this helper:
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
   col <- hcl.colors(4, "Dark 3")[k]
-  plot(x, sin(k * x), type = "n", main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
-  polygon(c(x, rev(x)), c(sin(k * x), rep(0, length(x))), col = adjustcolor(col, 0.35), border = NA)
+  plot(
+    x,
+    sin(k * x),
+    type = "n",
+    main = paste("Wave", k),
+    xlab = "x",
+    ylab = "sin(kx)"
+  )
+  polygon(
+    c(x, rev(x)),
+    c(sin(k * x), rep(0, length(x))),
+    col = adjustcolor(col, 0.35),
+    border = NA
+  )
   lines(x, sin(k * x), lwd = 2, col = col)
 }
 ```
 
 ## 1. Opt out an image {#c1 expect-open="nothing panzoom"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ::: {.panzoom layout-ncol="2"}
 ![An image with `.nopanzoom` inside a `.panzoom` div. With no lightbox on this page, clicking it does nothing.](../../images/mv-1.jpg){.nopanzoom fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
@@ -52,15 +64,15 @@ wave <- function(k = 1) {
 ## 2. Opt out a cell {#c2 expect-open="nothing"}
 
 ::: {.panzoom}
-
 ```{r}
 #| panzoom: false
 #| fig-alt: "Plot titled Wave 1: a sine curve with its area to the axis shaded"
-#| fig-cap: "An R cell with `panzoom: false` inside a `.panzoom` div. The whole cell opts out, so clicking it does nothing."
+#| fig-cap: >-
+#|   An R cell with `panzoom: false` inside a `.panzoom` div. The whole cell
+#|   opts out, so clicking it does nothing.
 
 wave(k = 1)
 ```
-
 :::
 
 ## 3. No hint {#c3 expect-open="panzoom" expect-hint="hidden"}
@@ -68,7 +80,9 @@ wave(k = 1)
 ```{r}
 #| panzoom:
 #|   hint: false
-#| fig-cap: "A cell with `hint: false`. It opens in panzoom without the controls hint, which the page shows by default."
+#| fig-cap: >-
+#|   A cell with `hint: false`. It opens in panzoom without the controls hint,
+#|   which the page shows by default.
 
 wave(k = 3)
 ```
@@ -77,7 +91,9 @@ wave(k = 3)
 
 ```{r}
 #| panzoom: true
-#| fig-cap: "A cell with no hint option. It opens in panzoom with the controls hint at the bottom."
+#| fig-cap: >-
+#|   A cell with no hint option. It opens in panzoom with the controls hint at
+#|   the bottom.
 
 wave(k = 4)
 ```
@@ -87,7 +103,9 @@ wave(k = 4)
 ```{r}
 #| panzoom:
 #|   max-zoom: 2
-#| fig-cap: "A cell with `max-zoom: 2`. It opens in panzoom, and zooming in stops at 2 screen pixels per image pixel."
+#| fig-cap: >-
+#|   A cell with `max-zoom: 2`. It opens in panzoom, and zooming in stops at 2
+#|   screen pixels per image pixel.
 
 wave(k = 1)
 ```
@@ -98,7 +116,10 @@ wave(k = 1)
 #| panzoom:
 #|   group: waves
 #| fig-cap:
-#|   - "Wave one, first of three plots in a gallery. With `loop: true` on this page, the left arrow key here goes to wave three, and the previous button is never disabled."
+#|   - >-
+#|     Wave one, first of three plots in a gallery. With `loop: true` on this
+#|     page, the left arrow key here goes to wave three, and the previous button
+#|     is never disabled.
 #|   - "Wave two, in the same gallery."
 #|   - "Wave three. The right arrow key here goes back to wave one."
 
@@ -109,9 +130,9 @@ wave(k = 3)
 
 ## 7. No alt text {#c7 expect-open="panzoom" expect-caption="none"}
 
-An image with `.panzoom` and no alt text. It opens in panzoom with no
-caption, and the link around it is labeled "Open image" for screen readers.
+An image with `.panzoom` and no alt text. It opens in panzoom with no caption,
+and the link around it is labeled "Open image" for screen readers.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![](../../images/mv-4.jpg){.panzoom width=40%}
 ```

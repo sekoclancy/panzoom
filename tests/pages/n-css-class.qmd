@@ -13,24 +13,23 @@ panzoom:
 
 ## About
 
-The viewer styled with CSS. `css-class` adds a class to the viewer, and
-the rules below use it to set the viewer's colors (plum, with pink links),
-draw a line along the top of the caption band, and make the caption larger
-and italic.
+The viewer styled with CSS. `css-class` adds a class to the viewer, and the
+rules below use it to set the viewer's colors (plum, with pink links), draw a
+line along the top of the caption band, and make the caption larger and italic.
 
 ```yaml
 panzoom:
   css-class: plum-viewer
 ```
 
-Only pages with that class get the rules, so the other pages of the site
-keep the default viewer. A single image or code cell can add a class of
-its own, as cases 2 and 4 show; it applies while that image is open.
+Only pages with that class get the rules, so the other pages of the site keep
+the default viewer. A single image or code cell can add a class of its own, as
+cases 2 and 4 show; it applies while that image is open.
 
-The rules are in a raw HTML block on this page, which styles it. The
-same block works in any Quarto document:
+The rules are in a raw HTML block on this page, which styles it. The same block
+works in any Quarto document:
 
-````{.markdown .show-source}
+````markdown {.show-source}
 ```{=html}
 <style>
 .plum-viewer {
@@ -87,21 +86,21 @@ viewer's class, as above, so they win over the defaults. The parts are
 `.panzoom-next`, and `.panzoom-counter`.
 
 For a whole site, put `css-class` (or any option) under `format: html:` in
-`_quarto.yml`. A top-level `panzoom:` there is replaced, not merged, by a
-page's own `panzoom:` options.
+`_quarto.yml`. A top-level `panzoom:` there is replaced, not merged, by a page's
+own `panzoom:` options.
 
 ## 1. Markdown image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![An image with `.panzoom`. It opens with the plum viewer from the stylesheet, a line along the top of the caption band, a larger, italic caption, and this pink [link](https://quarto.org).](../../images/mv-2.jpg){.panzoom}
 ```
 
 ## 2. Class for one image {#c2 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
-The page's class stays on the viewer, so rules for `.sea-viewer` come after
-the `.plum-viewer` ones to win over them.
+The page's class stays on the viewer, so rules for `.sea-viewer` come after the
+`.plum-viewer` ones to win over them.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![An image with `.panzoom`, with a class of its own, `css-class="sea-viewer"`. It opens with the dark teal `.sea-viewer` rules and an upright caption, and this [link](https://quarto.org) is teal.](../../images/mv-3.jpg){.panzoom css-class="sea-viewer"}
 ```
 
@@ -109,7 +108,9 @@ the `.plum-viewer` ones to win over them.
 
 ```{r}
 #| panzoom: true
-#| fig-cap: "A code cell with `panzoom: true`. It opens with the plum viewer, as case 1 does."
+#| fig-cap: >-
+#|   A code cell with `panzoom: true`. It opens with the plum viewer, as case 1
+#|   does.
 
 plot(pressure, type = "b", pch = 19)
 ```
@@ -119,7 +120,9 @@ plot(pressure, type = "b", pch = 19)
 ```{r}
 #| panzoom:
 #|   css-class: sea-viewer
-#| fig-cap: "A code cell with `css-class: sea-viewer` under `#| panzoom:`. It opens with the same teal viewer as case 2."
+#| fig-cap: >-
+#|   A code cell with `css-class: sea-viewer` under `#| panzoom:`. It opens with
+#|   the same teal viewer as case 2.
 
 plot(cars, pch = 19)
 ```

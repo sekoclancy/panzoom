@@ -16,11 +16,10 @@ lightbox: true
 ## About
 
 These Python (Jupyter) cells have `panzoom: true`, next to the document's
-`lightbox: true`. panzoom takes every image lightbox would, except where a
-case asks for lightbox. The [lightbox version](j-jupyter-lightbox.html) has
-the same cases without panzoom. Compare each case with the same number
-there. The knitr equivalent is the R [global panzoom
-version](c-panzoom-auto.html).
+`lightbox: true`. panzoom takes every image lightbox would, except where a case
+asks for lightbox. The [lightbox version](j-jupyter-lightbox.html) has the same
+cases without panzoom. Compare each case with the same number there. The knitr
+equivalent is the R [global panzoom version](c-panzoom-auto.html).
 
 ```yaml
 filters:
@@ -29,8 +28,8 @@ panzoom: true
 lightbox: true
 ```
 
-Jupyter leaves the `panzoom` and `lightbox` options out of the code shown
-on the page; the **Code** button at the top shows the full source.
+Jupyter leaves the `panzoom` and `lightbox` options out of the code shown on the
+page; the **Code** button at the top shows the full source.
 
 The cases below share this setup:
 
@@ -56,6 +55,7 @@ A plot without a caption. It opens in panzoom.
 
 ```{python}
 #| fig-alt: "Line plot of a cosine wave"
+
 plt.plot(x, np.cos(x))
 plt.show()
 ```
@@ -81,9 +81,9 @@ plt.show()
 
 Two cells with `lightbox:` options for a group and a description. Asking for
 lightbox keeps them out of panzoom, as with knitr (cases 6 and 7 of the R
-[global panzoom version](c-panzoom-auto.html)). With Jupyter, lightbox
-ignores the options themselves, so each opens in lightbox on its own,
-without the group or description.
+[global panzoom version](c-panzoom-auto.html)). With Jupyter, lightbox ignores
+the options themselves, so each opens in lightbox on its own, without the group
+or description.
 
 ```{python}
 #| lightbox:
@@ -104,7 +104,9 @@ plt.show()
 ```{python}
 #| lightbox: false
 #| fig-alt: "Line plot of a sine wave"
-#| fig-cap: "A cell with `lightbox: false`. panzoom leaves an explicit lightbox setting alone, so clicking it does nothing."
+#| fig-cap: >-
+#|   A cell with `lightbox: false`. panzoom leaves an explicit lightbox setting
+#|   alone, so clicking it does nothing.
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -114,7 +116,9 @@ plt.show()
 
 ```{python}
 #| panzoom: true
-#| fig-cap: "A cell with `panzoom: true`. It opens in panzoom, ahead of the document's `lightbox: true`."
+#| fig-cap: >-
+#|   A cell with `panzoom: true`. It opens in panzoom, ahead of the document's
+#|   `lightbox: true`.
 
 plt.plot(x, np.cos(4 * x))
 plt.show()
@@ -122,12 +126,12 @@ plt.show()
 
 ## 7. Markdown image {#c7 expect-open="panzoom"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![A markdown image alone in a paragraph. It opens in panzoom.](../../images/mv-0.jpg)
 ```
 
 ## 8. Opt out of lightbox {#c8 expect-open="nothing"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![A markdown image with `.nolightbox`. panzoom only takes images lightbox would, so clicking it does nothing.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```

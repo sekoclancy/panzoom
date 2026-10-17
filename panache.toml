@@ -1,0 +1,13 @@
+flavor = "quarto"
+
+[format]
+line-width = 80
+wrap = "reflow"
+line-ending = "lf"
+
+[formatters]
+python = "ruff"
+r = "air"
+
+[lint]
+ignore = ["missing-chunk-labels"]

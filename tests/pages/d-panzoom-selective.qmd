@@ -13,22 +13,21 @@ panzoom:
 
 ## About
 
-Only images with the `.panzoom` class or the `#| classes: panzoom` cell
-option open in panzoom.
-The document doesn't turn lightbox on, so it applies only where a cell asks
-for it with `#| lightbox:` options (cases 6 and 7). The [lightbox
-version](a-lightbox.html) has the same cases without panzoom. Compare each
-case with the same number there.
+Only images with the `.panzoom` class or the `#| classes: panzoom` cell option
+open in panzoom. The document doesn't turn lightbox on, so it applies only where
+a cell asks for it with `#| lightbox:` options (cases 6 and 7). The [lightbox
+version](a-lightbox.html) has the same cases without panzoom. Compare each case
+with the same number there.
 
 ## 1. Single image {#c1 expect-open="panzoom"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![A markdown image with `.panzoom` with a description and `desc-position="left"`. It opens in panzoom, with the description below the caption, since panzoom has no `desc-position`.](../../images/mv-0.jpg){.panzoom description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left"}
 ```
 
 ## 2. Gallery in a layout {#c2 expect-open="nothing panzoom nothing"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}
 ![Aquinnah, without `.panzoom`. With no lightbox on the page, clicking it does nothing.](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
@@ -40,16 +39,16 @@ case with the same number there.
 
 ## 3. Math {#c3 expect-open="panzoom"}
 
-A markdown image with `.panzoom` with math in its caption and description.
-It opens in panzoom with both typeset.
+A markdown image with `.panzoom` with math in its caption and description. It
+opens in panzoom with both typeset.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![Caption with math $e^{i\pi}+1=0$](../../images/mv-4.jpg){.panzoom description="Description with math $\\int_0^1 x^2\\,dx = 1/3$"}
 ```
 
 ## 4. Markdown subfigures {#c4 expect-open="panzoom"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
 ![Sub A](../../images/mv-1.jpg){#fig-md-a .panzoom fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
@@ -63,7 +62,9 @@ Two markdown subfigures with `.panzoom`, the first cross-referenced here (see @f
 
 ```{r}
 #| label: fig-r-sub
-#| fig-cap: "Two subfigures from one R cell with `classes: panzoom`. They open in panzoom as a two-image gallery."
+#| fig-cap: >-
+#|   Two subfigures from one R cell with `classes: panzoom`. They open in
+#|   panzoom as a two-image gallery.
 #| fig-subcap: ["Pressure", "Cars"]
 #| fig-alt:
 #|   - "Scatter plot of vapor pressure rising steeply with temperature"
@@ -78,7 +79,9 @@ plot(cars)
 ## 6. Cell options {#c6 expect-open="panzoom glightbox"}
 
 ```{r}
-#| fig-cap: "An R cell with `classes: panzoom`, with lightbox options too. It opens in panzoom on its own, and its lightbox options are dropped."
+#| fig-cap: >-
+#|   An R cell with `classes: panzoom`, with lightbox options too. It opens in
+#|   panzoom on its own, and its lightbox options are dropped.
 #| classes: panzoom
 #| lightbox:
 #|   group: r-graph
@@ -88,7 +91,9 @@ plot(1:10, rnorm(10))
 ```
 
 ```{r}
-#| fig-cap: "An R cell with only lightbox options, which turn lightbox on for this cell. It opens in lightbox on its own."
+#| fig-cap: >-
+#|   An R cell with only lightbox options, which turn lightbox on for this cell.
+#|   It opens in lightbox on its own.
 #| lightbox:
 #|   group: r-graph
 #|   description: We see our cars data above
@@ -101,7 +106,10 @@ plot(cars)
 ```{r}
 #| classes: panzoom
 #| fig-cap:
-#|   - "One R cell with `classes: panzoom`, two plots, and lightbox options. panzoom drops the lightbox options, so this plot opens in panzoom on its own."
+#|   - >-
+#|     One R cell with `classes: panzoom`, two plots, and lightbox options.
+#|     panzoom drops the lightbox options, so this plot opens in panzoom on its
+#|     own.
 #|   - "The second plot of the cell. It also opens in panzoom on its own."
 #| lightbox:
 #|   group: cars
@@ -118,7 +126,9 @@ plot(cars)
 ```{r}
 #| fig-cap: "An R cell with `lightbox: false`. Clicking it does nothing."
 #| lightbox: false
-#| fig-alt: "Scatterplot matrix of the mtcars data, each variable plotted against every other"
+#| fig-alt: >-
+#|   Scatterplot matrix of the mtcars data, each variable plotted against every
+#|   other
 
 plot(mtcars)
 ```
@@ -128,13 +138,13 @@ plot(mtcars)
 An image with `.panzoom` inside a link. panzoom leaves images in links alone, so
 clicking it follows the link.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 [![Linked image](../../images/mv-4.jpg){.panzoom width=30%}](https://quarto.org){aria-label="Quarto website"}
 ```
 
 ## 10. Margin image {#c10 expect-open="panzoom"}
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![A markdown image with `.panzoom` in the margin. It opens in panzoom.](../../images/mv-3.jpg){.panzoom .column-margin}
 ```
 
@@ -142,7 +152,7 @@ clicking it follows the link.
 
 An image with `.panzoom` inside a sentence. It opens in panzoom.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){.panzoom width=60px} in the middle.
 ```
 
@@ -151,7 +161,9 @@ Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){.pan
 ```{r}
 #| label: fig-plain
 #| fig-alt: "Heat map of the Maunga Whau volcano's heights, in yellow, orange, and red"
-#| fig-cap: "A cross-referenced R figure with no options. With no lightbox on the page, clicking it does nothing."
+#| fig-cap: >-
+#|   A cross-referenced R figure with no options. With no lightbox on the page,
+#|   clicking it does nothing.
 
 image(volcano)
 ```
@@ -161,8 +173,8 @@ image(volcano)
 The images in this example were used under the [Unsplash
 license](https://unsplash.com/license), view originals below:
 
--   [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)
--   [Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU)
--   [Gingerbread House](https://unsplash.com/photos/HQEtvlNzUyA)
--   [Edgartown Light](https://unsplash.com/photos/f59MyOfLpi8)
--   [Edgartown Sailboat](https://unsplash.com/photos/IiLiz7XpQpI)
+- [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)
+- [Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU)
+- [Gingerbread House](https://unsplash.com/photos/HQEtvlNzUyA)
+- [Edgartown Light](https://unsplash.com/photos/f59MyOfLpi8)
+- [Edgartown Sailboat](https://unsplash.com/photos/IiLiz7XpQpI)

@@ -14,32 +14,31 @@ panzoom:
 ## About
 
 This page opens figures of different shapes, each on its own, and shows the
-`fit` option. The shapes are very wide collages (25 × 2 inches), tall
-strips, a poster, a portrait photo, and a small plot. All are png; other
-formats are on [image formats](e-formats.html), and the same shapes in
-galleries and layouts on [wide figures in galleries](i-wide-galleries.html).
+`fit` option. The shapes are very wide collages (25 × 2 inches), tall strips, a
+poster, a portrait photo, and a small plot. All are png; other formats are on
+[image formats](e-formats.html), and the same shapes in galleries and layouts on
+[wide figures in galleries](i-wide-galleries.html).
 
-With `fit: auto`, the default, the viewer opens most images whole. A strip
-at least 3 times wider than tall, that would show less than a quarter of the
-screen tall, such as a collage of many panels (`fig-width: 100`,
-`fig-height: 5`), opens filling the screen height instead. A strip at least
-3 times taller than wide, that would show less than a quarter of the screen
-wide, opens filling the screen width, at its top. Ordinary photos and plots,
-portrait or landscape, always open whole, even on a very wide screen where a
-portrait photo is narrower than a quarter of it. No image is enlarged past
-its real size when it opens , as with lightbox. A small image opens at its
-own size, and scrolling still zooms it in, up to `max-zoom`. `fit: contain`,
-`height` or `width` overrides the rule for one figure.
+With `fit: auto`, the default, the viewer opens most images whole. A strip at
+least 3 times wider than tall, that would show less than a quarter of the screen
+tall, such as a collage of many panels (`fig-width: 100`, `fig-height: 5`),
+opens filling the screen height instead. A strip at least 3 times taller than
+wide, that would show less than a quarter of the screen wide, opens filling the
+screen width, at its top. Ordinary photos and plots, portrait or landscape,
+always open whole, even on a very wide screen where a portrait photo is narrower
+than a quarter of it. No image is enlarged past its real size when it opens , as
+with lightbox. A small image opens at its own size, and scrolling still zooms it
+in, up to `max-zoom`. `fit: contain`, `height` or `width` overrides the rule for
+one figure.
 
-Where you click a strip on the page is its focal point. Click panel 12 of
-a 20-panel collage, and the viewer opens with panel 12 in
-the middle of the screen (or flush with the end, near either end). The 0
-key and double-click return to it. Opened from the keyboard, a strip
-starts at its left end (or top). Ordinary images open whole wherever you
-click. Zooming out still shows the whole figure.
+Where you click a strip on the page is its focal point. Click panel 12 of a
+20-panel collage, and the viewer opens with panel 12 in the middle of the screen
+(or flush with the end, near either end). The 0 key and double-click return to
+it. Opened from the keyboard, a strip starts at its left end (or top). Ordinary
+images open whole wherever you click. Zooming out still shows the whole figure.
 
-Shift+scroll (or a sideways trackpad swipe) pans sideways along a collage
-and up and down along a tall figure. Zoomed in both ways, it pans sideways.
+Shift+scroll (or a sideways trackpad swipe) pans sideways along a collage and up
+and down along a tall figure. Zoomed in both ways, it pans sideways.
 
 The cases below draw with these helpers:
 
@@ -49,8 +48,15 @@ collage <- function(n = 12) {
   set.seed(1)
   par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
   for (i in seq_len(n)) {
-    plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i),
-         xlab = "", ylab = "", col = hcl.colors(n)[i], lwd = 2)
+    plot(
+      cumsum(rnorm(200)),
+      type = "l",
+      main = paste("Panel", i),
+      xlab = "",
+      ylab = "",
+      col = hcl.colors(n)[i],
+      lwd = 2
+    )
   }
 }
 
@@ -59,27 +65,55 @@ collage <- function(n = 12) {
 # strips look different.
 strip <- function(seed = 2, n = 8) {
   set.seed(seed)
-  palette <- c("Viridis", "Plasma", "Zissou 1", "Dark 3", "Sunset", "Cividis", "Dynamic", "Inferno")[(seed - 2) %% 8 + 1]
+  palette <- c(
+    "Viridis",
+    "Plasma",
+    "Zissou 1",
+    "Dark 3",
+    "Sunset",
+    "Cividis",
+    "Dynamic",
+    "Inferno"
+  )[(seed - 2) %% 8 + 1]
   par(mfrow = c(n, 1), mar = c(2, 3, 2, 1))
   for (i in seq_len(n)) {
-    plot(cumsum(rnorm(100)), type = "l", main = paste0("Strip ", seed, ", row ", i),
-         xlab = "", ylab = "", col = hcl.colors(n + 2, palette)[i], lwd = 2)
+    plot(
+      cumsum(rnorm(100)),
+      type = "l",
+      main = paste0("Strip ", seed, ", row ", i),
+      xlab = "",
+      ylab = "",
+      col = hcl.colors(n + 2, palette)[i],
+      lwd = 2
+    )
   }
 }
 
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
   col <- hcl.colors(4, "Dark 3")[k]
-  plot(x, sin(k * x), type = "n", main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
-  polygon(c(x, rev(x)), c(sin(k * x), rep(0, length(x))), col = adjustcolor(col, 0.35), border = NA)
+  plot(
+    x,
+    sin(k * x),
+    type = "n",
+    main = paste("Wave", k),
+    xlab = "x",
+    ylab = "sin(kx)"
+  )
+  polygon(
+    c(x, rev(x)),
+    c(sin(k * x), rep(0, length(x))),
+    col = adjustcolor(col, 0.35),
+    border = NA
+  )
   lines(x, sin(k * x), lwd = 2, col = col)
 }
 ```
 
 ## 1. Wide collage {#c1 expect-fit="height" shift-scroll="x"}
 
-A 25 × 2 inch collage. It opens in panzoom at screen height, and
-Shift+scroll moves sideways.
+A 25 × 2 inch collage. It opens in panzoom at screen height, and Shift+scroll
+moves sideways.
 
 ```{r}
 #| panzoom: true
@@ -92,8 +126,7 @@ collage(n = 12)
 
 ## 2. Whole figure {#c2 expect-fit="contain" shift-scroll="none"}
 
-The collage from case 1 with `fit: contain`. It opens whole, as a thin
-strip.
+The collage from case 1 with `fit: contain`. It opens whole, as a thin strip.
 
 ```{r}
 #| panzoom:
@@ -107,8 +140,8 @@ collage(n = 12)
 
 ## 3. Moderately wide figure {#c3 expect-fit="contain"}
 
-A 16 × 4 inch figure, wide but readable whole. The size rule leaves it
-alone, so it opens whole.
+A 16 × 4 inch figure, wide but readable whole. The size rule leaves it alone, so
+it opens whole.
 
 ```{r}
 #| panzoom: true
@@ -146,22 +179,29 @@ both ways, and Shift+scroll moves sideways.
 
 set.seed(3)
 par(mfrow = c(6, 8), mar = c(2, 2, 2, 1))
-for (i in 1:48) plot(cumsum(rnorm(100)), type = "l", main = paste("Panel", i), xlab = "", ylab = "")
+for (i in 1:48) {
+  plot(
+    cumsum(rnorm(100)),
+    type = "l",
+    main = paste("Panel", i),
+    xlab = "",
+    ylab = ""
+  )
+}
 ```
 
 ## 6. Portrait photo {#c6 expect-fit="contain"}
 
-A 9:16 portrait photo. It isn't a strip, so it opens whole on any screen
-width.
+A 9:16 portrait photo. It isn't a strip, so it opens whole on any screen width.
 
-```{.markdown .show-source}
+```markdown {.show-source}
 ![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30%}
 ```
 
 ## 7. Small plot {#c7 expect-fit="contain" expect-scale="1"}
 
-A 288 × 192 px plot. It opens at its real size, centered, instead of
-enlarged to fill the screen, and scrolling still zooms in, up to `max-zoom`.
+A 288 × 192 px plot. It opens at its real size, centered, instead of enlarged to
+fill the screen, and scrolling still zooms in, up to `max-zoom`.
 
 ```{r}
 #| panzoom: true
@@ -175,10 +215,9 @@ plot(pressure)
 
 ## 8. Fit to height {#c8 expect-open="panzoom" expect-fit="height" expect-zoom-out="no"}
 
-An ordinary plot with `fit: height`. On a screen wider than the plot
-(1.4:1), filling the height already shows the whole plot, so it opens like
-`fit: contain` and can't zoom out. Case 10 shows `fit: height` where it
-makes a difference.
+An ordinary plot with `fit: height`. On a screen wider than the plot (1.4:1),
+filling the height already shows the whole plot, so it opens like `fit: contain`
+and can't zoom out. Case 10 shows `fit: height` where it makes a difference.
 
 ```{r}
 #| panzoom:
@@ -190,8 +229,8 @@ wave(k = 3)
 
 ## 9. Fit to width {#c9 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
 
-An ordinary plot with `fit: width`. Filling the width makes the plot taller
-than the screen, so it opens closer than the whole plot and zooms out to it.
+An ordinary plot with `fit: width`. Filling the width makes the plot taller than
+the screen, so it opens closer than the whole plot and zooms out to it.
 
 ```{r}
 #| panzoom:
@@ -203,10 +242,10 @@ wave(k = 4)
 
 ## 10. Fit to height on a wide figure {#c10 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
-A 12 × 4.5 inch figure with `fit: height`. It isn't a strip, since shown
-whole it is over a quarter of the screen tall, so `fit: auto` would open it
-whole. With `fit: height`, it opens filling the screen height, up to its
-real size, at the spot you clicked, and zooms out to the whole figure.
+A 12 × 4.5 inch figure with `fit: height`. It isn't a strip, since shown whole
+it is over a quarter of the screen tall, so `fit: auto` would open it whole.
+With `fit: height`, it opens filling the screen height, up to its real size, at
+the spot you clicked, and zooms out to the whole figure.
 
 ```{r}
 #| panzoom:
@@ -220,16 +259,26 @@ collage(n = 6)
 
 ## 11. Long caption and description {#c11 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
-The figure from case 10 with a long caption and description. `fit: height`
-fills the height left above them, so it opens smaller than case 10. The
-caption scrolls past a quarter of the screen and the description past a
-fifth, so the image keeps about half.
+The figure from case 10 with a long caption and description. `fit: height` fills
+the height left above them, so it opens smaller than case 10. The caption
+scrolls past a quarter of the screen and the description past a fifth, so the
+image keeps about half.
 
 ```{r}
 #| panzoom:
 #|   fit: height
-#|   description: "A long description, to take room below the image. Each panel is a random walk of 200 steps, drawn with base R's `plot()` in a one-row layout (`par(mfrow = c(1, 6))`), colored along the `hcl.colors()` palette. The figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864 px). With `fit: height` the viewer opens it as tall as the space above this text allows, and no taller than its real size. Drag or use the arrow keys to move along the figure, scroll or press - to zoom out to the whole of it, and 0 to come back to this opening view."
-#| fig-cap: "Six random walks side by side, opened with `fit: height` under a long description."
+#|   description: >-
+#|     A long description, to take room below the image. Each panel is a random
+#|     walk of 200 steps, drawn with base R's `plot()` in a one-row layout
+#|     (`par(mfrow = c(1, 6))`), colored along the `hcl.colors()` palette. The
+#|     figure is 12 by 4.5 inches, which knitr writes at 192 dpi (2304 by 864
+#|     px). With `fit: height` the viewer opens it as tall as the space above
+#|     this text allows, and no taller than its real size. Drag or use the arrow
+#|     keys to move along the figure, scroll or press - to zoom out to the whole
+#|     of it, and 0 to come back to this opening view.
+#| fig-cap: >-
+#|   Six random walks side by side, opened with `fit: height` under a long
+#|   description.
 #| fig-width: 12
 #| fig-height: 4.5
 
