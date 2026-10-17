@@ -20,6 +20,9 @@ format:
     syntax-highlighting:
       light: a11y-light
       dark: a11y-dark
+    # Long code lines wrap: a block that scrolls sideways can't be scrolled
+    # from the keyboard (axe: scrollable-region-focusable).
+    code-overflow: wrap
 
 execute:
   echo: fenced
