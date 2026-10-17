@@ -36,18 +36,19 @@ they apply while that image is open.
 ## 1. Markdown image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
 ```markdown {.show-source}
-![An image with `.panzoom`. It opens with the colors set on this page, a deep blue backdrop and a cream caption band, and this [link](https://quarto.org) is rust.](../../images/mv-0.jpg){.panzoom}
+![An image with `.panzoom`. It opens with the colors set on this page, a deep blue backdrop and a cream caption band, and this [link](https://quarto.org) is rust.](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## 2. Colors for one image {#c2 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
 
 ```markdown {.show-source}
-![An image with `.panzoom`, with colors of its own, set as attributes. It opens with a deep green backdrop and a pale green caption band instead of the colors set on this page, and this [link](https://quarto.org) is dark green.](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" link-color="#0b6b3a"}
+![An image with `.panzoom`, with colors of its own, set as attributes. It opens with a deep green backdrop and a pale green caption band instead of the colors set on this page, and this [link](https://quarto.org) is dark green.](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
 ## 3. Code cell {#c3 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
 ```{r}
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
 #| fig-cap: >-
 #|   A code cell with `panzoom: true`. It opens with the blue and cream colors
@@ -59,6 +60,7 @@ plot(pressure, type = "b", pch = 19)
 ## 4. Colors for one cell {#c4 expect-open="panzoom" expect-overlay="rgba(70, 25, 15, 0.92)" expect-band="rgb(251, 233, 220)"}
 
 ```{r}
+#| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| panzoom:
 #|   backdrop: "rgba(70, 25, 15, 0.92)"
 #|   caption-background: "#fbe9dc"

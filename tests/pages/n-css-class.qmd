@@ -92,7 +92,7 @@ own `panzoom:` options.
 ## 1. Markdown image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 ```markdown {.show-source}
-![An image with `.panzoom`. It opens with the plum viewer from the stylesheet, a line along the top of the caption band, a larger, italic caption, and this pink [link](https://quarto.org).](../../images/mv-2.jpg){.panzoom}
+![An image with `.panzoom`. It opens with the plum viewer from the stylesheet, a line along the top of the caption band, a larger, italic caption, and this pink [link](https://quarto.org).](../../images/mv-2.jpg){.panzoom fig-alt="A white lighthouse against a blue sky"}
 ```
 
 ## 2. Class for one image {#c2 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
@@ -101,12 +101,13 @@ The page's class stays on the viewer, so rules for `.sea-viewer` come after the
 `.plum-viewer` ones to win over them.
 
 ```markdown {.show-source}
-![An image with `.panzoom`, with a class of its own, `css-class="sea-viewer"`. It opens with the dark teal `.sea-viewer` rules and an upright caption, and this [link](https://quarto.org) is teal.](../../images/mv-3.jpg){.panzoom css-class="sea-viewer"}
+![An image with `.panzoom`, with a class of its own, `css-class="sea-viewer"`. It opens with the dark teal `.sea-viewer` rules and an upright caption, and this [link](https://quarto.org) is teal.](../../images/mv-3.jpg){.panzoom css-class="sea-viewer" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
 ## 3. Code cell {#c3 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 ```{r}
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
 #| fig-cap: >-
 #|   A code cell with `panzoom: true`. It opens with the plum viewer, as case 1
@@ -118,6 +119,7 @@ plot(pressure, type = "b", pch = 19)
 ## 4. Class for one cell {#c4 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
 ```{r}
+#| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| panzoom:
 #|   css-class: sea-viewer
 #| fig-cap: >-

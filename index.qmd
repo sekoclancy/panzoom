@@ -92,7 +92,7 @@ invisible(dev.off())
 Give a markdown image the `.panzoom` class:
 
 ```markdown {.show-source}
-![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom}
+![A markdown image with the `.panzoom` class.](images/volcano.png){.panzoom fig-alt="Perspective plot of the volcano, shaded green"}
 ```
 
 ## Div
@@ -103,24 +103,26 @@ included:
 ````markdown
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
+#| fig-alt: "Heat map of the volcano's heights in terrain colors, from green to white"
 #| fig-cap: "A code cell's plot in a `.panzoom` div."
 
 image(volcano, col = terrain.colors(100))
 ```
 
-![A markdown image in a `.panzoom` div.](images/volcano.png)
+![A markdown image in a `.panzoom` div.](images/volcano.png){fig-alt="Perspective plot of the volcano, shaded green"}
 :::
 ````
 
 ::: {.panzoom layout-ncol="2"}
 ```{r}
+#| fig-alt: "Heat map of the volcano's heights in terrain colors, from green to white"
 #| echo: false
 #| fig-cap: "A code cell's plot in a `.panzoom` div."
 
 image(volcano, col = terrain.colors(100))
 ```
 
-![A markdown image in a `.panzoom` div.](images/volcano.png)
+![A markdown image in a `.panzoom` div.](images/volcano.png){fig-alt="Perspective plot of the volcano, shaded green"}
 :::
 
 ## Captions and galleries
@@ -131,6 +133,9 @@ swipe to step through them. Subfigures of one figure are a gallery
 automatically.
 
 ```{r}
+#| fig-alt:
+#|   - "Heat map of the volcano's heights in Viridis colors, from dark blue to yellow"
+#|   - "Perspective plot of the volcano, shaded green"
 #| panzoom:
 #|   group: volcano-views
 #| fig-cap:
@@ -165,6 +170,9 @@ whatever the window's shape. Click the highlighted panel, and the viewer opens
 right on it.
 
 ```{r}
+#| fig-alt: >-
+#|   Eight line plots of random walks side by side; the sixth, titled Click
+#|   here, is highlighted in yellow and pink
 #| panzoom:
 #|   fit: height
 #| fig-width: 16
@@ -194,6 +202,9 @@ Captions and descriptions keep their math, typeset as on the page, along with
 citations, cross-references and links.
 
 ```{r}
+#| fig-alt: >-
+#|   The bell curve of the standard normal density, with the area between -1 and
+#|   1 shaded grey
 #| fig-cap: "The standard normal density, $\\varphi(x)$."
 #| panzoom:
 #|   description: >-

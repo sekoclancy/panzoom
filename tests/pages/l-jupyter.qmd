@@ -36,6 +36,7 @@ def walk(ax, n=200, title=None):
 ## 1. panzoom on a cell {#c1 expect-open="panzoom" expect-hint="shown"}
 
 ```{python}
+#| fig-alt: "Line plot of a sine wave"
 #| panzoom: true
 #| fig-cap: "A cell with `panzoom: true`. It opens in panzoom with the controls hint."
 
@@ -47,6 +48,7 @@ plt.show()
 ## 2. Cell options {#c2 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
 
 ```{python}
+#| fig-alt: "Line plot of a cosine wave"
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
@@ -96,6 +98,9 @@ plt.show()
 ## 5. Plots in a group {#c5 expect-open="panzoom"}
 
 ```{python}
+#| fig-alt:
+#|   - "Line plot of a random walk"
+#|   - "Line plot of a random walk"
 #| panzoom:
 #|   group: walks
 #| fig-cap:
@@ -118,6 +123,7 @@ the image), not shrunk to the column as with knitr. A 25 × 2 in collage would b
 2,400 px wide on the page, cut off at the edge of the column. This one fits.
 
 ```{python}
+#| fig-alt: "A row of 8 small line plots of random walks"
 #| panzoom: true
 #| fig-cap: "An 8 × 0.8 inch collage of 8 panels."
 
@@ -146,6 +152,7 @@ plt.show()
 ## 8. Select with a class {#c8 expect-open="panzoom"}
 
 ```{python}
+#| fig-alt: "Line plot of a sine wave"
 #| classes: panzoom
 #| fig-cap: "A cell with `classes: panzoom`. It opens in panzoom."
 
@@ -156,6 +163,7 @@ plt.show()
 ## 9. lightbox only {#c9 expect-open="glightbox"}
 
 ```{python}
+#| fig-alt: "Line plot of a sine wave"
 #| lightbox: true
 #| fig-cap: "A cell with only `lightbox: true`. It opens in lightbox, not panzoom."
 
@@ -181,6 +189,7 @@ With Jupyter, lightbox ignores `#| lightbox:` with options under it anyway,
 unlike with knitr; `lightbox: true` works, as in case 9.
 
 ```{python}
+#| fig-alt: "Line plot of a sine wave"
 #| panzoom: true
 #| fig-cap: >-
 #|   A cell with both `panzoom` and `lightbox:` options. panzoom takes it and
@@ -200,6 +209,7 @@ formats](e-formats.html)), and ignores a cell's `fig-format`, so the cell
 switches the matplotlib output to svg itself, and back to png after.
 
 ```{python}
+#| fig-alt: "Line plot of a damped sine wave"
 #| panzoom: true
 #| fig-cap: >-
 #|   The plot from case 1, written as svg. It opens in panzoom and stays sharp

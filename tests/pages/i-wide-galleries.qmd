@@ -77,6 +77,9 @@ right arrow keys and dragging pan along the collage, and the previous and next
 buttons change collages.
 
 ```{r}
+#| fig-alt:
+#|   - "A row of 12 small line plots of random walks, each in its own color"
+#|   - "A row of 15 small line plots of random walks, each in its own color"
 #| panzoom:
 #|   group: collages
 #| fig-width: 25
@@ -96,6 +99,9 @@ The left and right arrow keys do nothing, since there is nowhere to go sideways,
 and the previous and next buttons change strips.
 
 ```{r}
+#| fig-alt:
+#|   - "A column of 8 small line plots of random walks"
+#|   - "A column of 8 small line plots of random walks"
 #| panzoom:
 #|   group: strips
 #| fig-width: 4
@@ -183,6 +189,7 @@ caption band changes height between them, and each collage stays clear of it.
 `fig-dpi: 48` only keeps the files small.
 
 ```{r}
+#| fig-alt: "A row of 24 small line plots of random walks, each in its own color"
 #| panzoom:
 #|   group: mixed-collages
 #| fig-width: 40
@@ -194,6 +201,7 @@ collage(n = 24)
 ```
 
 ```{r}
+#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
 #| panzoom:
 #|   group: mixed-collages
 #|   description: >-
@@ -217,6 +225,7 @@ its top, on its own, and the layout shows them at different heights on the page.
 
 ::: {.panzoom layout-ncol="2"}
 ```{r}
+#| fig-alt: "A column of 10 small line plots of random walks"
 #| fig-width: 4
 #| fig-height: 20
 #| fig-cap: "The long strip."
@@ -225,6 +234,7 @@ strip(seed = 6, n = 10)
 ```
 
 ```{r}
+#| fig-alt: "A column of 6 small line plots of random walks"
 #| fig-width: 3
 #| fig-height: 12
 #| fig-cap: >-

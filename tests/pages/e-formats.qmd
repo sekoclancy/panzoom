@@ -47,6 +47,7 @@ collage <- function(n = 12) {
 A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 
 ```{r}
+#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
@@ -63,6 +64,7 @@ collage(n = 12)
 The same collage written as svg. It opens in panzoom at screen height.
 
 ```{r}
+#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
@@ -77,6 +79,9 @@ collage(n = 12)
 A small plot written as webp. It opens in panzoom at its real size.
 
 ```{r}
+#| fig-alt: >-
+#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   key
 #| panzoom: true
 #| dev: agg_webp
 #| fig-ext: webp
@@ -91,6 +96,9 @@ filled.contour(volcano, color.palette = terrain.colors)
 The same plot written as svg. It opens in panzoom at its real size.
 
 ```{r}
+#| fig-alt: >-
+#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   key
 #| panzoom: true
 #| dev: svg
 #| fig-cap: "A standard-size plot as svg."
@@ -104,6 +112,9 @@ A plot written as both png and pdf. The page shows the png, which opens in
 panzoom.
 
 ```{r}
+#| fig-alt: >-
+#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   key
 #| panzoom: true
 #| dev: !expr c("png", "pdf")
 #| fig-cap: "png shown, pdf written alongside."
@@ -120,6 +131,9 @@ embeds the PDF in a small box with the browser's PDF viewer, which panzoom
 leaves alone.
 
 ```{r}
+#| fig-alt: >-
+#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   key, titled mu = 5, alpha = 0.05
 #| panzoom: true
 #| dev: !expr c("png", "cairo_pdf")
 #| fig-cap: "png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
@@ -138,6 +152,7 @@ limit of 16,383 px per side, so ragg can't write the file. The page shows a
 broken image, and clicking it opens an empty viewer.
 
 ```{r}
+#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
 #| panzoom: true
 #| fig-width: 100
 #| fig-height: 5

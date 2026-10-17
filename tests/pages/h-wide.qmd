@@ -116,6 +116,7 @@ A 25 × 2 inch collage. It opens in panzoom at screen height, and Shift+scroll
 moves sideways.
 
 ```{r}
+#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
@@ -129,6 +130,7 @@ collage(n = 12)
 The collage from case 1 with `fit: contain`. It opens whole, as a thin strip.
 
 ```{r}
+#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
 #| panzoom:
 #|   fit: contain
 #| fig-width: 25
@@ -144,6 +146,7 @@ A 16 × 4 inch figure, wide but readable whole. The size rule leaves it alone, s
 it opens whole.
 
 ```{r}
+#| fig-alt: "A row of 4 small line plots of random walks, each in its own color"
 #| panzoom: true
 #| fig-width: 16
 #| fig-height: 4
@@ -158,6 +161,7 @@ A 4 × 15 inch strip. It opens at screen width from its top, and Shift+scroll
 moves up and down.
 
 ```{r}
+#| fig-alt: "A column of 8 small line plots of random walks"
 #| panzoom: true
 #| fig-width: 4
 #| fig-height: 15
@@ -172,6 +176,7 @@ A 24 × 18 inch poster. It opens whole. Zoomed in, it extends past the screen
 both ways, and Shift+scroll moves sideways.
 
 ```{r}
+#| fig-alt: "A grid of 48 small line plots of random walks, in 6 rows of 8"
 #| panzoom: true
 #| fig-width: 24
 #| fig-height: 18
@@ -195,7 +200,7 @@ for (i in 1:48) {
 A 9:16 portrait photo. It isn't a strip, so it opens whole on any screen width.
 
 ```markdown {.show-source}
-![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30%}
+![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## 7. Small plot {#c7 expect-fit="contain" expect-scale="1"}
@@ -204,6 +209,7 @@ A 288 × 192 px plot. It opens at its real size, centered, instead of enlarged t
 fill the screen, and scrolling still zooms in, up to `max-zoom`.
 
 ```{r}
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
 #| fig-width: 3
 #| fig-height: 2
@@ -265,6 +271,7 @@ scrolls past a quarter of the screen and the description past a fifth, so the
 image keeps about half.
 
 ```{r}
+#| fig-alt: "A row of 6 small line plots of random walks, each in its own color"
 #| panzoom:
 #|   fit: height
 #|   description: >-

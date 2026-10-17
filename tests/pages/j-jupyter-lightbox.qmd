@@ -37,6 +37,7 @@ x = np.linspace(0, 4 * np.pi, 400)
 ## 1. Figure with a caption {#c1 expect-open="glightbox"}
 
 ```{python}
+#| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A Python figure with a caption. It opens in lightbox."
 
 plt.plot(x, np.sin(x))
@@ -105,6 +106,7 @@ plt.show()
 ## 6. panzoom on a cell {#c6 expect-open="glightbox"}
 
 ```{python}
+#| fig-alt: "Line plot of a cosine wave"
 #| panzoom: true
 #| fig-cap: >-
 #|   A cell with `panzoom: true`. The panzoom filter isn't loaded here, so the
@@ -117,7 +119,7 @@ plt.show()
 ## 7. Markdown image {#c7 expect-open="glightbox"}
 
 ```markdown {.show-source}
-![A markdown image alone in a paragraph. It opens in lightbox.](../../images/mv-0.jpg)
+![A markdown image alone in a paragraph. It opens in lightbox.](../../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## 8. Opt out of lightbox {#c8 expect-open="nothing"}

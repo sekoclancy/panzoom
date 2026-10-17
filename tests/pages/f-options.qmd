@@ -78,6 +78,7 @@ wave(k = 1)
 ## 3. No hint {#c3 expect-open="panzoom" expect-hint="hidden"}
 
 ```{r}
+#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 #| panzoom:
 #|   hint: false
 #| fig-cap: >-
@@ -90,6 +91,7 @@ wave(k = 3)
 ## 4. Default hint {#c4 expect-open="panzoom" expect-hint="shown"}
 
 ```{r}
+#| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
 #| panzoom: true
 #| fig-cap: >-
 #|   A cell with no hint option. It opens in panzoom with the controls hint at
@@ -101,6 +103,7 @@ wave(k = 4)
 ## 5. Zoom limit {#c5 expect-open="panzoom" expect-max-zoom="2"}
 
 ```{r}
+#| fig-alt: "Plot titled Wave 1: a sine curve with its area to the axis shaded"
 #| panzoom:
 #|   max-zoom: 2
 #| fig-cap: >-
@@ -113,6 +116,10 @@ wave(k = 1)
 ## 6. Looping gallery {#c6 expect-open="panzoom"}
 
 ```{r}
+#| fig-alt:
+#|   - "Plot titled Wave 1: a sine curve with its area to the axis shaded"
+#|   - "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#|   - "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 #| panzoom:
 #|   group: waves
 #| fig-cap:
