@@ -13,6 +13,11 @@
   Results axe can't decide ("incomplete", such as a code block that may
   scroll sideways without keyboard access) are listed as "needs review".
 
+  axe only checks that an image has alt text. A figure whose alt text is
+  just its caption again (Quarto copies the caption when there is no
+  `fig-alt`) is listed too, as "alt-repeats-caption": a screen reader reads
+  the same sentence twice, and neither describes the image.
+
   Only panzoom's own markup fails the check: the viewer, the link panzoom
   puts around each selected image, and the hidden description blocks.
   Everything else (the theme, Quarto's page layout, lightbox, the example
@@ -94,6 +99,20 @@ async function scan(page, include) {
   }, include, RULES, [OWNED, OWNED_SELF]);
 }
 
+// Figures in the page whose image's alt text is the caption again.
+function altRepeatsCaption() {
+  const norm = (t) => (t || "").replace(/\s+/g, " ").trim().replace(/\.$/, "").toLowerCase();
+  const hits = [];
+  for (const fig of document.querySelectorAll("main figure")) {
+    const img = fig.querySelector(":scope > div > img, :scope > div > a > img, :scope > p > img, :scope > p > a > img, :scope > img");
+    const cap = fig.querySelector(":scope > figcaption");
+    if (!img || !cap) continue;
+    const alt = img.getAttribute("alt");
+    if (alt && norm(alt) && norm(alt) === norm(cap.textContent)) hits.push(img.getAttribute("src").split("/").pop());
+  }
+  return hits;
+}
+
 function lines(where, violations) {
   return violations.map((v) =>
     `  ${v.review ? where + ", needs review" : where}: ${v.id} (${v.impact}), ${v.count}x: ${v.help}; e.g. ${v.example}`);
@@ -111,6 +130,10 @@ async function checkPage(browser, base, file, dark) {
   const found = await scan(page, null);
   const out = lines("PANZOOM", found.filter((v) => v.own));
   const notes = lines("page", found.filter((v) => !v.own));
+  const repeats = await page.evaluate(altRepeatsCaption);
+  if (repeats.length) {
+    notes.push(`  page: alt-repeats-caption, ${repeats.length}x: Alt text should describe the image, not repeat the caption; e.g. ${repeats[0]}`);
+  }
   let viewer = "no viewer";
   const img = await page.$(".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)");
   if (img) {
