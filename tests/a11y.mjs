@@ -10,6 +10,9 @@
   page's first selected image. Each violation is listed once per rule, with
   how many elements it hit and one of them.
 
+  Results axe can't decide ("incomplete", such as a code block that may
+  scroll sideways without keyboard access) are listed as "needs review".
+
   Only panzoom's own markup fails the check: the viewer, the link panzoom
   puts around each selected image, and the hidden description blocks.
   Everything else (the theme, Quarto's page layout, lightbox, the example
@@ -75,16 +78,16 @@ const OWNED_SELF = "a.panzoom-link";
 async function scan(page, include) {
   return page.evaluate(async (include, rules, owned) => {
     const r = await window.axe.run(include ? { include: [include] } : document,
-      { runOnly: { type: "rule", values: rules }, resultTypes: ["violations"] });
+      { runOnly: { type: "rule", values: rules }, resultTypes: ["violations", "incomplete"] });
     const out = [];
-    for (const v of r.violations) {
+    for (const v of r.violations.concat(r.incomplete.map((x) => ({ ...x, review: true })))) {
       const parts = { own: [], other: [] };
       for (const n of v.nodes) {
         const el = document.querySelector(n.target.join(" "));
         (el && (el.closest(owned[0]) || el.matches(owned[1])) ? parts.own : parts.other).push(n.target.join(" "));
       }
       for (const [k, nodes] of Object.entries(parts)) {
-        if (nodes.length) out.push({ own: k === "own", id: v.id, impact: v.impact, help: v.help, count: nodes.length, example: nodes[0] });
+        if (nodes.length) out.push({ own: k === "own" && !v.review, review: !!v.review, id: v.id, impact: v.impact, help: v.help, count: nodes.length, example: nodes[0] });
       }
     }
     return out;
@@ -93,7 +96,7 @@ async function scan(page, include) {
 
 function lines(where, violations) {
   return violations.map((v) =>
-    `  ${where}: ${v.id} (${v.impact}), ${v.count}x: ${v.help}; e.g. ${v.example}`);
+    `  ${v.review ? where + ", needs review" : where}: ${v.id} (${v.impact}), ${v.count}x: ${v.help}; e.g. ${v.example}`);
 }
 
 async function checkPage(browser, base, file, dark) {
@@ -115,7 +118,9 @@ async function checkPage(browser, base, file, dark) {
     await img.click();
     await page.waitForSelector(".panzoom-overlay.open", { timeout: 5000 }).catch(() => {});
     if (await page.$(".panzoom-overlay.open")) {
-      out.push(...lines("VIEWER", await scan(page, ".panzoom-overlay")));
+      const inViewer = await scan(page, ".panzoom-overlay");
+      out.push(...lines("VIEWER", inViewer.filter((v) => !v.review)));
+      notes.push(...lines("viewer", inViewer.filter((v) => v.review)));
       viewer = "viewer checked";
     } else {
       out.push("  viewer: DID NOT OPEN");

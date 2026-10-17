@@ -28,7 +28,7 @@ cd tests && npm test
 | `npm run loading` | Slow and failed images: loading message, late arrivals, error message | ~5 s |
 | `npm run nojs` | Every page with JavaScript off: each marked image links to its file | ~10 s |
 | `npm run contrast` | Text contrast in light and dark mode, and that the viewer follows the theme | ~7 s |
-| `npm run a11y` | axe-core at WCAG 2.2 AAA plus best practices, on each page and with the viewer open, light and dark. Only panzoom's own markup fails it; theme and content findings are listed | ~80 s |
+| `npm run a11y` | axe-core at WCAG 2.2 AAA plus best practices, on each page and with the viewer open, light and dark. Only panzoom's own markup fails it; theme and content findings, and results axe can't decide ("needs review"), are listed | ~80 s |
 | `npm run standalone` | Renders and checks the pages outside the site (self-contained, math, `panzoom:` forms) | ~25 s |
 | `npm run offline` | The standalone and site pages with no network | ~70 s |
 | `npm run bench` | Weight and speed against a saved baseline (`bench:save` saves a new one) | ~1 min |
