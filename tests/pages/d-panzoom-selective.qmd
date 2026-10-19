@@ -54,7 +54,7 @@ opens in panzoom with both typeset.
 
 ![Sub B](../../images/mv-2.jpg){#fig-md-b .panzoom fig-alt="A white lighthouse against a blue sky"}
 
-Two markdown subfigures with `.panzoom`, the first cross-referenced here (see @fig-md-a). They open in panzoom as a two-image gallery.
+Two markdown subfigures with `.panzoom` and a link to the heat map at the end of the page (see @fig-plain). They open in panzoom as a two-image gallery.
 :::
 ```
 
