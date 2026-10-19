@@ -1,0 +1,28 @@
+---
+title: "Rebinding the viewer's keys"
+subtitle: "panzoom: keys"
+filters:
+  - panzoom
+panzoom:
+  keys:
+    caption: k
+    hint: false
+    close: [Escape, q]
+---
+
+::: {.callout-note}
+## About this page
+
+This page **tests `keys:`**: k hides the caption instead of c, the hint key is
+switched off (h does nothing), and q closes the viewer as well as Esc. The hint
+line names k and "Esc or q", and says nothing about hiding itself. It is not
+part of the website.
+:::
+
+## 1. Marked figure {#c1 expect-open="panzoom"}
+
+![A marked figure; k hides this caption.](../../images/mv-0.jpg){.panzoom}
+
+## 2. Second figure {#c2 expect-open="panzoom"}
+
+![Another marked figure.](../../images/mv-1.jpg){.panzoom}

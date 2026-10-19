@@ -16,7 +16,7 @@
 -- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`, and the
 -- styling options below) become `data-panzoom-*` attributes on the cell's
 -- images; document options (`max-zoom`, `hint`, `caption`, `loop`, `fit`,
--- `css-class`) go to `window.PANZOOM_OPTIONS`; the document's color options
+-- `css-class`, `keys`) go to `window.PANZOOM_OPTIONS`; the document's color options
 -- (`backdrop`, `caption-background`, `caption-color`, `link-color`) set the
 -- viewer's CSS variables in a <style> rule. The styling options
 -- (`css-class` and the colors) also work for one cell, or for one markdown
@@ -141,6 +141,7 @@ local DOCUMENT_OPTIONS = {
   ["loop"] = { kind = "boolean" },
   ["fit"] = { kind = "enum", values = FITS },
   ["css-class"] = { kind = "string" },
+  ["keys"] = { kind = "keys" },
 }
 for _, pair in ipairs(COLORS) do DOCUMENT_OPTIONS[pair[1]] = { kind = "color" } end
 local CELL_OPTIONS = {
@@ -208,6 +209,102 @@ local function meta_value(v)
   return nil, nil, "a map"
 end
 
+-- The viewer's actions that `keys:` can rebind, in the order they are
+-- reported, and their default keys (as in panzoom.js). Keys are named as in
+-- KeyboardEvent.key: one character, or one of NAMED_KEYS.
+local ACTIONS = { "caption", "hint", "close", "reset", "zoom-in", "zoom-out" }
+local DEFAULT_KEYS = {
+  ["caption"] = { "c" },
+  ["hint"] = { "h" },
+  ["close"] = { "Escape" },
+  ["reset"] = { "0" },
+  ["zoom-in"] = { "+", "=" },
+  ["zoom-out"] = { "-" },
+}
+local NAMED_KEYS = { "Escape", "Backspace", "Delete", "Insert" }
+-- Keys the viewer keeps for itself: focus, buttons, panning, gallery
+-- steps, and scrolling a long caption. (Function keys pass through to the
+-- browser.)
+local FIXED_KEYS = { "Tab", "Enter", "Space", "ArrowLeft", "ArrowRight", "ArrowUp",
+  "ArrowDown", "PageUp", "PageDown", "Home", "End" }
+local KEY = "one character, " .. table.concat(NAMED_KEYS, ", ") .. ", a list of these, or `false`"
+
+-- Checks one key of an action; returns true if it can be used.
+local function check_key(action, key, where)
+  local ok = key ~= "" and not key:find("^%s$") and utf8.len(key) == 1
+  for _, k in ipairs(NAMED_KEYS) do
+    if key == k then ok = true end
+  end
+  if ok then return true end
+  local lines = { 'Field "' .. action .. '" has value ' .. (key == "" and '""' or key) .. ", which must instead be " .. KEY,
+    "\u{2139} The error happened in location " .. where .. "." }
+  local fixed = key:find("^F%d%d?$") ~= nil
+  for _, k in ipairs(FIXED_KEYS) do
+    if key == k then fixed = true end
+  end
+  if fixed then
+    table.insert(lines, "\u{2139} " .. key .. " already has its own use in the viewer.")
+  elseif key == "" then
+    table.insert(lines, '\u{2139} Markdown read the key as formatting: escape it with a backslash, as in "\\\\>".')
+  end
+  problem(lines)
+  return false
+end
+
+-- Checks the document's `keys:` map, and replaces it with the valid
+-- bindings, as action -> list of keys, or false for none. A key may serve
+-- only one action, counting the defaults of the actions left out.
+local function validate_keys(cfg)
+  local t = pandoc.utils.type(cfg.keys)
+  if t ~= "table" then
+    local value, text, shown = meta_value(cfg.keys)
+    bad_value("keys", shown, "a map of actions to keys", "panzoom:keys", text)
+    cfg.keys = nil
+    return
+  end
+  local keys = {}
+  for _, action in ipairs(names(cfg.keys)) do
+    local v = cfg.keys[action]
+    local where = "panzoom:keys:" .. action
+    if DEFAULT_KEYS[action] == nil then
+      unknown_key(action, ACTIONS, where)
+    elseif v == false then
+      keys[action] = false
+    elseif v == true then
+      bad_value(action, "true", KEY, where)
+    else
+      local list = pandoc.utils.type(v) == "List" and v or { v }
+      local good = {}
+      for _, x in ipairs(list) do
+        local key = pandoc.utils.stringify(x)
+        if check_key(action, key, where) then table.insert(good, key) end
+      end
+      if #good == #list then keys[action] = good end
+    end
+  end
+  local owner = {}
+  for _, action in ipairs(ACTIONS) do
+    local list = keys[action]
+    if list == nil then list = DEFAULT_KEYS[action] end
+    for _, key in ipairs(list or {}) do
+      local other = owner[key]
+      if other then
+        local lines = { 'Field "keys" gives the key ' .. key .. " to both " .. other .. " and " .. action,
+          "\u{2139} The error happened in location panzoom:keys." }
+        for _, a in ipairs({ other, action }) do
+          if keys[a] == nil then
+            table.insert(lines, "\u{2139} " .. key .. " is the default key of " .. a .. ": give " .. a .. " another key, or `false`.")
+          end
+        end
+        problem(lines)
+      else
+        owner[key] = action
+      end
+    end
+  end
+  cfg.keys = keys
+end
+
 -- Checks the document's `panzoom:` value, and removes the options that
 -- fail, so the rest of the filter uses their defaults until the report.
 local function validate_document(cfg)
@@ -228,6 +325,8 @@ local function validate_document(cfg)
     if spec == nil then
       unknown_key(key, known, "panzoom:" .. key)
       cfg[key] = nil
+    elseif spec.kind == "keys" then
+      validate_keys(cfg)
     else
       local value, text, shown = meta_value(v)
       if not check(key, spec, value, text, shown, "panzoom:" .. key) then cfg[key] = nil end
@@ -542,6 +641,10 @@ local function setup(meta)
     -- written, next to `panzoom-overlay` (GLightbox replaces its skin).
     if cfg["css-class"] ~= nil then
       options.cssClass = pandoc.utils.stringify(cfg["css-class"])
+    end
+    -- Already checked and made plain by validate_keys.
+    if cfg.keys ~= nil then
+      options.keys = cfg.keys
     end
     colors = color_rules(cfg)
   end

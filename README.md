@@ -50,7 +50,8 @@ See [Development](#development) to preview and publish.
 | Hide or show the hint line | | h |
 | Close | the × button, or click the background | Esc |
 
-Zoom goes up to `max-zoom`. While an image is larger than the screen
+The [`keys`](#keys) option changes the keys for zooming, resetting,
+hiding the caption or the hint line, and closing. Zoom goes up to `max-zoom`. While an image is larger than the screen
 (zoomed in, or a wide figure), the arrow keys and swipes pan it, and only
 the buttons change image.
 
@@ -162,6 +163,8 @@ panzoom:
   loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
   fit: auto       # auto, contain, height, or width (default auto, see Wide and tall figures)
   css-class: my-viewer  # an extra class on the viewer, for styling it (default none; see Styling)
+  keys:           # the viewer's keys (see Keys)
+    caption: k
   backdrop: black             # colors (see Styling): the layer over the page,
   caption-background: black   # the caption band,
   caption-color: white        # caption, description, and hint text,
@@ -193,6 +196,32 @@ property name max-zom is invalid
 ℹ The error happened in location panzoom:max-zom.
 ℹ Did you mean max-zoom?
 ```
+
+### Keys
+
+`keys` sets the document's viewer keys. Actions left out keep their
+defaults:
+
+```yaml
+panzoom:
+  keys:
+    caption: k          # one key
+    hint: false         # no key
+    close: [Escape, q]  # several keys
+```
+
+| Action | Default |
+|---|---|
+| `caption` (hide or show the caption and description) | `c` |
+| `hint` (hide or show the hint line) | `h` |
+| `close` | `Escape` |
+| `reset` (go back to the opening view) | `"0"` |
+| `zoom-in` | `["+", "="]` |
+| `zoom-out` | `"-"` |
+
+A key is one character, or `Escape`, `Backspace`, `Delete`, or `Insert`.
+Tab, Enter, Space, the arrows, Page Up, Page Down, Home, and End are fixed.
+A key can only do one action. The hint line names the keys in use.
 
 ### Captions
 

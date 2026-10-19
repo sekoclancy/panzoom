@@ -14,6 +14,13 @@ panzoom:
   caption-background: "#111"
   caption-color: "rgb(230, 230, 230)"
   link-color: "#9cf"
+  keys:
+    caption: k
+    hint: false
+    close: [Escape, q]
+    reset: "\\>"
+    zoom-in: "+"
+    zoom-out: ["-", "_"]
 expect-errors: []
 ---
 

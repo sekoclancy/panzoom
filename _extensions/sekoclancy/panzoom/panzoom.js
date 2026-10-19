@@ -7,7 +7,8 @@
   two-finger pinch zooms. This file adds the viewer around it: click image ->
   overlay, wheel / trackpad pinch zooms toward the cursor, double-click or 0
   resets to fit, +/- zoom, arrow keys pan, Esc / x / background click closes,
-  c hides or shows the caption and description, h the hint line.
+  c hides or shows the caption and description, h the hint line. The
+  document's `keys:` option changes these keys (see KEYS).
 
   Captions: the viewer shows the image's figure caption, taken from the
   rendered page (the nearest <figcaption>), so "Figure N:" prefixes and
@@ -49,8 +50,9 @@
 
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
   the document's `panzoom:` metadata): { maxZoom: 4, hint: true,
-  caption: true, loop: false, fit: "auto", cssClass: "" }; cssClass is
-  added to the viewer's classes, for styling it. A cell's `#| panzoom:` options
+  caption: true, loop: false, fit: "auto", cssClass: "", keys: {} }; cssClass
+  is added to the viewer's classes, for styling it, and keys rebinds the
+  viewer's keys (see KEYS). A cell's `#| panzoom:` options
   override maxZoom, hint, caption and fit per image, via
   `data-panzoom-max-zoom`, `data-panzoom-hint`, `data-panzoom-caption` and
   `data-panzoom-fit` on the <img>. The styling options of a cell or an
@@ -73,6 +75,13 @@
     panzoomCaptionColor: "--panzoom-fg",
     panzoomLinkColor: "--panzoom-link"
   };
+  // The default keys of the actions `keys:` can rebind (KeyboardEvent.key
+  // values; as in panzoom.lua). Tab, Enter, Space, the arrows, Page Up/Down,
+  // Home and End stay fixed.
+  var KEYS = {
+    caption: ["c"], hint: ["h"], close: ["Escape"], reset: ["0"],
+    "zoom-in": ["+", "="], "zoom-out": ["-"]
+  };
 
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
   var loadId = 0, loadTimer = null;
@@ -93,6 +102,8 @@
   // The c and h keys hide the caption (with the description) and the hint,
   // for as long as the page is open, so a gallery stays that way.
   var hideCaption = false, hideHint = false;
+  // The document's keys (see keys()): action -> list of keys.
+  var bindings = null;
   // The opening view fit() set ({ s, x, y }), to tell whether the reader
   // has zoomed or panned since.
   var opening = null;
@@ -113,6 +124,39 @@
       caption: flag(d.panzoomCaption, flag(o.caption, true)),
       loop: flag(o.loop, false)
     };
+  }
+
+  // Each action's keys: the document's `keys:` (a list, or false for
+  // none; panzoom.lua has checked them), else the defaults.
+  function keys() {
+    if (bindings) return bindings;
+    var o = (window.PANZOOM_OPTIONS || {}).keys || {};
+    bindings = {};
+    Object.keys(KEYS).forEach(function (a) {
+      bindings[a] = o[a] === false ? [] : Array.isArray(o[a]) ? o[a] : KEYS[a];
+    });
+    return bindings;
+  }
+
+  // The action a key does, or null.
+  function actionOf(key) {
+    var k = keys();
+    for (var a in k) if (k[a].indexOf(key) >= 0) return a;
+    return null;
+  }
+
+  // The hint line's text, naming the keys bound.
+  function hintText() {
+    var named = function (a) {
+      return keys()[a].map(function (k) { return k === "Escape" ? "Esc" : k; }).join(" or ");
+    };
+    var cap = named("caption"), hin = named("hint"), shut = named("close");
+    var parts = ["scroll to zoom", "drag to pan", "double-click to reset"];
+    if (cap && hin) parts.push(cap + " hides the caption, " + hin + " this line");
+    else if (cap) parts.push(cap + " hides the caption");
+    else if (hin) parts.push(hin + " hides this line");
+    if (shut) parts.push(shut + " to close");
+    return parts.join(" \u00b7 ");
   }
 
   // The <figcaption> of `fig` itself (not of a nested subfigure), as HTML.
@@ -274,11 +318,12 @@
     markScrollable();
   }
 
-  // c and h: hide or show the caption or the hint. The image gets the room
-  // the band gave up (or gives it back): an untouched view fits afresh, and
-  // a zoomed or panned one keeps its place, held within the new space.
-  function toggleFooter(key) {
-    if (key === "c") hideCaption = !hideCaption; else hideHint = !hideHint;
+  // c and h ("caption" and "hint"): hide or show the caption or the hint.
+  // The image gets the room the band gave up (or gives it back): an
+  // untouched view fits afresh, and a zoomed or panned one keeps its place,
+  // held within the new space.
+  function toggleFooter(which) {
+    if (which === "caption") hideCaption = !hideCaption; else hideHint = !hideHint;
     var refit = atOpening();
     showFooter();
     if (refit) fit(); else contain();
@@ -643,8 +688,7 @@
       '<div class="panzoom-footer panzoom-exclude">' +
       '<div class="panzoom-caption"></div>' +
       '<div class="panzoom-description"></div>' +
-      '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
-      'double-click to reset &middot; c hides the caption, h this line &middot; Esc to close' +
+      '<div class="panzoom-hint"><span class="panzoom-hint-keys"></span>' +
       '<span class="panzoom-hint-gallery"> &middot; previous/next buttons for other images</span></div>' +
       '</div>';
     document.body.appendChild(overlay);
@@ -658,6 +702,7 @@
     caption = overlay.querySelector(".panzoom-caption");
     desc = overlay.querySelector(".panzoom-description");
     hint = overlay.querySelector(".panzoom-hint");
+    hint.querySelector(".panzoom-hint-keys").textContent = hintText();
     closeBtn.addEventListener("click", close);
     img.addEventListener("panzoomchange", contain);
     prevBtn.addEventListener("click", function () { step(-1); });
@@ -753,12 +798,13 @@
     var cx = overlay.clientWidth / 2, cy = overlay.clientHeight / 2;
     var active = document.activeElement;
     var onControl = active !== overlay && overlay.contains(active);
+    var action = actionOf(e.key);
     if (e.key === "Tab") {
       // Focus trap: cycle through the viewer's own controls.
       var list = focusables(), i = list.indexOf(active), n = list.length;
       if (n) list[e.shiftKey ? (i <= 0 ? n - 1 : i - 1) : (i + 1) % n].focus();
     }
-    else if (e.key === "Escape") close();
+    else if (action === "close") close();
     // A focused caption or description panel takes the scrolling keys.
     else if (active.classList.contains("panzoom-scrollable") && scrollPanel(active, e)) return;
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
@@ -769,10 +815,10 @@
     else if (e.key === "ArrowRight") { if (overflow().any) panBy(0.1, 0); else step(1); }
     else if (e.key === "ArrowUp") panBy(0, -0.1);
     else if (e.key === "ArrowDown") panBy(0, 0.1);
-    else if (e.key === "0") resetView();
-    else if (e.key === "+" || e.key === "=") zoomAt(1.25, cx, cy);
-    else if (e.key === "-") zoomAt(0.8, cx, cy);
-    else if (e.key === "c" || e.key === "h") toggleFooter(e.key);
+    else if (action === "reset") resetView();
+    else if (action === "zoom-in") zoomAt(1.25, cx, cy);
+    else if (action === "zoom-out") zoomAt(0.8, cx, cy);
+    else if (action === "caption" || action === "hint") toggleFooter(action);
   }
   window.addEventListener("keydown", onKey, true);
   window.addEventListener("keyup", onKey, true);

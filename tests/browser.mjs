@@ -534,9 +534,21 @@ async function checkKeyboard(page, handle) {
   await settle(page);
   out.spaceOpens = (await state(page)).opened === "panzoom";
 
-  // c and h hide the caption (with the description) and the hint, and show
-  // them again; with both hidden the caption band goes, and the image,
-  // still at its opening view, fits the room it leaves.
+  // c and h (or the page's `keys:`) hide the caption (with the
+  // description) and the hint, and show them again; with both hidden the
+  // caption band goes, and the image, still at its opening view, fits the
+  // room it leaves. A key set to false does nothing, and c and h then
+  // stand in for it, doing nothing either.
+  const bound = await page.evaluate(() => (window.PANZOOM_OPTIONS || {}).keys || {});
+  const first = (a, dflt) => (bound[a] === false ? null : (bound[a] || [dflt])[0]);
+  const capKey = first("caption", "c"), hintKey = first("hint", "h");
+  const named = (a, dflt) => (bound[a] === false ? [] : bound[a] || dflt).map((k) => (k === "Escape" ? "Esc" : k)).join(" or ");
+  const hintText = await page.evaluate(() => document.querySelector(".panzoom-hint-keys").textContent);
+  const cap = named("caption", ["c"]), hin = named("hint", ["h"]), shut = named("close", ["Escape"]);
+  out.hintNamesKeys = (cap && hin ? hintText.includes(`${cap} hides the caption, ${hin} this line`)
+    : cap ? hintText.includes(`${cap} hides the caption`) && !hintText.includes("this line")
+    : hin ? hintText.includes(`${hin} hides this line`) && !hintText.includes("caption")
+    : !hintText.includes("hides")) && (shut ? hintText.includes(`${shut} to close`) : !hintText.includes("close"));
   const band = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay"), f = o.querySelector(".panzoom-footer");
     const shown = (sel) => o.querySelector(sel).offsetParent !== null;
@@ -547,22 +559,34 @@ async function checkKeyboard(page, handle) {
     };
   });
   const b0 = await band();
-  await page.keyboard.press("c");
+  await page.keyboard.press(capKey || "c");
   await settle(page);
   const b1 = await band();
-  await page.keyboard.press("h");
+  await page.keyboard.press(hintKey || "h");
   await settle(page);
   const b2 = await band();
-  await page.keyboard.press("c");
-  await page.keyboard.press("h");
+  await page.keyboard.press(capKey || "c");
+  await page.keyboard.press(hintKey || "h");
   await settle(page);
   const b3 = await band();
-  out.captionToggles = !b1.caption && !b1.desc && b3.caption === b0.caption && b3.desc === b0.desc;
-  out.hintToggles = !b2.hint && b3.hint === b0.hint;
-  out.bandGoes = !b2.band && b2.imgH >= b0.imgH - 1;
+  out.captionToggles = capKey
+    ? !b1.caption && !b1.desc && b3.caption === b0.caption && b3.desc === b0.desc
+    : b1.caption === b0.caption && b1.desc === b0.desc;
+  out.hintToggles = hintKey ? !b2.hint && b3.hint === b0.hint : b2.hint === b0.hint;
+  out.bandGoes = capKey && hintKey ? !b2.band && b2.imgH >= b0.imgH - 1 : true;
   await page.keyboard.press("Escape");
   await settle(page);
   out.escReturnsFocus = (await state(page)).opened !== "panzoom" && (await focusState()).onImage;
+  // Any other close key closes too.
+  out.otherKeysClose = true;
+  for (const k of (bound.close || []).filter((k) => k !== "Escape")) {
+    await control.focus();
+    await page.keyboard.press("Enter");
+    await settle(page);
+    await page.keyboard.press(k);
+    await settle(page);
+    if ((await state(page)).opened === "panzoom") out.otherKeysClose = false;
+  }
   return out;
 }
 
@@ -668,8 +692,10 @@ const KEYBOARD_CHECKS = [
   ["focusReturns", "Focus returns to the image"],
   ["spaceOpens", "Space on the image opens the viewer"],
   ["escReturnsFocus", "Esc closes and returns focus"],
-  ["captionToggles", "c hides the caption and description, and shows them again"],
-  ["hintToggles", "h hides the hint, and shows it again"],
+  ["otherKeysClose", "Close keys other than Esc (from keys:) close"],
+  ["hintNamesKeys", "The hint line names the caption, hint, and close keys"],
+  ["captionToggles", "c (or its keys: key) hides the caption and description, and shows them again"],
+  ["hintToggles", "h (or its keys: key) hides the hint, and shows it again"],
   ["bandGoes", "With both hidden, the caption band goes and the image keeps or gains room"],
 ];
 
