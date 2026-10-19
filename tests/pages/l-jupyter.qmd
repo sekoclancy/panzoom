@@ -220,3 +220,35 @@ plt.plot(x, np.exp(-x / 4) * np.sin(3 * x))
 plt.show()
 %config InlineBackend.figure_formats = ["png"]
 ```
+
+## 13. Colors for one cell {#c13 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
+
+```{python}
+#| fig-alt: "Line plot of a slowly rising sine wave"
+#| panzoom:
+#|   backdrop: "rgba(20, 60, 40, 0.92)"
+#|   caption-background: "#e8f3ea"
+#|   caption-color: "#173d24"
+#| fig-cap: >-
+#|   A cell with colors of its own, under `panzoom:`, as on [color
+#|   options](m-styling-options.html). It opens with a deep green backdrop and a
+#|   pale green caption band.
+
+plt.plot(x, np.sin(x) + x / 5)
+plt.show()
+```
+
+## 14. Class for one cell {#c14 expect-open="panzoom" expect-class="py-viewer"}
+
+```{python}
+#| fig-alt: "Line plot of a sine wave with a growing frequency"
+#| panzoom:
+#|   css-class: py-viewer
+#| fig-cap: >-
+#|   A cell with `css-class: py-viewer`, as on [styling with
+#|   CSS](n-css-class.html). It opens with that class on the viewer, for a
+#|   stylesheet to style.
+
+plt.plot(x, np.sin(x**2 / 4))
+plt.show()
+```
