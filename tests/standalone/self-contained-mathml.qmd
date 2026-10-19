@@ -1,0 +1,10 @@
+---
+title: "Self-contained page"
+subtitle: "with html-math-method: mathml"
+filters:
+  - panzoom
+embed-resources: true
+html-math-method: mathml
+---
+
+{{< include _self-contained.qmd >}}

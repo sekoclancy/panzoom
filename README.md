@@ -331,6 +331,10 @@ filters:
 embed-resources: true
 ```
 
+For math, use `html-math-method: mathml`, or `katex` with
+`self-contained-math: true`. MathJax loads its fonts from the internet even
+with `self-contained-math: true`.
+
 ### Styling
 
 Set the viewer's colors with the options, or with the CSS variables they

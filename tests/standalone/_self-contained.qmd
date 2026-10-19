@@ -10,7 +10,11 @@ It is not part of the website: `tests/standalone/` isn't in the project's
 `render:` list, so Quarto renders it as a plain document, finding the
 extension through the `_extensions` symlink next to it.
 `self-contained-math.qmd` also sets `self-contained-math: true`, embedding
-MathJax too, so math works without internet access.
+MathJax's script; MathJax still loads its fonts, and in Quarto 1.10 its
+speech worker, from the internet, and the worker never loads.
+`self-contained-katex.qmd` embeds KaTeX instead, and
+`self-contained-mathml.qmd` uses MathML, which needs no script; both work
+without internet access.
 :::
 
 The page has math of its own: $a^2 + b^2 = c^2$.
