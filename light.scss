@@ -1,4 +1,16 @@
 /*-- scss:defaults --*/
-// Light theme only (flatly).
-// Flatly's teal links (#18bc9c) are 2.4:1 on white; this darker teal is 5.3:1.
-$link-color: #117a65;
+// Light theme only (flatly). Colors are darkened to WCAG AAA contrast
+// (7:1), which axe checks (`quarto render --profile axe`, tests/a11y.mjs).
+// Flatly's teal links (#18bc9c) are 2.4:1 on white; this darker teal is 7.3:1.
+$link-color: #0e6252;
+// Captions, margin notes and asides (Quarto's secondary text): 5.9:1 before.
+$body-secondary: #4f5963;
+/*-- scss:rules --*/
+
+/* The "</> Code" button (4.7:1). */
+.code-tools-button { color: #52595f; }
+
+/* Links in captions are underlined, citations too (Quarto's `.citation a`
+   takes their underline off): color alone doesn't set them apart from the
+   caption (axe: link-in-text-block). */
+figcaption :is(a, .citation a) { text-decoration: underline; }

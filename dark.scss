@@ -1,3 +1,9 @@
+/*-- scss:defaults --*/
+// Colors are lightened to WCAG AAA contrast (7:1), as in light.scss.
+// Darkly's teal links (#00bc8c) are 6.5:1 on the background.
+$link-color: #00c593;
+// The navbar's light gray text is 5.5:1 on its blue; white is 7.2:1.
+$navbar-fg: #ffffff;
 /*-- scss:rules --*/
 
 /* Dark theme only (darkly). The .quarto-dark prefix, the class Quarto puts
@@ -22,3 +28,9 @@
 .quarto-dark .code-tools-button {
   color: var(--bs-body-color);
 }
+
+/* Dark mode: code in figure captions (5.9:1 on its background). */
+.quarto-dark figcaption :is(code, code.sourceCode) { color: #d1d1d1; }
+
+/* Links in captions are underlined, as in light.scss. */
+.quarto-dark figcaption :is(a, .citation a) { text-decoration: underline; }

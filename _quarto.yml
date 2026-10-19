@@ -17,12 +17,16 @@ format:
     theme:
       light: [flatly, light.scss]
       dark: [darkly, dark.scss]
+    # a11y-light and a11y-dark with their colors at WCAG AAA contrast (7:1).
     syntax-highlighting:
-      light: a11y-light
-      dark: a11y-dark
+      light: a11y-light-aaa.theme
+      dark: a11y-dark-aaa.theme
     # Long code lines wrap: a block that scrolls sideways can't be scrolled
     # from the keyboard (axe: scrollable-region-focusable).
     code-overflow: wrap
+    # The table of contents is named by its title (see the file).
+    template-partials:
+      - _partials/toc.html
 
 execute:
   echo: fenced
