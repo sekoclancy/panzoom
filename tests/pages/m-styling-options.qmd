@@ -22,10 +22,10 @@ image on the page gets them.
 
 ```yaml
 panzoom:
-  backdrop: "rgba(18, 52, 86, 0.92)"
-  caption-background: "#f4e9d8"
-  caption-color: "#3b2a1a"
-  link-color: "#a0361b"
+  backdrop: "rgba(18, 52, 86, 0.92)"  # deep blue
+  caption-background: "#f4e9d8"       # cream
+  caption-color: "#3b2a1a"            # dark brown
+  link-color: "#a0361b"               # rust
 ```
 
 Each option sets one of the viewer's CSS variables; [styling with
