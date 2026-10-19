@@ -66,10 +66,14 @@ const VIEWPORT = { width: 1280, height: 900 };
 const KNOWN_ERRORS = [
   { text: /katex is not defined/, offline: true,
     why: "Quarto's KaTeX setup, with KaTeX's CDN blocked" },
+  { text: /sre\/speech-worker\.js/, page: /^self-contained-math$/,
+    why: "MathJax 4's speech worker, which self-contained-math (Quarto 1.10) doesn't embed" },
 ];
 const KNOWN_FAILED_REQUESTS = [
   { url: /^file:\/\/\/output\/chtml\/fonts\/woff-v2\//, page: /^self-contained-math$/,
     why: "MathJax's web fonts, which self-contained-math doesn't embed" },
+  { url: /^file:\/\/\/sre\/speech-worker\.js/, page: /^self-contained-math$/,
+    why: "MathJax 4's speech worker, which self-contained-math (Quarto 1.10) doesn't embed" },
 ];
 
 // Splits a page's errors or failed requests into the expected ones (with
@@ -737,7 +741,13 @@ async function checkPage(browser, base, file) {
     ? "file://" + file
     : base + path.relative(ROOT, file).split(path.sep).join("/");
   await page.goto(url, { waitUntil: "load" });
-  await page.evaluate(() => window.MathJax?.startup?.promise); await settle(page);
+  // MathJax 4 in a self-contained page (Quarto 1.10) never finishes
+  // starting: its speech worker can't load (file:///sre/speech-worker.js).
+  // Wait at most 10 s, and report it.
+  const mathjaxStalled = await page.evaluate(() => Promise.race([
+    Promise.resolve(window.MathJax?.startup?.promise).then(() => false),
+    new Promise((r) => setTimeout(() => r(true), 10000))]));
+  await settle(page);
 
   // How the page shows its own math, to compare the viewer's with: not the
   // viewer's, nor the hidden math panzoom adds for descriptions, unless the
@@ -1160,7 +1170,7 @@ async function checkPage(browser, base, file) {
   }
 
   await page.close();
-  const network = { url: url.startsWith("file:") ? "file://" : "http", external: [...external], failed: [...failed], offline: OFFLINE, pageTeX };
+  const network = { url: url.startsWith("file:") ? "file://" : "http", external: [...external], failed: [...failed], offline: OFFLINE, pageTeX, mathjaxStalled };
   fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen }, null, 2));
   fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen));
   return { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen };
@@ -1260,7 +1270,8 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       const k = KNOWN_FAILED_REQUESTS.find((k) => k.url.test(u) && (!k.page || k.page.test(path.basename(file, ".html"))));
       return `- \`${u}\`` + (k ? ` (expected: ${k.why})` : u.startsWith("external: ") ? " (another site: not counted)" : " **(unexpected)**");
     }), "",
-    `Math on the page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"}`, "",
+    `Math on the page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"}`,
+    ...(network.mathjaxStalled ? ["MathJax's startup never finished (its speech worker failed to load); waited 10 s."] : []), "",
     `Console and page errors: ${errors.length ? "" : "none"}`,
     ...errors.map((e) => {
       const k = KNOWN_ERRORS.find((k) => k.text.test(e) && (!k.page || k.page.test(path.basename(file, ".html"))) && (!k.offline || OFFLINE));
@@ -1525,6 +1536,7 @@ try {
     const withMath = results.filter(hasMath);
     if (withMath.length) extra.push((withMath.every((r) => mathOk(r, network.pageTeX)) ? "math ok" : "MATH FAILED") +
       ` (page: ${network.pageTeX ? TEX_LABEL[network.pageTeX] : "none"})`);
+    if (network.mathjaxStalled) extra.push("MathJax startup stalled");
     const reqs = sortOut(network.failed.filter((u) => !u.startsWith("external: ")), KNOWN_FAILED_REQUESTS, "url", name);
     const externalFailed = network.failed.length - reqs.expected.length - reqs.unexpected.length;
     if (reqs.unexpected.length) extra.push(`${reqs.unexpected.length} FAILED REQUESTS`);
