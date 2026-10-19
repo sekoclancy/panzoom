@@ -1,0 +1,15 @@
+# Accessibility check in Quarto itself (Quarto 1.10 or later), into its own
+# folder so it never reaches the published site in docs/:
+#   quarto render --profile axe     (or quarto preview --profile axe)
+# Each page then shows axe's violations at WCAG 2.2 AAA plus axe's best
+# practices. The viewer only exists once an image is opened, so this never
+# sees it; tests/a11y.mjs checks it.
+project:
+  output-dir: _site-axe
+
+format:
+  html:
+    axe:
+      output: document
+      standard: wcag22aaa
+      best-practice: true

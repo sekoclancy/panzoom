@@ -23,9 +23,10 @@
   Everything else (the theme, Quarto's page layout, lightbox, the example
   content) is listed as a page finding and doesn't fail it.
 
-  The same check can run in Quarto itself (`axe: standard: wcag22aaa`,
-  `best-practice: true`) from a newer Quarto than 1.9; Quarto's check never
-  sees the viewer, which only exists once an image is opened.
+  The same check runs in Quarto itself with `quarto render --profile axe`
+  (_quarto-axe.yml: `axe: standard: wcag22aaa`, `best-practice: true`,
+  Quarto 1.10 or later), but never sees the viewer, which only exists once
+  an image is opened.
 
   Usage: render first, then from tests/:
     npm run a11y                                  # every test page and index

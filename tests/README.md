@@ -43,6 +43,14 @@ quarto render tests/pages/d-panzoom-selective.qmd                 # from the rep
 node browser.mjs ../docs/tests/pages/d-panzoom-selective.html     # from tests/
 ```
 
+Quarto's own axe check (Quarto 1.10 or later) shows each page's
+violations at WCAG 2.2 AAA plus best practices on the page itself. It
+renders into `_site-axe/`, not `docs/`, and never sees the open viewer:
+
+```bash
+quarto preview --profile axe    # or quarto render --profile axe
+```
+
 ## Setup
 
 | Need | For | Install |
