@@ -71,3 +71,16 @@ plot(pressure, type = "b", pch = 19)
 
 plot(cars, pch = 19)
 ```
+
+## 5. Gallery with mixed colors {#c5 expect-open="panzoom" expect-steps="true"}
+
+A gallery of three images, two with colors of their own. Each image shows its
+own colors while it is open, and the next or previous image doesn't keep them.
+
+```markdown {.show-source}
+![The first of three images in a gallery, with colors of its own. It opens with a deep green backdrop and a pale green caption band.](../../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" fig-alt="A white lighthouse against a blue sky" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
+
+![The second image, with no colors of its own. It shows the blue and cream colors set on this page, not the first image's green.](../../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
+
+![The third image, with colors of its own again. It shows a dark red backdrop and a peach caption band.](../../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" caption-background="#fbe9dc" caption-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-overlay="rgba(70, 25, 15, 0.92)" expect-band="rgb(251, 233, 220)"}
+```
