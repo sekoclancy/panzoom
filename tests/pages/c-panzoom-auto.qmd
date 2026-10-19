@@ -150,10 +150,10 @@ plot(cars)
 plot(mtcars)
 ```
 
-## 9. Image in a link {#c9 expect-open="nothing"}
+## 9. Image in a link {#c9 expect-open="navigation"}
 
-An image inside a link. Quarto turns it into a figure and drops the link, and
-`match: auto` skips it, as lightbox does, so clicking it does nothing.
+An image inside a link. panzoom leaves images in links alone, and keeps lightbox
+from dropping the link, so clicking it follows the link.
 
 ```markdown {.show-source}
 [![Linked image](../../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}](https://quarto.org){aria-label="Quarto website"}

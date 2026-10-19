@@ -148,8 +148,7 @@ plot(mtcars)
 
 ## 9. Image in a link {#c9 expect-open="nothing"}
 
-An image inside a link. Quarto turns it into a figure and drops the link, so
-clicking it does nothing.
+An image inside a link. Lightbox drops the link, so clicking it does nothing.
 
 ```markdown {.show-source}
 [![Linked image](../../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}](https://quarto.org){aria-label="Quarto website"}

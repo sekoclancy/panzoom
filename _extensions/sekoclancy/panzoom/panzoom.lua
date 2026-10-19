@@ -446,17 +446,20 @@ local function sole_image(block)
   end
 end
 
--- Images inside links are never marked, so the link keeps working. But an
--- image the author marked `.panzoom` inside a link gets `.nolightbox`:
+-- Images inside links are never marked, so the link keeps working. But
 -- with Quarto's lightbox on, Quarto drops the link around a captioned
--- image (Quarto 1.9 bug), and the image would then open the viewer instead
--- of following its link. `.nolightbox` keeps Quarto away, and the link.
+-- image (Quarto 1.9 and 1.10 bug), and an image the author marked
+-- `.panzoom` would then open the viewer instead of following its link. So
+-- such an image gets `.nolightbox`, which keeps Quarto away, and the link;
+-- in auto mode, where panzoom takes the figures lightbox would, so does
+-- any image in a link (not one marked `.lightbox`, which is Quarto's).
 local function keep_link(link)
   if off then return nil end
   local changed = false
   link.content = link.content:walk({
     Image = function(img)
-      if has(img.classes, "panzoom") and not has(img.classes, "nolightbox") then
+      local ours = has(img.classes, "panzoom") or (match_auto and not has(img.classes, "lightbox"))
+      if ours and not has(img.classes, "nolightbox") then
         img.classes:insert("nolightbox")
         changed = true
         return img
