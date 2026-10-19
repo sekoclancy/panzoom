@@ -31,6 +31,11 @@ a.panzoom-link:focus-visible { outline: none; }
   max-width: none; max-height: none; will-change: transform; cursor: grab;
 }
 .panzoom-overlay.dragging img { cursor: grabbing; }
+/* The backdrop pans too (Panzoom sets `grab` on it inline, hence
+   !important); the counter, status and caption band don't, so they keep
+   the arrow (text and links in the caption have their own cursors). */
+.panzoom-overlay.dragging { cursor: grabbing !important; }
+.panzoom-counter, .panzoom-status, .panzoom-footer { cursor: default; }
 /* will-change keeps panning large bitmaps smooth, but makes the browser
    scale one cached bitmap of an svg, which blurs it when zoomed in. */
 .panzoom-overlay img.panzoom-vector { will-change: auto; }
