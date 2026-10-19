@@ -32,7 +32,10 @@
 
   Keyboard: marked images are focusable buttons that open on Enter or Space.
   The open viewer takes focus, keeps Tab inside it, and gives focus back to
-  what had it before when it closes. A caption or description too long for
+  what had it before when it closes. That image shows its focus ring only
+  if the viewer was opened from the keyboard: opened with the mouse or a
+  tap, the ring stays hidden until the next key press, even when Esc
+  closed it. A caption or description too long for
   its panel is a Tab stop too, and the arrows, Page Up/Down, Home, End and
   Space scroll it while it has focus.
 
@@ -86,6 +89,8 @@
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
   var loadId = 0, loadTimer = null;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
+  // Whether the viewer was opened with the mouse or a tap (see close()).
+  var byPointer = false;
   var bouncing = false, bounceTimer = null;
   // Where the image's center is held, on screen, along an axis where it is
   // smaller than the screen ({ x, y }; null: centered). Only zooming sets
@@ -588,10 +593,11 @@
     return true;
   }
 
-  function open(el, point) {
+  function open(el, point, pointer) {
     if (!overlay) build();
     clicked = point ? { el: el, fx: point.fx, fy: point.fy } : null;
     returnFocus = document.activeElement;
+    byPointer = !!pointer;
     gallery = galleryOf(el);
     overlay.classList.add("open");
     // Stop the page scrolling; keep the scrollbar's space, if it has one,
@@ -621,9 +627,17 @@
     document.documentElement.style.scrollbarGutter = "";
     press = null;
     gallery = [];
+    // Opened with the mouse or a tap: no focus ring on the image focus
+    // returns to, though a key (Esc) may have closed the viewer, until the
+    // next key press.
+    if (byPointer) document.documentElement.classList.add("panzoom-no-ring");
     if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
     returnFocus = null;
   }
+  // Capture phase, before the key moves focus (Tab).
+  document.addEventListener("keydown", function () {
+    document.documentElement.classList.remove("panzoom-no-ring");
+  }, true);
 
   // The controls Tab moves between: visible, enabled buttons, caption links,
   // and a caption or description panel that scrolls (see markScrollable()).
@@ -850,10 +864,12 @@
     e.stopPropagation();
     var r = t.getBoundingClientRect();
     var frac = function (v) { return Math.min(1, Math.max(0, v)); };
+    // A click from the mouse or a tap counts one or more clicks in
+    // `detail`; one made from the keyboard, none.
     open(t, r.width && r.height ? {
       fx: frac((e.clientX - r.left) / r.width),
       fy: frac((e.clientY - r.top) / r.height)
-    } : null);
+    } : null, e.detail > 0);
   }, true);
 
   // Enter or Space on a focused marked image opens it, like a button.

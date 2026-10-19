@@ -581,6 +581,21 @@ async function checkKeyboard(page, handle) {
   await page.keyboard.press("Escape");
   await settle(page);
   out.escReturnsFocus = (await state(page)).opened !== "panzoom" && (await focusState()).onImage;
+  // The image's focus ring: shown after a viewer opened from the keyboard;
+  // hidden after one opened with the mouse, though Esc closed it, until the
+  // next key press.
+  const ring = () => page.evaluate(() => {
+    const a = document.activeElement, img = a && (a.matches("img") ? a : a.querySelector("img"));
+    return !!img && getComputedStyle(img).outlineStyle !== "none";
+  });
+  out.ringAfterKeyboard = await ring();
+  await handle.click();
+  await settle(page);
+  await page.keyboard.press("Escape");
+  await settle(page);
+  const quiet = (await focusState()).onImage && !(await ring());
+  await page.keyboard.press("Shift");
+  out.noRingAfterMouse = quiet && (await ring());
   // Any other close key closes too.
   out.otherKeysClose = true;
   for (const k of (bound.close || []).filter((k) => k !== "Escape")) {
@@ -696,6 +711,8 @@ const KEYBOARD_CHECKS = [
   ["focusReturns", "Focus returns to the image"],
   ["spaceOpens", "Space on the image opens the viewer"],
   ["escReturnsFocus", "Esc closes and returns focus"],
+  ["ringAfterKeyboard", "Opened from the keyboard, the image shows its focus ring after Esc"],
+  ["noRingAfterMouse", "Opened with the mouse, no focus ring after Esc until the next key press"],
   ["otherKeysClose", "Close keys other than Esc (from keys:) close"],
   ["hintNamesKeys", "The hint line names the caption, hint, and close keys"],
   ["captionToggles", "c (or its keys: key) hides the caption and description, and shows them again"],

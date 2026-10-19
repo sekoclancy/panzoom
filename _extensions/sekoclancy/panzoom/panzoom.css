@@ -8,6 +8,13 @@ a.panzoom-link:focus-visible img {
   outline: 3px solid #2780e3; outline-offset: 2px;
 }
 a.panzoom-link:focus-visible { outline: none; }
+/* No ring on the image focus returns to after a viewer opened with the
+   mouse or a tap (panzoom.js), until the next key press. */
+.panzoom-no-ring .panzoom img:not(.nopanzoom):focus-visible,
+.panzoom-no-ring img.panzoom:not(.nopanzoom):focus-visible,
+.panzoom-no-ring a.panzoom-link:focus-visible img {
+  outline: none;
+}
 
 /* As Quarto's lightbox: the page shows through a dark overlay, and the
    caption takes the page's own colors, so it follows a light or dark
