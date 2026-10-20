@@ -195,7 +195,7 @@ A markdown image in the margin. It opens in panzoom, as any other block image
 does.
 
 ```markdown {.show-source}
-![A markdown image in the margin. It opens in panzoom.](../../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, placed in the page margin.](../../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
 ## 11. Inline image {#c11 expect-open="nothing"}

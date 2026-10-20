@@ -190,7 +190,7 @@ A markdown image with `.panzoom` in the margin. It opens in panzoom, as any
 other marked image does.
 
 ```markdown {.show-source}
-![A markdown image with `.panzoom` in the margin. It opens in panzoom.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, placed in the page margin.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
 ## 11. Inline image {#c11 expect-open="panzoom" expect-caption="none"}

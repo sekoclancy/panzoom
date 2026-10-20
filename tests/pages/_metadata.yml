@@ -1,0 +1,6 @@
+# A table of contents on every example page, on the left so it stays clear
+# of margin figures (case 10), which go on the right.
+format:
+  html:
+    toc: true
+    toc-location: left
