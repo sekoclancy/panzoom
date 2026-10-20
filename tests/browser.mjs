@@ -828,6 +828,8 @@ async function checkPage(browser, base, file) {
           expectFormat: sec.dataset.expectFormat || null,
           // Styling checks: on the image itself, or on its case.
           expectClass: img.dataset.expectClass || sec.dataset.expectClass || null,
+          // A class the viewer must not have, e.g. one the image before set.
+          expectNoClass: img.dataset.expectNoClass || sec.dataset.expectNoClass || null,
           expectOverlay: img.dataset.expectOverlay || sec.dataset.expectOverlay || null,
           expectBand: img.dataset.expectBand || sec.dataset.expectBand || null,
           // `expect-steps="true"`: a gallery stepped through (see checkPage).
@@ -1184,7 +1186,7 @@ async function checkPage(browser, base, file) {
         await settle(page);
       }
       const x = imgs[order[k]], s = await state(page);
-      r.styleSteps.push({ n: x.n, counter: s.counter, overlayBg: s.overlayBg, bandBg: s.bandBg,
+      r.styleSteps.push({ n: x.n, counter: s.counter, overlayBg: s.overlayBg, bandBg: s.bandBg, overlayClass: s.overlayClass,
         ok: s.counter === `${order[k] + 1} / ${imgs.length}` && optionsOk({ ...x, ...s, opened: "panzoom" }) });
     }
     await closeAll(page);
@@ -1260,13 +1262,14 @@ function optionsOk(r) {
   if (r.expectMaxZoom && !(Math.abs((r.maxScaleReached ?? 0) - r.expectMaxZoom) < 0.01)) return false;
   if (r.expectFormat && r.format !== r.expectFormat) return false;
   if (r.expectClass && !(r.overlayClass || "").split(/\s+/).includes(r.expectClass)) return false;
+  if (r.expectNoClass && (r.overlayClass || "").split(/\s+/).includes(r.expectNoClass)) return false;
   if (r.expectOverlay && r.overlayBg !== r.expectOverlay) return false;
   if (r.expectBand && r.bandBg !== r.expectBand) return false;
   return true;
 }
 function hasOptionChecks(r) {
   return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom || r.expectFormat ||
-    r.expectClass || r.expectOverlay || r.expectBand);
+    r.expectClass || r.expectNoClass || r.expectOverlay || r.expectBand);
 }
 
 // An image with a description shows it in the viewer.
@@ -1396,6 +1399,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         r.expectMaxZoom && `zoom stops at ${r.expectMaxZoom}`,
         r.expectFormat && `as ${r.expectFormat}`,
         r.expectClass && `viewer class ${r.expectClass}`,
+        r.expectNoClass && `no viewer class ${r.expectNoClass}`,
         r.expectOverlay && `backdrop ${r.expectOverlay}`,
         r.expectBand && `caption band ${r.expectBand}`,
       ].filter(Boolean).join(", ");
@@ -1405,7 +1409,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         r.expectHint && `hint ${r.hintShown ? "shown" : "hidden"}`,
         r.expectMaxZoom && `zoom stopped at ${r.maxScaleReached === null || r.maxScaleReached === undefined ? "?" : +r.maxScaleReached.toFixed(3)}`,
         r.expectFormat && `as ${r.format}`,
-        r.expectClass && `classes "${r.overlayClass}"`,
+        (r.expectClass || r.expectNoClass) && `classes "${r.overlayClass}"`,
         r.expectOverlay && `backdrop ${r.overlayBg}`,
         r.expectBand && `caption band ${r.bandBg}`,
       ].filter(Boolean).join(", ");
@@ -1594,7 +1598,7 @@ try {
       extra.push(ok ? "style steps ok" : "STYLE STEPS FAILED");
       fs.appendFileSync(path.join(outDir, "report.md"), ["", "## Styles while stepping through a gallery", "",
         ...stepped.flatMap((r) => [`Case ${r.case}, first image to last and back:`, "",
-          ...r.styleSteps.map((s) => `- image ${s.n} (${s.counter}): backdrop ${s.overlayBg}, band ${s.bandBg}: ${s.ok ? "yes" : "**NO**"}`), ""])].join("\n"));
+          ...r.styleSteps.map((s) => `- image ${s.n} (${s.counter}): backdrop ${s.overlayBg}, band ${s.bandBg}, classes "${s.overlayClass}": ${s.ok ? "yes" : "**NO**"}`), ""])].join("\n"));
     }
     const shift = results.filter((r) => r.shiftScroll && r.opened === "panzoom");
     if (shift.length) extra.push(shift.every((r) => r.shiftScrollOk) ? "shift-scroll ok" : "SHIFT-SCROLL FAILED");
