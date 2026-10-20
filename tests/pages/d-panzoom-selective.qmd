@@ -13,7 +13,7 @@ panzoom:
 
 ## About
 
-Only images with the `.panzoom` class or the `#| classes: panzoom` cell option
+Only images with the `.panzoom` class or the `#| panzoom: true` cell option
 open in panzoom. The document doesn't turn lightbox on, so it applies only where
 a cell asks for it with `#| lightbox:` options (cases 6 and 7). The [lightbox
 version](a-lightbox.html) has the same cases without panzoom. Compare each case
@@ -60,6 +60,12 @@ Two markdown subfigures with `.panzoom` and a link to the heat map at the end of
 
 ## 5. R subfigures {#c5 expect-open="panzoom"}
 
+One R cell with `classes: panzoom` and two plots, made subfigures by
+`fig-subcap`. Either one opens in panzoom, in a two-image gallery. The other
+cases mark cells with `#| panzoom: true`, the usual way. `classes: panzoom` works
+too, since Quarto puts the class on the cell, and panzoom takes every image
+inside an element with that class.
+
 ```{r}
 #| label: fig-r-sub
 #| fig-cap: >-
@@ -81,9 +87,9 @@ plot(cars)
 ```{r}
 #| fig-alt: "Scatter plot of ten random points"
 #| fig-cap: >-
-#|   An R cell with `classes: panzoom`, with lightbox options too. It opens in
+#|   An R cell with `panzoom: true`, with lightbox options too. It opens in
 #|   panzoom on its own, and its lightbox options are dropped.
-#| classes: panzoom
+#| panzoom: true
 #| lightbox:
 #|   group: r-graph
 #|   description: Ten random points.
@@ -109,10 +115,10 @@ plot(cars)
 #| fig-alt:
 #|   - "Scatterplot matrix of the mtcars data, each variable plotted against every other"
 #|   - "Scatter plot of stopping distance against speed for 50 cars"
-#| classes: panzoom
+#| panzoom: true
 #| fig-cap:
 #|   - >-
-#|     One R cell with `classes: panzoom`, two plots, and lightbox options.
+#|     One R cell with `panzoom: true`, two plots, and lightbox options.
 #|     panzoom drops the lightbox options, so this plot opens in panzoom on its
 #|     own.
 #|   - "The second plot of the cell. It also opens in panzoom on its own."

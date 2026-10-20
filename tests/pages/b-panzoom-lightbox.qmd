@@ -15,7 +15,7 @@ panzoom:
 ## About
 
 lightbox is on for the whole page, and only images marked with the `.panzoom`
-class or the `#| classes: panzoom` cell option open in panzoom. Every other
+class or the `#| panzoom: true` cell option open in panzoom. Every other
 image opens in lightbox. The same cases open in lightbox alone on the [lightbox
 page](a-lightbox.html), and the same markup without lightbox is on [panzoom on
 marked images only](d-panzoom-selective.html). The hint line is off.
@@ -85,20 +85,20 @@ Two markdown subfigures with `.panzoom` and a link to the heat map at the end of
 
 ## 5. R subfigures {#c5 expect-open="panzoom"}
 
-One R cell with `classes: panzoom` and two plots, made subfigures by
+One R cell with `panzoom: true` and two plots, made subfigures by
 `fig-subcap`. Either one opens in panzoom, in a two-image gallery.
 
 ```{r}
 #| label: fig-r-sub
 #| fig-cap: >-
-#|   Two subfigures from one R cell with `classes: panzoom`. They open in
+#|   Two subfigures from one R cell with `panzoom: true`. They open in
 #|   panzoom as a two-image gallery.
 #| fig-subcap: ["Pressure", "Cars"]
 #| fig-alt:
 #|   - "Scatter plot of vapor pressure rising steeply with temperature"
 #|   - "Scatter plot of stopping distance against speed for 50 cars"
 #| layout-ncol: 2
-#| classes: panzoom
+#| panzoom: true
 
 plot(pressure)
 plot(cars)
@@ -107,15 +107,15 @@ plot(cars)
 ## 6. Cell options {#c6 expect-open="panzoom glightbox"}
 
 Two R cells in the lightbox group `r-graph`. The first also has
-`classes: panzoom`, so it opens in panzoom on its own, without the lightbox
+`panzoom: true`, so it opens in panzoom on its own, without the lightbox
 description. The second opens in lightbox, alone in its group.
 
 ```{r}
 #| fig-alt: "Scatter plot of ten random points"
 #| fig-cap: >-
-#|   An R cell with `classes: panzoom`, with lightbox options too. It opens in
+#|   An R cell with `panzoom: true`, with lightbox options too. It opens in
 #|   panzoom on its own.
-#| classes: panzoom
+#| panzoom: true
 #| lightbox:
 #|   group: r-graph
 #|   description: Ten random points.
@@ -135,7 +135,7 @@ plot(cars)
 
 ## 7. Two plots in one cell {#c7 expect-open="panzoom"}
 
-One R cell with `classes: panzoom`, two plots, and the lightbox options
+One R cell with `panzoom: true`, two plots, and the lightbox options
 `group: cars` and a description for each plot. panzoom drops the lightbox
 options, so each plot opens in panzoom on its own, without a description.
 
@@ -143,10 +143,10 @@ options, so each plot opens in panzoom on its own, without a description.
 #| fig-alt:
 #|   - "Scatterplot matrix of the mtcars data, each variable plotted against every other"
 #|   - "Scatter plot of stopping distance against speed for 50 cars"
-#| classes: panzoom
+#| panzoom: true
 #| fig-cap:
 #|   - >-
-#|     One R cell with `classes: panzoom`, two plots, and lightbox options.
+#|     One R cell with `panzoom: true`, two plots, and lightbox options.
 #|     panzoom drops the lightbox options, so this plot opens in panzoom on its
 #|     own.
 #|   - "The second plot of the cell. It also opens in panzoom on its own."
