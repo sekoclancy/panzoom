@@ -41,14 +41,14 @@ A caption is copied from the page, so whatever Quarto renders there comes
 through to the viewer. A description is rendered with the page too, in a hidden
 block the viewer copies, so its citations resolve, its cross-references get
 numbers, and a work cited only in a description is still listed under
-References. In a caption, lightbox shows a citation as raw `[@key]`
-([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
+[References](#references). In a caption, lightbox shows a citation as raw
+`[@key]` ([case 1](#c1)).
 
-Cases 6 and 7 set the per-cell `caption` and `description` options. Case 9's
-description is longer than its panel, so the panel scrolls, from the keyboard
-too.
+[Case 6](#c6) and [case 7](#c7) set the per-cell `caption` and `description`
+options. [Case 9](#c9) and [case 10](#c10) are longer than their panels, so the
+panels scroll, from the keyboard too.
 
-The cases below draw with this helper:
+The plots are drawn with this helper:
 
 ```{r}
 wave <- function(k = 1) {
@@ -85,7 +85,8 @@ with the citation resolved, where lightbox shows it raw
 ## 2. Citation in a description {#c2 expect-references=""}
 
 An image with `.panzoom` citing Tufte only in its description. It opens in
-panzoom with the citation resolved, and Tufte is listed under References.
+panzoom with the citation resolved, and Tufte is listed under
+[References](#references).
 
 ```markdown {.show-source}
 ![Edgartown Light](../../images/mv-2.jpg){.panzoom description="Show the data [@tufte2001, p. 13]." fig-alt="A white lighthouse against a blue sky"}
@@ -93,8 +94,9 @@ panzoom with the citation resolved, and Tufte is listed under References.
 
 ## 3. Cross-reference in a description {#c3 expect-references=""}
 
-An image with `.panzoom` whose description cross-references the case 4 figure
-and links to case 1. It opens in panzoom with both links working.
+An image with `.panzoom` whose description cross-references the figure in
+[case 4](#c4) and links to [case 1](#c1). It opens in panzoom with both links
+working.
 
 ```markdown {.show-source}
 ![Aquinnah](../../images/mv-1.jpg){.panzoom description="Compare with @fig-pressure, and see [Section 1](#c1)." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
@@ -129,8 +131,8 @@ its reference resolved.
 
 ## 6. No caption {#c6 expect-open="panzoom" expect-caption="none"}
 
-A cell with `caption: false`. The figure has a caption on the page, but it opens
-in panzoom without one.
+An R cell with `caption: false` under the `panzoom` cell option. The figure has
+a caption on the page, but it opens in panzoom without one.
 
 ```{r}
 #| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
@@ -143,8 +145,8 @@ wave(k = 2)
 
 ## 7. Description option {#c7 expect-open="panzoom"}
 
-A cell with the `description` option, written in markdown with math. It opens in
-panzoom with the description under the caption.
+An R cell with the `description` option, written in markdown with math. It
+opens in panzoom with the description under the caption.
 
 ```{r}
 #| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
@@ -154,11 +156,6 @@ panzoom with the description under the caption.
 
 wave(k = 2)
 ```
-
-## References {.unnumbered}
-
-::: {#refs}
-:::
 
 ## 8. Labeled figures in a div {#c8 expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}
 
@@ -180,7 +177,7 @@ wave(k = 3)
 
 ## 9. Long description {#c9 expect-open="panzoom" expect-scroll="description"}
 
-An image with `.panzoom`, with a description longer than its panel. It opens in
+An image with `.panzoom` and a description longer than its panel. It opens in
 panzoom, and the description panel scrolls. Tab reaches the panel, and the arrow
 keys, Page Up and Page Down, Home, End, and Space scroll it.
 
@@ -190,8 +187,8 @@ keys, Page Up and Page Down, Home, End, and Space scroll it.
 
 ## 10. Long caption {#c10 expect-open="panzoom" expect-scroll="caption"}
 
-An image with `.panzoom` and a caption of placeholder text, from Quarto's
-`lipsum` shortcode, longer than the caption panel. It opens in panzoom, and the
+An image with `.panzoom` and a caption of placeholder text, from the `lipsum`
+shortcode, longer than the caption panel. It opens in panzoom, and the
 caption panel scrolls, from the keyboard too, while the image keeps its room.
 
 ```markdown
@@ -199,3 +196,8 @@ caption panel scrolls, from the keyboard too, while the image keeps its room.
 ```
 
 ![{{< lipsum 4 >}}](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+
+## References {.unnumbered}
+
+::: {#refs}
+:::
