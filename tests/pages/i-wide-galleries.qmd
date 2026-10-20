@@ -15,12 +15,13 @@ Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and in a
 layout div. The same shapes on their own, and the `fit` option, are on [wide and
 tall figures](h-wide.html).
 
-Wide figures open at screen height from the left end, tall ones at screen width
-from the top. In a gallery, left and right arrow pan a wide figure (and do
-nothing on a tall strip) instead of changing the image; the previous and next
-buttons change it.
+Wide figures open at screen height, and tall ones at screen width. The one you
+click opens at the spot you clicked, and stepping to another in a gallery starts
+it at its left end or top. In a gallery, the left and right arrow keys pan a wide
+figure instead of changing the image, and do nothing on a tall strip. The
+previous and next buttons change the image.
 
-The cases below draw with these helpers:
+The plots are drawn with these helpers:
 
 ```{r}
 # A collage: `n` panels side by side, like a wide patchwork figure.
@@ -182,8 +183,8 @@ strip(seed = 5, n = 8)
 ## 6. Collages of different lengths {#c6 expect-fit="height"}
 
 A long collage (40 × 2 in, 24 panels) and a shorter one (24 × 2 in, 12 panels)
-from two cells, joined by `group`. Each opens at screen height from its left
-end, and stepping to the other fits it afresh, so the short collage doesn't keep
+from two cells, joined by `group`. Each opens at screen height, and stepping to
+the other fits it afresh, from its left end, so the short collage doesn't keep
 the scale or position of the long one. The captions differ in length, so the
 caption band changes height between them, and each collage stays clear of it.
 `fig-dpi: 48` only keeps the files small.
