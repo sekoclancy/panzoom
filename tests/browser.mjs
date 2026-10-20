@@ -694,7 +694,6 @@ async function checkGallery(page, handle) {
   // Same image, and moved left if it is wider than the screen.
   out.zoomedArrowPans = (await counter()) === first &&
     (!wider || !!(z0 && z1 && z1.x < z0.x - 1));
-  // Without loop, the first image has no previous one.
   // Without loop, the first image has no previous one; with loop it does.
   out.prevDisabledAtStart = m[1] === "1"
     ? await page.$eval(".panzoom-prev", (b) => b.disabled) : null;
@@ -706,11 +705,24 @@ async function checkGallery(page, handle) {
     const a = document.activeElement;
     return a.closest(".panzoom-overlay") ? (a.className.split(" ")[0] || a.tagName) : a.tagName;
   });
+  // On the last image, the mirror of the first: without `loop`, "next" is
+  // disabled and Right does nothing; with `loop`, Right goes to the first
+  // image. A last image wider than the screen pans on Right instead, so
+  // there the next button is pressed.
+  out.nextDisabledAtEnd = await page.$eval(".panzoom-next", (b) => b.disabled);
+  if (out.loop) out.nextDisabledAtEnd = !out.nextDisabledAtEnd;
+  const last = await counter();
+  if ((await state(page)).overX) await page.click(".panzoom-next");
+  else await page.keyboard.press("ArrowRight");
+  await settle(page);
+  out.rightAtEnd = await counter();
+  out.rightAtEndOk = out.rightAtEnd === (out.loop ? `1 / ${n}` : last);
   await closeAll(page);
   out.ok = out.pageKeysStill &&
     out.arrowNext === next && out.arrowBack && out.buttonNext === next &&
     out.swipeNext === next && out.zoomedArrowPans && out.prevDisabledAtStart !== false &&
-    out.leftAtStartStill && out.focusAtEnd.startsWith("panzoom-");
+    out.leftAtStartStill && out.focusAtEnd.startsWith("panzoom-") &&
+    out.nextDisabledAtEnd && out.rightAtEndOk;
   return out;
 }
 
@@ -1390,6 +1402,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- Swipe left: ${gallery.swipeNext}`,
       `- Zoomed in, Right pans instead: ${yes(gallery.zoomedArrowPans)}`,
       `- On the first image, "previous" is ${gallery.loop ? "enabled (loop) and Left wraps to the last" : "disabled (no loop)"}: ${yes(gallery.prevDisabledAtStart && gallery.leftAtStartStill)}`,
+      `- On the last image, "next" is ${gallery.loop ? "enabled (loop) and Right wraps to the first" : "disabled (no loop) and Right stays"}: ${yes(gallery.nextDisabledAtEnd && gallery.rightAtEndOk)} (${gallery.rightAtEnd})`,
       `- All as expected: ${yes(gallery.ok)}`);
   }
   lines.push("", "## Galleries of images larger than the screen", "");
