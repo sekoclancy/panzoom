@@ -86,7 +86,7 @@ plot(cars)
 #| classes: panzoom
 #| lightbox:
 #|   group: r-graph
-#|   description: This is 1 to 10 plot
+#|   description: Ten random points.
 
 plot(1:10, rnorm(10))
 ```
@@ -98,7 +98,7 @@ plot(1:10, rnorm(10))
 #|   It opens in lightbox on its own.
 #| lightbox:
 #|   group: r-graph
-#|   description: We see our cars data above
+#|   description: Stopping distance against speed.
 
 plot(cars)
 ```
@@ -119,8 +119,8 @@ plot(cars)
 #| lightbox:
 #|   group: cars
 #|   description:
-#|     - Description for first graph
-#|     - Description for second graph
+#|     - The mtcars data, each variable against every other.
+#|     - Stopping distance against speed.
 
 plot(mtcars)
 plot(cars)
@@ -175,8 +175,8 @@ image(volcano)
 
 ## Credits
 
-The images in this example were used under the [Unsplash
-license](https://unsplash.com/license), view originals below:
+The photos are from Unsplash, under the [Unsplash
+license](https://unsplash.com/license):
 
 - [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)
 - [Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU)

@@ -11,16 +11,15 @@ lightbox:
   effect: fade
   desc-position: right
   loop: true
-  css-class: my-lb
 ---
 
 ## About
 
-These are the cases of the three R setups, [selected images, lightbox
-on](b-panzoom-lightbox.html), [global panzoom](c-panzoom-auto.html), and
-[selected images only](d-panzoom-selective.html), opened by lightbox without
-panzoom. Compare each case with the same number there. Every block image opens
-in lightbox, with these settings:
+This page has no panzoom, and every image opens in lightbox. Its cases are the
+same as on the panzoom examples, so each one can be compared with the case of
+the same number on [lightbox and panzoom together](b-panzoom-lightbox.html),
+[panzoom on every image](c-panzoom-auto.html), and [panzoom on marked images
+only](d-panzoom-selective.html). These are the page's lightbox settings:
 
 ```yaml
 lightbox:
@@ -28,16 +27,23 @@ lightbox:
   effect: fade
   desc-position: right
   loop: true
-  css-class: my-lb
 ```
 
 ## 1. Single image {#c1 expect-open="glightbox"}
+
+A markdown image with a description. It opens in lightbox, with the description
+on the left, since the image's `desc-position="left"` overrides the page's
+`right`.
 
 ```markdown {.show-source}
 ![A markdown image with a description and `desc-position="left"`. It opens in lightbox with the description on the left.](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## 2. Gallery in a layout {#c2 expect-open="glightbox"}
+
+Three images in a layout, joined by `group="elsewhere"`. Each opens in lightbox,
+in one three-image gallery. The page sets `loop: true`, so the next arrow on the
+last image goes back to the first.
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}
@@ -60,6 +66,9 @@ with both typeset.
 
 ## 4. Markdown subfigures {#c4 expect-open="glightbox"}
 
+A figure with two markdown subfigures. Either one opens in lightbox, in a
+two-image gallery. The figure's caption links to the heat map in case 12.
+
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
 ![Sub A](../../images/mv-1.jpg){#fig-md-a fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
@@ -71,6 +80,9 @@ Two markdown subfigures, with a link to the heat map at the end of the page (see
 ```
 
 ## 5. R subfigures {#c5 expect-open="glightbox"}
+
+One R cell with two plots, made subfigures by `fig-subcap`. Either one opens in
+lightbox, in a two-image gallery.
 
 ```{r}
 #| label: fig-r-sub
@@ -89,6 +101,10 @@ plot(cars)
 
 ## 6. Cell options {#c6 expect-open="glightbox"}
 
+Two R cells, joined by `group: r-graph` under the `lightbox` cell option.
+Either plot opens in lightbox, in a two-image gallery, with its own description
+on the right.
+
 ```{r}
 #| fig-alt: "Scatter plot of ten random points"
 #| fig-cap: >-
@@ -96,7 +112,7 @@ plot(cars)
 #|   lightbox, in a two-image gallery with the next plot.
 #| lightbox:
 #|   group: r-graph
-#|   description: This is 1 to 10 plot
+#|   description: Ten random points.
 
 plot(1:10, rnorm(10))
 ```
@@ -108,12 +124,15 @@ plot(1:10, rnorm(10))
 #|   gallery.
 #| lightbox:
 #|   group: r-graph
-#|   description: We see our cars data above
+#|   description: Stopping distance against speed.
 
 plot(cars)
 ```
 
 ## 7. Two plots in one cell {#c7 expect-open="glightbox"}
+
+One R cell with two plots, each with its own caption and description, joined by
+`group: cars`. Either one opens in lightbox, in a two-image gallery.
 
 ```{r}
 #| fig-alt:
@@ -127,14 +146,17 @@ plot(cars)
 #| lightbox:
 #|   group: cars
 #|   description:
-#|     - Description for first graph
-#|     - Description for second graph
+#|     - The mtcars data, each variable against every other.
+#|     - Stopping distance against speed.
 
 plot(mtcars)
 plot(cars)
 ```
 
 ## 8. Opt out {#c8 expect-open="nothing"}
+
+An R cell with `lightbox: false`. lightbox skips it, so clicking it does
+nothing.
 
 ```{r}
 #| fig-cap: "An R cell with `lightbox: false`. Clicking it does nothing."
@@ -148,7 +170,7 @@ plot(mtcars)
 
 ## 9. Image in a link {#c9 expect-open="nothing"}
 
-An image linked to the Quarto website (quarto.org). Lightbox drops the link, so
+An image linked to the Quarto website (quarto.org). lightbox drops the link, so
 clicking it does nothing.
 
 ```markdown {.show-source}
@@ -156,6 +178,9 @@ clicking it does nothing.
 ```
 
 ## 10. Margin image {#c10 expect-open="glightbox"}
+
+A markdown image in the margin. It opens in lightbox, as any other block image
+does.
 
 ```markdown {.show-source}
 ![A markdown image in the margin. It opens in lightbox.](../../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
@@ -172,6 +197,9 @@ Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){widt
 
 ## 12. Plain R figure {#c12 expect-open="glightbox"}
 
+A cross-referenced R figure with no options, which the caption in case 4 links
+to. It opens in lightbox.
+
 ```{r}
 #| label: fig-plain
 #| fig-alt: "Heat map of the Maunga Whau volcano's heights, in yellow, orange, and red"
@@ -182,8 +210,8 @@ image(volcano)
 
 ## Credits
 
-The images in this example were used under the [Unsplash
-license](https://unsplash.com/license), view originals below:
+The photos are from Unsplash, under the [Unsplash
+license](https://unsplash.com/license):
 
 - [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)
 - [Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU)
