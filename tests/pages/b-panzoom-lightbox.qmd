@@ -14,11 +14,11 @@ panzoom:
 
 ## About
 
-The document turns lightbox on, and only images with the `.panzoom` class or the
-`#| classes: panzoom` cell option open in panzoom. Every other image opens in
-lightbox, as on the [lightbox version](a-lightbox.html). The markup is the same
-as on the [selected-images-only version](d-panzoom-selective.html), which has no
-lightbox.
+lightbox is on for the whole page, and only images marked with the `.panzoom`
+class or the `#| classes: panzoom` cell option open in panzoom. Every other
+image opens in lightbox. The same cases open in lightbox alone on the [lightbox
+page](a-lightbox.html), and the same markup without lightbox is on [panzoom on
+marked images only](d-panzoom-selective.html). The hint line is off.
 
 ```yaml
 format:
@@ -26,15 +26,27 @@ format:
     lightbox: true
 filters:
   - panzoom
+panzoom:
+  hint: false
 ```
 
 ## 1. Single image {#c1 expect-open="panzoom"}
+
+A markdown image with `.panzoom` and a description. It opens in panzoom, with
+the description below the caption. panzoom has no `desc-position`, so the
+image's `desc-position="left"` has no effect.
 
 ```markdown {.show-source}
 ![A markdown image with `.panzoom` with a description and `desc-position="left"`. It opens in panzoom, with the description below the caption, since panzoom has no `desc-position`.](../../images/mv-0.jpg){.panzoom description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## 2. Gallery in a layout {#c2 expect-open="glightbox panzoom glightbox"}
+
+Three images in a layout, joined by `group="elsewhere"`. The middle one (Oak
+Bluffs) has `.panzoom`, so it opens in panzoom on its own, and panzoom takes it
+out of the group. The other two open in lightbox, in a two-image gallery. In
+lightbox, a click zooms an image larger than the screen to its full size, and
+the wheel doesn't zoom.
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}
@@ -48,14 +60,18 @@ filters:
 
 ## 3. Math {#c3 expect-open="panzoom"}
 
-A markdown image with `.panzoom` with math in its caption and description. It
-opens in panzoom with both typeset.
+A markdown image with `.panzoom` and math in its caption and description. It
+opens in panzoom, with both typeset.
 
 ```markdown {.show-source}
 ![Caption with math $e^{i\pi}+1=0$](../../images/mv-4.jpg){.panzoom description="Description with math $\\int_0^1 x^2\\,dx = 1/3$" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## 4. Markdown subfigures {#c4 expect-open="panzoom"}
+
+A figure with two markdown subfigures, both with `.panzoom`. Either one opens
+in panzoom, in a two-image gallery. The figure's caption links to the heat map
+in case 12.
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -68,6 +84,9 @@ Two markdown subfigures with `.panzoom` and a link to the heat map at the end of
 ```
 
 ## 5. R subfigures {#c5 expect-open="panzoom"}
+
+One R cell with `classes: panzoom` and two plots, made subfigures by
+`fig-subcap`. Either one opens in panzoom, in a two-image gallery.
 
 ```{r}
 #| label: fig-r-sub
@@ -86,6 +105,10 @@ plot(cars)
 ```
 
 ## 6. Cell options {#c6 expect-open="panzoom glightbox"}
+
+Two R cells in the lightbox group `r-graph`. The first also has
+`classes: panzoom`, so it opens in panzoom on its own, without the lightbox
+description. The second opens in lightbox, alone in its group.
 
 ```{r}
 #| fig-alt: "Scatter plot of ten random points"
@@ -112,6 +135,10 @@ plot(cars)
 
 ## 7. Two plots in one cell {#c7 expect-open="panzoom"}
 
+One R cell with `classes: panzoom`, two plots, and the lightbox options
+`group: cars` and a description for each plot. panzoom drops the lightbox
+options, so each plot opens in panzoom on its own, without a description.
+
 ```{r}
 #| fig-alt:
 #|   - "Scatterplot matrix of the mtcars data, each variable plotted against every other"
@@ -135,6 +162,9 @@ plot(cars)
 
 ## 8. Opt out {#c8 expect-open="nothing"}
 
+An R cell with `lightbox: false` and no `.panzoom`. Neither viewer takes it, so
+clicking it does nothing.
+
 ```{r}
 #| fig-cap: "An R cell with `lightbox: false`. Clicking it does nothing."
 #| lightbox: false
@@ -156,19 +186,26 @@ leaves images in links alone, so clicking it opens quarto.org.
 
 ## 10. Margin image {#c10 expect-open="panzoom"}
 
+A markdown image with `.panzoom` in the margin. It opens in panzoom, as any
+other marked image does.
+
 ```markdown {.show-source}
 ![A markdown image with `.panzoom` in the margin. It opens in panzoom.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
-## 11. Inline image {#c11 expect-open="panzoom"}
+## 11. Inline image {#c11 expect-open="panzoom" expect-caption="none"}
 
-An image with `.panzoom` inside a sentence. It opens in panzoom.
+An image with `.panzoom` inside a sentence. It opens in panzoom, with no
+caption, since an inline image isn't a figure and has none.
 
 ```markdown {.show-source}
 Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){.panzoom width=60px} in the middle.
 ```
 
 ## 12. Plain R figure {#c12 expect-open="glightbox"}
+
+A cross-referenced R figure with no options, which the caption in case 4 links
+to. It opens in lightbox, since it isn't marked.
 
 ```{r}
 #| label: fig-plain

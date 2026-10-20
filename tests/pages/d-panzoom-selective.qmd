@@ -153,9 +153,10 @@ leaves images in links alone, so clicking it opens quarto.org.
 ![A markdown image with `.panzoom` in the margin. It opens in panzoom.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
-## 11. Inline image {#c11 expect-open="panzoom"}
+## 11. Inline image {#c11 expect-open="panzoom" expect-caption="none"}
 
-An image with `.panzoom` inside a sentence. It opens in panzoom.
+An image with `.panzoom` inside a sentence. It opens in panzoom, with no
+caption, since an inline image isn't a figure and has none.
 
 ```markdown {.show-source}
 Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){.panzoom width=60px} in the middle.
