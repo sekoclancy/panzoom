@@ -181,12 +181,11 @@ plot(mtcars)
 
 ## 9. Image in a link {#c9 expect-open="navigation"}
 
-An image linked to the Quarto website (quarto.org). panzoom leaves images in
-links alone, and keeps lightbox from dropping the link, so clicking it opens
-quarto.org.
+An image inside a link. panzoom leaves linked images alone and keeps lightbox
+from dropping the link, so clicking the image follows the link.
 
 ```markdown {.show-source}
-[![Linked image](../../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
+[![A sailboat off Edgartown, linked to quarto.org.](../../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
 ```
 
 ## 10. Margin image {#c10 expect-open="panzoom"}
