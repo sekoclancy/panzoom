@@ -210,6 +210,37 @@ machine or Quarto version, run `npm run bench:save` and commit the
 baseline. `--no-render` skips the renders; `--rounds N` changes their
 number.
 
+## Other Quarto versions
+
+Every Quarto release since 1.4 is on PyPI as `quarto-cli`. The scripts
+call `quarto` from `PATH`; install it into a copy and render and test
+there, so `docs/` and `_freeze/` keep the usual build:
+
+```bash
+v=1.8.27; w=/tmp/panzoom-$v
+rsync -rlpt --exclude=.git --exclude=/docs --exclude=/_freeze --exclude=/.quarto ./ $w/
+uv venv -q $w/.quarto-cli
+uv pip install -q --python $w/.quarto-cli --no-deps quarto-cli==$v
+mkdir -p $w/.bin && ln -s $w/.quarto-cli/bin/quarto $w/.bin/quarto
+export PATH=$w/.bin:$PATH
+cd $w && quarto render && cd tests
+npm test; npm run options; npm run standalone; npm run nojs
+```
+
+Afterward: `rm -rf $w` and `uv cache clean quarto-cli` (about 1.3 GB per
+version). Not `uvx --from quarto-cli==$v`: its environments stay in uv's
+cache (about 600 MB each), which `uv cache clean quarto-cli` leaves.
+
+Below `quarto-required`, lower it in the copy's
+`_extensions/sekoclancy/panzoom/_extension.yml`. Quarto 1.7 and earlier
+print the refusal but exit 0, so check that `docs/tests/pages/` has pages.
+
+| Quarto | Result (2026-10-20) |
+|---|---|
+| 1.8.27, 1.9.38, 1.10.19 | All pass |
+| 1.7.34 | All pass except `options`: the errors are reported and the render stops, but Quarto exits 0 |
+| 1.4.556 to 1.6.42 | `options` as for 1.7; standalone `switch-*` pages log a `SyntaxError` from Quarto's own `quarto.js`; 1.4 fails page G's panel scroll check. Jupyter plots come out at half the pixels (588 × 411), which the keyboard and gallery checks now zoom past |
+
 ## Demo GIF
 
 `npm run demo` ([demo.mjs](demo.mjs)) records the README's

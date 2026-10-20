@@ -195,6 +195,30 @@ async function viewerTransform(page) {
   });
 }
 
+// Zooms in (+) until the viewer's image is larger than the screen, wider
+// if `wide`, and returns which ways it is ({ x, y }). Two steps are enough
+// for most images, but not for small ones (Quarto before 1.7 renders
+// Jupyter plots at half the pixels), which would otherwise still fit, so
+// the arrows would switch images instead of panning.
+async function zoomPastScreen(page, wide = false) {
+  const overflow = () => page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay");
+    const r = o.querySelector("img").getBoundingClientRect();
+    const h = o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight;
+    return { x: r.width > o.clientWidth + 1, y: r.height > h + 1 };
+  });
+  await page.keyboard.press("+");
+  await page.keyboard.press("+");
+  await settle(page);
+  let over = await overflow();
+  for (let i = 0; i < 8 && !(wide ? over.x : over.x || over.y); i++) {
+    await page.keyboard.press("+");
+    await settle(page);
+    over = await overflow();
+  }
+  return over;
+}
+
 async function state(page) {
   return page.evaluate(() => {
     const pz = document.querySelector(".panzoom-overlay.open");
@@ -494,17 +518,9 @@ async function checkKeyboard(page, handle) {
   if (!out.enterOpens) return out;
   out.focusMovesIn = (await focusState()).inViewer;
 
-  await page.keyboard.press("+");
-  await page.keyboard.press("+");
-  await settle(page);
   // The arrows pan in each direction the image is larger than the screen
   // (in a direction where it fits, containment holds it still).
-  const over = await page.evaluate(() => {
-    const o = document.querySelector(".panzoom-overlay");
-    const r = o.querySelector("img").getBoundingClientRect();
-    const h = o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight;
-    return { x: r.width > o.clientWidth + 1, y: r.height > h + 1 };
-  });
+  const over = await zoomPastScreen(page);
   const before = await viewerTransform(page);
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowDown");
@@ -664,14 +680,8 @@ async function checkGallery(page, handle) {
   out.swipeNext = await counter();
   await page.click(".panzoom-prev");
   await settle(page);
-  // Zoomed in, Right pans instead of switching.
-  await page.keyboard.press("+");
-  await page.keyboard.press("+");
-  await settle(page);
-  const wider = await page.evaluate(() => {
-    const o = document.querySelector(".panzoom-overlay");
-    return o.querySelector("img").getBoundingClientRect().width > o.clientWidth + 1;
-  });
+  // Zoomed in past the screen's width, Right pans instead of switching.
+  const wider = (await zoomPastScreen(page, true)).x;
   const z0 = await viewerTransform(page);
   await page.keyboard.press("ArrowRight");
   await settle(page);
