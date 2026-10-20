@@ -71,7 +71,7 @@ opens in panzoom, with both typeset.
 
 A figure with two markdown subfigures, both with `.panzoom`. Either one opens
 in panzoom, in a two-image gallery. The figure's caption links to the heat map
-in case 12.
+in [case 12](#c12).
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -204,8 +204,8 @@ Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){.pan
 
 ## 12. Plain R figure {#c12 expect-open="glightbox"}
 
-A cross-referenced R figure with no options, which the caption in case 4 links
-to. It opens in lightbox, since it isn't marked.
+A cross-referenced R figure with no options. It opens in lightbox, since it
+isn't marked. The caption of [case 4](#c4) links to it.
 
 ```{r}
 #| label: fig-plain

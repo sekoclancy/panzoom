@@ -67,7 +67,8 @@ with both typeset.
 ## 4. Markdown subfigures {#c4 expect-open="glightbox"}
 
 A figure with two markdown subfigures. Either one opens in lightbox, in a
-two-image gallery. The figure's caption links to the heat map in case 12.
+two-image gallery. The figure's caption links to the heat map in
+[case 12](#c12).
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -197,8 +198,8 @@ Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){widt
 
 ## 12. Plain R figure {#c12 expect-open="glightbox"}
 
-A cross-referenced R figure with no options, which the caption in case 4 links
-to. It opens in lightbox.
+A cross-referenced R figure with no options. It opens in lightbox. The caption
+of [case 4](#c4) links to it.
 
 ```{r}
 #| label: fig-plain
