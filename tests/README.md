@@ -55,7 +55,7 @@ quarto preview --profile axe    # or quarto render --profile axe
 
 | Need | For | Install |
 |---|---|---|
-| [Quarto](https://quarto.org) 1.9 or later | Rendering | |
+| [Quarto](https://quarto.org) 1.8.27 or later | Rendering | |
 | R with the `ragg` package | The R pages (`ragg` for page E's webp figures) | |
 | Python 3.14 venv | Pages J–L | `uv sync` ([From source](../README.md#from-source)) |
 | [Node.js](https://nodejs.org) 22.12 or later | The scripts | |

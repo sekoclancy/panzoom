@@ -12,7 +12,7 @@ full-screen viewer, built on
 
 ## Installation
 
-You can install this extension using the Quarto CLI (Quarto >=1.9):
+You can install this extension using the Quarto CLI (Quarto >=1.8.27):
 
 ```bash
 quarto add sekoclancy/panzoom
