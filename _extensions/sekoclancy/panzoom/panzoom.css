@@ -101,8 +101,11 @@ a.panzoom-link:focus-visible { outline: none; }
   padding: 0.5rem 1rem 0.6rem; text-align: center;
   background: var(--panzoom-bg);
 }
+/* Padding, not margin, below each panel: an inline box reaching past the
+   last line (code in some fonts, as Safari's SF Mono) stays inside it, so a
+   short panel doesn't scroll. */
 .panzoom-caption, .panzoom-description {
-  max-width: 60rem; margin: 0 auto 0.3rem; overflow-y: auto; line-height: 1.4;
+  max-width: 60rem; margin: 0 auto; padding-bottom: 0.3rem; overflow-y: auto; line-height: 1.4;
   user-select: text; -webkit-user-select: text; cursor: auto;
 }
 .panzoom-caption a, .panzoom-description a { color: var(--panzoom-link); }
