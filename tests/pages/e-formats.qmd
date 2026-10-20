@@ -120,7 +120,7 @@ panzoom.
 #|   Filled contour map of the volcano's heights in terrain colors, with a color
 #|   key
 #| panzoom: true
-#| dev: !expr c("png", "pdf")
+#| dev: [png, pdf]
 #| fig-cap: "png shown, pdf written alongside."
 
 filled.contour(volcano, color.palette = terrain.colors)
@@ -139,7 +139,7 @@ leaves alone.
 #|   Filled contour map of the volcano's heights in terrain colors, with a color
 #|   key, titled mu = 5, alpha = 0.05
 #| panzoom: true
-#| dev: !expr c("png", "cairo_pdf")
+#| dev: [png, cairo_pdf]
 #| fig-cap: "png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
 
 filled.contour(
