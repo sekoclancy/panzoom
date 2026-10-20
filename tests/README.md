@@ -239,7 +239,7 @@ print the refusal but exit 0, so check that `docs/tests/pages/` has pages.
 |---|---|
 | 1.8.27, 1.9.38, 1.10.19 | All pass |
 | 1.7.34 | All pass except `options`: the errors are reported and the render stops, but Quarto exits 0 |
-| 1.4.556 to 1.6.42 | `options` as for 1.7; standalone `switch-*` pages log a `SyntaxError` from Quarto's own `quarto.js`; 1.4 fails page G's panel scroll check. Jupyter plots come out at half the pixels (588 × 411), which the keyboard and gallery checks now zoom past |
+| 1.4.556 to 1.6.42 | `options` as for 1.7; standalone `switch-*` pages log a `SyntaxError` from Quarto's own `quarto.js`; on 1.4, page G case 10's caption stays short (no `lipsum` shortcode before 1.5), so its panel scroll check fails. Jupyter plots come out at half the pixels (588 × 411), which the keyboard and gallery checks now zoom past |
 
 ## Demo GIF
 
