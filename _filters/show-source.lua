@@ -25,7 +25,9 @@ function CodeBlock(el)
   -- Markdown examples have long lines (an image with its attributes): wrap
   -- them instead of scrolling.
   shown.classes:insert("code-overflow-wrap")
-  local blocks = pandoc.List({ shown })
+  -- Shown like a code cell's code, so cell styling reaches it too.
+  shown.classes:insert("cell-code")
+  local blocks = pandoc.List({ pandoc.Div({ shown }, pandoc.Attr("", { "cell" })) })
   blocks:extend(pandoc.read(el.text, "markdown").blocks)
   return blocks
 end
