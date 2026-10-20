@@ -8,7 +8,8 @@
   overlay, wheel / trackpad pinch zooms toward the cursor, double-click or 0
   resets to fit, +/- zoom, arrow keys pan, Esc / x / background click closes,
   c hides or shows the caption and description, h the hint line. The
-  document's `keys:` option changes these keys (see KEYS).
+  document's `keys:` option changes these keys (see KEYS). The hint line
+  names mouse and keyboard controls, so a viewer opened by a tap has none.
 
   Captions: the viewer shows the image's figure caption, taken from the
   rendered page (the nearest <figcaption>), so "Figure N:" prefixes and
@@ -89,8 +90,12 @@
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
   var loadId = 0, loadTimer = null;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
-  // Whether the viewer was opened with the mouse or a tap (see close()).
-  var byPointer = false;
+  // Whether the viewer was opened with the mouse or a tap (see close()),
+  // and whether by a tap (no hint line; see showFooter()).
+  var byPointer = false, byTouch = false;
+  // The kind of pointer last pressed: a click doesn't say whether it came
+  // from a tap in every browser.
+  var lastPointer = "";
   var bouncing = false, bounceTimer = null;
   // Where the image's center is held, on screen, along an axis where it is
   // smaller than the screen ({ x, y }; null: centered). Only zooming sets
@@ -318,7 +323,7 @@
   function showFooter() {
     caption.hidden = hideCaption || !caption.innerHTML;
     desc.hidden = hideCaption || !desc.innerHTML.trim();
-    hint.hidden = hideHint || !opts.hint;
+    hint.hidden = hideHint || !opts.hint || byTouch;
     footer.hidden = caption.hidden && desc.hidden && hint.hidden;
     markScrollable();
   }
@@ -598,6 +603,7 @@
     clicked = point ? { el: el, fx: point.fx, fy: point.fy } : null;
     returnFocus = document.activeElement;
     byPointer = !!pointer;
+    byTouch = byPointer && lastPointer === "touch";
     gallery = galleryOf(el);
     overlay.classList.add("open");
     // Stop the page scrolling; keep the scrollbar's space, if it has one,
@@ -854,6 +860,10 @@
     var t = el.closest && el.closest(SELECTOR);
     return t && opens(t) ? t : null;
   }
+
+  document.addEventListener("pointerdown", function (e) {
+    lastPointer = e.pointerType;
+  }, true);
 
   // Capture phase, so this runs before other click handlers on the page;
   // preventDefault stops the `a.panzoom-link` around the image.

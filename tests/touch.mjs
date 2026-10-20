@@ -14,7 +14,9 @@
   - swipe: a sideways swipe on a gallery image at its opening size shows
     the next image;
   - double-tap: returns a zoomed image to its opening view;
-  - tap the background: closes the viewer.
+  - tap the background: closes the viewer;
+  - hint: a viewer opened by a tap has no hint line (it names mouse and
+    keyboard controls); one opened with the mouse still has it.
 
   Emulation can't show quirks of real devices (Safari on iOS especially):
   check on a phone too.
@@ -231,6 +233,23 @@ try {
   s = await state(page);
   check("swipe shows the next image", s.open && /^1 \//.test(first) && /^2 \//.test(s.counter),
     `${first} -> ${s.counter}`);
+
+  // The hint line (page F, case 4, which has it): not after a tap, but
+  // after a mouse click.
+  const hintShown = () => page.evaluate(() => {
+    const h = document.querySelector(".panzoom-overlay.open .panzoom-hint");
+    return !!h && !h.hidden;
+  });
+  await page.goto(base + "f-options.html", { waitUntil: "networkidle0" });
+  s = await openImage(page, cdp, "#c4 img.panzoom");
+  const tapped = await hintShown();
+  check("no hint line after a tap", s.open && !tapped, s.open ? (tapped ? "shown" : "hidden") : "viewer not open");
+  await page.keyboard.press("Escape");
+  await settle(page);
+  await page.click("#c4 img.panzoom");
+  await settle(page);
+  const clicked = await hintShown();
+  check("hint line after a mouse click", clicked, clicked ? "shown" : "hidden");
 
   check("no page errors", errors.length === 0, errors.join("; ") || "none");
 } finally {
