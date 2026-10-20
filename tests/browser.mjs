@@ -258,6 +258,11 @@ async function state(page) {
           const d = pz.querySelector(".panzoom-description");
           return !!d && !d.hidden && !!d.innerHTML.trim();
         })(),
+        // The panels whose text is longer than they are (they scroll).
+        overflowing: [".panzoom-caption", ".panzoom-description"].filter((s) => {
+          const p = pz.querySelector(s);
+          return !p.hidden && p.scrollHeight > p.clientHeight + 1;
+        }).map((s) => s.slice(9)),
         captionHasMath: !caption.hidden && !!caption.querySelector(".math, math"),
         // Citations and cross-references left unresolved: Quarto shows an
         // unknown one as `?@key`, an unprocessed one stays `[@key]` or
@@ -1602,6 +1607,11 @@ try {
     if (clickOpen) extra.push(clickOpen.ok ? "focal point ok" : "FOCAL POINT FAILED");
     const scrolled = opened.filter((r) => r.expectScroll);
     if (scrolled.length) extra.push(scrolled.every(panelScrollOk) ? "panel scroll ok" : "PANEL SCROLL FAILED");
+    // Only the panels meant to be long scroll (math once made short ones).
+    const overScrolled = opened.filter((r) => r.overflowing?.some((p) => p !== r.expectScroll));
+    if (opened.length) extra.push(overScrolled.length
+      ? `SHORT PANELS SCROLL (cases ${overScrolled.map((r) => `${r.case}: ${r.overflowing.join(", ")}`).join("; ")})`
+      : "short panels ok");
     const stepped = results.filter((r) => r.styleSteps);
     if (stepped.length) {
       const ok = stepped.every((r) => r.styleSteps.every((s) => s.ok));

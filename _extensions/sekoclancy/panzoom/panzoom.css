@@ -112,6 +112,12 @@ a.panzoom-link:focus-visible { outline: none; }
   color: inherit;
   background: color-mix(in srgb, var(--panzoom-fg) 12%, var(--panzoom-bg));
 }
+/* MathJax's inline math boxes reach below the line, which made a one-line
+   caption or description with math scroll; clip keeps the math in place. */
+.panzoom-caption mjx-container[jax]:not([display="true"]),
+.panzoom-description mjx-container[jax]:not([display="true"]) {
+  display: inline-block; overflow: clip;
+}
 .panzoom-scrollable:focus-visible { outline: 2px solid var(--panzoom-link); outline-offset: 2px; }
 .panzoom-caption { max-height: 25vh; color: var(--panzoom-fg); font-size: 0.95rem; }
 .panzoom-caption-parent {
