@@ -294,7 +294,8 @@ show their source in a plain `markdown` block next to a copy.
 
 ## Checking by hand
 
-Run `quarto preview` from the repo root; the front page links to the
+Run `quarto render`, then `caddy run` from the repo root, which serves
+`docs/` on port 4242 (or `$CADDYPORT`); the front page links to the
 example pages. Opening the files in `docs/` directly doesn't work, since
 browsers block Quarto's module script on `file://`.
 
@@ -324,7 +325,7 @@ and pages B, G, and I:
 ## Troubleshooting
 
 - **Console errors about CORS or `file://`**: the page was opened as a
-  file. Use `quarto preview` or the test scripts, which serve it over HTTP.
+  file. Use `caddy run` or the test scripts, which serve it over HTTP.
 - **`Failed to launch the browser process`**: the scripts can't find
   Chrome. Run `quarto install chrome-headless-shell --no-prompt`, or set
   `CHROME=`.

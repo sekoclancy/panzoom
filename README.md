@@ -395,7 +395,8 @@ the Python (Jupyter) examples, with its packages listed in
 rest need R, with the `ragg` package. Then:
 
 ```bash
-quarto preview             # build and open in a browser, re-rendering on save
+quarto render              # build the site into docs/
+caddy run                  # serve docs/ on port 4242 (or $CADDYPORT)
 quarto publish gh-pages --no-prompt --no-browser   # build and publish to GitHub Pages
 uv lock --upgrade && uv sync   # update the Python packages, then commit uv.lock
 ```

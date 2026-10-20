@@ -1,0 +1,19 @@
+:{$CADDYPORT:4242} {
+	encode gzip
+
+	root * docs/
+
+	log {
+		output stdout
+		format console
+		level INFO
+	}
+
+	handle_errors {
+		rewrite /404.html
+		file_server
+	}
+
+	file_server
+}
+
