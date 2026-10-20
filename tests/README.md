@@ -48,7 +48,7 @@ violations at WCAG 2.2 AAA plus best practices on the page itself. It
 renders into `_site-axe/`, not `docs/`, and never sees the open viewer:
 
 ```bash
-quarto preview --profile axe    # or quarto render --profile axe
+quarto render --profile axe    # then, with caddy run, open /axe/
 ```
 
 ## Setup

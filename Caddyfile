@@ -1,19 +1,27 @@
 :{$CADDYPORT:4242} {
 	encode gzip
 
-	root * docs/
-
 	log {
 		output stdout
 		format console
 		level INFO
 	}
 
-	handle_errors {
-		rewrite /404.html
+	# Quarto's accessibility check (quarto render --profile axe).
+	redir /axe /axe/
+	handle_path /axe/* {
+		root * _site-axe/
 		file_server
 	}
 
-	file_server
-}
+	handle {
+		root * docs/
+		file_server
+	}
 
+	handle_errors {
+		root * docs/
+		rewrite /404.html
+		file_server
+	}
+}
