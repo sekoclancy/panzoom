@@ -11,15 +11,25 @@ panzoom:
 
 ## About
 
-Figures from the knitr graphics devices used in practice, webp, svg, and pdf,
-for a wide collage and a standard plot. Every figure has the `#| panzoom: true`
-cell option and opens in panzoom unless its case says otherwise. Figure shapes
-and how they open are on [wide and tall figures](h-wide.html).
+Two figures, a wide collage and a standard plot, written by different knitr
+graphics devices: webp, svg, png, and pdf. Every figure has the
+`#| panzoom: true` cell option and opens in panzoom unless its case says
+otherwise. How figures of other shapes open is on [wide and tall
+figures](h-wide.html).
 
-knitr has no built-in webp device, so these use `agg_webp` from ragg, which
-needs `units = "in"` because knitr passes sizes in inches.
+knitr has no built-in webp device, so the webp cases use `agg_webp` from ragg.
+knitr passes it sizes in inches and no resolution, while ragg expects pixels
+and draws at 72 dpi, so each webp case sets both under `dev.args`:
 
-The cases below draw with this helper (`ragg` writes the webp files):
+```yaml
+#| dev.args:
+#|   units: "in"
+#|   res: 96
+```
+
+`res: 96` gives the webp the same size as the page's other figures.
+
+The collage cases draw with this helper:
 
 ```{r}
 library(ragg)
@@ -153,7 +163,8 @@ filled.contour(
 
 A 100 × 5 inch collage as webp at 192 dpi. At 19,200 px wide it is past the webp
 limit of 16,383 px per side, so ragg can't write the file. The page shows a
-broken image, and clicking it opens an empty viewer.
+broken image, and clicking it opens the viewer with "The image could not be
+loaded." in place of the image.
 
 ```{r}
 #| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
