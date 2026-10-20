@@ -2,6 +2,11 @@
 img.panzoom:not(.nopanzoom) {
   cursor: zoom-in;
 }
+/* An image in an author's link follows the link instead. */
+a:not(.panzoom-link) img.panzoom,
+.panzoom a:not(.panzoom-link) img {
+  cursor: pointer;
+}
 .panzoom img:not(.nopanzoom):focus-visible,
 img.panzoom:not(.nopanzoom):focus-visible,
 a.panzoom-link:focus-visible img {
