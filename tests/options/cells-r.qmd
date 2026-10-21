@@ -18,19 +18,23 @@ expect-errors:
   - "ℹ The error happened in location panzoom:description, in the cell starting `plot(1)`."
   - 'Field "backdrop" has value red; } body {, which must instead be a CSS color'
   - "ℹ The error happened in location panzoom:backdrop, in the cell starting `plot(1)`."
+  - 'Field "desc-position" has value middle, which must instead be one of: `bottom`, `top`, `left`, `right`'
+  - "ℹ The error happened in location panzoom:desc-position, in the cell starting `plot(1)`."
   - 'Field "panzoom" has value maybe, which must instead be `true`, `false` or a map of options'
   - "ℹ The error happened in location panzoom, in the cell starting `plot(2)`."
   - 'Field "panzoom" has value no, which must instead be `true`, `false` or a map of options'
   - "ℹ The error happened in location panzoom, in #gallery-div."
   - 'Field "link-color" has value red; }, which must instead be a CSS color'
   - "ℹ The error happened in location link-color, on the image ../../images/mv-1.jpg."
+  - 'Field "desc-position" has value middle, which must instead be one of: `bottom`, `top`, `left`, `right`'
+  - "ℹ The error happened in location desc-position, on the image ../../images/mv-2.jpg."
   - "property name gruop is invalid"
   - "ℹ The error happened in location panzoom:gruop, in the cell starting `plot(3)`."
   - "ℹ Did you mean group?"
 ---
 
 Mistakes in `#| panzoom:` cell options (also in a cell inside a `.panzoom` div),
-in a div's `panzoom=`, and in an image's styling attributes.
+in a div's `panzoom=`, and in an image's styling and `desc-position` attributes.
 
 ```{r}
 #| panzoom:
@@ -40,6 +44,7 @@ in a div's `panzoom=`, and in an image's styling attributes.
 #|   fit: sideways
 #|   description: ["a", "b"]
 #|   backdrop: "red; } body {"
+#|   desc-position: middle
 
 plot(1)
 ```
@@ -55,6 +60,8 @@ plot(2)
 :::
 
 ![A marked image.](../../images/mv-1.jpg){.panzoom link-color="red; }"}
+
+![Another marked image.](../../images/mv-2.jpg){.panzoom desc-position="middle"}
 
 ::: {.panzoom}
 ```{r}

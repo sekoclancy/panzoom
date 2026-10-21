@@ -29,14 +29,15 @@ lightbox:
   loop: true
 ```
 
-## Single image {#c1 expect-open="glightbox"}
+## Single image {#c1 expect-open="glightbox" expect-desc-position="right"}
 
-A markdown image with a description. It opens in lightbox, with the description
-on the left, since the image's `desc-position="left"` overrides the page's
-`right`.
+A markdown image with a description and `desc-position="left"`. It opens in
+lightbox, with the caption and description on the right, the page's setting,
+because Quarto (1.10) drops an image's own `desc-position`. panzoom puts them on
+the left.
 
 ```markdown {.show-source}
-![A markdown image with a description and `desc-position="left"`. It opens in lightbox with the description on the left.](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Chilmark beach at sunset.](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## Gallery in a layout {#c2 expect-open="glightbox"}

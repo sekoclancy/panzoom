@@ -176,3 +176,33 @@ and the link around it is labeled "Open image" for screen readers.
 ```markdown {.show-source}
 ![](../../images/mv-4.jpg){.panzoom width=40%}
 ```
+
+## Caption beside the image {#c9 expect-open="panzoom" expect-desc-position="right"}
+
+An R cell with `desc-position: right` and a description under the `panzoom` cell
+option. It opens in panzoom, with the caption and description in a panel on the
+right of the image.
+
+```{r}
+#| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   desc-position: right
+#|   description: "The area between the curve and the axis is shaded."
+#| fig-cap: "Wave 2."
+
+wave(k = 2)
+```
+
+## Caption above the image {#c10 expect-open="panzoom" expect-desc-position="top"}
+
+An R cell with `desc-position: top` under the `panzoom` cell option. It opens in
+panzoom, with the caption above the image.
+
+```{r}
+#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   desc-position: top
+#| fig-cap: "Wave 3."
+
+wave(k = 3)
+```

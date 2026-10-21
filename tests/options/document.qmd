@@ -12,6 +12,7 @@ panzoom:
   match: all
   max-zoom: lots
   css-class: [a, b]
+  desc-position: middle
   backdrop: "red; } body {"
 expect-errors:
   - 'Field "backdrop" has value red; } body {, which must instead be a CSS color'
@@ -22,6 +23,8 @@ expect-errors:
   - "ℹ Try using true instead."
   - 'Field "css-class" has value [a, b], which must instead be a string'
   - "ℹ The error happened in location panzoom:css-class."
+  - 'Field "desc-position" has value middle, which must instead be one of: `bottom`, `top`, `left`, `right`'
+  - "ℹ The error happened in location panzoom:desc-position."
   - 'Field "fit" has value sideways, which must instead be one of: `auto`, `contain`, `height`, `width`'
   - "ℹ The error happened in location panzoom:fit."
   - 'Field "hint" has value maybe, which must instead be `true` or `false`'

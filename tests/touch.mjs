@@ -17,6 +17,8 @@
   - tap the background: closes the viewer;
   - hint: a viewer opened by a tap has no hint line (it names mouse and
     keyboard controls); one opened with the mouse still has it.
+  - caption position: a caption set beside the image (desc-position left
+    or right) shows below it, as lightbox does on narrow screens.
 
   Emulation can't show quirks of real devices (Safari on iOS especially):
   check on a phone too.
@@ -250,6 +252,19 @@ try {
   await settle(page);
   const clicked = await hintShown();
   check("hint line after a mouse click", clicked, clicked ? "shown" : "hidden");
+  await page.keyboard.press("Escape");
+  await settle(page);
+
+  // A caption set beside the image (page F, case 9: `desc-position:
+  // right`) shows below it on a phone, as lightbox does on narrow screens.
+  s = await openImage(page, cdp, "#c9 img.panzoom");
+  const side = await page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay.open");
+    const f = o && o.querySelector(".panzoom-footer").getBoundingClientRect();
+    return o && { bottom: o.classList.contains("panzoom-desc-bottom"), atBottom: Math.abs(f.bottom - o.clientHeight) < 1 };
+  });
+  check("caption below the image on a phone", s.open && side.bottom && side.atBottom,
+    s.open ? (side.bottom && side.atBottom ? "below" : "not below") : "viewer not open");
 
   check("no page errors", errors.length === 0, errors.join("; ") || "none");
 } finally {

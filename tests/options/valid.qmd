@@ -9,6 +9,7 @@ panzoom:
   caption: true
   loop: true
   fit: contain
+  desc-position: top
   css-class: my-viewer
   backdrop: "#000"
   caption-background: "#111"
@@ -33,6 +34,7 @@ Every option, with a valid value: the page must render, with no errors.
 #|   caption: false
 #|   group: walks
 #|   fit: width
+#|   desc-position: left
 #|   description: "A plot, with $x^2$ in its description."
 #|   css-class: cell-viewer
 #|   backdrop: "rgba(0, 0, 0, 0.8)"
@@ -53,4 +55,4 @@ plot(1)
 ![An image in a div.](../../images/mv-0.jpg){css-class="image-viewer" backdrop="#000"}
 :::
 
-![A marked image.](../../images/mv-1.jpg){.panzoom caption-background="#222" caption-color="white" link-color="#9cf"}
+![A marked image.](../../images/mv-1.jpg){.panzoom desc-position="right" caption-background="#222" caption-color="white" link-color="#9cf"}

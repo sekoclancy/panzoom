@@ -12,10 +12,11 @@
 -- and `panzoom: false` the whole document (as `lightbox: false` does).
 -- The document setting takes the forms Quarto's `lightbox:` does.
 --
--- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`, and the
--- styling options below) become `data-panzoom-*` attributes on the cell's
--- images; document options (`max-zoom`, `hint`, `caption`, `loop`, `fit`,
--- `css-class`, `keys`) go to `window.PANZOOM_OPTIONS`; the document's color options
+-- Cell options (`max-zoom`, `hint`, `caption`, `group`, `fit`,
+-- `desc-position`, and the styling options below) become `data-panzoom-*`
+-- attributes on the cell's images; document options (`max-zoom`, `hint`,
+-- `caption`, `loop`, `fit`, `desc-position`, `css-class`, `keys`) go to
+-- `window.PANZOOM_OPTIONS`; the document's color options
 -- (`backdrop`, `caption-background`, `caption-color`, `link-color`) set the
 -- viewer's CSS variables in a <style> rule. The styling options
 -- (`css-class` and the colors) also work for one cell, or for one markdown
@@ -127,6 +128,8 @@ local function one_of(values)
 end
 
 local FITS = { "auto", "contain", "height", "width" }
+-- Where the caption and description go, as for Quarto's lightbox.
+local POSITIONS = { "bottom", "top", "left", "right" }
 local BOOLEAN = "`true` or `false`"
 
 -- What each option accepts: a check on the value, given as
@@ -139,6 +142,7 @@ local DOCUMENT_OPTIONS = {
   ["caption"] = { kind = "boolean" },
   ["loop"] = { kind = "boolean" },
   ["fit"] = { kind = "enum", values = FITS },
+  ["desc-position"] = { kind = "enum", values = POSITIONS },
   ["css-class"] = { kind = "string" },
   ["keys"] = { kind = "keys" },
 }
@@ -149,6 +153,7 @@ local CELL_OPTIONS = {
   ["caption"] = { kind = "boolean" },
   ["group"] = { kind = "string" },
   ["fit"] = { kind = "enum", values = FITS },
+  ["desc-position"] = { kind = "enum", values = POSITIONS },
   ["description"] = { kind = "string" },
 }
 -- Options that style the viewer for one image: a cell option, or an
@@ -414,6 +419,15 @@ local function mark(img)
     img.attributes["data-panzoom-desc"] = add_description(desc)
     img.attributes["description"] = nil
   end
+  -- `desc-position="..."` (as for Quarto's lightbox).
+  local pos = img.attributes["desc-position"]
+  if pos ~= nil then
+    img.attributes["desc-position"] = nil
+    if check("desc-position", { kind = "enum", values = POSITIONS }, pos, pos, pos,
+        "desc-position, on the image " .. img.src) then
+      img.attributes["data-panzoom-desc-position"] = pos
+    end
+  end
   -- Styling options written on the image itself.
   for _, key in ipairs(names(STYLE_OPTIONS)) do
     local v = img.attributes[key]
@@ -610,7 +624,7 @@ local function cell_option(el)
   if value:sub(1, 1) == "{" then
     local cfg, raws = parse_options(value)
     validate_cell(cfg, raws, el)
-    local keys = { "max-zoom", "hint", "caption", "group", "fit" }
+    local keys = { "max-zoom", "hint", "caption", "group", "fit", "desc-position" }
     for _, key in ipairs(names(STYLE_OPTIONS)) do table.insert(keys, key) end
     for _, key in ipairs(keys) do
       if cfg[key] ~= nil then
@@ -684,6 +698,9 @@ local function setup(meta)
     end
     if cfg.fit ~= nil then
       options.fit = pandoc.utils.stringify(cfg.fit)
+    end
+    if cfg["desc-position"] ~= nil then
+      options.descPosition = pandoc.utils.stringify(cfg["desc-position"])
     end
     -- As Quarto's `lightbox: css-class:`, but added to the viewer as
     -- written, next to `panzoom-overlay` (GLightbox replaces its skin).

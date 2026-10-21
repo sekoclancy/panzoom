@@ -101,6 +101,34 @@ a.panzoom-link:focus-visible { outline: none; }
   padding: 0.5rem 1rem 0.6rem; text-align: center;
   background: var(--panzoom-bg);
 }
+/* desc-position (panzoom.js sets the class, and the band's size as
+   --panzoom-band-height and --panzoom-band-width): the band above the
+   image, or a panel beside it with its text centered up and down, and the
+   buttons it would cover moved out of its way. */
+.panzoom-desc-top .panzoom-footer { top: 0; bottom: auto; }
+.panzoom-desc-left .panzoom-footer,
+.panzoom-desc-right .panzoom-footer {
+  top: 0; bottom: 0; width: min(22rem, 32vw); box-sizing: border-box;
+  display: flex; flex-direction: column; padding: 1rem; text-align: left;
+}
+.panzoom-desc-left .panzoom-footer { left: 0; right: auto; }
+.panzoom-desc-right .panzoom-footer { right: 0; left: auto; }
+.panzoom-desc-left .panzoom-footer::before, .panzoom-desc-left .panzoom-footer::after,
+.panzoom-desc-right .panzoom-footer::before, .panzoom-desc-right .panzoom-footer::after {
+  content: ""; flex: 1 1 0;
+}
+.panzoom-desc-left .panzoom-caption, .panzoom-desc-left .panzoom-description,
+.panzoom-desc-right .panzoom-caption, .panzoom-desc-right .panzoom-description {
+  width: auto; max-width: none; margin: 0; max-height: none; min-height: 0; flex: 0 1 auto;
+}
+.panzoom-desc-left .panzoom-hint, .panzoom-desc-right .panzoom-hint { flex: none; margin-top: 0.5rem; }
+.panzoom-desc-top .panzoom-close { top: calc(var(--panzoom-band-height, 0px) + 10px); }
+.panzoom-desc-top .panzoom-counter { top: calc(var(--panzoom-band-height, 0px) + 14px); }
+.panzoom-desc-left .panzoom-prev { left: calc(var(--panzoom-band-width, 0px) + 10px); }
+.panzoom-desc-left .panzoom-counter { left: calc(var(--panzoom-band-width, 0px) + 16px); }
+.panzoom-desc-right .panzoom-next { right: calc(var(--panzoom-band-width, 0px) + 10px); }
+.panzoom-desc-right .panzoom-close { right: calc(var(--panzoom-band-width, 0px) + 14px); }
+
 /* Padding, not margin, below each panel: an inline box reaching past the
    last line (code in some fonts, as Safari's SF Mono) stays inside it, so a
    short panel doesn't scroll. Each panel is as wide as its text and

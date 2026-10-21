@@ -4,6 +4,8 @@ filters:
   - panzoom
 jupyter: python3
 expect-errors:
+  - 'Field "desc-position" has value middle, which must instead be one of: `bottom`, `top`, `left`, `right`'
+  - "ℹ The error happened in location panzoom:desc-position, in the cell starting `import matplotlib.pyplot as plt`."
   - "property name gruop is invalid"
   - "ℹ The error happened in location panzoom:gruop, in the cell starting `import matplotlib.pyplot as plt`."
   - "ℹ Did you mean group?"
@@ -14,13 +16,14 @@ expect-errors:
   - "ℹ Did you mean group?"
 ---
 
-Mistakes in `#| panzoom:` cell options, as Jupyter passes them, also in a cell
-inside a `.panzoom` div.
+Mistakes in `#| panzoom:` cell options, as Jupyter passes them (sorted by name),
+also in a cell inside a `.panzoom` div.
 
 ```{python}
 #| panzoom:
 #|   gruop: a
 #|   hint: maybe
+#|   desc-position: middle
 
 import matplotlib.pyplot as plt
 

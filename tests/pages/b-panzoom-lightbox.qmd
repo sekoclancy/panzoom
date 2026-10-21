@@ -30,14 +30,14 @@ panzoom:
   hint: false
 ```
 
-## Single image {#c1 expect-open="panzoom"}
+## Single image {#c1 expect-open="panzoom" expect-desc-position="left"}
 
-A markdown image with `.panzoom` and a description. It opens in panzoom, with
-the description below the caption. panzoom has no `desc-position`, so the
-image's `desc-position="left"` has no effect.
+A markdown image with `.panzoom`, a description, and `desc-position="left"`. It
+opens in panzoom, with the caption and description in a panel on the left of the
+image.
 
 ```markdown {.show-source}
-![A markdown image with `.panzoom` with a description and `desc-position="left"`. It opens in panzoom, with the description below the caption, since panzoom has no `desc-position`.](../../images/mv-0.jpg){.panzoom description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Chilmark beach at sunset.](../../images/mv-0.jpg){.panzoom description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## Gallery in a layout {#c2 expect-open="glightbox panzoom glightbox"}

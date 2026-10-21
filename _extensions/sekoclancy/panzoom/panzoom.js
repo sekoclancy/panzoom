@@ -18,6 +18,12 @@
   panzoom.lua made from the `description` attribute or cell option and
   Quarto rendered with the page (citations, cross-references, math).
 
+  Caption position: `desc-position` (top, bottom, left or right; as for
+  Quarto's lightbox) puts the caption band above or below the image, or
+  beside it as a panel, and the image fits the rest of the screen. On a
+  screen narrower than NARROW, left and right show below, as lightbox
+  does.
+
   Galleries: images with the same group are stepped through with the
   prev/next buttons, Left/Right or a horizontal swipe (the last two only
   while the image fits the screen; when it is larger in either direction,
@@ -54,12 +60,14 @@
 
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
   the document's `panzoom:` metadata): { maxZoom: 4, hint: true,
-  caption: true, loop: false, fit: "auto", cssClass: "", keys: {} }; cssClass
+  caption: true, loop: false, fit: "auto", descPosition: "bottom",
+  cssClass: "", keys: {} }; cssClass
   is added to the viewer's classes, for styling it, and keys rebinds the
   viewer's keys (see KEYS). A cell's `#| panzoom:` options
-  override maxZoom, hint, caption and fit per image, via
-  `data-panzoom-max-zoom`, `data-panzoom-hint`, `data-panzoom-caption` and
-  `data-panzoom-fit` on the <img>. The styling options of a cell or an
+  override maxZoom, hint, caption, fit and descPosition per image, via
+  `data-panzoom-max-zoom`, `data-panzoom-hint`, `data-panzoom-caption`,
+  `data-panzoom-fit` and `data-panzoom-desc-position` on the <img> (the
+  last also from `desc-position="..."` on a markdown image). The styling options of a cell or an
   image (`data-panzoom-css-class` and the colors, see STYLES) apply while
   that image is shown, on top of the document's.
 */
@@ -72,6 +80,8 @@
   var STRETCH = 80; // px a drag can pull an image past its end, at most
   var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
+  var POSITIONS = ["bottom", "top", "left", "right"];
+  var NARROW = 769; // px: below this width, left and right show below (as lightbox)
   // Per-image color options: data attribute (as in `dataset`) -> CSS variable.
   var STYLES = {
     panzoomBackdrop: "--panzoom-backdrop",
@@ -90,6 +100,9 @@
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
   var loadId = 0, loadTimer = null;
   var pz = null, opts, press = null, returnFocus = null, margin = 0;
+  // Where the caption band is now (see place()): opts.descPosition, or
+  // bottom instead of left or right on a narrow screen.
+  var side = "bottom";
   // Whether the viewer was opened with the mouse or a tap (see close()),
   // and whether by a tap (no hint line; see showFooter()).
   var byPointer = false, byTouch = false;
@@ -127,8 +140,10 @@
     };
     var maxZoom = d.panzoomMaxZoom !== undefined ? Number(d.panzoomMaxZoom) : o.maxZoom;
     var fit = d.panzoomFit !== undefined ? d.panzoomFit : o.fit;
+    var pos = d.panzoomDescPosition !== undefined ? d.panzoomDescPosition : o.descPosition;
     return {
       fit: FITS.indexOf(fit) >= 0 ? fit : "auto",
+      descPosition: POSITIONS.indexOf(pos) >= 0 ? pos : "bottom",
       maxZoom: typeof maxZoom === "number" && maxZoom > 0 ? maxZoom : 4,
       hint: flag(d.panzoomHint, flag(o.hint, true)),
       caption: flag(d.panzoomCaption, flag(o.caption, true)),
@@ -270,23 +285,24 @@
     var a = area(), vw = a.w, vh = a.h;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
+    // Screen points below are in the overlay; the space starts at (a.x, a.y).
     // No opening view enlarges an image past its real size (1 image px per
     // CSS px), as with Quarto's lightbox: a small image opens at its own size
     // and can still be zoomed in up to max-zoom.
     var whole = Math.min(vw / w, vh / h, 1 / 0.95) * 0.95;
     var mode = fitMode(w, h, vw, vh, whole);
     margin = 0.025 * Math.min(vw, vh);
-    var s = whole, cx = vw / 2, cy = vh / 2;
+    var s = whole, cx = a.x + vw / 2, cy = a.y + vh / 2;
     // A strip starts at its left end (or top), or, if it was clicked on the
     // page, with the clicked spot in the middle of the screen (as far as
     // its ends allow).
     var at = clicked && clicked.el === gallery[index] ? clicked : null;
     if (mode === "height") {
       s = Math.min((vh - 2 * margin) / h, 1);
-      if (w * s > vw) cx = at ? vw / 2 + (0.5 - at.fx) * w * s : margin + w * s / 2;
+      if (w * s > vw) cx = a.x + (at ? vw / 2 + (0.5 - at.fx) * w * s : margin + w * s / 2);
     } else if (mode === "width") {
       s = Math.min((vw - 2 * margin) / w, 1);
-      if (h * s > vh) cy = at ? vh / 2 + (0.5 - at.fy) * h * s : margin + h * s / 2;
+      if (h * s > vh) cy = a.y + (at ? vh / 2 + (0.5 - at.fy) * h * s : margin + h * s / 2);
     }
     img.dataset.fit = mode;
     // Clear `pz` first: Panzoom fires change events while it starts up, and
@@ -297,8 +313,8 @@
       cursor: "grab",
       startScale: s,
       // The opening view is also where reset (0, double-click) returns.
-      startX: containAxis((cx - w / 2) / s, s, w, vw),
-      startY: containAxis((cy - h / 2) / s, s, h, vh),
+      startX: containAxis((cx - w / 2) / s, s, w, vw, null, a.x),
+      startY: containAxis((cy - h / 2) / s, s, h, vh, null, a.y),
       minScale: Math.min(whole, s),
       maxScale: Math.max(opts.maxZoom, s)
     });
@@ -325,7 +341,21 @@
     desc.hidden = hideCaption || !desc.innerHTML.trim();
     hint.hidden = hideHint || !opts.hint || byTouch;
     footer.hidden = caption.hidden && desc.hidden && hint.hidden;
+    // The band's size, for the buttons it would cover (see panzoom.css).
+    overlay.style.setProperty("--panzoom-band-height", footer.offsetHeight + "px");
+    overlay.style.setProperty("--panzoom-band-width", footer.offsetWidth + "px");
     markScrollable();
+  }
+
+  // Puts the caption band where the image's desc-position says (a class on
+  // the viewer: panzoom-desc-top and so on), below instead of beside the
+  // image on a narrow screen.
+  function place() {
+    var p = opts.descPosition;
+    if ((p === "left" || p === "right") && window.innerWidth < NARROW) p = "bottom";
+    overlay.classList.remove("panzoom-desc-" + side);
+    side = p;
+    overlay.classList.add("panzoom-desc-" + side);
   }
 
   // c and h ("caption" and "hint"): hide or show the caption or the hint.
@@ -339,9 +369,16 @@
     if (refit) fit(); else contain();
   }
 
-  // The space the image is shown in: the overlay above the caption.
+  // The space the image is shown in: the overlay less the caption band,
+  // starting at (x, y) in the overlay.
   function area() {
-    return { w: overlay.clientWidth, h: overlay.clientHeight - footer.offsetHeight };
+    var w = overlay.clientWidth, h = overlay.clientHeight;
+    if (side === "left" || side === "right") {
+      var bw = footer.offsetWidth;
+      return { x: side === "left" ? bw : 0, y: 0, w: w - bw, h: h };
+    }
+    var bh = footer.offsetHeight;
+    return { x: 0, y: side === "top" ? bh : 0, w: w, h: h - bh };
   }
 
   // Which ways the image is larger than that space (zoomed in, or a wide or
@@ -359,26 +396,29 @@
   // fits); drags and arrow keys don't move it. Where it is larger, its
   // edges stop at the screen edges (less the margin), so panning ends at
   // the image's ends. `t` is Panzoom's pan along the axis (unscaled px, see
-  // fit()), `n` the image size and `avail` the space, both along the axis.
-  function containAxis(t, s, n, avail, hold) {
+  // fit()), `n` the image size and `avail` the space, both along the axis,
+  // and `off` where the space starts on screen (the caption band above or
+  // to the left).
+  function containAxis(t, s, n, avail, hold, off) {
     var size = n * s;
+    off = off || 0;
     if (size <= avail) {
       var m = Math.min(margin, (avail - size) / 2);
-      var h = hold === null || hold === undefined ? avail / 2 : hold;
+      var h = hold === null || hold === undefined ? avail / 2 : hold - off;
       h = Math.min(avail - m - size / 2, Math.max(m + size / 2, h));
-      return (h - n / 2) / s;
+      return (off + h - n / 2) / s;
     }
-    var c = n / 2 + s * t;                             // image center on screen
+    var c = n / 2 + s * t - off;                       // image center in the space
     c = Math.min(margin + size / 2, Math.max(avail - margin - size / 2, c));
-    return (c - n / 2) / s;
+    return (off + c - n / 2) / s;
   }
 
   // The contained pan for (x, y) at scale s.
   function contained(x, y, s) {
     var a = area();
     return {
-      x: containAxis(x, s, img.naturalWidth, a.w, held.x),
-      y: containAxis(y, s, img.naturalHeight, a.h, held.y)
+      x: containAxis(x, s, img.naturalWidth, a.w, held.x, a.x),
+      y: containAxis(y, s, img.naturalHeight, a.h, held.y, a.y)
     };
   }
 
@@ -537,6 +577,7 @@
     desc.innerHTML = opts.caption ? descriptionOf(el) : "";
     overlay.querySelector(".panzoom-hint-gallery").hidden = !many;
     caption.scrollTop = desc.scrollTop = 0;
+    place();
     showFooter();
     overlay.setAttribute("aria-label", "Image viewer" + (many ? ", image " + (i + 1) + " of " + n : ""));
     if (pz) { pz.destroy(); pz = null; }
@@ -795,7 +836,8 @@
     });
     window.addEventListener("resize", function () {
       if (!overlay.classList.contains("open")) return;
-      markScrollable();
+      place();
+      showFooter();
       if (!overlay.classList.contains("panzoom-loading")) fit();
     });
   }

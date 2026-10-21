@@ -300,3 +300,20 @@ plt.plot(x, np.cos(2 * x))
 plt.show()
 ```
 :::
+
+## Caption beside the image {#c16 expect-open="panzoom" expect-desc-position="left"}
+
+A cell with `desc-position: left` and a description under the `panzoom` cell
+option. It opens in panzoom, with the caption and description in a panel on the
+left of the image.
+
+```{python}
+#| fig-alt: "Line plot of a sine wave with a slowly growing amplitude"
+#| panzoom:
+#|   desc-position: left
+#|   description: "The amplitude grows along the axis."
+#| fig-cap: "A growing sine wave."
+
+plt.plot(x, (1 + x / 4) * np.sin(x))
+plt.show()
+```

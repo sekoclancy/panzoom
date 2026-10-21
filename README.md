@@ -82,9 +82,8 @@ focus to the image.
 - [Math](#math) in any `html-math-method`, offline too; works in [self-contained
   documents](#self-contained-documents)
 
-Not offered (lightbox has these):
+Not offered (lightbox has this):
 
-- Caption position: the caption is always below the image (no `desc-position`)
 - Opening effects: the viewer opens and closes at once (no `effect`)
 
 ## Usage
@@ -161,6 +160,7 @@ panzoom:
   caption: true   # boolean: show the figure caption in the viewer (default true)
   loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
   fit: auto       # auto, contain, height, or width (default auto, see Wide and tall figures)
+  desc-position: bottom  # bottom, top, left, or right: where the caption goes (default bottom, see Captions)
   css-class: my-viewer  # an extra class on the viewer, for styling it (default none; see Styling)
   keys:           # the viewer's keys (see Keys)
     caption: k
@@ -170,10 +170,10 @@ panzoom:
   link-color: lightblue       # and links in captions (defaults follow the theme)
 ```
 
-A code cell can set `max-zoom`, `hint`, `caption`, `fit`, `css-class`, and the
-colors for its own plots, as well as `group` and `description`, by giving
-`#| panzoom:` options instead of `true`. A cell's options win over the
-document's:
+A code cell can set `max-zoom`, `hint`, `caption`, `fit`, `desc-position`,
+`css-class`, and the colors for its own plots, as well as `group` and
+`description`, by giving `#| panzoom:` options instead of `true`. A cell's
+options win over the document's:
 
 ````markdown
 ```{r}
@@ -225,6 +225,14 @@ only do one action. The hint line names the keys in use.
 
 The viewer shows the figure's caption, with its number, math, citations, and
 cross-references, under the image. Turn it off with `caption: false`.
+
+`desc-position` puts the caption and description above the image (`top`), or
+beside it (`left`, `right`), for a document, a code cell, or one image. On a
+screen narrower than 769 px, `left` and `right` show below, as in lightbox:
+
+```markdown
+![Beach](beach.jpg){.panzoom desc-position="left"}
+```
 
 ### Descriptions
 

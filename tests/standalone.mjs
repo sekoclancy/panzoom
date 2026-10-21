@@ -17,6 +17,7 @@
     math-<method>.qmd         each html-math-method
     switch-<value>.qmd        panzoom: true, auto or false
     css-class.qmd             css-class and the viewer's CSS variables
+    desc-position.qmd         desc-position: document, image, gallery
     keys.qmd                  keys: rebound, added, and switched-off keys
 
   Usage, from tests/:

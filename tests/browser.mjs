@@ -102,6 +102,18 @@ function selfContained(file) {
 // for screen readers don't count. Ordered from best to worst.
 const TEX_RANK = { clean: 0, raw: 1, delimited: 2 };
 function defineTexClass() {
+  // The viewer's image space, as panzoom.js's area(): the overlay less the
+  // caption band, which desc-position puts below (default), above, or
+  // beside the image; { x, y } is where the space starts in the overlay.
+  window.__area = (o) => {
+    const f = o.querySelector(".panzoom-footer");
+    const side = (/\bpanzoom-desc-(top|bottom|left|right)\b/.exec(o.className) || [])[1] || "bottom";
+    const w = o.clientWidth, h = o.clientHeight;
+    if (side === "left" || side === "right") {
+      return { x: side === "left" ? f.offsetWidth : 0, y: 0, w: w - f.offsetWidth, h, side };
+    }
+    return { x: 0, y: side === "top" ? f.offsetHeight : 0, w, h: h - f.offsetHeight, side };
+  };
   window.__texClass = (el) => {
     if (!el) return "clean";
     const c = el.cloneNode(true);
@@ -203,9 +215,8 @@ async function viewerTransform(page) {
 async function zoomPastScreen(page, wide = false) {
   const overflow = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay");
-    const r = o.querySelector("img").getBoundingClientRect();
-    const h = o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight;
-    return { x: r.width > o.clientWidth + 1, y: r.height > h + 1 };
+    const r = o.querySelector("img").getBoundingClientRect(), a = window.__area(o);
+    return { x: r.width > a.w + 1, y: r.height > a.h + 1 };
   });
   await page.keyboard.press("+");
   await page.keyboard.press("+");
@@ -227,7 +238,7 @@ async function state(page) {
       const counter = pz.querySelector(".panzoom-counter");
       const caption = pz.querySelector(".panzoom-caption");
       const img = pz.querySelector("img");
-      const r = img.getBoundingClientRect();
+      const r = img.getBoundingClientRect(), a = window.__area(pz);
       return {
         size: `${img.naturalWidth}×${img.naturalHeight} px, shown ${Math.round(r.width)}×${Math.round(r.height)}` +
           (img.classList.contains("panzoom-vector") ? `, vector (will-change: ${getComputedStyle(img).willChange})` : "") +
@@ -240,14 +251,16 @@ async function state(page) {
         overlayClass: pz.className,
         overlayBg: getComputedStyle(pz).backgroundColor,
         bandBg: getComputedStyle(pz.querySelector(".panzoom-footer")).backgroundColor,
+        // Where the caption band is: below, above, or beside the image.
+        descPosition: a.side,
         // Whether the image opened larger than the screen, sideways (overX)
         // or up and down (overY): a strip to scroll along.
-        overX: r.width > pz.clientWidth + 1,
-        overY: r.height > pz.clientHeight - pz.querySelector(".panzoom-footer").offsetHeight + 1,
-        // An image that fits the screen's height stays clear of the caption
-        // band below it (the band's height follows its text).
-        captionClear: r.height > pz.clientHeight - pz.querySelector(".panzoom-footer").offsetHeight + 1 ||
-          (r.top >= -1 && r.bottom <= pz.clientHeight - pz.querySelector(".panzoom-footer").offsetHeight + 1),
+        overX: r.width > a.w + 1,
+        overY: r.height > a.h + 1,
+        // An image that fits the space stays clear of the caption band, on
+        // whichever side it is (its size follows its text).
+        captionClear: (r.height > a.h + 1 || (r.top >= a.y - 1 && r.bottom <= a.y + a.h + 1)) &&
+          (r.width > a.w + 1 || (r.left >= a.x - 1 && r.right <= a.x + a.w + 1)),
         backdrop: getComputedStyle(img).backgroundColor,
         description: (() => {
           const d = pz.querySelector(".panzoom-description");
@@ -288,6 +301,7 @@ async function state(page) {
         description: text(".gslide-desc"),
         slides: glb.querySelectorAll(".gslide").length,
         skin: [...glb.classList].filter((c) => c !== "glightbox-container").join(" "),
+        descPosition: (/\bdesc-(top|bottom|left|right)\b/.exec(slide?.querySelector(".ginner-container")?.className || "") || [])[1] || "",
       };
     }
     return { opened: "nothing" };
@@ -340,14 +354,14 @@ async function exercisePanzoom(page) {
   // screen). Anchor px is how far the point drifted over all five steps.
   const flush = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay");
-    const a = { w: o.clientWidth, h: o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight };
+    const a = window.__area(o);
     const margin = 0.025 * Math.min(a.w, a.h);
     const ob = o.getBoundingClientRect(), r = o.querySelector("img").getBoundingClientRect();
     const at = (lo, size, avail) => {
       const m = size > avail ? margin : Math.min(margin, (avail - size) / 2);
       return Math.abs(lo - m) <= 2 || Math.abs(avail - lo - size - m) <= 2;
     };
-    return [at(r.left - ob.left, r.width, a.w), at(r.top - ob.top, r.height, a.h)];
+    return [at(r.left - ob.left - a.x, r.width, a.w), at(r.top - ob.top - a.y, r.height, a.h)];
   });
   out.anchorOk = true;
   let prev = r0;
@@ -398,8 +412,7 @@ async function exercisePanzoom(page) {
     // at an off-center point. Several steps can land in one animation frame,
     // which once made the zoom drift. Skipped if max-zoom comes first.
     const area = await page.evaluate(() => {
-      const o = document.querySelector(".panzoom-overlay");
-      return { w: o.clientWidth, h: o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight };
+      return window.__area(document.querySelector(".panzoom-overlay"));
     });
     let big = await imageRect();
     for (let i = 0; i < 12 && !(big.width > area.w && big.height > area.h); i++) {
@@ -863,6 +876,9 @@ async function checkPage(browser, base, file) {
           expectNoClass: img.dataset.expectNoClass || sec.dataset.expectNoClass || null,
           expectOverlay: img.dataset.expectOverlay || sec.dataset.expectOverlay || null,
           expectBand: img.dataset.expectBand || sec.dataset.expectBand || null,
+          // `expect-desc-position`: where the caption and description show
+          // (top, bottom, left or right), in panzoom or lightbox.
+          expectDescPosition: img.dataset.expectDescPosition || sec.dataset.expectDescPosition || null,
           // `expect-steps="true"`: a gallery stepped through (see checkPage).
           expectSteps: !!sec.dataset.expectSteps,
           expectReferences: "expectReferences" in sec.dataset,
@@ -994,10 +1010,11 @@ async function checkPage(browser, base, file) {
     await openImage(page, collage);
     const edges = () => page.evaluate(() => {
       const o = document.querySelector(".panzoom-overlay");
-      const f = o.querySelector(".panzoom-footer").offsetHeight;
+      const a = window.__area(o);
       const r = o.querySelector("img").getBoundingClientRect();
-      const m = 0.025 * Math.min(o.clientWidth, o.clientHeight - f);
-      return { left: r.left, right: r.right, top: r.top, w: o.clientWidth, m };
+      const m = 0.025 * Math.min(a.w, a.h);
+      // in the image space (see __area)
+      return { left: r.left - a.x, right: r.right - a.x, top: r.top - a.y, w: a.w, m };
     });
     // (Waits of 600 ms let an end-of-image bounce finish: 120 + 200 ms.)
     for (let i = 0; i < 200; i++) await page.keyboard.press("ArrowRight");
@@ -1088,12 +1105,13 @@ async function checkPage(browser, base, file) {
   let clickOpen = null;
   const viewAt = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay");
-    const f = o.querySelector(".panzoom-footer").offsetHeight;
+    const a = window.__area(o);
     const r = o.querySelector("img").getBoundingClientRect();
-    const w = o.clientWidth, h = o.clientHeight - f, m = 0.025 * Math.min(w, h);
-    // the image fractions at the middle of the screen, and the edges
-    return { fx: (w / 2 - r.left) / r.width, fy: (h / 2 - r.top) / r.height,
-      left: r.left, right: r.right, top: r.top, w, m };
+    const w = a.w, h = a.h, m = 0.025 * Math.min(w, h);
+    // the image fractions at the middle of the image space, and the edges
+    // in it (see __area)
+    return { fx: (a.x + w / 2 - r.left) / r.width, fy: (a.y + h / 2 - r.top) / r.height,
+      left: r.left - a.x, right: r.right - a.x, top: r.top - a.y, w, m };
   });
   const clickAt = async (r, fx, fy) => {
     const handle = await page.$(`img[data-test-idx="${r.idx}"]`);
@@ -1296,11 +1314,12 @@ function optionsOk(r) {
   if (r.expectNoClass && (r.overlayClass || "").split(/\s+/).includes(r.expectNoClass)) return false;
   if (r.expectOverlay && r.overlayBg !== r.expectOverlay) return false;
   if (r.expectBand && r.bandBg !== r.expectBand) return false;
+  if (r.expectDescPosition && r.descPosition !== r.expectDescPosition) return false;
   return true;
 }
 function hasOptionChecks(r) {
   return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom || r.expectFormat ||
-    r.expectClass || r.expectNoClass || r.expectOverlay || r.expectBand);
+    r.expectClass || r.expectNoClass || r.expectOverlay || r.expectBand || r.expectDescPosition);
 }
 
 // An image with a description shows it in the viewer.
@@ -1434,6 +1453,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         r.expectNoClass && `no viewer class ${r.expectNoClass}`,
         r.expectOverlay && `backdrop ${r.expectOverlay}`,
         r.expectBand && `caption band ${r.expectBand}`,
+        r.expectDescPosition && `caption ${r.expectDescPosition}`,
       ].filter(Boolean).join(", ");
       const got = [
         `opened ${r.opened}`,
@@ -1444,6 +1464,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         (r.expectClass || r.expectNoClass) && `classes "${r.overlayClass}"`,
         r.expectOverlay && `backdrop ${r.overlayBg}`,
         r.expectBand && `caption band ${r.bandBg}`,
+        r.expectDescPosition && `caption ${r.descPosition || "?"}`,
       ].filter(Boolean).join(", ");
       lines.push(`- ${r.case}. ${r.caseTitle} (img ${r.n}): expected ${want}; ${got}: ${yes(optionsOk(r))}`);
     }
