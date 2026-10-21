@@ -157,8 +157,14 @@ automatically.
 #| panzoom:
 #|   group: volcano-views
 #| fig-cap:
-#|   - "Volcano heights as an image."
-#|   - "The same data as a perspective plot."
+#|   - >-
+#|     Maunga Whau (Mount Eden) in Auckland, as heights on a 10 m by 10 m grid,
+#|     from 94 m (dark blue) to 195 m (yellow). The crater is the darker hollow
+#|     inside the yellow rim.
+#|   - >-
+#|     The same 87 by 61 grid of heights drawn as a shaded surface and viewed
+#|     from above at an angle, so the crater rim and the slope down to the
+#|     surrounding ground read as relief instead of color.
 #| layout-ncol: 2
 
 image(volcano, col = hcl.colors(100, "Viridis"))
