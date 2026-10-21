@@ -13,8 +13,6 @@ panzoom: true
 lightbox: true
 ---
 
-## About {.unnumbered}
-
 panzoom takes every Python (Jupyter) figure lightbox would take on its own, so
 no figure needs to be marked. lightbox is on too, but only cells that ask for it
 with lightbox options open in it ([case 4](#c4)). The same cases open in

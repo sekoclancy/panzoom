@@ -11,8 +11,6 @@ panzoom:
   hint: false
 ---
 
-## About {.unnumbered}
-
 Figures of different shapes, each opened on its own, and the `fit` option. All
 are png. Other formats are on [image formats](e-formats.html), and the same
 shapes in galleries and layouts are on [wide figures in

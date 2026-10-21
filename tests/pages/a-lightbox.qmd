@@ -13,8 +13,6 @@ lightbox:
   loop: true
 ---
 
-## About {.unnumbered}
-
 This page has no panzoom, and every image opens in lightbox. Its cases are the
 same as on the panzoom examples, so each one can be compared with the case of
 the same number on [lightbox and panzoom together](b-panzoom-lightbox.html),

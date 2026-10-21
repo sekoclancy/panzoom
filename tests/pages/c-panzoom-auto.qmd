@@ -17,8 +17,6 @@ lightbox:
   loop: true
 ---
 
-## About {.unnumbered}
-
 panzoom takes every image lightbox would take on its own, so no image needs to
 be marked. lightbox is set up too, but only cells that ask for it with the
 `#| lightbox: true` cell option, or with lightbox options such as `group`, open

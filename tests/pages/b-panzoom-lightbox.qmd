@@ -12,8 +12,6 @@ panzoom:
   hint: false
 ---
 
-## About {.unnumbered}
-
 lightbox is on for the whole page, and only images marked with the `.panzoom`
 class or the `#| panzoom: true` cell option open in panzoom. Every other image
 opens in lightbox. The same cases open in lightbox alone on the [lightbox

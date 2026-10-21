@@ -35,8 +35,6 @@ references:
         - [2001]
 ---
 
-## About {.unnumbered}
-
 A caption is copied from the page, so whatever Quarto renders there comes
 through to the viewer. A description is rendered with the page too, in a hidden
 block the viewer copies, so its citations resolve, its cross-references get

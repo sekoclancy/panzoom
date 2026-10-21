@@ -11,8 +11,6 @@ panzoom:
   hint: false
 ---
 
-## About {.unnumbered}
-
 Only images marked with the `.panzoom` class or the `#| panzoom: true` cell
 option open in panzoom. lightbox is off, so clicking any other image does
 nothing, except in cells that ask for lightbox with options of their own ([case

@@ -11,8 +11,6 @@ filters:
     at: pre-ast
 ---
 
-## About {.unnumbered}
-
 This page has no panzoom, and every Python (Jupyter) figure opens in lightbox.
 Its cases are the same as on [panzoom on every figure](k-jupyter-auto.html), so
 each one can be compared with the case of the same number there. The R cases are

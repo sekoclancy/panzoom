@@ -14,8 +14,6 @@ panzoom:
   link-color: "#a0361b"
 ---
 
-## About {.unnumbered}
-
 The YAML header sets the viewer's colors without CSS, giving a deep blue
 backdrop, a cream caption band, dark brown caption text, and rust links. Every
 image on the page gets them.

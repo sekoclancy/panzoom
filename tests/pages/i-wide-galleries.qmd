@@ -9,8 +9,6 @@ panzoom:
   hint: false
 ---
 
-## About {.unnumbered}
-
 Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and in a
 layout div. The same shapes on their own, and the `fit` option, are on [wide and
 tall figures](h-wide.html).

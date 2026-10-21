@@ -11,8 +11,6 @@ panzoom:
   css-class: plum-viewer
 ---
 
-## About {.unnumbered}
-
 The viewer styled with CSS. `css-class` adds a class to the viewer, and the
 rules below use it to set the viewer's colors (plum, with pink links), draw a
 line along the top of the caption band, and make the caption larger and italic.

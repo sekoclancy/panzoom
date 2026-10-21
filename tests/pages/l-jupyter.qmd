@@ -9,8 +9,6 @@ filters:
   - panzoom
 ---
 
-## About {.unnumbered}
-
 The cell options from the R examples, on matplotlib figures, and svg output.
 lightbox is off, so only cells marked for panzoom open in it. Clicking any other
 figure does nothing, unless its cell turns lightbox on with `#| lightbox: true`

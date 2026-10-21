@@ -9,8 +9,6 @@ panzoom:
   hint: false
 ---
 
-## About {.unnumbered}
-
 Two figures, a wide collage and a standard plot, written by different knitr
 graphics devices: webp, svg, png, and pdf. Every figure has the
 `#| panzoom: true` cell option and opens in panzoom unless its case says
