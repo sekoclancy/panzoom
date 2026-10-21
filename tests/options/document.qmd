@@ -15,30 +15,30 @@ panzoom:
   backdrop: "red; } body {"
 expect-errors:
   - 'Field "backdrop" has value red; } body {, which must instead be a CSS color'
-  - 'ℹ The error happened in location panzoom:backdrop.'
+  - "ℹ The error happened in location panzoom:backdrop."
   - 'Field "caption" has value on, which must instead be `true` or `false`'
-  - 'ℹ The error happened in location panzoom:caption.'
-  - 'ℹ Quarto uses YAML 1.2, which interprets booleans strictly.'
-  - 'ℹ Try using true instead.'
+  - "ℹ The error happened in location panzoom:caption."
+  - "ℹ Quarto uses YAML 1.2, which interprets booleans strictly."
+  - "ℹ Try using true instead."
   - 'Field "css-class" has value [a, b], which must instead be a string'
-  - 'ℹ The error happened in location panzoom:css-class.'
+  - "ℹ The error happened in location panzoom:css-class."
   - 'Field "fit" has value sideways, which must instead be one of: `auto`, `contain`, `height`, `width`'
-  - 'ℹ The error happened in location panzoom:fit.'
+  - "ℹ The error happened in location panzoom:fit."
   - 'Field "hint" has value maybe, which must instead be `true` or `false`'
-  - 'ℹ The error happened in location panzoom:hint.'
+  - "ℹ The error happened in location panzoom:hint."
   - 'Field "loop" has value "true", which must instead be `true` or `false`'
-  - 'ℹ The error happened in location panzoom:loop.'
-  - 'ℹ Quarto uses YAML 1.2, which interprets booleans strictly.'
-  - 'ℹ Try using true instead.'
+  - "ℹ The error happened in location panzoom:loop."
+  - "ℹ Quarto uses YAML 1.2, which interprets booleans strictly."
+  - "ℹ Try using true instead."
   - 'Field "match" has value all, which must instead be ''auto'''
-  - 'ℹ The error happened in location panzoom:match.'
-  - 'property name max-zom is invalid'
-  - 'ℹ The error happened in location panzoom:max-zom.'
-  - 'ℹ Did you mean max-zoom?'
+  - "ℹ The error happened in location panzoom:match."
+  - "property name max-zom is invalid"
+  - "ℹ The error happened in location panzoom:max-zom."
+  - "ℹ Did you mean max-zoom?"
   - 'Field "max-zoom" has value lots, which must instead be a number greater than 0'
-  - 'ℹ The error happened in location panzoom:max-zoom.'
-  - 'property name zzz is invalid'
-  - 'ℹ The error happened in location panzoom:zzz.'
+  - "ℹ The error happened in location panzoom:max-zoom."
+  - "property name zzz is invalid"
+  - "ℹ The error happened in location panzoom:zzz."
 ---
 
 Mistakes in the document's `panzoom:` options, each reported once.

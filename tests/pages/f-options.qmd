@@ -13,9 +13,9 @@ panzoom:
 
 ## About
 
-Keeping an image or a cell out of panzoom, and setting options on one cell.
-The page sets `loop`, so the gallery in [case 6](#c6) wraps around. lightbox is
-off, so clicking an image panzoom leaves alone does nothing.
+Keeping an image or a cell out of panzoom, and setting options on one cell. The
+page sets `loop`, so the gallery in [case 6](#c6) wraps around. lightbox is off,
+so clicking an image panzoom leaves alone does nothing.
 
 ```yaml
 filters:
@@ -54,9 +54,9 @@ wave <- function(k = 1) {
 
 ## 1. Opt out an image {#c1 expect-open="nothing panzoom"}
 
-Two images in a `.panzoom` div, which marks every image inside it. The first
-has `.nopanzoom`, which keeps it out, so clicking it does nothing. The second
-opens in panzoom.
+Two images in a `.panzoom` div, which marks every image inside it. The first has
+`.nopanzoom`, which keeps it out, so clicking it does nothing. The second opens
+in panzoom.
 
 ```markdown {.show-source}
 ::: {.panzoom layout-ncol="2"}
@@ -68,8 +68,8 @@ opens in panzoom.
 
 ## 2. Opt out a cell {#c2 expect-open="nothing"}
 
-An R cell with `#| panzoom: false` inside a `.panzoom` div. The cell option
-wins over the div, so clicking the plot does nothing.
+An R cell with `#| panzoom: false` inside a `.panzoom` div. The cell option wins
+over the div, so clicking the plot does nothing.
 
 ::: {.panzoom}
 ```{r}

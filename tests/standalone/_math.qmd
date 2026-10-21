@@ -1,28 +1,32 @@
 ::: {.callout-note}
 ## About this page
 
-This page **tests math in the viewer's captions and descriptions** with
-each of Quarto's math methods: `math-<method>.qmd` sets `html-math-method`
-(`mathjax`, `katex`, `mathml`, `webtex`, `plain`; the subtitle says which).
-It is not part of the website. Math in the viewer should look
-the same as math on the page: typeset if the page's is, raw TeX nowhere.
-`webtex` loads its images from an online service, so it needs internet
-access.
+This page **tests math in the viewer's captions and descriptions** with each of
+Quarto's math methods: `math-<method>.qmd` sets `html-math-method` (`mathjax`,
+`katex`, `mathml`, `webtex`, `plain`; the subtitle says which). It is not part
+of the website. Math in the viewer should look the same as math on the page:
+typeset if the page's is, raw TeX nowhere. `webtex` loads its images from an
+online service, so it needs internet access.
 :::
 
 The page has math of its own: $a^2 + b^2 = c^2$, and
 
 $$
-\sum_{k=1}^n k = \frac{n(n+1)}{2}.
+  \sum_{k=1}^n k = \frac{n(n + 1)}{2}.
 $$
 
 ## 1. Inline math in caption and description {#c1}
 
-![Euler, $e^{i\pi} + 1 = 0$](../../images/mv-4.jpg){.panzoom description="An integral: $\int_0^1 x^2\\,dx = \tfrac{1}{3}$."}
+![Euler, $e^{i\pi} + 1 = 0$](../../images/mv-4.jpg){.panzoom description="An
+integral: $\int_0^1 x^2\\ ,dx = \tfrac{1}{3}$."}
 
 ## 2. Display math in a description {#c2}
 
-![Sums](../../images/mv-1.jpg){.panzoom description="$$\sum_{k=1}^n k^2 = \frac{n(n+1)(2n+1)}{6}$$"}
+![Sums](../../images/mv-1.jpg){.panzoom description="
+$$
+  \sum_{k=1}^n k^2 = \frac{n(n + 1)(2n + 1)}{6}
+$$
+"}
 
 ## 3. Gallery with math descriptions {#c3}
 

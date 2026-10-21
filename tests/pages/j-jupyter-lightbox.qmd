@@ -15,8 +15,8 @@ filters:
 
 This page has no panzoom, and every Python (Jupyter) figure opens in lightbox.
 Its cases are the same as on [panzoom with lightbox](k-jupyter-auto.html), so
-each one can be compared with the case of the same number there. The R cases
-are on the [lightbox page](a-lightbox.html) and [panzoom on every
+each one can be compared with the case of the same number there. The R cases are
+on the [lightbox page](a-lightbox.html) and [panzoom on every
 image](c-panzoom-auto.html).
 
 ```yaml
@@ -113,8 +113,8 @@ plt.show()
 
 ## 6. panzoom on a cell {#c6 expect-open="glightbox"}
 
-A cell with `#| panzoom: true`. The panzoom filter isn't loaded on this page,
-so the option does nothing, and the plot opens in lightbox.
+A cell with `#| panzoom: true`. The panzoom filter isn't loaded on this page, so
+the option does nothing, and the plot opens in lightbox.
 
 ```{python}
 #| fig-alt: "Line plot of a cosine wave"
@@ -135,8 +135,8 @@ A markdown image alone in a paragraph. It opens in lightbox.
 
 ## 8. Opt out of lightbox {#c8 expect-open="nothing"}
 
-A markdown image with `.nolightbox`, which keeps lightbox off it, so clicking
-it does nothing.
+A markdown image with `.nolightbox`, which keeps lightbox off it, so clicking it
+does nothing.
 
 ```markdown {.show-source}
 ![Aquinnah, kept out with `.nolightbox`.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}

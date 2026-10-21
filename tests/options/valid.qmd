@@ -39,11 +39,13 @@ Every option, with a valid value: the page must render, with no errors.
 #|   caption-background: "#eee"
 #|   caption-color: black
 #|   link-color: navy
+
 plot(cumsum(rnorm(50)), type = "l")
 ```
 
 ```{r}
 #| panzoom: false
+
 plot(1)
 ```
 

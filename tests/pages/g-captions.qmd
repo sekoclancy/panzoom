@@ -94,9 +94,8 @@ panzoom with the citation resolved, and Tufte is listed under
 
 ## 3. Cross-reference in a description {#c3 expect-references=""}
 
-An image with `.panzoom` whose description cross-references the figure in
-[case 4](#c4) and links to [case 1](#c1). It opens in panzoom with both links
-working.
+An image with `.panzoom` whose description cross-references the figure in [case
+4](#c4) and links to [case 1](#c1). It opens in panzoom with both links working.
 
 ```markdown {.show-source}
 ![Aquinnah](../../images/mv-1.jpg){.panzoom description="Compare with @fig-pressure, and see [Section 1](#c1)." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
@@ -145,8 +144,8 @@ wave(k = 2)
 
 ## 7. Description option {#c7 expect-open="panzoom"}
 
-An R cell with the `description` option, written in markdown with math. It
-opens in panzoom with the description under the caption.
+An R cell with the `description` option, written in markdown with math. It opens
+in panzoom with the description under the caption.
 
 ```{r}
 #| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
@@ -188,8 +187,8 @@ keys, Page Up and Page Down, Home, End, and Space scroll it.
 ## 10. Long caption {#c10 expect-open="panzoom" expect-scroll="caption"}
 
 An image with `.panzoom` and a caption of placeholder text, from the `lipsum`
-shortcode, longer than the caption panel. It opens in panzoom, and the
-caption panel scrolls, from the keyboard too, while the image keeps its room.
+shortcode, longer than the caption panel. It opens in panzoom, and the caption
+panel scrolls, from the keyboard too, while the image keeps its room.
 
 ```markdown
 ![{{{< lipsum 4 >}}}](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}

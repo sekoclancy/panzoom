@@ -15,8 +15,8 @@ panzoom:
 ## About
 
 lightbox is on for the whole page, and only images marked with the `.panzoom`
-class or the `#| panzoom: true` cell option open in panzoom. Every other
-image opens in lightbox. The same cases open in lightbox alone on the [lightbox
+class or the `#| panzoom: true` cell option open in panzoom. Every other image
+opens in lightbox. The same cases open in lightbox alone on the [lightbox
 page](a-lightbox.html), and the same markup without lightbox is on [panzoom on
 marked images only](d-panzoom-selective.html). The hint line is off.
 
@@ -69,9 +69,9 @@ opens in panzoom, with both typeset.
 
 ## 4. Markdown subfigures {#c4 expect-open="panzoom"}
 
-A figure with two markdown subfigures, both with `.panzoom`. Either one opens
-in panzoom, in a two-image gallery. The figure's caption links to the heat map
-in [case 12](#c12).
+A figure with two markdown subfigures, both with `.panzoom`. Either one opens in
+panzoom, in a two-image gallery. The figure's caption links to the heat map in
+[case 12](#c12).
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -85,14 +85,14 @@ Two markdown subfigures with `.panzoom` and a link to the heat map at the end of
 
 ## 5. R subfigures {#c5 expect-open="panzoom"}
 
-One R cell with `panzoom: true` and two plots, made subfigures by
-`fig-subcap`. Either one opens in panzoom, in a two-image gallery.
+One R cell with `panzoom: true` and two plots, made subfigures by `fig-subcap`.
+Either one opens in panzoom, in a two-image gallery.
 
 ```{r}
 #| label: fig-r-sub
 #| fig-cap: >-
-#|   Two subfigures from one R cell with `panzoom: true`. They open in
-#|   panzoom as a two-image gallery.
+#|   Two subfigures from one R cell with `panzoom: true`. They open in panzoom
+#|   as a two-image gallery.
 #| fig-subcap: ["Pressure", "Cars"]
 #| fig-alt:
 #|   - "Scatter plot of vapor pressure rising steeply with temperature"
@@ -106,9 +106,9 @@ plot(cars)
 
 ## 6. Cell options {#c6 expect-open="panzoom glightbox"}
 
-Two R cells in the lightbox group `r-graph`. The first also has
-`panzoom: true`, so it opens in panzoom on its own, without the lightbox
-description. The second opens in lightbox, alone in its group.
+Two R cells in the lightbox group `r-graph`. The first also has `panzoom: true`,
+so it opens in panzoom on its own, without the lightbox description. The second
+opens in lightbox, alone in its group.
 
 ```{r}
 #| fig-alt: "Scatter plot of ten random points"

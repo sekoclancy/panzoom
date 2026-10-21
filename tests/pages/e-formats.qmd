@@ -18,8 +18,8 @@ otherwise. How figures of other shapes open is on [wide and tall
 figures](h-wide.html).
 
 knitr has no built-in webp device, so the webp cases use `agg_webp` from ragg.
-knitr passes it sizes in inches and no resolution, while ragg expects pixels
-and draws at 72 dpi, so each webp case sets both under `dev.args`:
+knitr passes it sizes in inches and no resolution, while ragg expects pixels and
+draws at 72 dpi, so each webp case sets both under `dev.args`:
 
 ```yaml
 #| dev.args:

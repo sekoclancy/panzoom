@@ -9,10 +9,11 @@ panzoom: auto
 ::: {.callout-note}
 ## About this page
 
-This page **tests the document-level `panzoom:` setting** in its short
-forms: `switch-<value>.qmd` sets `panzoom:` to `true`, `auto` or `false`
-(the subtitle says which). It is not part of the website. `panzoom: auto` is the same as `panzoom: true`, as Quarto's `lightbox: auto` is.
-The options map, with `match: auto`, is tested on page C.
+This page **tests the document-level `panzoom:` setting** in its short forms:
+`switch-<value>.qmd` sets `panzoom:` to `true`, `auto` or `false` (the subtitle
+says which). It is not part of the website. `panzoom: auto` is the same as
+`panzoom: true`, as Quarto's `lightbox: auto` is. The options map, with
+`match: auto`, is tested on page C.
 :::
 
 ## 1. Unmarked figure {#c1 expect-open="panzoom"}
@@ -35,5 +36,5 @@ The options map, with `match: auto`, is tested on page C.
 
 ## 5. Unmarked inline image {#c5 expect-open="nothing"}
 
-Text with an inline image ![](../../images/mv-4.jpg){width=60px} in it,
-which no setting marks.
+Text with an inline image ![](../../images/mv-4.jpg){width=60px} in it, which no
+setting marks.

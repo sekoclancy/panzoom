@@ -15,8 +15,8 @@ panzoom:
 
 Only images marked with the `.panzoom` class or the `#| panzoom: true` cell
 option open in panzoom. lightbox is off, so clicking any other image does
-nothing, except in cells that ask for lightbox with options of their own
-([case 6](#c6)). The same cases open in lightbox alone on the [lightbox
+nothing, except in cells that ask for lightbox with options of their own ([case
+6](#c6)). The same cases open in lightbox alone on the [lightbox
 page](a-lightbox.html), and with lightbox on for the whole page on [lightbox and
 panzoom together](b-panzoom-lightbox.html). The hint line is off.
 
@@ -40,8 +40,8 @@ image's `desc-position="left"` has no effect.
 ## 2. Gallery in a layout {#c2 expect-open="nothing panzoom nothing"}
 
 Three images in a layout, joined by `group="elsewhere"`. Only the middle one
-(Oak Bluffs) has `.panzoom`, so it opens in panzoom on its own. With no
-lightbox on the page, clicking the other two does nothing.
+(Oak Bluffs) has `.panzoom`, so it opens in panzoom on its own. With no lightbox
+on the page, clicking the other two does nothing.
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}
@@ -64,9 +64,9 @@ opens in panzoom, with both typeset.
 
 ## 4. Markdown subfigures {#c4 expect-open="panzoom"}
 
-A figure with two markdown subfigures, both with `.panzoom`. Either one opens
-in panzoom, in a two-image gallery. The figure's caption links to the heat map
-in [case 12](#c12).
+A figure with two markdown subfigures, both with `.panzoom`. Either one opens in
+panzoom, in a two-image gallery. The figure's caption links to the heat map in
+[case 12](#c12).
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -82,9 +82,9 @@ Two markdown subfigures with `.panzoom` and a link to the heat map at the end of
 
 One R cell with `classes: panzoom` and two plots, made subfigures by
 `fig-subcap`. Either one opens in panzoom, in a two-image gallery. The other
-cases mark cells with `#| panzoom: true`, the usual way. `classes: panzoom` works
-too, since Quarto puts the class on the cell, and panzoom takes every image
-inside an element with that class.
+cases mark cells with `#| panzoom: true`, the usual way. `classes: panzoom`
+works too, since Quarto puts the class on the cell, and panzoom takes every
+image inside an element with that class.
 
 ```{r}
 #| label: fig-r-sub
@@ -163,8 +163,8 @@ plot(cars)
 
 ## 8. Opt out {#c8 expect-open="nothing"}
 
-An R cell with `lightbox: false` and no `#| panzoom: true`. Neither viewer
-takes it, so clicking it does nothing.
+An R cell with `lightbox: false` and no `#| panzoom: true`. Neither viewer takes
+it, so clicking it does nothing.
 
 ```{r}
 #| fig-cap: "An R cell with `lightbox: false`. Clicking it does nothing."

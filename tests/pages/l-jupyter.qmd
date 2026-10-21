@@ -73,8 +73,8 @@ plt.show()
 ## 3. Labeled figure {#c3 expect-open="panzoom"}
 
 A labeled figure with math and a cross-reference in its caption, and a
-description with math, quotes, and a cross-reference to the figure in
-[case 4](#c4). It opens in panzoom with all of them rendered.
+description with math, quotes, and a cross-reference to the figure in [case
+4](#c4). It opens in panzoom with all of them rendered.
 
 ```{python}
 #| label: fig-scatter
@@ -90,8 +90,8 @@ plt.show()
 
 ## 4. Subfigures {#c4 expect-open="panzoom"}
 
-One cell with `#| panzoom: true` and two plots, made subfigures by
-`fig-subcap`. Either one opens in panzoom, in a two-image gallery.
+One cell with `#| panzoom: true` and two plots, made subfigures by `fig-subcap`.
+Either one opens in panzoom, in a two-image gallery.
 
 ```{python}
 #| label: fig-sub

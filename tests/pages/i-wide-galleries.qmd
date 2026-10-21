@@ -17,8 +17,8 @@ tall figures](h-wide.html).
 
 Wide figures open at screen height, and tall ones at screen width. The one you
 click opens at the spot you clicked, and stepping to another in a gallery starts
-it at its left end or top. In a gallery, the left and right arrow keys pan a wide
-figure instead of changing the image, and do nothing on a tall strip. The
+it at its left end or top. In a gallery, the left and right arrow keys pan a
+wide figure instead of changing the image, and do nothing on a tall strip. The
 previous and next buttons change the image.
 
 The plots are drawn with these helpers:

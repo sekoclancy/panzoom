@@ -1,14 +1,22 @@
-Four photos and eight R plots, one by one, and a figure with two
-subfigures. Keep this page as it is: the benchmark compares each run with
-a baseline measured on it (see tests/README.md, Benchmark).
+Four photos and eight R plots, one by one, and a figure with two subfigures.
+Keep this page as it is: the benchmark compares each run with a baseline
+measured on it (see tests/README.md, Benchmark).
 
 ```{r}
 #| include: false
 
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
-  plot(x, sin(k * x), type = "l", lwd = 2, col = hcl.colors(8)[k],
-       main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
+  plot(
+    x,
+    sin(k * x),
+    type = "l",
+    lwd = 2,
+    col = hcl.colors(8)[k],
+    main = paste("Wave", k),
+    xlab = "x",
+    ylab = "sin(kx)"
+  )
 }
 ```
 
@@ -26,41 +34,49 @@ wave <- function(k = 1) {
 
 ```{r}
 #| fig-cap: "Wave 1."
+
 wave(k = 1)
 ```
 
 ```{r}
 #| fig-cap: "Wave 2."
+
 wave(k = 2)
 ```
 
 ```{r}
 #| fig-cap: "Wave 3."
+
 wave(k = 3)
 ```
 
 ```{r}
 #| fig-cap: "Wave 4."
+
 wave(k = 4)
 ```
 
 ```{r}
 #| fig-cap: "Wave 5."
+
 wave(k = 5)
 ```
 
 ```{r}
 #| fig-cap: "Wave 6."
+
 wave(k = 6)
 ```
 
 ```{r}
 #| fig-cap: "Wave 7."
+
 wave(k = 7)
 ```
 
 ```{r}
 #| fig-cap: "Wave 8."
+
 wave(k = 8)
 ```
 
@@ -71,6 +87,7 @@ wave(k = 8)
 #| fig-cap: "Two plots."
 #| fig-subcap: ["Pressure", "Cars"]
 #| layout-ncol: 2
+
 plot(pressure)
 plot(cars)
 ```

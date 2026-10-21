@@ -12,21 +12,21 @@ panzoom:
     zoom-in: plus
     zoom-out: ">"
 expect-errors:
-  - 'property name capton is invalid'
-  - 'ℹ The error happened in location panzoom:keys:capton.'
-  - 'ℹ Did you mean caption?'
+  - "property name capton is invalid"
+  - "ℹ The error happened in location panzoom:keys:capton."
+  - "ℹ Did you mean caption?"
   - 'Field "hint" has value Tab, which must instead be one character, Escape, Backspace, Delete, Insert, a list of these, or `false`'
-  - 'ℹ The error happened in location panzoom:keys:hint.'
-  - 'ℹ Tab already has its own use in the viewer.'
+  - "ℹ The error happened in location panzoom:keys:hint."
+  - "ℹ Tab already has its own use in the viewer."
   - 'Field "reset" has value true, which must instead be one character, Escape, Backspace, Delete, Insert, a list of these, or `false`'
-  - 'ℹ The error happened in location panzoom:keys:reset.'
+  - "ℹ The error happened in location panzoom:keys:reset."
   - 'Field "zoom-in" has value plus, which must instead be one character, Escape, Backspace, Delete, Insert, a list of these, or `false`'
-  - 'ℹ The error happened in location panzoom:keys:zoom-in.'
+  - "ℹ The error happened in location panzoom:keys:zoom-in."
   - 'Field "zoom-out" has value "", which must instead be one character, Escape, Backspace, Delete, Insert, a list of these, or `false`'
-  - 'ℹ The error happened in location panzoom:keys:zoom-out.'
+  - "ℹ The error happened in location panzoom:keys:zoom-out."
   - 'ℹ Markdown read the key as formatting: escape it with a backslash, as in "\\>".'
   - 'Field "keys" gives the key x to both caption and close'
-  - 'ℹ The error happened in location panzoom:keys.'
+  - "ℹ The error happened in location panzoom:keys."
 ---
 
 Mistakes in the `keys:` option, each reported once.

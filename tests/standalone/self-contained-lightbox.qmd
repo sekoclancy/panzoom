@@ -7,11 +7,11 @@ embed-resources: true
 ::: {.callout-note}
 ## About this page
 
-This page is **`self-contained.qmd` with Quarto's own lightbox**
-(GLightbox) instead of panzoom, for comparison: the same images, captions,
-descriptions and gallery, marked with `.lightbox` and `lightbox:` cell
-options, rendered with `embed-resources: true`. It doesn't load the
-panzoom extension. Keep it in step with `_self-contained.qmd`.
+This page is **`self-contained.qmd` with Quarto's own lightbox** (GLightbox)
+instead of panzoom, for comparison: the same images, captions, descriptions and
+gallery, marked with `.lightbox` and `lightbox:` cell options, rendered with
+`embed-resources: true`. It doesn't load the panzoom extension. Keep it in step
+with `_self-contained.qmd`.
 :::
 
 The page has math of its own: $a^2 + b^2 = c^2$.
@@ -22,15 +22,28 @@ The page has math of its own: $a^2 + b^2 = c^2$.
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
   col <- hcl.colors(4, "Dark 3")[k]
-  plot(x, sin(k * x), type = "n", main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
-  polygon(c(x, rev(x)), c(sin(k * x), rep(0, length(x))), col = adjustcolor(col, 0.35), border = NA)
+  plot(
+    x,
+    sin(k * x),
+    type = "n",
+    main = paste("Wave", k),
+    xlab = "x",
+    ylab = "sin(kx)"
+  )
+  polygon(
+    c(x, rev(x)),
+    c(sin(k * x), rep(0, length(x))),
+    col = adjustcolor(col, 0.35),
+    border = NA
+  )
   lines(x, sin(k * x), lwd = 2, col = col)
 }
 ```
 
 ## 1. Markdown image with math in caption and description {#c1}
 
-![Beach, $e^{i\pi} + 1 = 0$](../../images/mv-0.jpg){.lightbox description="Chilmark, with $\int_0^1 x^2\\,dx = \tfrac{1}{3}$."}
+![Beach, $e^{i\pi} + 1 = 0$](../../images/mv-0.jpg){.lightbox
+description="Chilmark, with $\int_0^1 x^2\\ ,dx = \tfrac{1}{3}$."}
 
 ## 2. Labeled R figure {#c2}
 

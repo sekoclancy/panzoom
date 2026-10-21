@@ -67,8 +67,8 @@ with both typeset.
 ## 4. Markdown subfigures {#c4 expect-open="glightbox"}
 
 A figure with two markdown subfigures. Either one opens in lightbox, in a
-two-image gallery. The figure's caption links to the heat map in
-[case 12](#c12).
+two-image gallery. The figure's caption links to the heat map in [case
+12](#c12).
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -102,9 +102,9 @@ plot(cars)
 
 ## 6. Cell options {#c6 expect-open="glightbox"}
 
-Two R cells, joined by `group: r-graph` under the `lightbox` cell option.
-Either plot opens in lightbox, in a two-image gallery, with its own description
-on the right.
+Two R cells, joined by `group: r-graph` under the `lightbox` cell option. Either
+plot opens in lightbox, in a two-image gallery, with its own description on the
+right.
 
 ```{r}
 #| fig-alt: "Scatter plot of ten random points"

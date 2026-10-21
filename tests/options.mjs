@@ -33,8 +33,9 @@ const PAGES = fs.readdirSync(DIR).filter((f) => f.endsWith(".qmd")).sort();
 const PYTHON = path.join(HERE, "..", ".venv", "bin", "python");
 const env = fs.existsSync(PYTHON) ? { ...process.env, QUARTO_PYTHON: PYTHON } : process.env;
 
-// A list in the page's header, such as `expect-errors:`: single-quoted YAML
-// strings ('' is a quote).
+// A list in the page's header, such as `expect-errors:`: YAML strings,
+// single-quoted ('' is a quote) or double-quoted (backslash escapes, as in
+// JSON), as panache writes them.
 function expected(page, key = "expect-errors") {
   const head = fs.readFileSync(path.join(DIR, page), "utf8").split(/^---$/m)[1] || "";
   const m = new RegExp(`^${key}:(.*)$`, "m").exec(head);
@@ -43,9 +44,11 @@ function expected(page, key = "expect-errors") {
   const rest = head.slice(m.index + m[0].length).split("\n");
   const lines = [];
   for (const l of rest.slice(1)) {
-    const item = /^\s+- '(.*)'\s*$/.exec(l);
-    if (!item) break;
-    lines.push(item[1].replace(/''/g, "'"));
+    const single = /^\s+- '(.*)'\s*$/.exec(l);
+    const double = /^\s+- (".*")\s*$/.exec(l);
+    if (single) lines.push(single[1].replace(/''/g, "'"));
+    else if (double) lines.push(JSON.parse(double[1]));
+    else break;
   }
   return lines;
 }

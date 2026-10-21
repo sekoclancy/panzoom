@@ -1,18 +1,17 @@
 ::: {.callout-note}
 ## About this page
 
-This page **tests panzoom in a single, self-contained HTML file**, the kind
-you email or download: a plain document, not part of a website, rendered
-with `embed-resources: true` so its scripts, styles and images are all
-inside the file. The browser test opens it from a `file://` address.
+This page **tests panzoom in a single, self-contained HTML file**, the kind you
+email or download: a plain document, not part of a website, rendered with
+`embed-resources: true` so its scripts, styles and images are all inside the
+file. The browser test opens it from a `file://` address.
 
 It is not part of the website: `tests/standalone/` isn't in the project's
-`render:` list, so Quarto renders it as a plain document, finding the
-extension through the `_extensions` symlink next to it.
-`self-contained-math.qmd` also sets `self-contained-math: true`, embedding
-MathJax's script; MathJax still loads its fonts, and in Quarto 1.10 its
-speech worker, from the internet, and the worker never loads.
-`self-contained-katex.qmd` embeds KaTeX instead, and
+`render:` list, so Quarto renders it as a plain document, finding the extension
+through the `_extensions` symlink next to it. `self-contained-math.qmd` also
+sets `self-contained-math: true`, embedding MathJax's script; MathJax still
+loads its fonts, and in Quarto 1.10 its speech worker, from the internet, and
+the worker never loads. `self-contained-katex.qmd` embeds KaTeX instead, and
 `self-contained-mathml.qmd` uses MathML, which needs no script; both work
 without internet access.
 :::
@@ -25,15 +24,28 @@ The page has math of its own: $a^2 + b^2 = c^2$.
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
   col <- hcl.colors(4, "Dark 3")[k]
-  plot(x, sin(k * x), type = "n", main = paste("Wave", k), xlab = "x", ylab = "sin(kx)")
-  polygon(c(x, rev(x)), c(sin(k * x), rep(0, length(x))), col = adjustcolor(col, 0.35), border = NA)
+  plot(
+    x,
+    sin(k * x),
+    type = "n",
+    main = paste("Wave", k),
+    xlab = "x",
+    ylab = "sin(kx)"
+  )
+  polygon(
+    c(x, rev(x)),
+    c(sin(k * x), rep(0, length(x))),
+    col = adjustcolor(col, 0.35),
+    border = NA
+  )
   lines(x, sin(k * x), lwd = 2, col = col)
 }
 ```
 
 ## 1. Markdown image with math in caption and description {#c1}
 
-![Beach, $e^{i\pi} + 1 = 0$](../../images/mv-0.jpg){.panzoom description="Chilmark, with $\int_0^1 x^2\\,dx = \tfrac{1}{3}$."}
+![Beach, $e^{i\pi} + 1 = 0$](../../images/mv-0.jpg){.panzoom
+description="Chilmark, with $\int_0^1 x^2\\ ,dx = \tfrac{1}{3}$."}
 
 ## 2. Labeled R figure {#c2}
 

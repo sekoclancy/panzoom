@@ -22,8 +22,8 @@ lightbox:
 panzoom takes every image lightbox would take on its own, so no image needs to
 be marked. lightbox is set up too, but only cells that ask for it with the
 `#| lightbox: true` cell option, or with lightbox options such as `group`, open
-in it. The same cases open in lightbox alone on the
-[lightbox page](a-lightbox.html). The hint line is off.
+in it. The same cases open in lightbox alone on the [lightbox
+page](a-lightbox.html). The hint line is off.
 
 ```yaml
 filters:
@@ -75,8 +75,8 @@ with both typeset.
 ## 4. Markdown subfigures {#c4 expect-open="panzoom"}
 
 A figure with two markdown subfigures. Either one opens in panzoom, in a
-two-image gallery. The figure's caption links to the heat map in
-[case 12](#c12).
+two-image gallery. The figure's caption links to the heat map in [case
+12](#c12).
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -110,9 +110,9 @@ plot(cars)
 
 ## 6. Cell options {#c6 expect-open="glightbox"}
 
-Two R cells, joined by `group: r-graph` under the `lightbox` cell option.
-Asking for lightbox keeps them out of panzoom, so either plot opens in lightbox,
-in a two-image gallery, with its own description on the right.
+Two R cells, joined by `group: r-graph` under the `lightbox` cell option. Asking
+for lightbox keeps them out of panzoom, so either plot opens in lightbox, in a
+two-image gallery, with its own description on the right.
 
 ```{r}
 #| fig-alt: "Scatter plot of ten random points"
@@ -141,9 +141,9 @@ plot(cars)
 
 ## 7. Two plots in one cell {#c7 expect-open="glightbox"}
 
-One R cell with two plots, each with its own caption and description, joined
-by `group: cars` under the `lightbox` cell option. Either one opens in lightbox,
-in a two-image gallery.
+One R cell with two plots, each with its own caption and description, joined by
+`group: cars` under the `lightbox` cell option. Either one opens in lightbox, in
+a two-image gallery.
 
 ```{r}
 #| fig-alt:
@@ -208,8 +208,8 @@ Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){widt
 
 ## 12. Plain R figure {#c12 expect-open="panzoom"}
 
-A cross-referenced R figure with no options. It opens in panzoom. The caption
-of [case 4](#c4) links to it.
+A cross-referenced R figure with no options. It opens in panzoom. The caption of
+[case 4](#c4) links to it.
 
 ```{r}
 #| label: fig-plain
