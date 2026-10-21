@@ -11,7 +11,7 @@ filters:
     at: pre-ast
 ---
 
-## About
+## About {.unnumbered}
 
 This page has no panzoom, and every Python (Jupyter) figure opens in lightbox.
 Its cases are the same as on [panzoom on every figure](k-jupyter-auto.html), so
@@ -35,7 +35,7 @@ import numpy as np
 x = np.linspace(0, 4 * np.pi, 400)
 ```
 
-## 1. Figure with a caption {#c1 expect-open="glightbox"}
+## Figure with a caption {#c1 expect-open="glightbox"}
 
 A Python figure with a caption. It opens in lightbox.
 
@@ -47,7 +47,7 @@ plt.plot(x, np.sin(x))
 plt.show()
 ```
 
-## 2. Plot without a caption {#c2 expect-open="glightbox"}
+## Plot without a caption {#c2 expect-open="glightbox"}
 
 A plot without a caption. It opens in lightbox.
 
@@ -58,7 +58,7 @@ plt.plot(x, np.cos(x))
 plt.show()
 ```
 
-## 3. Subfigures {#c3 expect-open="glightbox"}
+## Subfigures {#c3 expect-open="glightbox"}
 
 One cell with two plots, made subfigures by `fig-subcap`. Either one opens in
 lightbox, in a two-image gallery.
@@ -78,7 +78,7 @@ plt.plot(x, np.cos(2 * x))
 plt.show()
 ```
 
-## 4. lightbox options {#c4 expect-open="glightbox"}
+## lightbox options {#c4 expect-open="glightbox"}
 
 One cell with two plots and `lightbox:` options for a group and a description.
 With Jupyter, lightbox ignores these options, so each plot opens in lightbox on
@@ -98,7 +98,7 @@ plt.plot(x, np.cos(3 * x))
 plt.show()
 ```
 
-## 5. lightbox off {#c5 expect-open="nothing"}
+## lightbox off {#c5 expect-open="nothing"}
 
 A cell with `lightbox: false`. Clicking the plot does nothing.
 
@@ -111,7 +111,7 @@ plt.plot(x, np.sin(4 * x))
 plt.show()
 ```
 
-## 6. panzoom on a cell {#c6 expect-open="glightbox"}
+## panzoom on a cell {#c6 expect-open="glightbox"}
 
 A cell with `#| panzoom: true`. The panzoom filter isn't loaded on this page, so
 the option does nothing, and the plot opens in lightbox.
@@ -125,7 +125,7 @@ plt.plot(x, np.cos(4 * x))
 plt.show()
 ```
 
-## 7. Markdown image {#c7 expect-open="glightbox"}
+## Markdown image {#c7 expect-open="glightbox"}
 
 A markdown image alone in a paragraph. It opens in lightbox.
 
@@ -133,7 +133,7 @@ A markdown image alone in a paragraph. It opens in lightbox.
 ![Chilmark beach at sunset.](../../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
-## 8. Opt out of lightbox {#c8 expect-open="nothing"}
+## Opt out of lightbox {#c8 expect-open="nothing"}
 
 A markdown image with `.nolightbox`, which keeps lightbox off it, so clicking it
 does nothing.

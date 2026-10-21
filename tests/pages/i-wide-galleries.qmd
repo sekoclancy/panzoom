@@ -9,7 +9,7 @@ panzoom:
   hint: false
 ---
 
-## About
+## About {.unnumbered}
 
 Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and in a
 layout div. The same shapes on their own, and the `fit` option, are on [wide and
@@ -71,7 +71,7 @@ strip <- function(seed = 2, n = 8) {
 }
 ```
 
-## 1. Gallery of two collages {#c1 expect-fit="height"}
+## Gallery of two collages {#c1 expect-fit="height"}
 
 Two 25 × 2 inch collages in a gallery. Each opens at screen height. The left and
 right arrow keys and dragging pan along the collage, and the previous and next
@@ -93,7 +93,7 @@ collage(n = 12)
 collage(n = 15)
 ```
 
-## 2. Gallery of two tall strips {#c2 expect-fit="width"}
+## Gallery of two tall strips {#c2 expect-fit="width"}
 
 Two tall strips in a gallery. Each opens at screen width and extends downwards.
 The left and right arrow keys do nothing, since there is nowhere to go sideways,
@@ -115,7 +115,7 @@ strip(seed = 8, n = 8)
 strip(seed = 9, n = 8)
 ```
 
-## 3. Stacked collages {#c3 expect-fit="height"}
+## Stacked collages {#c3 expect-fit="height"}
 
 Two collages stacked as subfigures. Each opens at screen height, and the two
 form a gallery.
@@ -136,7 +136,7 @@ collage(n = 12)
 collage(n = 15)
 ```
 
-## 4. Strips side by side {#c4 expect-fit="width"}
+## Strips side by side {#c4 expect-fit="width"}
 
 Two tall strips side by side as subfigures. Each opens at screen width, and the
 two form a gallery.
@@ -157,7 +157,7 @@ strip(seed = 2, n = 8)
 strip(seed = 3, n = 8)
 ```
 
-## 5. Tall strips in a layout div {#c5 expect-fit="width"}
+## Tall strips in a layout div {#c5 expect-fit="width"}
 
 Two code cells in a `.panzoom` div with a layout. Each strip opens at screen
 width on its own, with no gallery, since they aren't subfigures.
@@ -180,7 +180,7 @@ strip(seed = 5, n = 8)
 ```
 :::
 
-## 6. Collages of different lengths {#c6 expect-fit="height"}
+## Collages of different lengths {#c6 expect-fit="height"}
 
 A long collage (40 × 2 in, 24 panels) and a shorter one (24 × 2 in, 12 panels)
 from two cells, joined by `group`. Each opens at screen height, and stepping to
@@ -218,7 +218,7 @@ collage(n = 24)
 collage(n = 12)
 ```
 
-## 7. Strips of different lengths {#c7 expect-fit="width"}
+## Strips of different lengths {#c7 expect-fit="width"}
 
 Strips of different sizes, 4 × 20 in (10 rows) and 3 × 12 in (6 rows), in a
 layout div with captions of different lengths. Each opens at screen width from

@@ -826,7 +826,11 @@ async function checkPage(browser, base, file) {
     const out = [];
     document.querySelectorAll("section.level2").forEach((sec, k) => {
       const h = sec.querySelector("h2");
-      let m = h && /^(\d+)\.\s*(.*)$/.exec(h.textContent.trim());
+      // Numbered by Quarto (`number-sections`, the example pages), or by hand
+      // ("## 1. Title", the standalone pages).
+      const num = h && h.querySelector(".header-section-number");
+      let m = num ? [null, num.textContent.trim(), h.textContent.trim().slice(num.textContent.trim().length).trim()]
+        : h && /^(\d+)\.\s*(.*)$/.exec(h.textContent.trim());
       if (!m && h && Object.keys(sec.dataset).some((d) => d.startsWith("expect"))) m = [null, String(k + 1), h.textContent.trim()];
       if (!m) return;
       // Not webtex's math images.

@@ -9,7 +9,7 @@ panzoom:
   hint: false
 ---
 
-## About
+## About {.unnumbered}
 
 Two figures, a wide collage and a standard plot, written by different knitr
 graphics devices: webp, svg, png, and pdf. Every figure has the
@@ -52,7 +52,7 @@ collage <- function(n = 12) {
 }
 ```
 
-## 1. webp collage {#c1 expect-fit="height"}
+## webp collage {#c1 expect-fit="height"}
 
 A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 
@@ -71,7 +71,7 @@ A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 collage(n = 12)
 ```
 
-## 2. svg collage {#c2 expect-fit="height"}
+## svg collage {#c2 expect-fit="height"}
 
 The same collage written as svg. It opens in panzoom at screen height.
 
@@ -86,7 +86,7 @@ The same collage written as svg. It opens in panzoom at screen height.
 collage(n = 12)
 ```
 
-## 3. webp plot {#c3 expect-fit="contain" shift-scroll="none" expect-scale="1"}
+## webp plot {#c3 expect-fit="contain" shift-scroll="none" expect-scale="1"}
 
 A small plot written as webp. It opens in panzoom at its real size.
 
@@ -105,7 +105,7 @@ A small plot written as webp. It opens in panzoom at its real size.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 4. svg plot {#c4 expect-fit="contain" expect-scale="1"}
+## svg plot {#c4 expect-fit="contain" expect-scale="1"}
 
 The same plot written as svg. It opens in panzoom at its real size.
 
@@ -120,7 +120,7 @@ The same plot written as svg. It opens in panzoom at its real size.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 5. png and pdf {#c5 expect-fit="contain"}
+## png and pdf {#c5 expect-fit="contain"}
 
 A plot written as both png and pdf. The page shows the png, which opens in
 panzoom.
@@ -136,7 +136,7 @@ panzoom.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## 6. png and cairo_pdf {#c6 expect-fit="contain"}
+## png and cairo_pdf {#c6 expect-fit="contain"}
 
 Case 5 with the cairo PDF device, which embeds fonts and handles Unicode (µ,
 Greek letters) and transparency better than `pdf`. The page shows the png, which
@@ -159,7 +159,7 @@ filled.contour(
 )
 ```
 
-## 7. webp past its size limit {#c7}
+## webp past its size limit {#c7}
 
 A 100 × 5 inch collage as webp at 192 dpi. At 19,200 px wide it is past the webp
 limit of 16,383 px per side, so ragg can't write the file. The page shows a

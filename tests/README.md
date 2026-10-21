@@ -117,7 +117,7 @@ cases:
 (**panzoom**, **glightbox**, **navigation** for a link, or **nothing**), and
 runs the checks below. Each shows in the page's summary line as `... ok`, or in
 capitals when it fails. Attributes on a case's heading set its expected results,
-as in `## 3. Title {#c3 expect-fit="height"}`.
+as in `## Title {#c3 expect-fit="height"}`.
 
   | Summary                                       | Assumptions                                                                                                                                                                                                                                                                   |
   | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

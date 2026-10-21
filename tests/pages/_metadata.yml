@@ -1,4 +1,5 @@
-# No table of contents on the example pages: the sidebar lists them.
+# Sections numbered, so case N is section N (About and Credits are
+# unnumbered). No table of contents: the sidebar lists the pages.
 format:
   html:
-    toc: false
+    number-sections: true

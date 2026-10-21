@@ -11,7 +11,7 @@ panzoom:
   loop: true
 ---
 
-## About
+## About {.unnumbered}
 
 Keeping an image or a cell out of panzoom, and setting options on one cell. The
 page sets `loop`, so the gallery in [case 7](#c7) wraps around. lightbox is off,
@@ -52,7 +52,7 @@ wave <- function(k = 1) {
 }
 ```
 
-## 1. Opt out an image {#c1 expect-open="nothing panzoom"}
+## Opt out an image {#c1 expect-open="nothing panzoom"}
 
 Two images in a `.panzoom` div, which marks every image inside it. The first has
 `.nopanzoom`, which keeps it out, so clicking it does nothing. The second opens
@@ -66,7 +66,7 @@ in panzoom.
 :::
 ```
 
-## 2. Opt out a cell {#c2 expect-open="nothing"}
+## Opt out a cell {#c2 expect-open="nothing"}
 
 An R cell with `#| panzoom: false` inside a `.panzoom` div. The cell option wins
 over the div, so clicking the plot does nothing.
@@ -81,7 +81,7 @@ wave(k = 1)
 ```
 :::
 
-## 3. No hint {#c3 expect-open="panzoom" expect-hint="hidden"}
+## No hint {#c3 expect-open="panzoom" expect-hint="hidden"}
 
 An R cell with `hint: false` under the `panzoom` cell option. It opens in
 panzoom without the hint line, which the page shows by default.
@@ -95,7 +95,7 @@ panzoom without the hint line, which the page shows by default.
 wave(k = 3)
 ```
 
-## 4. Default hint {#c4 expect-open="panzoom" expect-hint="shown"}
+## Default hint {#c4 expect-open="panzoom" expect-hint="shown"}
 
 An R cell with no hint option. It opens in panzoom with the hint line at the
 bottom, except when opened by a tap.
@@ -108,7 +108,7 @@ bottom, except when opened by a tap.
 wave(k = 4)
 ```
 
-## 5. Zoom limit {#c5 expect-open="panzoom" expect-max-zoom="2"}
+## Zoom limit {#c5 expect-open="panzoom" expect-max-zoom="2"}
 
 An R cell with `max-zoom: 2` under the `panzoom` cell option. It opens in
 panzoom, and zooming in stops at 2 screen pixels per image pixel.
@@ -122,7 +122,7 @@ panzoom, and zooming in stops at 2 screen pixels per image pixel.
 wave(k = 1)
 ```
 
-## 6. Options on a cell in a `.panzoom` div {#c6 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
+## Options on a cell in a `.panzoom` div {#c6 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
 
 An R cell with `max-zoom: 2` and `hint: false` under the `panzoom` cell option,
 inside a `.panzoom` div. The cell's options apply as they do outside the div: it
@@ -143,7 +143,7 @@ wave(k = 2)
 ```
 :::
 
-## 7. Looping gallery {#c7 expect-open="panzoom"}
+## Looping gallery {#c7 expect-open="panzoom"}
 
 One R cell with three plots, joined by `group: waves` under the `panzoom` cell
 option. Each opens in panzoom, in a three-image gallery. The page sets `loop`,
@@ -168,7 +168,7 @@ wave(k = 2)
 wave(k = 3)
 ```
 
-## 8. No alt text {#c8 expect-open="panzoom" expect-caption="none"}
+## No alt text {#c8 expect-open="panzoom" expect-caption="none"}
 
 An image with `.panzoom` and no alt text. It opens in panzoom with no caption,
 and the link around it is labeled "Open image" for screen readers.
