@@ -220,7 +220,7 @@ its own caption.
 #| panzoom:
 #|   group: held
 #| fig-cap:
-#|   - "Wave one, drawn before the text."
+#|   - "Wave one, drawn before the print() call."
 #|   - "Wave two, drawn after it."
 
 wave(k = 1)
