@@ -470,6 +470,21 @@ local function keep_link(link)
   return nil, false
 end
 
+-- Gives every image in an opted-out cell or div `.nopanzoom`, since
+-- panzoom.js also opens any image inside a `.panzoom` div: one around it,
+-- or its own `.panzoom` class next to `panzoom=false`.
+local function opt_out(el)
+  local filter = {
+    Image = function(img)
+      if not has(img.classes, "nopanzoom") then img.classes:insert("nopanzoom") end
+      return img
+    end,
+  }
+  if el.walk then return el:walk(filter) end
+  el.content = el.content:walk(filter)
+  return el
+end
+
 -- Walks `el` and marks every image in it, except those inside links.
 -- `attrs` (optional) are per-cell options, copied onto each marked image.
 local function mark_all(el, attrs)
@@ -477,18 +492,10 @@ local function mark_all(el, attrs)
     traverse = "topdown",
     Link = keep_link,
     -- A cell inside a `.panzoom` div can still opt out: `#| panzoom: false`.
-    -- Its images get `.nopanzoom`, since panzoom.js also opens any image
-    -- inside a `.panzoom` div.
     Div = function(div)
       if div.attributes["panzoom"] == "false" then
         div.attributes["panzoom"] = nil
-        div = div:walk({
-          Image = function(img)
-            if not has(img.classes, "nopanzoom") then img.classes:insert("nopanzoom") end
-            return img
-          end,
-        })
-        return div, false
+        return opt_out(div), false
       end
     end,
     Image = function(img)
@@ -718,7 +725,7 @@ end
 local function container(el)
   if off then return nil end
   local on, attrs = cell_option(el)
-  if on == false then return el, false end
+  if on == false then return opt_out(el), false end
   if on or has(el.classes, "panzoom") then
     drop_option(el, "lightbox")
     -- A FloatRefTarget is a Quarto custom node without :walk(); its content
