@@ -11,3 +11,7 @@ r = "air"
 
 [lint]
 ignore = ["missing-chunk-labels"]
+
+# Markdown files are read on GitHub (alerts, e.g. > [!WARNING]).
+[flavors]
+gfm = ["*.md"]

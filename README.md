@@ -2,13 +2,14 @@
 
 **Live demo:** <https://sekoclancy.github.io/panzoom/>
 
-A [Quarto](https://quarto.org) extension that opens figures in a
-full-screen viewer, built on
-[Panzoom](https://github.com/timmywil/panzoom) and inspired by the native Quarto
+A [Quarto](https://quarto.org) extension that opens figures in a full-screen
+viewer, built on [Panzoom](https://github.com/timmywil/panzoom) and inspired by
+the native Quarto
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 
 > [!WARNING]
-> This extension is experimental and not guaranteed to work. Its behavior may change without notice.
+> This extension is experimental and not guaranteed to work. Its behavior may
+> change without notice.
 
 ## Installation
 
@@ -18,8 +19,8 @@ You can install this extension using the Quarto CLI (Quarto >=1.8.27):
 quarto add sekoclancy/panzoom
 ```
 
-This will install the extension under the `_extensions` subdirectory.
-If you're using version control, you will want to check in this directory.
+This will install the extension under the `_extensions` subdirectory. If you're
+using version control, you will want to check in this directory.
 
 ### From source
 
@@ -36,59 +37,60 @@ See [Development](#development) to preview and publish.
 
 ## Demo
 
-![Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with the arrow keys.](images/demo.gif)
+![Opening a gallery image, zooming with the wheel, dragging, resetting with a
+double-click, stepping to the next image, and panning a wide figure with the
+arrow keys.](images/demo.gif)
 
 ## Viewer controls
 
-| Action | Mouse or touch | Keyboard |
-|---|---|---|
-| Zoom | scroll or pinch, toward the cursor | + and - |
-| Pan | drag, or Shift+scroll | arrow keys |
-| Go back to the opening view | double-click | 0 |
-| Change image in a gallery | the previous and next buttons, or swipe | left and right arrow |
-| Hide or show the caption and description | | c |
-| Hide or show the hint line | | h |
-| Close | the × button, or click the background | Esc |
+  | Action                                   | Mouse or touch                          | Keyboard             |
+  | ---------------------------------------- | --------------------------------------- | -------------------- |
+  | Zoom                                     | scroll or pinch, toward the cursor      | + and -              |
+  | Pan                                      | drag, or Shift+scroll                   | arrow keys           |
+  | Go back to the opening view              | double-click                            | 0                    |
+  | Change image in a gallery                | the previous and next buttons, or swipe | left and right arrow |
+  | Hide or show the caption and description |                                         | c                    |
+  | Hide or show the hint line               |                                         | h                    |
+  | Close                                    | the × button, or click the background   | Esc                  |
 
-The [`keys`](#keys) option changes the keys for zooming, resetting,
-hiding the caption or the hint line, and closing. Zoom goes up to `max-zoom`. While an image is larger than the screen
-(zoomed in, or a wide figure), the arrow keys and swipes pan it, and only
-the buttons change image.
+The [`keys`](#keys) option changes the keys for zooming, resetting, hiding the
+caption or the hint line, and closing. Zoom goes up to `max-zoom`. While an
+image is larger than the screen (zoomed in, or a wide figure), the arrow keys
+and swipes pan it, and only the buttons change image.
 
-From the keyboard, selected images can be reached with Tab and opened with
-Enter or Space; Tab moves between the viewer's buttons, links, and any
-caption or description too long to fit, which the arrow keys then scroll.
-Closing returns focus to the image.
+From the keyboard, selected images can be reached with Tab and opened with Enter
+or Space; Tab moves between the viewer's buttons, links, and any caption or
+description too long to fit, which the arrow keys then scroll. Closing returns
+focus to the image.
 
 ## Features
 
-- Zoom toward the cursor with scroll or pinch, in steps up to `max-zoom`
-  (the lightbox only toggles between fit and real size, and not at all on
-  screens 768 px wide or less)
+- Zoom toward the cursor with scroll or pinch, in steps up to `max-zoom` (the
+  lightbox only toggles between fit and real size, and not at all on screens 768
+  px wide or less)
 - Pan by dragging, using the arrow keys, or Shift+scroll
-- [Captions](#captions) and [descriptions](#descriptions) with math,
-  citations, and cross-references (the lightbox shows raw TeX and `[@key]`)
+- [Captions](#captions) and [descriptions](#descriptions) with math, citations,
+  and cross-references (the lightbox shows raw TeX and `[@key]`)
 - [Galleries](#galleries) from groups and subfigures, and figure
   [layouts](#layouts)
-- [Wide and tall figures](#wide-and-tall-figures) open readable, at the
-  spot you clicked
-- Applies to every figure (`panzoom: true`) or only the images you select,
-  in code cells or markdown
-- Keyboard access; [restyle it](#styling) with options or CSS, for a
-  page or a single image
-- [Math](#math) in any `html-math-method`, offline too; works in
-  [self-contained documents](#self-contained-documents)
+- [Wide and tall figures](#wide-and-tall-figures) open readable, at the spot you
+  clicked
+- Applies to every figure (`panzoom: true`) or only the images you select, in
+  code cells or markdown
+- Keyboard access; [restyle it](#styling) with options or CSS, for a page or a
+  single image
+- [Math](#math) in any `html-math-method`, offline too; works in [self-contained
+  documents](#self-contained-documents)
 
 Not offered (lightbox has these):
 
-- Caption position: the caption is always below the image (no
-  `desc-position`)
+- Caption position: the caption is always below the image (no `desc-position`)
 - Opening effects: the viewer opens and closes at once (no `effect`)
 
 ## Usage
 
-panzoom is a filter: turn it on for one document in its YAML header, or
-for every page of a Quarto project (website, book) in `_quarto.yml`:
+panzoom is a filter: turn it on for one document in its YAML header, or for
+every page of a Quarto project (website, book) in `_quarto.yml`:
 
 ```yaml
 filters:
@@ -97,9 +99,9 @@ filters:
 
 ### Global Panzoom
 
-With `panzoom: true`, every figure opens in the viewer, as does any image
-alone in its own paragraph. Images inside a line of text are left out.
-These are the same images Quarto's `lightbox: true` takes.
+With `panzoom: true`, every figure opens in the viewer, as does any image alone
+in its own paragraph. Images inside a line of text are left out. These are the
+same images Quarto's `lightbox: true` takes.
 
 ```yaml
 filters:
@@ -108,8 +110,8 @@ panzoom: true
 ```
 
 `panzoom: auto` is the same as `true` (to match `lightbox:` options), and
-`panzoom: false` turns panzoom off for the document, even for selected
-images. Without the setting, only the images you select open in the viewer.
+`panzoom: false` turns panzoom off for the document, even for selected images.
+Without the setting, only the images you select open in the viewer.
 
 ### Selecting images
 
@@ -129,8 +131,7 @@ plot(pressure)
 ![Caption](figure.png){.panzoom}
 ```
 
-This also works for an image inside a line of text, which `panzoom: true`
-skips:
+This also works for an image inside a line of text, which `panzoom: true` skips:
 
 ```markdown
 Some text with an inline image ![](image.jpg){.panzoom width=60px} in the middle.
@@ -146,13 +147,11 @@ Some text with an inline image ![](image.jpg){.panzoom width=60px} in the middle
 ```
 
 To leave out a code cell's plots, use `#| panzoom: false`; to leave out a
-markdown image, give it `.nopanzoom`. An image inside a link keeps its
-link.
+markdown image, give it `.nopanzoom`. An image inside a link keeps its link.
 
 ### Options
 
-Options go under `panzoom:` in the document's YAML header, in place of
-`true`:
+Options go under `panzoom:` in the document's YAML header, in place of `true`:
 
 ```yaml
 panzoom:
@@ -171,10 +170,10 @@ panzoom:
   link-color: lightblue       # and links in captions (defaults follow the theme)
 ```
 
-A code cell can set `max-zoom`, `hint`, `caption`, `fit`, `css-class`, and
-the colors for its own plots, as well as `group` and `description`, by
-giving `#| panzoom:` options instead of `true`. A cell's options win over
-the document's:
+A code cell can set `max-zoom`, `hint`, `caption`, `fit`, `css-class`, and the
+colors for its own plots, as well as `group` and `description`, by giving
+`#| panzoom:` options instead of `true`. A cell's options win over the
+document's:
 
 ````markdown
 ```{r}
@@ -199,8 +198,7 @@ property name max-zom is invalid
 
 ### Keys
 
-`keys` sets the document's viewer keys. Actions left out keep their
-defaults:
+`keys` sets the document's viewer keys. Actions left out keep their defaults:
 
 ```yaml
 panzoom:
@@ -210,23 +208,23 @@ panzoom:
     close: [Escape, q]  # several keys
 ```
 
-| Action | Default |
-|---|---|
-| `caption` (hide or show the caption and description) | `c` |
-| `hint` (hide or show the hint line) | `h` |
-| `close` | `Escape` |
-| `reset` (go back to the opening view) | `"0"` |
-| `zoom-in` | `["+", "="]` |
-| `zoom-out` | `"-"` |
+  | Action                                               | Default      |
+  | ---------------------------------------------------- | ------------ |
+  | `caption` (hide or show the caption and description) | `c`          |
+  | `hint` (hide or show the hint line)                  | `h`          |
+  | `close`                                              | `Escape`     |
+  | `reset` (go back to the opening view)                | `"0"`        |
+  | `zoom-in`                                            | `["+", "="]` |
+  | `zoom-out`                                           | `"-"`        |
 
-A key is one character, or `Escape`, `Backspace`, `Delete`, or `Insert`.
-Tab, Enter, Space, the arrows, Page Up, Page Down, Home, and End are fixed.
-A key can only do one action. The hint line names the keys in use.
+A key is one character, or `Escape`, `Backspace`, `Delete`, or `Insert`. Tab,
+Enter, Space, the arrows, Page Up, Page Down, Home, and End are fixed. A key can
+only do one action. The hint line names the keys in use.
 
 ### Captions
 
-The viewer shows the figure's caption, with its number, math, citations,
-and cross-references, under the image. Turn it off with `caption: false`.
+The viewer shows the figure's caption, with its number, math, citations, and
+cross-references, under the image. Turn it off with `caption: false`.
 
 ### Descriptions
 
@@ -249,8 +247,8 @@ plot(pressure)
 
 ### Galleries
 
-Subfigures of one figure form a gallery on their own. Other images join
-one with a group name, on markdown images:
+Subfigures of one figure form a gallery on their own. Other images join one with
+a group name, on markdown images:
 
 ```markdown
 ![](a.png){.panzoom group="beach"}
@@ -271,23 +269,22 @@ plot(pressure, log = "y")
 
 ### Layouts
 
-Figures in layouts (`layout-ncol`, `layout-nrow`, layout divs) work too.
-Each image in a layout opens on its own, and subfigures form a gallery.
+Figures in layouts (`layout-ncol`, `layout-nrow`, layout divs) work too. Each
+image in a layout opens on its own, and subfigures form a gallery.
 
 ### Wide and tall figures
 
 Heuristic:
 
-| Figure | Opens | Same as |
-|---|---|---|
-| Most images | whole, never larger than real size | `fit: contain` |
-| Very wide (e.g. a row of many panels) | at screen height, at the spot you clicked | `fit: height` |
-| Very tall | at screen width, from the top | `fit: width` |
+  | Figure                                | Opens                                     | Same as        |
+  | ------------------------------------- | ----------------------------------------- | -------------- |
+  | Most images                           | whole, never larger than real size        | `fit: contain` |
+  | Very wide (e.g. a row of many panels) | at screen height, at the spot you clicked | `fit: height`  |
+  | Very tall                             | at screen width, from the top             | `fit: width`   |
 
 The [wide and tall figures
-example](https://sekoclancy.github.io/panzoom/tests/pages/h-wide.html) has
-the exact rules and an example of each shape. Set `fit:` to choose for one
-figure:
+example](https://sekoclancy.github.io/panzoom/tests/pages/h-wide.html) has the
+exact rules and an example of each shape. Set `fit:` to choose for one figure:
 
 ````markdown
 ```{r}
@@ -313,8 +310,8 @@ panzoom:
 
 Math in captions and descriptions is displayed in the viewer.
 
-MathJax and KaTeX are loaded from the web, so math needs a connection. To
-make math work offline, render with MathJax (Quarto's default) and:
+MathJax and KaTeX are loaded from the web, so math needs a connection. To make
+math work offline, render with MathJax (Quarto's default) and:
 
 ```yaml
 embed-resources: true
@@ -332,20 +329,20 @@ embed-resources: true
 ```
 
 For math, use `html-math-method: mathml`, or `katex` with
-`self-contained-math: true`. MathJax loads its fonts from the internet even
-with `self-contained-math: true`.
+`self-contained-math: true`. MathJax loads its fonts from the internet even with
+`self-contained-math: true`.
 
 ### Styling
 
-Set the viewer's colors with the options, or with the CSS variables they
-stand for in your own CSS (a `css:` file, or the theme's `.scss`):
+Set the viewer's colors with the options, or with the CSS variables they stand
+for in your own CSS (a `css:` file, or the theme's `.scss`):
 
-| Option | CSS variable | Element | Default |
-|---|---|---|---|
-| `backdrop` | `--panzoom-backdrop` | The layer over the page | `rgba(0, 0, 0, 0.7)` |
-| `caption-background` | `--panzoom-bg` | The caption band | The page's background |
-| `caption-color` | `--panzoom-fg` | Caption, description, and hint | The page's text color |
-| `link-color` | `--panzoom-link` | Links in captions | The page's link color |
+  | Option               | CSS variable         | Element                        | Default               |
+  | -------------------- | -------------------- | ------------------------------ | --------------------- |
+  | `backdrop`           | `--panzoom-backdrop` | The layer over the page        | `rgba(0, 0, 0, 0.7)`  |
+  | `caption-background` | `--panzoom-bg`       | The caption band               | The page's background |
+  | `caption-color`      | `--panzoom-fg`       | Caption, description, and hint | The page's text color |
+  | `link-color`         | `--panzoom-link`     | Links in captions              | The page's link color |
 
 ```yaml
 panzoom:
@@ -364,12 +361,12 @@ In CSS, for every viewer on the site:
 }
 ```
 
-For some documents only, set `css-class: dark-viewer` and write the same
-rule for `.dark-viewer`.
+For some documents only, set `css-class: dark-viewer` and write the same rule
+for `.dark-viewer`.
 
-For one image, give its code cell the same options under `#| panzoom:`, or
-write them as attributes on a markdown image. They apply while that image
-is open, on top of the document's:
+For one image, give its code cell the same options under `#| panzoom:`, or write
+them as attributes on a markdown image. They apply while that image is open, on
+top of the document's:
 
 ````markdown
 ```{r}
@@ -383,16 +380,16 @@ plot(pressure)
 ![A photo.](photo.jpg){.panzoom caption-background="#222" caption-color="white"}
 ````
 
-The examples'
-[Styling pages](https://sekoclancy.github.io/panzoom/reference.html#styling)
-show each way, and the classes of the viewer's parts.
+The examples' [Styling
+pages](https://sekoclancy.github.io/panzoom/reference.html#styling) show each
+way, and the classes of the viewer's parts.
 
 ## Development
 
-Set up a clone as in [From source](#from-source). The venv is only for
-the Python (Jupyter) examples, with its packages listed in
-[pyproject.toml](pyproject.toml) and pinned in [uv.lock](uv.lock). The
-rest need R, with the `ragg` package. Then:
+Set up a clone as in [From source](#from-source). The venv is only for the
+Python (Jupyter) examples, with its packages listed in
+[pyproject.toml](pyproject.toml) and pinned in [uv.lock](uv.lock). The rest need
+R, with the `ragg` package. Then:
 
 ```bash
 quarto render              # build the site into docs/
@@ -401,8 +398,8 @@ quarto publish gh-pages --no-prompt --no-browser   # build and publish to GitHub
 uv lock --upgrade && uv sync   # update the Python packages, then commit uv.lock
 ```
 
-Before the first publish, create an empty `gh-pages` branch once
-(`--no-prompt` can't create it):
+Before the first publish, create an empty `gh-pages` branch once (`--no-prompt`
+can't create it):
 
 ```bash
 git branch gh-pages $(git commit-tree $(git hash-object -t tree /dev/null) -m "Initializing gh-pages branch")
