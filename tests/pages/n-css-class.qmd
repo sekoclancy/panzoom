@@ -114,8 +114,8 @@ link in its caption is teal. The page's class stays on the viewer too, so the
 
 ## 3. Code cell {#c3 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
-An R cell with `#| panzoom: true`. It opens with the plum viewer, as [case
-1](#c1) does.
+An R cell with `#| panzoom: true`. It opens with the plum viewer set on this
+page.
 
 ```{r}
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
@@ -128,7 +128,7 @@ plot(pressure, type = "b", pch = 19)
 ## 4. Class for one cell {#c4 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
 An R cell with `css-class: sea-viewer` under the `panzoom` cell option. It opens
-with the teal viewer, as [case 2](#c2) does.
+with the teal viewer.
 
 ```{r}
 #| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
@@ -152,3 +152,4 @@ teal viewer and the middle one the plum viewer, whichever way it is reached.
 
 ![A sailboat, with a class of its own.](../../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
 ```
+

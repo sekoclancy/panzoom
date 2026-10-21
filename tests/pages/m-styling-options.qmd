@@ -56,7 +56,7 @@ colors set on this page, and the link in its caption is dark green.
 ## 3. Code cell {#c3 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
 An R cell with `#| panzoom: true`. It opens with the blue and cream colors set
-on this page, as [case 1](#c1) does.
+on this page.
 
 ```{r}
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
