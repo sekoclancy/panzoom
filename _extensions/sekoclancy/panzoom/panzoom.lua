@@ -485,29 +485,6 @@ local function opt_out(el)
   return el
 end
 
--- Walks `el` and marks every image in it, except those inside links.
--- `attrs` (optional) are per-cell options, copied onto each marked image.
-local function mark_all(el, attrs)
-  return el:walk({
-    traverse = "topdown",
-    Link = keep_link,
-    -- A cell inside a `.panzoom` div can still opt out: `#| panzoom: false`.
-    Div = function(div)
-      if div.attributes["panzoom"] == "false" then
-        div.attributes["panzoom"] = nil
-        return opt_out(div), false
-      end
-    end,
-    Image = function(img)
-      img = mark(img)
-      if img and attrs then
-        for k, v in pairs(attrs) do img.attributes[k] = v end
-      end
-      return img
-    end,
-  })
-end
-
 -- Reads the `#| panzoom: { ... }` attribute. It looks like JSON, but
 -- knitr/Quarto (1.9) write string values unescaped: a description with a
 -- quote or a backslash (`$\theta$`) is invalid JSON, or decodes to the
@@ -646,6 +623,35 @@ local function cell_option(el)
     end
   end
   return true, attrs
+end
+
+-- Walks `el` and marks every image in it, except those inside links.
+-- `attrs` (optional) are per-cell options, copied onto each marked image.
+local function mark_all(el, attrs)
+  return el:walk({
+    traverse = "topdown",
+    Link = keep_link,
+    -- A cell inside a `.panzoom` div can still opt out (`#| panzoom: false`)
+    -- or set its own options, which win over the div's.
+    Div = function(div)
+      local on, own = cell_option(div)
+      if on == false then return opt_out(div), false end
+      if on then
+        drop_option(div, "lightbox")
+        local merged = {}
+        for k, v in pairs(attrs or {}) do merged[k] = v end
+        for k, v in pairs(own) do merged[k] = v end
+        return mark_all(div, merged), false
+      end
+    end,
+    Image = function(img)
+      img = mark(img)
+      if img and attrs then
+        for k, v in pairs(attrs) do img.attributes[k] = v end
+      end
+      return img
+    end,
+  })
 end
 
 -- Reads the `panzoom:` metadata and attaches the JS/CSS. Like Quarto's

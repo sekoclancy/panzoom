@@ -24,10 +24,13 @@ expect-errors:
   - "ℹ The error happened in location panzoom, in #gallery-div."
   - 'Field "link-color" has value red; }, which must instead be a CSS color'
   - "ℹ The error happened in location link-color, on the image ../../images/mv-1.jpg."
+  - "property name gruop is invalid"
+  - "ℹ The error happened in location panzoom:gruop, in the cell starting `plot(3)`."
+  - "ℹ Did you mean group?"
 ---
 
-Mistakes in `#| panzoom:` cell options, in a div's `panzoom=`, and in an image's
-styling attributes.
+Mistakes in `#| panzoom:` cell options (also in a cell inside a `.panzoom` div),
+in a div's `panzoom=`, and in an image's styling attributes.
 
 ```{r}
 #| panzoom:
@@ -52,3 +55,12 @@ plot(2)
 :::
 
 ![A marked image.](../../images/mv-1.jpg){.panzoom link-color="red; }"}
+
+::: {.panzoom}
+```{r}
+#| panzoom:
+#|   gruop: b
+
+plot(3)
+```
+:::

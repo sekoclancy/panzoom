@@ -9,9 +9,13 @@ expect-errors:
   - "ℹ Did you mean group?"
   - 'Field "hint" has value maybe, which must instead be `true` or `false`'
   - "ℹ The error happened in location panzoom:hint, in the cell starting `import matplotlib.pyplot as plt`."
+  - "property name gruop is invalid"
+  - "ℹ The error happened in location panzoom:gruop, in the cell starting `plt.plot([3, 4])`."
+  - "ℹ Did you mean group?"
 ---
 
-Mistakes in `#| panzoom:` cell options, as Jupyter passes them.
+Mistakes in `#| panzoom:` cell options, as Jupyter passes them, also in a cell
+inside a `.panzoom` div.
 
 ```{python}
 #| panzoom:
@@ -22,3 +26,12 @@ import matplotlib.pyplot as plt
 
 plt.plot([1, 2])
 ```
+
+::: {.panzoom}
+```{python}
+#| panzoom:
+#|   gruop: b
+
+plt.plot([3, 4])
+```
+:::

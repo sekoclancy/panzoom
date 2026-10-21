@@ -278,3 +278,25 @@ for a stylesheet to style.
 plt.plot(x, np.sin(x**2 / 4))
 plt.show()
 ```
+
+## 15. Options on a cell in a `.panzoom` div {#c15 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
+
+A cell with `max-zoom: 2` and `hint: false` under the `panzoom` cell option,
+inside a `.panzoom` div. The cell's options apply as they do outside the div: it
+opens in panzoom without the hint line, and zooming in stops at 2 screen pixels
+per image pixel.
+
+::: {.panzoom}
+```{python}
+#| fig-alt: "Line plot of a cosine wave"
+#| panzoom:
+#|   max-zoom: 2
+#|   hint: false
+#| fig-cap: >-
+#|   A cosine wave, from a cell with `max-zoom: 2` and `hint: false` in a
+#|   `.panzoom` div.
+
+plt.plot(x, np.cos(2 * x))
+plt.show()
+```
+:::

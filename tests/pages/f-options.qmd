@@ -14,7 +14,7 @@ panzoom:
 ## About
 
 Keeping an image, a cell, or a div out of panzoom, and setting options on one
-cell. The page sets `loop`, so the gallery in [case 7](#c7) wraps around.
+cell. The page sets `loop`, so the gallery in [case 8](#c8) wraps around.
 lightbox is off, so clicking an image panzoom leaves alone does nothing.
 
 ```yaml
@@ -133,7 +133,28 @@ panzoom, and zooming in stops at 2 screen pixels per image pixel.
 wave(k = 1)
 ```
 
-## 7. Looping gallery {#c7 expect-open="panzoom"}
+## 7. Options on a cell in a `.panzoom` div {#c7 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
+
+An R cell with `max-zoom: 2` and `hint: false` under the `panzoom` cell option,
+inside a `.panzoom` div. The cell's options apply as they do outside the div: it
+opens in panzoom without the hint line, and zooming in stops at 2 screen pixels
+per image pixel.
+
+::: {.panzoom}
+```{r}
+#| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   max-zoom: 2
+#|   hint: false
+#| fig-cap: >-
+#|   Wave 2, from a cell with `max-zoom: 2` and `hint: false` in a `.panzoom`
+#|   div.
+
+wave(k = 2)
+```
+:::
+
+## 8. Looping gallery {#c8 expect-open="panzoom"}
 
 One R cell with three plots, joined by `group: waves` under the `panzoom` cell
 option. Each opens in panzoom, in a three-image gallery. The page sets `loop`,
@@ -158,7 +179,7 @@ wave(k = 2)
 wave(k = 3)
 ```
 
-## 8. No alt text {#c8 expect-open="panzoom" expect-caption="none"}
+## 9. No alt text {#c9 expect-open="panzoom" expect-caption="none"}
 
 An image with `.panzoom` and no alt text. It opens in panzoom with no caption,
 and the link around it is labeled "Open image" for screen readers.
