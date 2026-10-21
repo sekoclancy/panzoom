@@ -250,7 +250,7 @@ async function state(page) {
         hintShown: !pz.querySelector(".panzoom-hint").hidden,
         // The hint names the caption key only when there is a caption or
         // description to hide (and a key bound to it).
-        hintCaptionOk: pz.querySelector(".panzoom-hint-keys").textContent.includes("hides the caption") ===
+        hintCaptionOk: pz.querySelector(".panzoom-hint-keys").textContent.includes("to hide the caption") ===
           ((window.PANZOOM_OPTIONS?.keys || {}).caption !== false &&
             (!!caption.innerHTML || !!pz.querySelector(".panzoom-description").innerHTML.trim())),
         overlayClass: pz.className,
@@ -595,8 +595,8 @@ async function checkKeyboard(page, handle) {
   const cap = captioned ? named("caption", ["c"]) : "", hin = named("hint", ["h"]), shut = named("close", ["Escape"]);
   // Each bound key is its own item on the hint line.
   const items = hintText.split(" \u00b7 ");
-  out.hintNamesKeys = (cap ? items.includes(`${cap} hides the caption`) : !hintText.includes("caption")) &&
-    (hin ? items.includes(`${hin} hides the hint`) : !hintText.includes("the hint")) &&
+  out.hintNamesKeys = (cap ? items.includes(`${cap} to hide the caption`) : !hintText.includes("caption")) &&
+    (hin ? items.includes(`${hin} to hide the hint`) : !hintText.includes("the hint")) &&
     (shut ? items.includes(`${shut} to close`) : !hintText.includes("close"));
   const band = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay"), f = o.querySelector(".panzoom-footer");
