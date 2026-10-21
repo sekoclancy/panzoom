@@ -170,12 +170,13 @@
     return null;
   }
 
-  // The hint line's text, naming the keys bound.
-  function hintText() {
+  // The hint line's text, naming the keys bound: the caption key only when
+  // the image has a caption or description to hide.
+  function hintText(captioned) {
     var named = function (a) {
       return keys()[a].map(function (k) { return k === "Escape" ? "Esc" : k; }).join(" or ");
     };
-    var cap = named("caption"), hin = named("hint"), shut = named("close");
+    var cap = captioned ? named("caption") : "", hin = named("hint"), shut = named("close");
     var parts = ["scroll to zoom", "drag to pan", "double-click to reset"];
     if (cap && hin) parts.push(cap + " hides the caption, " + hin + " the hint");
     else if (cap) parts.push(cap + " hides the caption");
@@ -340,6 +341,8 @@
     caption.hidden = hideCaption || !caption.innerHTML;
     desc.hidden = hideCaption || !desc.innerHTML.trim();
     hint.hidden = hideHint || !opts.hint || byTouch;
+    hint.querySelector(".panzoom-hint-keys").textContent =
+      hintText(!!caption.innerHTML || !!desc.innerHTML.trim());
     footer.hidden = caption.hidden && desc.hidden && hint.hidden;
     // The band's size, for the buttons it would cover (see panzoom.css).
     overlay.style.setProperty("--panzoom-band-height", footer.offsetHeight + "px");
@@ -763,7 +766,6 @@
     caption = overlay.querySelector(".panzoom-caption");
     desc = overlay.querySelector(".panzoom-description");
     hint = overlay.querySelector(".panzoom-hint");
-    hint.querySelector(".panzoom-hint-keys").textContent = hintText();
     closeBtn.addEventListener("click", close);
     img.addEventListener("panzoomchange", contain);
     prevBtn.addEventListener("click", function () { step(-1); });

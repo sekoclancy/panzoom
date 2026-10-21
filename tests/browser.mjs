@@ -248,6 +248,11 @@ async function state(page) {
         fit: img.dataset.fit || "",
         format: img.classList.contains("panzoom-vector") ? "svg" : "bitmap",
         hintShown: !pz.querySelector(".panzoom-hint").hidden,
+        // The hint names the caption key only when there is a caption or
+        // description to hide (and a key bound to it).
+        hintCaptionOk: pz.querySelector(".panzoom-hint-keys").textContent.includes("hides the caption") ===
+          ((window.PANZOOM_OPTIONS?.keys || {}).caption !== false &&
+            (!!caption.innerHTML || !!pz.querySelector(".panzoom-description").innerHTML.trim())),
         overlayClass: pz.className,
         overlayBg: getComputedStyle(pz).backgroundColor,
         bandBg: getComputedStyle(pz.querySelector(".panzoom-footer")).backgroundColor,
@@ -581,8 +586,13 @@ async function checkKeyboard(page, handle) {
   const first = (a, dflt) => (bound[a] === false ? null : (bound[a] || [dflt])[0]);
   const capKey = first("caption", "c"), hintKey = first("hint", "h");
   const named = (a, dflt) => (bound[a] === false ? [] : bound[a] || dflt).map((k) => (k === "Escape" ? "Esc" : k)).join(" or ");
-  const hintText = await page.evaluate(() => document.querySelector(".panzoom-hint-keys").textContent);
-  const cap = named("caption", ["c"]), hin = named("hint", ["h"]), shut = named("close", ["Escape"]);
+  const { hintText, captioned } = await page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay");
+    return { hintText: o.querySelector(".panzoom-hint-keys").textContent,
+      captioned: !!o.querySelector(".panzoom-caption").innerHTML || !!o.querySelector(".panzoom-description").innerHTML.trim() };
+  });
+  // The caption key is named only when there is a caption or description.
+  const cap = captioned ? named("caption", ["c"]) : "", hin = named("hint", ["h"]), shut = named("close", ["Escape"]);
   out.hintNamesKeys = (cap && hin ? hintText.includes(`${cap} hides the caption, ${hin} the hint`)
     : cap ? hintText.includes(`${cap} hides the caption`) && !hintText.includes("the hint")
     : hin ? hintText.includes(`${hin} hides the hint`) && !hintText.includes("caption")
@@ -1618,6 +1628,8 @@ try {
     if (opened.length) extra.push(opened.every((r) => /^rgb\(/.test(r.backdrop || "")) ? "backdrop ok" : "BACKDROP FAILED");
     const overlaps = opened.filter((r) => r.captionClear === false);
     if (opened.length) extra.push(overlaps.length ? `CAPTION OVERLAP (${overlaps.map((r) => `case ${r.case} img ${r.n}`).join(", ")})` : "caption clear ok");
+    const hintWrong = opened.filter((r) => r.hintCaptionOk === false);
+    if (opened.length) extra.push(hintWrong.length ? `HINT CAPTION KEY WRONG (${hintWrong.map((r) => `case ${r.case} img ${r.n}`).join(", ")})` : "hint keys ok");
     const anchored = opened.filter((r) => r.anchorChecked);
     if (anchored.length) extra.push(anchored.every((r) => r.anchorFastDrift <= 5) ? "fast zoom ok" : "FAST ZOOM FAILED");
     if (opened.length) extra.push(opened.every((r) => r.anchorOk) ? "zoom anchor ok" : "ZOOM ANCHOR FAILED");
