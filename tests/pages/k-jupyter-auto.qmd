@@ -15,11 +15,11 @@ lightbox: true
 
 ## About
 
-These Python (Jupyter) cells have `panzoom: true`, next to the document's
-`lightbox: true`. panzoom takes every image lightbox would, except where a case
-asks for lightbox. The [lightbox version](j-jupyter-lightbox.html) has the same
-cases without panzoom. Compare each case with the same number there. The knitr
-equivalent is the R [global panzoom version](c-panzoom-auto.html).
+panzoom takes every Python (Jupyter) figure lightbox would take on its own, so
+no figure needs to be marked. lightbox is on too, but only cells that ask for it
+with lightbox options open in it ([case 4](#c4)). The same cases open in
+lightbox alone on [lightbox on the Python cases](j-jupyter-lightbox.html), and
+the R cases are on [panzoom on every image](c-panzoom-auto.html).
 
 ```yaml
 filters:
@@ -29,9 +29,9 @@ lightbox: true
 ```
 
 Jupyter leaves the `panzoom` and `lightbox` options out of the code shown on the
-page; the **Code** button at the top shows the full source.
+page. The **Code** button at the top shows the full source.
 
-The cases below share this setup:
+The plots share this setup:
 
 ```{python}
 import matplotlib.pyplot as plt
@@ -42,9 +42,11 @@ x = np.linspace(0, 4 * np.pi, 400)
 
 ## 1. Figure with a caption {#c1 expect-open="panzoom"}
 
+A Python figure with a caption. It opens in panzoom.
+
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
-#| fig-cap: "A Python figure with a caption. It opens in panzoom."
+#| fig-cap: "A sine wave."
 
 plt.plot(x, np.sin(x))
 plt.show()
@@ -63,9 +65,12 @@ plt.show()
 
 ## 3. Subfigures {#c3 expect-open="panzoom"}
 
+One cell with two plots, made subfigures by `fig-subcap`. Either one opens in
+panzoom, in a two-image gallery.
+
 ```{python}
 #| label: fig-pair
-#| fig-cap: "Two subfigures from one cell. They open in panzoom as a two-image gallery."
+#| fig-cap: "Sine and cosine, from one cell."
 #| fig-subcap: ["Sine", "Cosine"]
 #| fig-alt:
 #|   - "Line plot of a sine wave"
@@ -80,11 +85,11 @@ plt.show()
 
 ## 4. lightbox options {#c4 expect-open="glightbox"}
 
-Two cells with `lightbox:` options for a group and a description. Asking for
-lightbox keeps them out of panzoom, as with knitr (cases 6 and 7 of the R
-[global panzoom version](c-panzoom-auto.html)). With Jupyter, lightbox ignores
-the options themselves, so each opens in lightbox on its own, without the group
-or description.
+One cell with two plots and `lightbox:` options for a group and a description.
+Asking for lightbox keeps the cell out of panzoom, as in cases 6 and 7 of
+[panzoom on every image](c-panzoom-auto.html). With Jupyter, lightbox ignores
+these options, so each plot opens in lightbox on its own, without the group or
+description.
 
 ```{python}
 #| lightbox:
@@ -102,12 +107,13 @@ plt.show()
 
 ## 5. lightbox off {#c5 expect-open="nothing"}
 
+A cell with `lightbox: false`. panzoom leaves a cell's own lightbox setting
+alone, so clicking the plot does nothing.
+
 ```{python}
 #| lightbox: false
 #| fig-alt: "Line plot of a sine wave"
-#| fig-cap: >-
-#|   A cell with `lightbox: false`. panzoom leaves an explicit lightbox setting
-#|   alone, so clicking it does nothing.
+#| fig-cap: "A sine wave, from a cell with `lightbox: false`."
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -115,12 +121,13 @@ plt.show()
 
 ## 6. panzoom on a cell {#c6 expect-open="panzoom"}
 
+A cell with `#| panzoom: true`. It opens in panzoom, ahead of the document's
+`lightbox: true`.
+
 ```{python}
 #| fig-alt: "Line plot of a cosine wave"
 #| panzoom: true
-#| fig-cap: >-
-#|   A cell with `panzoom: true`. It opens in panzoom, ahead of the document's
-#|   `lightbox: true`.
+#| fig-cap: "A cosine wave, from a cell with `panzoom: true`."
 
 plt.plot(x, np.cos(4 * x))
 plt.show()
@@ -128,12 +135,17 @@ plt.show()
 
 ## 7. Markdown image {#c7 expect-open="panzoom"}
 
+A markdown image alone in a paragraph. It opens in panzoom.
+
 ```markdown {.show-source}
-![A markdown image alone in a paragraph. It opens in panzoom.](../../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Chilmark beach at sunset.](../../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## 8. Opt out of lightbox {#c8 expect-open="nothing"}
 
+A markdown image with `.nolightbox`. panzoom only takes images lightbox would,
+so clicking it does nothing.
+
 ```markdown {.show-source}
-![A markdown image with `.nolightbox`. panzoom only takes images lightbox would, so clicking it does nothing.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Aquinnah, kept out with `.nolightbox`.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
