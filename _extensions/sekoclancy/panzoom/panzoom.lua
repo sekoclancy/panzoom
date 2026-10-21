@@ -550,6 +550,39 @@ local function parse_options(value)
   return cfg, raws
 end
 
+-- A line break in an option's string (a YAML `|` block) arrives as the
+-- two characters `\n`: knitr and Jupyter write it JSON-escaped, and Pandoc,
+-- which unescapes the quotes and backslashes, leaves `\n` alone. Read as
+-- markdown, `\nEach` would be a LaTeX command and vanish, so turn `\n`
+-- back into a line break. Not inside `$...$` or `$$...$$`, where `\nabla`
+-- or `\neq` is TeX; outside math, `\n...` could only be a command HTML
+-- drops anyway.
+local function line_breaks(text)
+  if not text:find("\\n") then return text end
+  local out, i, inside = {}, 1, nil
+  while i <= #text do
+    local c = text:sub(i, i)
+    if c == "\\" then
+      if text:sub(i + 1, i + 1) == "n" and not inside then
+        table.insert(out, "\n")
+      else
+        -- An escape, kept whole (so `\$` isn't a math delimiter).
+        table.insert(out, text:sub(i, i + 1))
+      end
+      i = i + 2
+    elseif c == "$" then
+      local d = text:sub(i, i + 1) == "$$" and "$$" or "$"
+      if inside == nil then inside = d elseif inside == d then inside = nil end
+      table.insert(out, d)
+      i = i + #d
+    else
+      table.insert(out, c)
+      i = i + 1
+    end
+  end
+  return table.concat(out)
+end
+
 -- Jupyter passes a nested cell option in an attribute of its own,
 -- `quarto-private-N = {"key":"panzoom","value":{...}}`, where knitr writes
 -- `panzoom = {...}`; the value has the same unescaped strings (see
@@ -602,7 +635,7 @@ local function cell_option(el)
       end
     end
     if type(cfg.description) == "string" and cfg.description ~= "" then
-      attrs["data-panzoom-desc"] = add_description(cfg.description)
+      attrs["data-panzoom-desc"] = add_description(line_breaks(cfg.description))
     end
   end
   return true, attrs

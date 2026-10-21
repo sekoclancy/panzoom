@@ -4,20 +4,22 @@ filters:
   - panzoom
 expect-errors: []
 expect-descriptions:
-  - 'Say “hi”, then stop.'
-  - 'Compare a, “hint”: true, and more.'
-  - '{“a”: 1, “b”: [2, 3]}'
-  - 'Braces } and ] and , “x”:'
+  - "Say “hi”, then stop."
+  - "Compare a, “hint”: true, and more."
+  - "{“a”: 1, “b”: [2, 3]}"
+  - "Braces } and ] and , “x”:"
   - 'It’s a “quoted” one, with \(\theta = \alpha_1\)'
+  - 'Two lines, joined as one, with \(\nabla f \neq 0\).'
 ---
 
-Descriptions that look like more options, as knitr passes them: each must
-come through whole.
+Descriptions that look like more options, as knitr passes them: each must come
+through whole.
 
 ```{r}
 #| panzoom:
 #|   description: 'Say "hi", then stop.'
 #|   hint: false
+
 plot(1)
 ```
 
@@ -25,6 +27,7 @@ plot(1)
 #| panzoom:
 #|   description: 'Compare a, "hint": true, and more.'
 #|   hint: false
+
 plot(1)
 ```
 
@@ -32,6 +35,7 @@ plot(1)
 #| panzoom:
 #|   description: '{"a": 1, "b": [2, 3]}'
 #|   hint: false
+
 plot(1)
 ```
 
@@ -39,6 +43,7 @@ plot(1)
 #| panzoom:
 #|   description: 'Braces } and ] and , "x":'
 #|   hint: false
+
 plot(1)
 ```
 
@@ -46,5 +51,16 @@ plot(1)
 #| panzoom:
 #|   description: "It's a \"quoted\" one, with $\\theta = \\alpha_1$"
 #|   hint: false
+
+plot(1)
+```
+
+```{r}
+#| panzoom:
+#|   description: |
+#|     Two lines, joined
+#|     as one, with $\nabla f \neq 0$.
+#|   hint: false
+
 plot(1)
 ```
