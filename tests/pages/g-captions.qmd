@@ -165,6 +165,8 @@ and @fig-div-image).
 #| label: fig-div-plot
 #| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 #| fig-cap: "A labeled plot in a `.panzoom` div."
+#| fig-width: 7.5
+#| fig-height: 5
 
 wave(k = 3)
 ```

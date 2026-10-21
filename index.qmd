@@ -119,6 +119,8 @@ included:
 ```{{r}}
 #| fig-alt: "Heat map of the volcano's heights in terrain colors, from green to white"
 #| fig-cap: "Volcano heights in terrain colors."
+#| fig-width: 8
+#| fig-height: 5.5
 
 image(volcano, col = terrain.colors(100))
 ```
@@ -132,6 +134,8 @@ image(volcano, col = terrain.colors(100))
 #| fig-alt: "Heat map of the volcano's heights in terrain colors, from green to white"
 #| echo: false
 #| fig-cap: "Volcano heights in terrain colors."
+#| fig-width: 8
+#| fig-height: 5.5
 
 image(volcano, col = terrain.colors(100))
 ```
