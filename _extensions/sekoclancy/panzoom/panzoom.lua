@@ -2,9 +2,8 @@
 --
 -- Images get the viewer when they:
 --   * sit inside a code cell with `#| panzoom: true` (or per-cell options,
---     `#| panzoom: { max-zoom: 6, hint: false }`), or inside a `.panzoom` div
---     or cell (`#| classes: panzoom`), including labeled figures and
---     subfigure layouts,
+--     `#| panzoom: { max-zoom: 6, hint: false }`), or inside a `.panzoom`
+--     div, including labeled figures and subfigure layouts,
 --   * carry the class themselves (`![](x.png){.panzoom}`), or
 --   * are block images (figures, or alone in a paragraph) in a document with
 --     `panzoom: true` (or `auto`, or `match: auto` in the options map) -- the
