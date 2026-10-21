@@ -204,3 +204,26 @@ panzoom, with the caption above the image.
 
 wave(k = 3)
 ```
+
+## Plots held to the end of a cell {#c11 expect-open="panzoom" expect-steps="true"}
+
+An R cell with `fig-show: hold` and `group: held` under the `panzoom` cell
+option, printing text between its two plots. The text comes first on the page
+and the plots after it. They open in panzoom as a two-image gallery, each with
+its own caption.
+
+```{r}
+#| fig-alt:
+#|   - "Plot titled Wave 1: a sine curve with its area to the axis shaded"
+#|   - "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#| fig-show: hold
+#| panzoom:
+#|   group: held
+#| fig-cap:
+#|   - "Wave one, drawn before the text."
+#|   - "Wave two, drawn after it."
+
+wave(k = 1)
+print("Printed between the two plots.")
+wave(k = 2)
+```

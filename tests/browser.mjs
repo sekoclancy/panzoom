@@ -1234,7 +1234,8 @@ async function checkPage(browser, base, file) {
 
   // A gallery case with `expect-steps`: opened on its first image and
   // stepped to the last and back with the buttons, each image must show its
-  // own styling (its `expect-*`), none kept from the image before it.
+  // own styling (its `expect-*`) and caption (as when opened on its own),
+  // none kept from the image before it.
   for (const r of results.filter((x) => x.n === 1 && x.expectSteps && x.opened === "panzoom")) {
     const imgs = results.filter((x) => x.case === r.case);
     const order = [...imgs.keys(), ...[...imgs.keys()].reverse().slice(1)];
@@ -1246,8 +1247,8 @@ async function checkPage(browser, base, file) {
         await settle(page);
       }
       const x = imgs[order[k]], s = await state(page);
-      r.styleSteps.push({ n: x.n, counter: s.counter, overlayBg: s.overlayBg, bandBg: s.bandBg, overlayClass: s.overlayClass,
-        ok: s.counter === `${order[k] + 1} / ${imgs.length}` && optionsOk({ ...x, ...s, opened: "panzoom" }) });
+      r.styleSteps.push({ n: x.n, counter: s.counter, overlayBg: s.overlayBg, bandBg: s.bandBg, overlayClass: s.overlayClass, caption: s.caption,
+        ok: s.counter === `${order[k] + 1} / ${imgs.length}` && s.caption === x.caption && optionsOk({ ...x, ...s, opened: "panzoom" }) });
     }
     await closeAll(page);
   }
@@ -1669,7 +1670,7 @@ try {
       extra.push(ok ? "style steps ok" : "STYLE STEPS FAILED");
       fs.appendFileSync(path.join(outDir, "report.md"), ["", "## Styles while stepping through a gallery", "",
         ...stepped.flatMap((r) => [`Case ${r.case}, first image to last and back:`, "",
-          ...r.styleSteps.map((s) => `- image ${s.n} (${s.counter}): backdrop ${s.overlayBg}, band ${s.bandBg}, classes "${s.overlayClass}": ${s.ok ? "yes" : "**NO**"}`), ""])].join("\n"));
+          ...r.styleSteps.map((s) => `- image ${s.n} (${s.counter}): caption "${s.caption}", backdrop ${s.overlayBg}, band ${s.bandBg}, classes "${s.overlayClass}": ${s.ok ? "yes" : "**NO**"}`), ""])].join("\n"));
     }
     const shift = results.filter((r) => r.shiftScroll && r.opened === "panzoom");
     if (shift.length) extra.push(shift.every((r) => r.shiftScrollOk) ? "shift-scroll ok" : "SHIFT-SCROLL FAILED");
