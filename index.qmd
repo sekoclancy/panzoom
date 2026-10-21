@@ -43,8 +43,16 @@ Click a figure to open it, or reach it with Tab and press Enter.
   | Hide or show the hint line               |                                       | h                    |
   | Close                                    | the × button, or click the background | Esc                  |
 
-A very wide figure opens at screen height, at the spot you clicked, and the
-opening view is that spot (see [Wide figure](#wide-figure)).
+The `keys` option changes the keys for zooming, resetting, hiding the caption or
+the hint line, and closing. Actions left out keep their defaults:
+
+```yaml
+panzoom:
+  keys:
+    caption: k          # one key
+    hint: false         # no key
+    close: [Escape, q]  # several keys
+```
 
 ## Code cell
 
