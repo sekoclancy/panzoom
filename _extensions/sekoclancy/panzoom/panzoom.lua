@@ -780,6 +780,30 @@ return {
   {
     traverse = "topdown",
     Link = function() return nil, false end,
+    -- Quarto lays out a figure by its image's column class
+    -- (`.column-margin`), but no longer sees it once the image is in a link,
+    -- and moves only the image, leaving the caption behind. So the class
+    -- goes on the figure.
+    Figure = function(fig)
+      if off then return nil end
+      local moved = false
+      fig.content = fig.content:walk({
+        Image = function(img)
+          if not has(img.classes, "panzoom") or has(img.classes, "nopanzoom") then return nil end
+          local keep = img.classes:filter(function(c)
+            if c:match("^column%-") then
+              if not has(fig.classes, c) then fig.classes:insert(c) end
+              moved = true
+              return false
+            end
+            return true
+          end)
+          img.classes = keep
+          return img
+        end,
+      })
+      if moved then return fig end
+    end,
     Image = function(img)
       if has(img.classes, "panzoom") and not has(img.classes, "nopanzoom") and not off then
         local link = pandoc.Link({ img }, img.src, "", pandoc.Attr("", { "panzoom-link" }))
