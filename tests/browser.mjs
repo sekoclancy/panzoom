@@ -570,9 +570,9 @@ async function checkKeyboard(page, handle) {
   const named = (a, dflt) => (bound[a] === false ? [] : bound[a] || dflt).map((k) => (k === "Escape" ? "Esc" : k)).join(" or ");
   const hintText = await page.evaluate(() => document.querySelector(".panzoom-hint-keys").textContent);
   const cap = named("caption", ["c"]), hin = named("hint", ["h"]), shut = named("close", ["Escape"]);
-  out.hintNamesKeys = (cap && hin ? hintText.includes(`${cap} hides the caption, ${hin} this line`)
-    : cap ? hintText.includes(`${cap} hides the caption`) && !hintText.includes("this line")
-    : hin ? hintText.includes(`${hin} hides this line`) && !hintText.includes("caption")
+  out.hintNamesKeys = (cap && hin ? hintText.includes(`${cap} hides the caption, ${hin} the hint`)
+    : cap ? hintText.includes(`${cap} hides the caption`) && !hintText.includes("the hint")
+    : hin ? hintText.includes(`${hin} hides the hint`) && !hintText.includes("caption")
     : !hintText.includes("hides")) && (shut ? hintText.includes(`${shut} to close`) : !hintText.includes("close"));
   const band = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay"), f = o.querySelector(".panzoom-footer");
