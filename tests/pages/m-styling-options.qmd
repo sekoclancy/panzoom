@@ -28,36 +28,48 @@ panzoom:
   link-color: "#a0361b"               # rust
 ```
 
-Each option sets one of the viewer's CSS variables; [styling with
+Each option sets one of the viewer's CSS variables. [Styling with
 CSS](n-css-class.html) sets the same variables from a stylesheet, for some pages
-only. A single image or code cell can set its own colors, as cases 2 and 4 show;
-they apply while that image is open.
+only. A single image or code cell can set its own colors, which apply while that
+image is open ([case 2](#c2) and [case 4](#c4)).
 
 ## 1. Markdown image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
+A markdown image with `.panzoom`. It opens with the colors set on this page, a
+deep blue backdrop and a cream caption band, and the link in its caption is
+rust.
+
 ```markdown {.show-source}
-![An image with `.panzoom`. It opens with the colors set on this page, a deep blue backdrop and a cream caption band, and this [link](https://quarto.org) is rust.](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Chilmark beach at sunset, with a [link](https://quarto.org).](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## 2. Colors for one image {#c2 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
 
+A markdown image with `.panzoom` and colors of its own, set as attributes. It
+opens with a deep green backdrop and a pale green caption band instead of the
+colors set on this page, and the link in its caption is dark green.
+
 ```markdown {.show-source}
-![An image with `.panzoom`, with colors of its own, set as attributes. It opens with a deep green backdrop and a pale green caption band instead of the colors set on this page, and this [link](https://quarto.org) is dark green.](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Aquinnah, with colors of its own and a [link](https://quarto.org).](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
 ## 3. Code cell {#c3 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
+An R cell with `#| panzoom: true`. It opens with the blue and cream colors set
+on this page, as [case 1](#c1) does.
+
 ```{r}
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
-#| fig-cap: >-
-#|   A code cell with `panzoom: true`. It opens with the blue and cream colors
-#|   set on this page, as case 1 does.
+#| fig-cap: "Vapor pressure, from a cell with `panzoom: true`."
 
 plot(pressure, type = "b", pch = 19)
 ```
 
 ## 4. Colors for one cell {#c4 expect-open="panzoom" expect-overlay="rgba(70, 25, 15, 0.92)" expect-band="rgb(251, 233, 220)"}
+
+An R cell with colors of its own under the `panzoom` cell option. It opens with
+a dark red backdrop and a peach caption band.
 
 ```{r}
 #| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
@@ -65,22 +77,23 @@ plot(pressure, type = "b", pch = 19)
 #|   backdrop: "rgba(70, 25, 15, 0.92)"
 #|   caption-background: "#fbe9dc"
 #|   caption-color: "#4a1f10"
-#| fig-cap: >-
-#|   A code cell with colors of its own, under `#| panzoom:`. It opens with a
-#|   dark red backdrop and a peach caption band.
+#| fig-cap: "Stopping distance against speed, with colors of its own."
 
 plot(cars, pch = 19)
 ```
 
 ## 5. Gallery with mixed colors {#c5 expect-open="panzoom" expect-steps="true"}
 
-A gallery of three images, two with colors of their own. Each image shows its
-own colors while it is open, and the next or previous image doesn't keep them.
+A gallery of three images. The first has a deep green backdrop and a pale green
+caption band of its own, the second has no colors of its own and shows the blue
+and cream set on this page, and the third has a dark red backdrop and a peach
+band of its own. Each image shows its colors while it is open, and stepping to
+the next or previous one doesn't keep them.
 
 ```markdown {.show-source}
-![The first of three images in a gallery, with colors of its own. It opens with a deep green backdrop and a pale green caption band.](../../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" fig-alt="A white lighthouse against a blue sky" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
+![The Edgartown lighthouse, with colors of its own.](../../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" fig-alt="A white lighthouse against a blue sky" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
 
-![The second image, with no colors of its own. It shows the blue and cream colors set on this page, not the first image's green.](../../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
+![A gingerbread cottage, with the colors set on this page.](../../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
 
-![The third image, with colors of its own again. It shows a dark red backdrop and a peach caption band.](../../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" caption-background="#fbe9dc" caption-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-overlay="rgba(70, 25, 15, 0.92)" expect-band="rgb(251, 233, 220)"}
+![A sailboat, with colors of its own.](../../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" caption-background="#fbe9dc" caption-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-overlay="rgba(70, 25, 15, 0.92)" expect-band="rgb(251, 233, 220)"}
 ```
