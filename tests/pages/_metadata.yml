@@ -1,5 +1,7 @@
 # Sections numbered, so case N is section N (About and Credits are
-# unnumbered). No table of contents: the sidebar lists the pages.
+# unnumbered). The table of contents is on the right; on pages with margin
+# figures, Quarto folds it into an "On this page" menu.
 format:
   html:
     number-sections: true
+    toc: true
