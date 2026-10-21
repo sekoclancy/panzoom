@@ -1,5 +1,5 @@
 ---
-title: "Wide figures in galleries and layouts"
+title: "Wide figures in galleries"
 format:
   html:
     code-tools: true

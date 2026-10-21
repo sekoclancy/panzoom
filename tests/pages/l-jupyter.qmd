@@ -1,5 +1,5 @@
 ---
-title: "Cell options and svg"
+title: "Cell options"
 engine: jupyter
 jupyter: python3
 format:

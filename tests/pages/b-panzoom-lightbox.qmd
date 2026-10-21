@@ -1,5 +1,5 @@
 ---
-title: "Selected images, lightbox on"
+title: "Selected images with lightbox"
 format:
   html:
     code-tools: true

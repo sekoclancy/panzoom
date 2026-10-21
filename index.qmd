@@ -5,6 +5,7 @@ format:
   html:
     code-tools: true
     toc: true
+sidebar: false
 filters:
   - path: _filters/show-source.lua
     at: pre-ast

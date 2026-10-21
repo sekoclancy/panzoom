@@ -3,7 +3,6 @@ project:
   output-dir: docs
   render:
     - index.qmd
-    - reference.qmd
     - tests/pages/*.qmd
   preview:
     host: 127.0.0.1
@@ -39,41 +38,49 @@ website:
   repo-url: https://github.com/sekoclancy/panzoom
   navbar:
     left:
-      - href: index.qmd
-        text: panzoom
-      - href: reference.qmd
+      - href: tests/pages/b-panzoom-lightbox.qmd
         text: Examples
-      - text: R
-        menu:
-          - href: tests/pages/b-panzoom-lightbox.qmd
-            text: "Selected images, lightbox on"
-          - href: tests/pages/c-panzoom-auto.qmd
-            text: "Global panzoom"
-          - href: tests/pages/d-panzoom-selective.qmd
-            text: "Selected images only (default)"
-          - href: tests/pages/e-formats.qmd
-            text: "Image formats"
-          - href: tests/pages/f-options.qmd
-            text: "Options"
-          - href: tests/pages/g-captions.qmd
-            text: "Captions and descriptions"
-          - href: tests/pages/h-wide.qmd
-            text: "Wide and tall figures"
-          - href: tests/pages/i-wide-galleries.qmd
-            text: "Wide figures in galleries and layouts"
-      - text: Python
-        menu:
-          - href: tests/pages/k-jupyter-auto.qmd
-            text: "panzoom with lightbox"
-          - href: tests/pages/l-jupyter.qmd
-            text: "Cell options and svg"
-      - text: Styling
-        menu:
-          - href: tests/pages/m-styling-options.qmd
-            text: "Color options"
-          - href: tests/pages/n-css-class.qmd
-            text: "Styling with CSS"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom
         aria-label: GitHub repository
+  # The sidebar names the page, so no breadcrumbs above the title.
+  bread-crumbs: false
+  # The example pages, by letter. index.qmd turns it off.
+  sidebar:
+    style: docked
+    contents:
+      - section: "R"
+        contents:
+          - href: tests/pages/a-lightbox.qmd
+            text: "A. lightbox, for comparison"
+          - href: tests/pages/b-panzoom-lightbox.qmd
+            text: "B. Selected images with lightbox"
+          - href: tests/pages/c-panzoom-auto.qmd
+            text: "C. panzoom on every figure"
+          - href: tests/pages/d-panzoom-selective.qmd
+            text: "D. Selected images only"
+          - href: tests/pages/e-formats.qmd
+            text: "E. Image formats"
+          - href: tests/pages/f-options.qmd
+            text: "F. Cell options"
+          - href: tests/pages/g-captions.qmd
+            text: "G. Captions and descriptions"
+          - href: tests/pages/h-wide.qmd
+            text: "H. Wide and tall figures"
+          - href: tests/pages/i-wide-galleries.qmd
+            text: "I. Wide figures in galleries"
+      - section: "Python"
+        contents:
+          - href: tests/pages/j-jupyter-lightbox.qmd
+            text: "J. lightbox, for comparison"
+          - href: tests/pages/k-jupyter-auto.qmd
+            text: "K. panzoom on every figure"
+          - href: tests/pages/l-jupyter.qmd
+            text: "L. Cell options"
+      - section: "Styling"
+        contents:
+          - href: tests/pages/m-styling-options.qmd
+            text: "M. Color options"
+          - href: tests/pages/n-css-class.qmd
+            text: "N. Styling with CSS"

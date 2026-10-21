@@ -1,5 +1,5 @@
 ---
-title: "lightbox on the Python cases"
+title: "lightbox, for comparison"
 engine: jupyter
 jupyter: python3
 format:
@@ -14,10 +14,10 @@ filters:
 ## About
 
 This page has no panzoom, and every Python (Jupyter) figure opens in lightbox.
-Its cases are the same as on [panzoom with lightbox](k-jupyter-auto.html), so
+Its cases are the same as on [panzoom on every figure](k-jupyter-auto.html), so
 each one can be compared with the case of the same number there. The R cases are
 on the [lightbox page](a-lightbox.html) and [panzoom on every
-image](c-panzoom-auto.html).
+figure](c-panzoom-auto.html).
 
 ```yaml
 lightbox: true

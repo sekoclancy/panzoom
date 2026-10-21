@@ -380,9 +380,11 @@ plot(pressure)
 ![A photo.](photo.jpg){.panzoom caption-background="#222" caption-color="white"}
 ````
 
-The examples' [Styling
-pages](https://sekoclancy.github.io/panzoom/reference.html#styling) show each
-way, and the classes of the viewer's parts.
+The [color
+options](https://sekoclancy.github.io/panzoom/tests/pages/m-styling-options.html)
+and [styling with
+CSS](https://sekoclancy.github.io/panzoom/tests/pages/n-css-class.html) examples
+have each way, and the classes of the viewer's parts.
 
 ## Development
 

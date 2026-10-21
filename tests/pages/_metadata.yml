@@ -1,6 +1,4 @@
-# A table of contents on every example page, on the left so it stays clear
-# of margin figures (case 10), which go on the right.
+# No table of contents on the example pages: the sidebar lists them.
 format:
   html:
-    toc: true
-    toc-location: left
+    toc: false

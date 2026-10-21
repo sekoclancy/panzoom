@@ -1,5 +1,5 @@
 ---
-title: "Selected images only (default)"
+title: "Selected images only"
 format:
   html:
     code-tools: true
