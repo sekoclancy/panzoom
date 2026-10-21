@@ -5,7 +5,7 @@ filters:
   - panzoom
 panzoom:
   keys:
-    caption: k
+    caption: [k, x]
     hint: false
     close: [Escape, q]
 ---
@@ -13,9 +13,10 @@ panzoom:
 ::: {.callout-note}
 ## About this page
 
-This page **tests `keys:`**: k hides the caption instead of c, the hint key is
-switched off (h does nothing), and q closes the viewer as well as Esc. The hint
-line names k and "Esc or q", and says nothing about hiding itself. It is not
+This page **tests `keys:`**: k or x hides the caption instead of c, the hint
+key is switched off (h does nothing), and q closes the viewer as well as Esc.
+The hint line names "k or x" and "Esc or q", and says nothing about hiding
+itself. It is not
 part of the website.
 :::
 
