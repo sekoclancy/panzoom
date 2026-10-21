@@ -22,12 +22,13 @@ panzoom:
   css-class: plum-viewer
 ```
 
-Only pages with that class get the rules, so the other pages of the site keep
-the default viewer. A single image or code cell can add a class of its own, as
-cases 2 and 4 show; it applies while that image is open.
+The rules apply only to a viewer with that class, so other pages keep the
+default viewer even if they load the same rules. A single image or code cell can
+add a class of its own, which applies while that image is open ([case 2](#c2)
+and [case 4](#c4)).
 
-The rules are in a raw HTML block on this page, which styles it. The same block
-works in any Quarto document:
+The rules are in a raw HTML block on this page. The same block works in any
+Quarto document:
 
 ````markdown {.show-source}
 ```{=html}
@@ -91,54 +92,63 @@ own `panzoom:` options.
 
 ## 1. Markdown image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
+A markdown image with `.panzoom`. It opens with the plum viewer from the rules
+above, with a line along the top of the caption band and a larger, italic
+caption, and the link in its caption is pink.
+
 ```markdown {.show-source}
-![An image with `.panzoom`. It opens with the plum viewer from the stylesheet, a line along the top of the caption band, a larger, italic caption, and this pink [link](https://quarto.org).](../../images/mv-2.jpg){.panzoom fig-alt="A white lighthouse against a blue sky"}
+![The Edgartown lighthouse, with a [link](https://quarto.org).](../../images/mv-2.jpg){.panzoom fig-alt="A white lighthouse against a blue sky"}
 ```
 
 ## 2. Class for one image {#c2 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
-The page's class stays on the viewer, so rules for `.sea-viewer` come after the
-`.plum-viewer` ones to win over them.
+A markdown image with `.panzoom` and a class of its own,
+`css-class="sea-viewer"`. It opens with the dark teal `.sea-viewer` rules, a
+teal line along the top of the caption band, and an upright caption, and the
+link in its caption is teal. The page's class stays on the viewer too, so the
+`.sea-viewer` rules come after the `.plum-viewer` ones to win over them.
 
 ```markdown {.show-source}
-![An image with `.panzoom`, with a class of its own, `css-class="sea-viewer"`. It opens with the dark teal `.sea-viewer` rules and an upright caption, and this [link](https://quarto.org) is teal.](../../images/mv-3.jpg){.panzoom css-class="sea-viewer" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage, with a class of its own and a [link](https://quarto.org).](../../images/mv-3.jpg){.panzoom css-class="sea-viewer" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
 ## 3. Code cell {#c3 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
+An R cell with `#| panzoom: true`. It opens with the plum viewer, as [case
+1](#c1) does.
+
 ```{r}
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
-#| fig-cap: >-
-#|   A code cell with `panzoom: true`. It opens with the plum viewer, as case 1
-#|   does.
+#| fig-cap: "Vapor pressure, from a cell with `panzoom: true`."
 
 plot(pressure, type = "b", pch = 19)
 ```
 
 ## 4. Class for one cell {#c4 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
+An R cell with `css-class: sea-viewer` under the `panzoom` cell option. It opens
+with the teal viewer, as [case 2](#c2) does.
+
 ```{r}
 #| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| panzoom:
 #|   css-class: sea-viewer
-#| fig-cap: >-
-#|   A code cell with `css-class: sea-viewer` under `#| panzoom:`. It opens with
-#|   the same teal viewer as case 2.
+#| fig-cap: "Stopping distance against speed, with a class of its own."
 
 plot(cars, pch = 19)
 ```
 
 ## 5. Gallery with mixed classes {#c5 expect-open="panzoom" expect-steps="true"}
 
-A gallery of three images, the first and last with the class `sea-viewer`. Each
-image has its class only while it is open: the middle one shows the plum viewer,
-whichever way it is reached.
+A gallery of three images, the first and last with `css-class="sea-viewer"`.
+Each image has its class only while it is open, so the first and last show the
+teal viewer and the middle one the plum viewer, whichever way it is reached.
 
 ```markdown {.show-source}
-![The first of three images in a gallery, with `css-class="sea-viewer"`. It opens with the teal viewer.](../../images/mv-0.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
+![Chilmark beach at sunset, with a class of its own.](../../images/mv-0.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
 
-![The second image, with no class of its own. It shows the plum viewer set on this page, without the first image's teal.](../../images/mv-1.jpg){.panzoom group="mixed" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah" expect-class="plum-viewer" expect-no-class="sea-viewer" expect-overlay="rgba(60, 20, 70, 0.9)"}
+![Aquinnah, with the class set on this page.](../../images/mv-1.jpg){.panzoom group="mixed" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah" expect-class="plum-viewer" expect-no-class="sea-viewer" expect-overlay="rgba(60, 20, 70, 0.9)"}
 
-![The third image, with `css-class="sea-viewer"` again. It shows the teal viewer.](../../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
+![A sailboat, with a class of its own.](../../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
 ```
