@@ -85,7 +85,10 @@ the hint.
 #| fig-alt: >-
 #|   Filled contour map of the volcano's heights in terrain colors, with a color
 #|   key
-#| fig-cap: "Maunga Whau volcano."
+#| fig-cap: >-
+#|   Heights of Maunga Whau (Mount Eden) in Auckland as filled contours, from
+#|   green on the low ground to white at the 195 m summit. The key gives heights
+#|   in meters.
 #| panzoom:
 #|   max-zoom: 10
 #|   hint: false
@@ -106,7 +109,7 @@ invisible(dev.off())
 Give a markdown image the `.panzoom` class:
 
 ```markdown {.show-source}
-![The volcano in perspective.](images/volcano.png){.panzoom fig-alt="Perspective plot of the volcano, shaded green"}
+![The same heights as a shaded 3D surface.](images/volcano.png){.panzoom fig-alt="Perspective plot of the volcano, shaded green"}
 ```
 
 ## Div
@@ -118,14 +121,14 @@ included:
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
 #| fig-alt: "Heat map of the volcano's heights in terrain colors, from green to white"
-#| fig-cap: "Volcano heights in terrain colors."
+#| fig-cap: "Heights as a heat map, from green (low) to white (high)."
 #| fig-width: 8
 #| fig-height: 5.5
 
 image(volcano, col = terrain.colors(100))
 ```
 
-![The volcano in perspective.](images/volcano.png){fig-alt="Perspective plot of the volcano, shaded green"}
+![The same heights as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of the volcano, shaded green"}
 :::
 ````
 
@@ -133,14 +136,14 @@ image(volcano, col = terrain.colors(100))
 ```{r}
 #| fig-alt: "Heat map of the volcano's heights in terrain colors, from green to white"
 #| echo: false
-#| fig-cap: "Volcano heights in terrain colors."
+#| fig-cap: "Heights as a heat map, from green (low) to white (high)."
 #| fig-width: 8
 #| fig-height: 5.5
 
 image(volcano, col = terrain.colors(100))
 ```
 
-![The volcano in perspective.](images/volcano.png){fig-alt="Perspective plot of the volcano, shaded green"}
+![The same heights as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of the volcano, shaded green"}
 :::
 
 ## Captions and galleries
@@ -173,8 +176,10 @@ persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
 
 ```{r}
 #| label: fig-volcano-sub
-#| fig-cap: "Two views of Maunga Whau, as subfigures."
-#| fig-subcap: ["Contours", "Filled contours"]
+#| fig-cap: "Maunga Whau's heights, drawn two ways."
+#| fig-subcap:
+#|   - "Contour lines every 10 m."
+#|   - "A heat map, from pale yellow (low) to dark red (high)."
 #| fig-alt:
 #|   - "Contour lines of the volcano's heights"
 #|   - "Heat map of the volcano's heights, in yellow, orange, and red"
@@ -201,7 +206,7 @@ right on it.
 #|   fit: height
 #| fig-width: 16
 #| fig-height: 2
-#| fig-cap: "Eight random walks, side by side."
+#| fig-cap: "Eight simulated random walks of 200 steps each, with the sixth highlighted."
 
 set.seed(1)
 par(mfrow = c(1, 8), mar = c(3, 3, 2, 1), cex.main = 1.3)
@@ -263,6 +268,6 @@ cell, use `#| panzoom: false`.
 
 ```markdown {.show-source}
 ::: {.panzoom}
-![The volcano in perspective.](images/volcano.png){.nopanzoom width=40% fig-alt="Perspective plot of the volcano, shaded green"}
+![The same heights as a shaded 3D surface.](images/volcano.png){.nopanzoom width=40% fig-alt="Perspective plot of the volcano, shaded green"}
 :::
 ```
