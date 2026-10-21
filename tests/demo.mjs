@@ -41,7 +41,7 @@ const FRAMES = path.join(HERE, "results", "demo");
 const OUT = path.join(ROOT, "images", "demo.gif");
 const VIEWPORT = { width: 960, height: 600 };
 const GIF_WIDTH = 800;
-const FPS = 12;
+const FPS = 10;
 
 function ffmpeg() {
   if (process.env.FFMPEG) return process.env.FFMPEG;
