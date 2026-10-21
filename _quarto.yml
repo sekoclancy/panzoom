@@ -53,11 +53,11 @@ website:
       - section: "R"
         contents:
           - href: tests/pages/a-lightbox.qmd
-            text: "A. lightbox, for comparison"
+            text: "A. `lightbox` comparison"
           - href: tests/pages/b-panzoom-lightbox.qmd
-            text: "B. Selected images with lightbox"
+            text: "B. Selected images with `lightbox`"
           - href: tests/pages/c-panzoom-auto.qmd
-            text: "C. panzoom on every figure"
+            text: "C. `panzoom` on every figure"
           - href: tests/pages/d-panzoom-selective.qmd
             text: "D. Selected images only"
           - href: tests/pages/e-formats.qmd
@@ -73,9 +73,9 @@ website:
       - section: "Python"
         contents:
           - href: tests/pages/j-jupyter-lightbox.qmd
-            text: "J. lightbox, for comparison"
+            text: "J. `lightbox` comparison"
           - href: tests/pages/k-jupyter-auto.qmd
-            text: "K. panzoom on every figure"
+            text: "K. `panzoom` on every figure"
           - href: tests/pages/l-jupyter.qmd
             text: "L. Cell options"
       - section: "Styling"

@@ -1,5 +1,5 @@
 ---
-title: "panzoom on every figure"
+title: "`panzoom` on every figure"
 engine: jupyter
 jupyter: python3
 format:

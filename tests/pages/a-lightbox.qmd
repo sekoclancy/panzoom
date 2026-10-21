@@ -1,5 +1,5 @@
 ---
-title: "lightbox, for comparison"
+title: "`lightbox` comparison"
 format:
   html:
     code-tools: true
