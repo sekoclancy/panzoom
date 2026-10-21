@@ -77,10 +77,13 @@ image(volcano, col = hcl.colors(100, "Viridis"))
 
 ## Cross-referenced figure
 
-Labeled figures work too (@fig-volcano). Options under `#| panzoom:` override
-the document's settings for one cell. This figure zooms in up to 10 screen
-pixels per image pixel (instead of the 6 set at the top of this page) and hides
-the hint.
+A figure with a label (`#| label: fig-volcano`) keeps its number and its
+cross-references: @fig-volcano links here, and the viewer shows the caption as
+"Figure 1: ...".
+
+Options under `#| panzoom:` override the document's settings for one cell. This
+figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set at
+the top of this page) and hides the hint.
 
 ```{r}
 #| label: fig-volcano
@@ -108,7 +111,8 @@ persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
 invisible(dev.off())
 ```
 
-Give a markdown image the `.panzoom` class:
+Give a markdown image the `.panzoom` class. As in any Quarto figure, the text in
+brackets is the caption, and `fig-alt` is the alt text:
 
 ```markdown {.show-source}
 ![The same heights as a shaded 3D surface.](images/volcano.png){.panzoom fig-alt="Perspective plot of the volcano, shaded green"}
