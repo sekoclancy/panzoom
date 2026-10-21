@@ -65,12 +65,12 @@ Give a code cell the `#| panzoom: true` option:
 ```{r}
 #| panzoom: true
 #| fig-width: 12
-#| fig-height: 4
+#| fig-height: 5
 #| fig-alt: >-
 #|   Heat map of the Maunga Whau volcano's heights, from dark blue low ground to
 #|   a yellow peak
 
-image(volcano, col = hcl.colors(100, "Viridis"), asp = 1 / 3)
+image(volcano, col = hcl.colors(100, "Viridis"))
 ```
 
 ## Cross-referenced figure
