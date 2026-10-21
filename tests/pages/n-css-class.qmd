@@ -153,3 +153,11 @@ teal viewer and the middle one the plum viewer, whichever way it is reached.
 ![A sailboat, with a class of its own.](../../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
 ```
 
+## 6. Margin image {#c6 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
+
+A markdown image with `.panzoom` in the margin. It opens with the plum viewer
+set on this page.
+
+```markdown {.show-source}
+![A gingerbread cottage in Oak Bluffs, placed in the page margin.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+```
