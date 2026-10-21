@@ -80,23 +80,20 @@ Two markdown subfigures with `.panzoom` and a link to the heat map at the end of
 
 ## 5. R subfigures {#c5 expect-open="panzoom"}
 
-One R cell with `classes: panzoom` and two plots, made subfigures by
-`fig-subcap`. Either one opens in panzoom, in a two-image gallery. The other
-cases mark cells with `#| panzoom: true`, the usual way. `classes: panzoom`
-works too, since Quarto puts the class on the cell, and panzoom takes every
-image inside an element with that class.
+One R cell with `panzoom: true` and two plots, made subfigures by `fig-subcap`.
+Either one opens in panzoom, in a two-image gallery.
 
 ```{r}
 #| label: fig-r-sub
 #| fig-cap: >-
-#|   Two subfigures from one R cell with `classes: panzoom`. They open in
-#|   panzoom as a two-image gallery.
+#|   Two subfigures from one R cell with `panzoom: true`. They open in panzoom
+#|   as a two-image gallery.
 #| fig-subcap: ["Pressure", "Cars"]
 #| fig-alt:
 #|   - "Scatter plot of vapor pressure rising steeply with temperature"
 #|   - "Scatter plot of stopping distance against speed for 50 cars"
 #| layout-ncol: 2
-#| classes: panzoom
+#| panzoom: true
 
 plot(pressure)
 plot(cars)

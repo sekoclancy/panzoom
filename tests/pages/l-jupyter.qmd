@@ -168,9 +168,9 @@ plt.show()
 
 ## 8. Select with a class {#c8 expect-open="panzoom"}
 
-A cell with `classes: panzoom`. It opens in panzoom. `#| panzoom: true` is the
-usual way to mark a cell, and `classes: panzoom` works too, since Quarto puts
-the class on the cell.
+A cell with `classes: panzoom`, which Quarto puts on the cell as a class. It
+opens in panzoom, since panzoom takes every image inside an element with that
+class.
 
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
