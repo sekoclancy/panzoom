@@ -11,14 +11,20 @@ filters:
 
 ## About
 
-The cell options from the R examples, on matplotlib figures, and svg output. The
-document has no lightbox, so only cells with a panzoom cell option open in
-panzoom.
+The cell options from the R examples, on matplotlib figures, and svg output.
+lightbox is off, so only cells marked for panzoom open in it. Clicking any other
+figure does nothing, unless its cell turns lightbox on with `#| lightbox: true`
+([case 9](#c9)).
+
+```yaml
+filters:
+  - panzoom
+```
 
 Jupyter leaves the `panzoom` and `lightbox` options out of the code shown on the
-page (knitr shows them); the **Code** button at the top shows the full source.
+page, unlike knitr. The **Code** button at the top shows the full source.
 
-The cases below share this setup and helper:
+The plots share this setup and helper:
 
 ```{python}
 import matplotlib.pyplot as plt
@@ -35,10 +41,12 @@ def walk(ax, n=200, title=None):
 
 ## 1. panzoom on a cell {#c1 expect-open="panzoom" expect-hint="shown"}
 
+A cell with `#| panzoom: true`. It opens in panzoom, with the hint line.
+
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
 #| panzoom: true
-#| fig-cap: "A cell with `panzoom: true`. It opens in panzoom with the controls hint."
+#| fig-cap: "A sine wave."
 
 x = np.linspace(0, 4 * np.pi, 400)
 plt.plot(x, np.sin(x))
@@ -47,14 +55,16 @@ plt.show()
 
 ## 2. Cell options {#c2 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
 
+A cell with `max-zoom: 2` and `hint: false` under the `panzoom` cell option. It
+opens in panzoom without the hint line, and zooming in stops at 2 screen pixels
+per image pixel.
+
 ```{python}
 #| fig-alt: "Line plot of a cosine wave"
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
-#| fig-cap: >-
-#|   A cell with `max-zoom: 2` and `hint: false`. It opens in panzoom without
-#|   the hint, and zooming in stops at 2.
+#| fig-cap: "A cosine wave, with `max-zoom: 2` and `hint: false`."
 
 plt.plot(x, np.cos(x))
 plt.show()
@@ -62,14 +72,16 @@ plt.show()
 
 ## 3. Labeled figure {#c3 expect-open="panzoom"}
 
+A labeled figure with math and a cross-reference in its caption, and a
+description with math, quotes, and a cross-reference to the figure in
+[case 4](#c4). It opens in panzoom with all of them rendered.
+
 ```{python}
 #| label: fig-scatter
 #| fig-alt: "Scatter plot of 100 points along a rising diagonal"
 #| panzoom:
 #|   description: 'Points scattered around $y = x + \varepsilon$, with a "quote"; compare @fig-sub.'
-#| fig-cap: >-
-#|   A labeled scatter plot, $n = 100$, with a description holding math and a
-#|   cross-reference to @fig-sub. It opens in panzoom with both rendered.
+#| fig-cap: "A labeled scatter plot, $n = 100$, next to @fig-sub."
 
 pts = rng.normal(size=100)
 plt.scatter(pts, pts + rng.normal(scale=0.5, size=100))
@@ -78,10 +90,13 @@ plt.show()
 
 ## 4. Subfigures {#c4 expect-open="panzoom"}
 
+One cell with `#| panzoom: true` and two plots, made subfigures by
+`fig-subcap`. Either one opens in panzoom, in a two-image gallery.
+
 ```{python}
 #| label: fig-sub
 #| panzoom: true
-#| fig-cap: "Two subfigures from one cell. They open in panzoom as a two-image gallery."
+#| fig-cap: "A random walk and a histogram, from one cell."
 #| fig-subcap: ["A random walk", "A histogram"]
 #| fig-alt:
 #|   - "Line plot of a random walk"
@@ -97,6 +112,9 @@ plt.show()
 
 ## 5. Plots in a group {#c5 expect-open="panzoom"}
 
+One cell with two plots, joined by `group: walks` under the `panzoom` cell
+option. Either one opens in panzoom, in a two-image gallery.
+
 ```{python}
 #| fig-alt:
 #|   - "Line plot of a random walk"
@@ -104,10 +122,8 @@ plt.show()
 #| panzoom:
 #|   group: walks
 #| fig-cap:
-#|   - >-
-#|     First walk, one of two plots joined by `group: walks`. They open in
-#|     panzoom as a two-image gallery.
-#|   - "Second walk, in the same gallery."
+#|   - "First walk."
+#|   - "Second walk."
 
 for i in range(2):
     fig, ax = plt.subplots()
@@ -136,13 +152,14 @@ plt.show()
 
 ## 7. Opt out a cell {#c7 expect-open="nothing"}
 
+A cell with `#| panzoom: false` inside a `.panzoom` div. The cell option wins
+over the div, so clicking the plot does nothing.
+
 ::: {.panzoom}
 ```{python}
 #| panzoom: false
 #| fig-alt: "Line plot of a sine wave"
-#| fig-cap: >-
-#|   A cell with `panzoom: false` inside a `.panzoom` div. Clicking it does
-#|   nothing.
+#| fig-cap: "A sine wave, from a cell with `panzoom: false`."
 
 plt.plot(x, np.sin(2 * x))
 plt.show()
@@ -151,10 +168,14 @@ plt.show()
 
 ## 8. Select with a class {#c8 expect-open="panzoom"}
 
+A cell with `classes: panzoom`. It opens in panzoom. `#| panzoom: true` is the
+usual way to mark a cell, and `classes: panzoom` works too, since Quarto puts
+the class on the cell.
+
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
 #| classes: panzoom
-#| fig-cap: "A cell with `classes: panzoom`. It opens in panzoom."
+#| fig-cap: "A sine wave, from a cell with `classes: panzoom`."
 
 plt.plot(x, np.sin(3 * x))
 plt.show()
@@ -162,10 +183,12 @@ plt.show()
 
 ## 9. lightbox only {#c9 expect-open="glightbox"}
 
+A cell with only `#| lightbox: true`. It opens in lightbox, not panzoom.
+
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
 #| lightbox: true
-#| fig-cap: "A cell with only `lightbox: true`. It opens in lightbox, not panzoom."
+#| fig-cap: "A sine wave, from a cell with `lightbox: true`."
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -173,10 +196,11 @@ plt.show()
 
 ## 10. Plain cell {#c10 expect-open="nothing"}
 
+A cell with no options. With no lightbox on the page, clicking the plot does
+nothing.
+
 ```{python}
-#| fig-cap: >-
-#|   A cell with no options. With no lightbox on the page, clicking it does
-#|   nothing.
+#| fig-cap: "A sine wave, from a cell with no options."
 #| fig-alt: "Line plot of a sine wave"
 
 plt.plot(x, np.sin(5 * x))
@@ -185,15 +209,15 @@ plt.show()
 
 ## 11. Both options {#c11 expect-open="panzoom"}
 
-With Jupyter, lightbox ignores `#| lightbox:` with options under it anyway,
-unlike with knitr; `lightbox: true` works, as in case 9.
+A cell with `#| panzoom: true` and `lightbox:` options for a group and a
+description. panzoom takes it and drops the lightbox options. With Jupyter,
+lightbox would ignore those options anyway, unlike with knitr. Only
+`lightbox: true` works, as in [case 9](#c9).
 
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
 #| panzoom: true
-#| fig-cap: >-
-#|   A cell with both `panzoom` and `lightbox:` options. panzoom takes it and
-#|   drops the `lightbox:` options.
+#| fig-cap: "A sine wave, from a cell with both options."
 #| lightbox:
 #|   group: both
 #|   description: "Should not reach lightbox."
@@ -204,16 +228,16 @@ plt.show()
 
 ## 12. svg {#c12 expect-open="panzoom" expect-fit="contain" expect-format="svg"}
 
-Jupyter saves the figure file itself, unlike knitr (svg from R is on [image
-formats](e-formats.html)), and ignores a cell's `fig-format`, so the cell
-switches the matplotlib output to svg itself, and back to png after.
+Jupyter saves the figure file itself, unlike knitr, and ignores a cell's
+`fig-format`, so the cell switches the matplotlib output to svg itself, and back
+to png after. svg from R is on [image formats](e-formats.html). The plot opens
+in panzoom and stays sharp when zoomed, since the viewer redraws svg at each
+zoom.
 
 ```{python}
 #| fig-alt: "Line plot of a damped sine wave"
 #| panzoom: true
-#| fig-cap: >-
-#|   The plot from case 1, written as svg. It opens in panzoom and stays sharp
-#|   when zoomed, since the viewer redraws svg at each zoom.
+#| fig-cap: "A damped sine wave, written as svg."
 
 %config InlineBackend.figure_formats = ["svg"]
 plt.plot(x, np.exp(-x / 4) * np.sin(3 * x))
@@ -223,16 +247,17 @@ plt.show()
 
 ## 13. Colors for one cell {#c13 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
 
+A cell with colors of its own under the `panzoom` cell option, as on [color
+options](m-styling-options.html). It opens with a deep green backdrop and a pale
+green caption band.
+
 ```{python}
 #| fig-alt: "Line plot of a slowly rising sine wave"
 #| panzoom:
 #|   backdrop: "rgba(20, 60, 40, 0.92)"
 #|   caption-background: "#e8f3ea"
 #|   caption-color: "#173d24"
-#| fig-cap: >-
-#|   A cell with colors of its own, under `panzoom:`, as on [color
-#|   options](m-styling-options.html). It opens with a deep green backdrop and a
-#|   pale green caption band.
+#| fig-cap: "A rising sine wave, with colors of its own."
 
 plt.plot(x, np.sin(x) + x / 5)
 plt.show()
@@ -240,14 +265,15 @@ plt.show()
 
 ## 14. Class for one cell {#c14 expect-open="panzoom" expect-class="py-viewer"}
 
+A cell with `css-class: py-viewer` under the `panzoom` cell option, as on
+[styling with CSS](n-css-class.html). It opens with that class on the viewer,
+for a stylesheet to style.
+
 ```{python}
 #| fig-alt: "Line plot of a sine wave with a growing frequency"
 #| panzoom:
 #|   css-class: py-viewer
-#| fig-cap: >-
-#|   A cell with `css-class: py-viewer`, as on [styling with
-#|   CSS](n-css-class.html). It opens with that class on the viewer, for a
-#|   stylesheet to style.
+#| fig-cap: "A sine wave with a growing frequency, with a class of its own."
 
 plt.plot(x, np.sin(x**2 / 4))
 plt.show()
