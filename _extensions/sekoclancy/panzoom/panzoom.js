@@ -178,9 +178,8 @@
     };
     var cap = captioned ? named("caption") : "", hin = named("hint"), shut = named("close");
     var parts = ["scroll to zoom", "drag to pan", "double-click to reset"];
-    if (cap && hin) parts.push(cap + " hides the caption, " + hin + " the hint");
-    else if (cap) parts.push(cap + " hides the caption");
-    else if (hin) parts.push(hin + " hides the hint");
+    if (cap) parts.push(cap + " hides the caption");
+    if (hin) parts.push(hin + " hides the hint");
     if (shut) parts.push(shut + " to close");
     return parts.join(" \u00b7 ");
   }

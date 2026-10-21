@@ -593,10 +593,11 @@ async function checkKeyboard(page, handle) {
   });
   // The caption key is named only when there is a caption or description.
   const cap = captioned ? named("caption", ["c"]) : "", hin = named("hint", ["h"]), shut = named("close", ["Escape"]);
-  out.hintNamesKeys = (cap && hin ? hintText.includes(`${cap} hides the caption, ${hin} the hint`)
-    : cap ? hintText.includes(`${cap} hides the caption`) && !hintText.includes("the hint")
-    : hin ? hintText.includes(`${hin} hides the hint`) && !hintText.includes("caption")
-    : !hintText.includes("hides")) && (shut ? hintText.includes(`${shut} to close`) : !hintText.includes("close"));
+  // Each bound key is its own item on the hint line.
+  const items = hintText.split(" \u00b7 ");
+  out.hintNamesKeys = (cap ? items.includes(`${cap} hides the caption`) : !hintText.includes("caption")) &&
+    (hin ? items.includes(`${hin} hides the hint`) : !hintText.includes("the hint")) &&
+    (shut ? items.includes(`${shut} to close`) : !hintText.includes("close"));
   const band = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay"), f = o.querySelector(".panzoom-footer");
     const shown = (sel) => o.querySelector(sel).offsetParent !== null;
