@@ -137,18 +137,18 @@ with the teal viewer.
 plot(cars, pch = 19)
 ```
 
-## Gallery with mixed classes {#c5 expect-open="panzoom" expect-steps="true"}
+## Gallery with mixed classes {#c5 expect-open="panzoom" expect-steps="true" expect-class="sea-viewer; plum-viewer; sea-viewer" expect-no-class="; sea-viewer;" expect-overlay="rgba(10, 50, 60, 0.9); rgba(60, 20, 70, 0.9); rgba(10, 50, 60, 0.9)"}
 
 A gallery of three images, the first and last with `css-class="sea-viewer"`.
 Each image has its class only while it is open, so the first and last show the
 teal viewer and the middle one the plum viewer, whichever way it is reached.
 
 ```markdown {.show-source}
-![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 
-![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.panzoom group="mixed" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah" expect-class="plum-viewer" expect-no-class="sea-viewer" expect-overlay="rgba(60, 20, 70, 0.9)"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.panzoom group="mixed" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
+![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## Margin image {#c6 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}

@@ -880,6 +880,15 @@ async function checkPage(browser, base, file) {
   // demo's `## Wide figure {expect-fit="height"}`), numbered by its place
   // on the page.
   const images = await page.evaluate(() => {
+    // An expectation for image `i` of a case: on the image, or on the case
+    // (`sec`), where "a; b; c" lists one per image (an empty item: none).
+    const each = (img, sec, i, name) => {
+      if (img.dataset[name]) return img.dataset[name];
+      const v = sec.dataset[name];
+      if (!v) return null;
+      if (!v.includes(";")) return v;
+      return v.split(";").map((x) => x.trim())[i] || null;
+    };
     const out = [];
     document.querySelectorAll("section.level2").forEach((sec, k) => {
       const h = sec.querySelector("h2");
@@ -917,15 +926,17 @@ async function checkPage(browser, base, file) {
           expectHintKey: sec.dataset.expectHintKey || null,
           expectMaxZoom: sec.dataset.expectMaxZoom ? +sec.dataset.expectMaxZoom : null,
           expectFormat: sec.dataset.expectFormat || null,
-          // Styling checks: on the image itself, or on its case.
-          expectClass: img.dataset.expectClass || sec.dataset.expectClass || null,
+          // Styling checks: on the image itself, or on its case, where a list
+          // separated by ";" gives one value per image, in order (an empty
+          // item: none for that image), so the shown source stays clean.
+          expectClass: each(img, sec, i, "expectClass"),
           // A class the viewer must not have, e.g. one the image before set.
-          expectNoClass: img.dataset.expectNoClass || sec.dataset.expectNoClass || null,
-          expectOverlay: img.dataset.expectOverlay || sec.dataset.expectOverlay || null,
-          expectBand: img.dataset.expectBand || sec.dataset.expectBand || null,
+          expectNoClass: each(img, sec, i, "expectNoClass"),
+          expectOverlay: each(img, sec, i, "expectOverlay"),
+          expectBand: each(img, sec, i, "expectBand"),
           // `expect-desc-position`: where the caption and description show
           // (top, bottom, left or right), in panzoom or lightbox.
-          expectDescPosition: img.dataset.expectDescPosition || sec.dataset.expectDescPosition || null,
+          expectDescPosition: each(img, sec, i, "expectDescPosition"),
           // `expect-steps="true"`: a gallery stepped through (see checkPage).
           expectSteps: !!sec.dataset.expectSteps,
           expectReferences: "expectReferences" in sec.dataset,

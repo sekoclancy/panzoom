@@ -31,7 +31,7 @@ Each option sets one of the viewer's CSS variables. [Styling with
 CSS](o-css-class.html) sets the same variables from a stylesheet, for some pages
 only.
 
-## Markdown image {#c1 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
+## Markdown image {#c1 expect-open="panzoom"}
 
 A markdown image with `.panzoom`. It opens with the colors set on this page, a
 deep blue backdrop and a cream caption band, and the link in its caption is
@@ -41,7 +41,7 @@ rust.
 ![Sunset at Chilmark Beach, Martha's Vineyard ([photo](https://unsplash.com/photos/VBDJGOMCwps)).](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
-## Colors for one image {#c2 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
+## Colors for one image {#c2 expect-open="panzoom"}
 
 A markdown image with `.panzoom` and colors of its own, set as attributes. It
 opens with a deep green backdrop and a pale green caption band instead of the
@@ -51,7 +51,7 @@ colors set on this page, and the link in its caption is dark green.
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard ([photo](https://unsplash.com/photos/2iQnDPLIXwU)).](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
-## Code cell {#c3 expect-open="panzoom" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
+## Code cell {#c3 expect-open="panzoom"}
 
 An R cell with `#| panzoom: true`. It opens with the blue and cream colors set
 on this page.
@@ -64,7 +64,7 @@ on this page.
 plot(pressure, type = "b", pch = 19)
 ```
 
-## Colors for one cell {#c4 expect-open="panzoom" expect-overlay="rgba(70, 25, 15, 0.92)" expect-band="rgb(251, 233, 220)"}
+## Colors for one cell {#c4 expect-open="panzoom"}
 
 An R cell with colors of its own under the `panzoom` cell option. It opens with
 a dark red backdrop and a peach caption band.
@@ -80,7 +80,7 @@ a dark red backdrop and a peach caption band.
 plot(cars, pch = 19)
 ```
 
-## Gallery with mixed colors {#c5 expect-open="panzoom" expect-steps="true"}
+## Gallery with mixed colors {#c5 expect-open="panzoom" expect-steps="true" expect-overlay="rgba(20, 60, 40, 0.92); rgba(18, 52, 86, 0.92); rgba(70, 25, 15, 0.92)" expect-band="rgb(232, 243, 234); rgb(244, 233, 216); rgb(251, 233, 220)"}
 
 A gallery of three images. The first has a deep green backdrop and a pale green
 caption band of its own, the second has no colors of its own and shows the blue
@@ -89,9 +89,9 @@ band of its own. Each image shows its colors while it is open, and stepping to
 the next or previous one doesn't keep them.
 
 ```markdown {.show-source}
-![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" fig-alt="A white lighthouse against a blue sky" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
+![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" fig-alt="A white lighthouse against a blue sky"}
 
-![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path" expect-overlay="rgba(18, 52, 86, 0.92)" expect-band="rgb(244, 233, 216)"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
-![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" caption-background="#fbe9dc" caption-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-overlay="rgba(70, 25, 15, 0.92)" expect-band="rgb(251, 233, 220)"}
+![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" caption-background="#fbe9dc" caption-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
