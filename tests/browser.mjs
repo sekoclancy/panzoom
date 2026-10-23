@@ -249,8 +249,8 @@ async function state(page) {
         format: img.classList.contains("panzoom-vector") ? "svg" : "bitmap",
         hintShown: !pz.querySelector(".panzoom-hint").hidden,
         // The hint names the caption key only when there is a caption or
-        // description to hide (and a key bound to it).
-        hintCaptionOk: pz.querySelector(".panzoom-hint-keys").textContent.includes("to hide the caption") ===
+        // description to hide or show (and a key bound to it).
+        hintCaptionOk: /to (hide|show) the caption/.test(pz.querySelector(".panzoom-hint-keys").textContent) ===
           ((window.PANZOOM_OPTIONS?.keys || {}).caption !== false &&
             (!!caption.innerHTML || !!pz.querySelector(".panzoom-description").innerHTML.trim())),
         overlayClass: pz.className,
@@ -604,6 +604,7 @@ async function checkKeyboard(page, handle) {
     return {
       caption: shown(".panzoom-caption"), desc: shown(".panzoom-description"), hint: shown(".panzoom-hint"),
       band: f.offsetParent !== null && f.offsetHeight > 0,
+      hintKeys: o.querySelector(".panzoom-hint-keys").textContent.split(" \u00b7 "),
       imgH: o.querySelector("img").getBoundingClientRect().height,
     };
   });
@@ -618,8 +619,10 @@ async function checkKeyboard(page, handle) {
   await page.keyboard.press(hintKey || "h");
   await settle(page);
   const b3 = await band();
+  // With the caption hidden, the hint says its key shows it again.
   out.captionToggles = capKey
-    ? !b1.caption && !b1.desc && b3.caption === b0.caption && b3.desc === b0.desc
+    ? !b1.caption && !b1.desc && b3.caption === b0.caption && b3.desc === b0.desc &&
+      (!cap || (b1.hintKeys.includes(`${cap} to show the caption`) && b3.hintKeys.includes(`${cap} to hide the caption`)))
     : b1.caption === b0.caption && b1.desc === b0.desc;
   out.hintToggles = hintKey ? !b2.hint && b3.hint === b0.hint : b2.hint === b0.hint;
   out.bandGoes = capKey && hintKey ? !b2.band && b2.imgH >= b0.imgH - 1 : true;
@@ -766,7 +769,7 @@ const KEYBOARD_CHECKS = [
   ["noRingAfterMouse", "Opened with the mouse, no focus ring after Esc until the next key press"],
   ["otherKeysClose", "Close keys other than Esc (from keys:) close"],
   ["hintNamesKeys", "The hint line names the caption, hint, and close keys"],
-  ["captionToggles", "c (or its keys: key) hides the caption and description, and shows them again"],
+  ["captionToggles", "c (or its keys: key) hides the caption and description, and shows them again; the hint says which"],
   ["hintToggles", "h (or its keys: key) hides the hint, and shows it again"],
   ["bandGoes", "With both hidden, the caption band goes and the image keeps or gains room"],
 ];

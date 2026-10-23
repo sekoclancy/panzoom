@@ -171,14 +171,15 @@
   }
 
   // The hint line's text, naming the keys bound: the caption key only when
-  // the image has a caption or description to hide.
+  // the image has a caption or description, to hide it or, once hidden, to
+  // show it.
   function hintText(captioned) {
     var named = function (a) {
       return keys()[a].map(function (k) { return k === "Escape" ? "Esc" : k; }).join(" or ");
     };
     var cap = captioned ? named("caption") : "", hin = named("hint"), shut = named("close");
     var parts = ["scroll to zoom", "drag to pan", "double-click to reset"];
-    if (cap) parts.push(cap + " to hide the caption");
+    if (cap) parts.push(cap + (hideCaption ? " to show" : " to hide") + " the caption");
     if (hin) parts.push(hin + " to hide the hint");
     if (shut) parts.push(shut + " to close");
     return parts.join(" \u00b7 ");
