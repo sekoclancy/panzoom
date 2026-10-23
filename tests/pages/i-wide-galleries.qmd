@@ -16,8 +16,9 @@ tall figures](h-wide.html).
 Wide figures open at screen height, and tall ones at screen width. The one you
 click opens at the spot you clicked, and stepping to another in a gallery starts
 it at its left end or top. In a gallery, the left and right arrow keys pan a
-wide figure instead of changing the image, and do nothing on a tall strip. The
-previous and next buttons change the image.
+wide figure, and at its end the next press changes the image; holding the key
+down stops at the end. On a tall strip they do nothing. The previous and next
+buttons change the image, and the figures stop clear of them.
 
 The plots are drawn with these helpers:
 
@@ -72,8 +73,8 @@ strip <- function(seed = 2, n = 8) {
 ## Gallery of two collages {#c1 expect-fit="height"}
 
 Two 25 × 2 inch collages in a gallery. Each opens at screen height. The left and
-right arrow keys and dragging pan along the collage, and the previous and next
-buttons change collages.
+right arrow keys and dragging pan along the collage, and at its end the next
+press changes collages, as do the previous and next buttons.
 
 ```{r}
 #| fig-alt:

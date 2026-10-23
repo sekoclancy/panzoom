@@ -99,7 +99,7 @@
 
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
   var loadId = 0, loadTimer = null;
-  var pz = null, opts, press = null, returnFocus = null, margin = 0;
+  var pz = null, opts, press = null, returnFocus = null, margin = 0, marginX = 0;
   // Where the caption band is now (see place()): opts.descPosition, or
   // bottom instead of left or right on a narrow screen.
   var side = "bottom";
@@ -319,9 +319,12 @@
     // No opening view enlarges an image past its real size (1 image px per
     // CSS px), as with Quarto's lightbox: a small image opens at its own size
     // and can still be zoomed in up to max-zoom.
-    var whole = Math.min(vw / w, vh / h, 1 / 0.95) * 0.95;
-    var mode = fitMode(w, h, vw, vh, whole);
+    // In a gallery the sides leave room for the previous and next buttons,
+    // so an image shown whole, or panned to an end, stays clear of them.
     margin = 0.025 * Math.min(vw, vh);
+    marginX = gallery.length > 1 ? Math.max(margin, prevBtn.offsetWidth + 16) : margin;
+    var whole = Math.min((vw - 2 * Math.max(marginX, 0.025 * vw)) / w, 0.95 * vh / h, 1);
+    var mode = fitMode(w, h, vw, vh, whole);
     var s = whole, cx = a.x + vw / 2, cy = a.y + vh / 2;
     // A strip starts at its left end (or top), or, if it was clicked on the
     // page, with the clicked spot in the middle of the screen (as far as
@@ -329,9 +332,9 @@
     var at = clicked && clicked.el === gallery[index] ? clicked : null;
     if (mode === "height") {
       s = Math.min((vh - 2 * margin) / h, 1);
-      if (w * s > vw) cx = a.x + (at ? vw / 2 + (0.5 - at.fx) * w * s : margin + w * s / 2);
+      if (w * s > vw) cx = a.x + (at ? vw / 2 + (0.5 - at.fx) * w * s : marginX + w * s / 2);
     } else if (mode === "width") {
-      s = Math.min((vw - 2 * margin) / w, 1);
+      s = Math.min((vw - 2 * marginX) / w, 1);
       if (h * s > vh) cy = a.y + (at ? vh / 2 + (0.5 - at.fy) * h * s : margin + h * s / 2);
     }
     img.dataset.fit = mode;
@@ -343,8 +346,8 @@
       cursor: "grab",
       startScale: s,
       // The opening view is also where reset (0, double-click) returns.
-      startX: containAxis((cx - w / 2) / s, s, w, vw, null, a.x),
-      startY: containAxis((cy - h / 2) / s, s, h, vh, null, a.y),
+      startX: containAxis((cx - w / 2) / s, s, w, vw, null, a.x, marginX),
+      startY: containAxis((cy - h / 2) / s, s, h, vh, null, a.y, margin),
       minScale: Math.min(whole, s),
       maxScale: Math.max(opts.maxZoom, s)
     });
@@ -432,18 +435,18 @@
   // the image's ends. `t` is Panzoom's pan along the axis (unscaled px, see
   // fit()), `n` the image size and `avail` the space, both along the axis,
   // and `off` where the space starts on screen (the caption band above or
-  // to the left).
-  function containAxis(t, s, n, avail, hold, off) {
+  // to the left); `mg` the margin along the axis (see fit()).
+  function containAxis(t, s, n, avail, hold, off, mg) {
     var size = n * s;
     off = off || 0;
     if (size <= avail) {
-      var m = Math.min(margin, (avail - size) / 2);
+      var m = Math.min(mg, (avail - size) / 2);
       var h = hold === null || hold === undefined ? avail / 2 : hold - off;
       h = Math.min(avail - m - size / 2, Math.max(m + size / 2, h));
       return (off + h - n / 2) / s;
     }
     var c = n / 2 + s * t - off;                       // image center in the space
-    c = Math.min(margin + size / 2, Math.max(avail - margin - size / 2, c));
+    c = Math.min(mg + size / 2, Math.max(avail - mg - size / 2, c));
     return (off + c - n / 2) / s;
   }
 
@@ -451,8 +454,8 @@
   function contained(x, y, s) {
     var a = area();
     return {
-      x: containAxis(x, s, img.naturalWidth, a.w, held.x, a.x),
-      y: containAxis(y, s, img.naturalHeight, a.h, held.y, a.y)
+      x: containAxis(x, s, img.naturalWidth, a.w, held.x, a.x, marginX),
+      y: containAxis(y, s, img.naturalHeight, a.h, held.y, a.y, margin)
     };
   }
 
@@ -587,6 +590,28 @@
   // Pan the view by a fraction of the screen.
   function panBy(fx, fy) {
     panPx(fx * overlay.clientWidth, fy * overlay.clientHeight);
+  }
+
+  // Whether the image, wider than the screen, rests at its end toward
+  // `dir` (1: its right end, -1: its left end).
+  function atEndX(dir) {
+    if (!pz) return false;
+    var a = area(), s = pz.getScale(), x = pz.getPan().x;
+    var end = containAxis(dir > 0 ? -1e9 : 1e9, s, img.naturalWidth, a.w, null, a.x, marginX);
+    return Math.abs(x - end) < 0.5;
+  }
+
+  // Left/Right (`dir` -1 or 1). While the image is larger than the screen
+  // they pan, doing nothing sideways if it fits that way, and a press that
+  // reaches an end bounces; one made while an image wider than the screen
+  // already rests at that end switches gallery images, but a held key
+  // (`repeat`) never does. An image that fits switches at once. Without
+  // `loop`, nothing happens past either end of the gallery.
+  function arrow(dir, repeat) {
+    var o = overflow();
+    if (!o.any) { step(dir); return; }
+    if (o.x && !repeat && atEndX(dir) && step(dir)) return;
+    panBy(0.1 * dir, 0);
   }
 
   // Shows gallery image `i`, fitted to the screen.
@@ -914,8 +939,8 @@
     // Left/Right pan while the image is larger than the screen (doing
     // nothing if it fits sideways); otherwise they switch gallery images
     // (doing nothing at either end without `loop`).
-    else if (e.key === "ArrowLeft") { if (overflow().any) panBy(-0.1, 0); else step(-1); }
-    else if (e.key === "ArrowRight") { if (overflow().any) panBy(0.1, 0); else step(1); }
+    else if (e.key === "ArrowLeft") arrow(-1, e.repeat);
+    else if (e.key === "ArrowRight") arrow(1, e.repeat);
     else if (e.key === "ArrowUp") panBy(0, -0.1);
     else if (e.key === "ArrowDown") panBy(0, 0.1);
     else if (action === "reset") resetView();

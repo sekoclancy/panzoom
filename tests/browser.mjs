@@ -109,10 +109,15 @@ function defineTexClass() {
     const f = o.querySelector(".panzoom-footer");
     const side = (/\bpanzoom-desc-(top|bottom|left|right)\b/.exec(o.className) || [])[1] || "bottom";
     const w = o.clientWidth, h = o.clientHeight;
-    if (side === "left" || side === "right") {
-      return { x: side === "left" ? f.offsetWidth : 0, y: 0, w: w - f.offsetWidth, h, side };
-    }
-    return { x: 0, y: side === "top" ? f.offsetHeight : 0, w, h: h - f.offsetHeight, side };
+    const a = side === "left" || side === "right"
+      ? { x: side === "left" ? f.offsetWidth : 0, y: 0, w: w - f.offsetWidth, h, side }
+      : { x: 0, y: side === "top" ? f.offsetHeight : 0, w, h: h - f.offsetHeight, side };
+    // The margins (as fit() sets them): in a gallery, the sides leave room
+    // for the previous and next buttons.
+    const prev = o.querySelector(".panzoom-prev");
+    a.m = 0.025 * Math.min(a.w, a.h);
+    a.mx = prev && !prev.hidden ? Math.max(a.m, prev.offsetWidth + 16) : a.m;
+    return a;
   };
   window.__texClass = (el) => {
     if (!el) return "clean";
@@ -384,13 +389,12 @@ async function exercisePanzoom(page) {
   const flush = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay");
     const a = window.__area(o);
-    const margin = 0.025 * Math.min(a.w, a.h);
     const ob = o.getBoundingClientRect(), r = o.querySelector("img").getBoundingClientRect();
-    const at = (lo, size, avail) => {
+    const at = (lo, size, avail, margin) => {
       const m = size > avail ? margin : Math.min(margin, (avail - size) / 2);
       return Math.abs(lo - m) <= 2 || Math.abs(avail - lo - size - m) <= 2;
     };
-    return [at(r.left - ob.left - a.x, r.width, a.w), at(r.top - ob.top - a.y, r.height, a.h)];
+    return [at(r.left - ob.left - a.x, r.width, a.w, a.mx), at(r.top - ob.top - a.y, r.height, a.h, a.m)];
   });
   out.anchorOk = true;
   let prev = r0;
@@ -1045,7 +1049,37 @@ async function checkPage(browser, base, file) {
       nextSwitches: s2.counter === first.counter.replace(/^1 /, "2 "),
       nextFit: s2.fit,
     };
-    g.ok = g.arrowKeepsImage && g.arrowMoves && g.nextSwitches;
+    if (fit === "height") {
+      // Back on the first collage: its left end and, panned there, its
+      // right end stay clear of the previous and next buttons. A held Right
+      // (auto-repeat) pans to the end and stops there; one more press, with
+      // the collage at its end, switches to the next image.
+      await page.click(".panzoom-prev");
+      await settle(page);
+      const clear = () => page.evaluate(() => {
+        const o = document.querySelector(".panzoom-overlay"), r = o.querySelector("img").getBoundingClientRect();
+        const p = o.querySelector(".panzoom-prev").getBoundingClientRect(), n = o.querySelector(".panzoom-next").getBoundingClientRect();
+        return { left: r.left >= p.right, right: r.right <= n.left, rightEdge: r.right };
+      });
+      // (It reopens where it was clicked: a held Left goes back to its start.)
+      await page.keyboard.down("ArrowLeft");
+      for (let i = 0; i < 120; i++) await page.keyboard.down("ArrowLeft");
+      await page.keyboard.up("ArrowLeft");
+      await settle(page);
+      g.startClear = (await clear()).left && (await state(page)).counter === first.counter;
+      await page.keyboard.down("ArrowRight");
+      for (let i = 0; i < 120; i++) await page.keyboard.down("ArrowRight");
+      await page.keyboard.up("ArrowRight");
+      await settle(page);
+      const held = await clear();
+      g.heldStays = (await state(page)).counter === first.counter;
+      g.endClear = held.right;
+      await page.keyboard.press("ArrowRight");
+      await settle(page);
+      g.endArrowSwitches = (await state(page)).counter === first.counter.replace(/^1 /, "2 ");
+    }
+    g.ok = g.arrowKeepsImage && g.arrowMoves && g.nextSwitches &&
+      (fit !== "height" || (g.startClear && g.heldStays && g.endClear && g.endArrowSwitches));
     overflowGalleries.push(g);
     await closeAll(page);
   }
@@ -1528,7 +1562,12 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `Opened on case ${g.image} (opens at screen ${g.fit}).`, "",
       `- Right arrow keeps the same image: ${yes(g.arrowKeepsImage)}`,
       `- ...and ${g.fit === "height" ? "pans along it" : "doesn't move it (nowhere to go sideways)"}: ${yes(g.arrowMoves)}`,
-      `- The next button switches to the next image: ${yes(g.nextSwitches)} (opens: ${g.nextFit})`, "");
+      `- The next button switches to the next image: ${yes(g.nextSwitches)} (opens: ${g.nextFit})`,
+      ...(g.fit === "height" ? [
+        `- Its left end opens clear of the previous button: ${yes(g.startClear)}`,
+        `- A held Right pans to the end and stays on the image: ${yes(g.heldStays)}`,
+        `- Its right end stops clear of the next button: ${yes(g.endClear)}`,
+        `- Right at the end switches to the next image: ${yes(g.endArrowSwitches)}`] : []), "");
   }
   const optioned = results.filter(hasOptionChecks);
   if (optioned.length) {

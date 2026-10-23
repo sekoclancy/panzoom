@@ -364,8 +364,9 @@ collage(n=6, height=3)
 
 Two collages in a gallery, 6.4 × 0.8 inches (12 panels) and 8 × 0.8 inches (15
 panels), so their panels have the same shape. Each opens at screen height. The
-left and right arrow keys and dragging pan along the collage, and the previous
-and next buttons change collages.
+left and right arrow keys and dragging pan along the collage, and at its end the
+next press changes collages, as do the previous and next buttons. Each collage
+stops clear of the buttons.
 
 ```{python}
 #| fig-alt:

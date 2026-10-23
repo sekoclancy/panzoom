@@ -56,7 +56,8 @@ arrow keys.](images/demo.gif)
 The [`keys`](#keys) option changes the keys for zooming, resetting, hiding the
 caption or the hint line, and closing. Zoom goes up to `max-zoom`. While an
 image is larger than the screen (zoomed in, or a wide figure), the arrow keys
-and swipes pan it, and only the buttons change image.
+and swipes pan it. In a gallery, Left or Right pressed again at an end of a wide
+image changes image; holding the key down doesn't.
 
 From the keyboard, selected images can be reached with Tab and opened with Enter
 or Space; Tab moves between the viewer's buttons, links, and any caption or
