@@ -124,7 +124,7 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-desc-right .panzoom-caption, .panzoom-desc-right .panzoom-description {
   width: auto; max-width: none; margin: 0; max-height: none; min-height: 0; flex: 0 1 auto;
 }
-.panzoom-desc-left .panzoom-hint, .panzoom-desc-right .panzoom-hint { flex: none; margin-top: 0.5rem; }
+.panzoom-desc-left .panzoom-hint, .panzoom-desc-right .panzoom-hint { flex: none; margin-top: 0.5rem; text-align: center; }
 /* In a panel beside the image, one hint part per line, each but the last
    ending in its dot. */
 .panzoom-desc-left .panzoom-hint-sep::after, .panzoom-desc-right .panzoom-hint-sep::after {
@@ -159,13 +159,13 @@ a.panzoom-link:focus-visible { outline: none; }
   display: inline-block; overflow: clip;
 }
 .panzoom-scrollable:focus-visible { outline: 2px solid var(--panzoom-link); outline-offset: 2px; }
-.panzoom-caption { max-height: 25vh; color: var(--panzoom-fg); font-size: 0.95rem; }
+.panzoom-caption { max-height: 35vh; color: var(--panzoom-fg); font-size: 0.95rem; }
 .panzoom-caption-parent {
   margin-top: 0.2rem; font-size: 0.85rem;
   color: color-mix(in srgb, var(--panzoom-fg) 80%, var(--panzoom-bg));
 }
 .panzoom-description {
-  max-height: 20vh; font-size: 0.85rem;
+  max-height: 25vh; font-size: 0.85rem;
   color: color-mix(in srgb, var(--panzoom-fg) 85%, var(--panzoom-bg));
 }
 .panzoom-description p { margin: 0 0 0.3rem; }

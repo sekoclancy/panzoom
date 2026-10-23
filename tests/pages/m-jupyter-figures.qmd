@@ -274,8 +274,14 @@ it.
 #|     area below it over each whole period, so the wave's mean is zero.
 #|     Doubling k halves the period and doubles the number of crossings, and the
 #|     shading follows the curve wherever it goes. The curve is drawn with 400
-#|     points, enough that it looks smooth at any zoom the viewer allows.
-#|     Nothing in this description is needed for the test except its length: a
+#|     points, enough that it looks smooth at any zoom the viewer allows. Its
+#|     color comes from the Dark2 palette, one color per wave, and its shading
+#|     is the same color at a third of the strength, so the curve stays the
+#|     strongest line in the plot. The title names the wave, the x axis runs
+#|     over two whole periods, and the y axis is labeled with the formula the
+#|     curve follows. Each of these choices is made once, in the helper, so
+#|     every wave on this page is drawn the same way and only k changes. Nothing
+#|     in this description is needed for the test except its length: a
 #|     description this long scrolls in any window.
 #| fig-cap: "Wave 1: y = sin(x), its area to the axis shaded."
 

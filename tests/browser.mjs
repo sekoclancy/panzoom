@@ -1263,10 +1263,14 @@ async function checkPage(browser, base, file) {
     s.reached = (await panel()).focused;
     s.region = (await panel()).role === "region";
     await page.keyboard.press("ArrowDown");
-    s.arrowScrolls = (await panel()).top > 0;
+    const afterArrow = await panel();
+    s.arrowScrolls = afterArrow.top > 0;
+    // Page Down goes a page further, or to the end when less than a page is
+    // left.
     await page.keyboard.press("PageDown");
-    const afterLine = (await panel()).top;
-    s.pageScrolls = afterLine > 40;
+    const afterPage = await panel();
+    s.pageScrolls = afterPage.top > afterArrow.top + 40 ||
+      (afterPage.top > afterArrow.top && Math.abs(afterPage.top - afterPage.max) <= 1);
     await page.keyboard.press("End");
     const end = await panel();
     s.endReaches = Math.abs(end.top - end.max) <= 1;
