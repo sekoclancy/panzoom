@@ -13,10 +13,10 @@ panzoom:
 
 Only images marked with the `.panzoom` class or the `#| panzoom: true` cell
 option open in panzoom. lightbox is off, so clicking any other image does
-nothing, except in cells that ask for lightbox with options of their own ([case
-6](#c6)). The same cases open in lightbox alone on the [lightbox
-page](a-lightbox.html), and with lightbox on for the whole page on [lightbox and
-panzoom together](b-panzoom-lightbox.html). The hint line is off.
+nothing, except in [cells that ask for lightbox](#c6) with options of their own.
+The same cases open in lightbox alone on the [lightbox page](a-lightbox.html),
+and with lightbox on for the whole page on [lightbox and panzoom
+together](b-panzoom-lightbox.html). The hint line is off.
 
 ```yaml
 filters:

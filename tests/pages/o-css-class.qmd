@@ -21,9 +21,8 @@ panzoom:
 ```
 
 The rules apply only to a viewer with that class, so other pages keep the
-default viewer even if they load the same rules. A single image or code cell can
-add a class of its own, which applies while that image is open ([case 2](#c2)
-and [case 4](#c4)).
+default viewer even if they load the same rules. A single [image](#c2) or [code
+cell](#c4) can add a class of its own, which applies while that image is open.
 
 The rules are in a raw HTML block on this page. The same block works in any
 Quarto document:

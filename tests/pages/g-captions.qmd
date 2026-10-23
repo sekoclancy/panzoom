@@ -39,8 +39,8 @@ A caption is copied from the page, so whatever Quarto renders there comes
 through to the viewer. A description is rendered with the page too, in a hidden
 block the viewer copies, so its citations resolve, its cross-references get
 numbers, and a work cited only in a description is still listed under
-[References](#references). In a caption, lightbox shows a citation as raw
-`[@key]` ([case 1](#c1)).
+[References](#references). In a caption, lightbox shows [a citation](#c1) as raw
+`[@key]`.
 
 [Case 6](#c6) and [case 7](#c7) set the per-cell `caption` and `description`
 options. [Case 9](#c9) and [case 10](#c10) are longer than their panels, so the
