@@ -1,0 +1,221 @@
+---
+title: "Divs"
+format:
+  html:
+    code-tools: true
+filters:
+  - path: ../../_filters/show-source.lua
+    at: pre-ast
+  - panzoom
+---
+
+Figures inside Quarto's own divs: callouts, tabsets, page columns, and
+conditional content, each on its own and inside a `.panzoom` div. lightbox is
+off, so clicking an image panzoom leaves alone does nothing.
+
+An image on a tab not selected, or in a collapsed callout, opens once the reader
+selects the tab or expands the callout.
+
+The plots are drawn with these helpers:
+
+```{r}
+# A collage: `n` panels side by side, like a wide patchwork figure.
+collage <- function(n = 12) {
+  set.seed(1)
+  par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
+  for (i in seq_len(n)) {
+    plot(
+      cumsum(rnorm(200)),
+      type = "l",
+      main = paste("Panel", i),
+      xlab = "",
+      ylab = "",
+      col = hcl.colors(n)[i],
+      lwd = 2
+    )
+  }
+}
+
+wave <- function(k = 1) {
+  x <- seq(0, 4 * pi, length.out = 400)
+  col <- hcl.colors(4, "Dark 3")[k]
+  plot(
+    x,
+    sin(k * x),
+    type = "n",
+    main = paste("Wave", k),
+    xlab = "x",
+    ylab = "sin(kx)"
+  )
+  polygon(
+    c(x, rev(x)),
+    c(sin(k * x), rep(0, length(x))),
+    col = adjustcolor(col, 0.35),
+    border = NA
+  )
+  lines(x, sin(k * x), lwd = 2, col = col)
+}
+```
+
+## Image in a callout {#c1 expect-open="panzoom"}
+
+An image with `.panzoom` in a callout. It opens in panzoom.
+
+```markdown {.show-source}
+::: {.callout-note title="A note with a photo"}
+
+![Aquinnah, in a callout.](../../images/mv-1.jpg){.panzoom width=50% fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+:::
+```
+
+## Callout in a `.panzoom` div {#c2 expect-open="panzoom"}
+
+A callout with a plain image, inside a `.panzoom` div. The div marks every image
+in it, so the image opens in panzoom.
+
+```markdown {.show-source}
+::: {.panzoom}
+::: {.callout-tip title="A tip with a photo"}
+
+![Edgartown Lighthouse, in a callout in a `.panzoom` div.](../../images/mv-2.jpg){width=50% fig-alt="A white lighthouse against a blue sky"}
+:::
+:::
+```
+
+## Collapsed callout {#c3 expect-open="panzoom"}
+
+An image with `.panzoom` in a callout that starts collapsed. Expand the callout,
+and the image opens in panzoom.
+
+```markdown {.show-source}
+::: {.callout-note collapse="true" title="Expand for a photo"}
+
+![A gingerbread cottage, in a collapsed callout.](../../images/mv-3.jpg){.panzoom width=50% fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+:::
+```
+
+## Tabset {#c4 expect-open="panzoom"}
+
+Two images with `.panzoom`, one on each tab of a tabset. Each opens in panzoom
+on its own, the second once its tab is selected.
+
+```markdown {.show-source}
+::: {.panel-tabset}
+### Sunset
+
+![Sunset, on the first tab.](../../images/mv-0.jpg){.panzoom width=50% fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+
+### Sailboat
+
+![A sailboat, on the second tab.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+:::
+```
+
+## Gallery across tabs {#c5 expect-open="panzoom" expect-steps="true"}
+
+Two images with `.panzoom`, joined by `group="tabs"`, on different tabs. They
+open in panzoom as a two-image gallery, each with its own caption: the next
+button shows the image on the other tab without selecting it.
+
+```markdown {.show-source}
+::: {.panel-tabset}
+### Cliffs
+
+![Aquinnah, the first of two images in a gallery across tabs.](../../images/mv-1.jpg){.panzoom group="tabs" width=50% fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+
+### Lighthouse
+
+![Edgartown Lighthouse, on the other tab.](../../images/mv-2.jpg){.panzoom group="tabs" width=50% fig-alt="A white lighthouse against a blue sky"}
+:::
+```
+
+## Tabset in a `.panzoom` div {#c6 expect-open="panzoom"}
+
+A tabset with a plain image on each tab, inside a `.panzoom` div. Each opens in
+panzoom on its own.
+
+```markdown {.show-source}
+::: {.panzoom}
+::: {.panel-tabset}
+### Cottage
+
+![A gingerbread cottage, on a tab in a `.panzoom` div.](../../images/mv-3.jpg){width=50% fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+
+### Sunset
+
+![Sunset, on the other tab.](../../images/mv-0.jpg){width=50% fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+:::
+:::
+```
+
+## Collage across the screen {#c7 expect-fit="height"}
+
+A 25 × 2 inch collage in a `.column-screen` div, so it spans the window. It is
+still a strip, so it opens in panzoom at screen height.
+
+::: {.column-screen}
+```{r}
+#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
+#| panzoom: true
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "A 25 × 2 inch collage, as wide as the window."
+
+collage(n = 12)
+```
+:::
+
+## Plot in the page column {#c8 expect-fit="contain"}
+
+A plot with `column: page`, wider than the text. It opens in panzoom whole.
+
+```{r}
+#| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#| column: page
+#| panzoom: true
+#| fig-width: 12
+#| fig-height: 5
+#| fig-cap: "Wave 2, as wide as the page column."
+
+wave(k = 2)
+```
+
+## Plot in the margin {#c9 expect-open="panzoom"}
+
+A plot in a `.column-margin` div. It opens in panzoom, at full size.
+
+::: {.column-margin}
+```{r}
+#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| panzoom: true
+#| fig-cap: "Wave 3, in the margin."
+
+wave(k = 3)
+```
+:::
+
+## Conditional content {#c10 expect-open="panzoom"}
+
+An image with `.panzoom` in a `.content-visible` div for HTML. It opens in
+panzoom. The `.content-hidden` div next to it leaves nothing on the page.
+
+```markdown {.show-source}
+::: {.content-visible when-format="html"}
+![A sailboat, shown only in HTML.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+:::
+
+::: {.content-hidden when-format="html"}
+![Left out of HTML.](../../images/mv-0.jpg){.panzoom}
+:::
+```
+
+## Credits {.unnumbered}
+
+The photos are from Unsplash, under the [Unsplash
+license](https://unsplash.com/license):
+
+- [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)
+- [Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU)
+- [Gingerbread House](https://unsplash.com/photos/HQEtvlNzUyA)
+- [Edgartown Light](https://unsplash.com/photos/f59MyOfLpi8)
+- [Edgartown Sailboat](https://unsplash.com/photos/IiLiz7XpQpI)

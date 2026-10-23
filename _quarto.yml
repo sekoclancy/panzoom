@@ -88,3 +88,7 @@ website:
             text: "N. Color options"
           - href: tests/pages/o-css-class.qmd
             text: "O. Styling with CSS"
+      - section: "Divs"
+        contents:
+          - href: tests/pages/p-divs.qmd
+            text: "P. Divs"

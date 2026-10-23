@@ -101,6 +101,13 @@ cases. L and M carry the R pages' cell cases:
   | [n-styling-options](pages/n-styling-options.qmd) | The color options, no CSS                                                                |
   | [o-css-class](pages/o-css-class.qmd)             | `css-class` with CSS rules in a raw HTML block: the CSS variables and the viewer's parts |
 
+**Divs.** Quarto's own divs around figures, with images on tabs and in collapsed
+callouts uncovered first:
+
+  | Page                       | Description                                                                                                                                                       |
+  | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | [p-divs](pages/p-divs.qmd) | Callouts (collapsed too), tabsets (a gallery across tabs), `column-screen`, `column: page`, `column-margin`, and `content-visible`, alone and in a `.panzoom` div |
+
 **Outside the site** ([standalone/](standalone/)), rendered by
 `npm run standalone` as plain documents:
 
