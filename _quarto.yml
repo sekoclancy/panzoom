@@ -36,6 +36,8 @@ website:
   title: "panzoom"
   site-url: https://sekoclancy.github.io/panzoom/
   repo-url: https://github.com/sekoclancy/panzoom
+  # The crater of R's volcano dataset, as on the examples' heatmaps.
+  favicon: assets/favicon.png
   navbar:
     left:
       - href: tests/pages/b-panzoom-lightbox.qmd
