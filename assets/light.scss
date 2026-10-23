@@ -21,3 +21,8 @@ pre.sourceCode > code.sourceCode > span {
   padding-left: 4ch;
   text-indent: -4ch;
 }
+
+/* Code in sidebar and table-of-contents links takes the link's color, as in
+   the dark theme, so a label reads as one link and the active one is
+   highlighted whole. */
+.sidebar a code { color: inherit; }
