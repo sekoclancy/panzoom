@@ -674,9 +674,13 @@ local function mark_all(el, attrs)
       end
     end,
     Image = function(img)
+      local own_group = img.attributes["group"] ~= nil
       img = mark(img)
       if img and attrs then
-        for k, v in pairs(attrs) do img.attributes[k] = v end
+        for k, v in pairs(attrs) do
+          -- A div's group yields to an image's own `group="..."`.
+          if not (k == "data-panzoom-group" and own_group) then img.attributes[k] = v end
+        end
       end
       return img
     end,
@@ -768,6 +772,17 @@ local function container(el)
   if on == false then return opt_out(el), false end
   if on or has(el.classes, "panzoom") then
     drop_option(el, "lightbox")
+    -- `group="..."` on a `.panzoom` div: every image in it joins one
+    -- gallery (an image's own `group` or a cell's option still wins).
+    local group = el.attributes and el.attributes["group"]
+    if group ~= nil and has(el.classes, "panzoom") then
+      el.attributes["group"] = nil
+      if check("group", { kind = "string" }, group, group, group, "group, in " .. place(el)) then
+        local merged = { ["data-panzoom-group"] = group }
+        for k, v in pairs(attrs or {}) do merged[k] = v end
+        attrs = merged
+      end
+    end
     -- A FloatRefTarget is a Quarto custom node without :walk(); its content
     -- is ordinary Pandoc AST (nested subfigures are plain Divs inside it).
     if el.walk then

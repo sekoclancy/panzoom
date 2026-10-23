@@ -239,6 +239,19 @@ panzoom. The `.content-hidden` div next to it leaves nothing on the page.
 :::
 ```
 
+## Gallery from a div {#c11 expect-open="panzoom" expect-steps="true"}
+
+Two images in a `.panzoom` div with `group="div-gallery"`. The div's group joins
+them, so either opens in panzoom in a two-image gallery.
+
+```markdown {.show-source}
+::: {.panzoom group="div-gallery" layout-ncol="2"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+
+![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){fig-alt="A white lighthouse against a blue sky"}
+:::
+```
+
 ## Credits {.unnumbered}
 
 The photos are from Unsplash, under the [Unsplash

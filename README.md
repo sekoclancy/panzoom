@@ -276,6 +276,16 @@ plot(pressure, log = "y")
 ```
 ````
 
+or for every image in a `.panzoom` div:
+
+```markdown
+::: {.panzoom group="beach" layout-ncol="2"}
+![](a.png)
+
+![](b.png)
+:::
+```
+
 ### Layouts
 
 Figures in layouts (`layout-ncol`, `layout-nrow`, layout divs) work too. Each
