@@ -131,6 +131,8 @@ local FITS = { "auto", "contain", "height", "width" }
 -- Where the caption and description go, as for Quarto's lightbox.
 local POSITIONS = { "bottom", "top", "left", "right" }
 local BOOLEAN = "`true` or `false`"
+-- `hint`: true or `show` (the default), `hide` (starts hidden), or false.
+local HINTS = { "show", "hide" }
 
 -- What each option accepts: a check on the value, given as
 -- { kind = "boolean" | "number" | "string" | "color" | "enum", values = ... },
@@ -138,7 +140,7 @@ local BOOLEAN = "`true` or `false`"
 local DOCUMENT_OPTIONS = {
   ["match"] = { kind = "enum", values = { "auto" } },
   ["max-zoom"] = { kind = "number" },
-  ["hint"] = { kind = "boolean" },
+  ["hint"] = { kind = "hint" },
   ["caption"] = { kind = "boolean" },
   ["loop"] = { kind = "boolean" },
   ["fit"] = { kind = "enum", values = FITS },
@@ -149,7 +151,7 @@ local DOCUMENT_OPTIONS = {
 for _, pair in ipairs(COLORS) do DOCUMENT_OPTIONS[pair[1]] = { kind = "color" } end
 local CELL_OPTIONS = {
   ["max-zoom"] = { kind = "number" },
-  ["hint"] = { kind = "boolean" },
+  ["hint"] = { kind = "hint" },
   ["caption"] = { kind = "boolean" },
   ["group"] = { kind = "string" },
   ["fit"] = { kind = "enum", values = FITS },
@@ -176,6 +178,11 @@ local function check(key, spec, value, text, shown, where)
   local ok, expected
   if spec.kind == "boolean" then
     ok, expected = type(value) == "boolean", BOOLEAN
+  elseif spec.kind == "hint" then
+    ok, expected = type(value) == "boolean", "`true`, `false`, `show`, or `hide`"
+    for _, v in ipairs(HINTS) do
+      if text == v then ok = true end
+    end
   elseif spec.kind == "number" then
     local n = text and tonumber(text)
     ok, expected = n ~= nil and n > 0, "a number greater than 0"
@@ -426,6 +433,15 @@ local function mark(img)
     if check("desc-position", { kind = "enum", values = POSITIONS }, pos, pos, pos,
         "desc-position, on the image " .. img.src) then
       img.attributes["data-panzoom-desc-position"] = pos
+    end
+  end
+  -- `hint="..."` on the image itself: `true`, `false`, `show`, or `hide`.
+  local hint = img.attributes["hint"]
+  if hint ~= nil then
+    img.attributes["hint"] = nil
+    local v = hint == "true" or (hint ~= "false" and hint)
+    if check("hint", { kind = "hint" }, v, hint, hint, "hint, on the image " .. img.src) then
+      img.attributes["data-panzoom-hint"] = hint
     end
   end
   -- Styling options written on the image itself.
@@ -688,7 +704,9 @@ local function setup(meta)
       options.maxZoom = tonumber(pandoc.utils.stringify(cfg["max-zoom"]))
     end
     if cfg.hint ~= nil then
-      options.hint = cfg.hint ~= false
+      local h = cfg.hint
+      if type(h) ~= "boolean" then h = pandoc.utils.stringify(h) end
+      options.hint = h == "hide" and "hide" or h ~= false
     end
     if cfg.caption ~= nil then
       options.caption = cfg.caption ~= false

@@ -648,8 +648,10 @@ async function checkKeyboard(page, handle) {
     ? !b1.caption && !b1.desc && b3.caption === b0.caption && b3.desc === b0.desc &&
       (!cap || (b1.hintKeys.includes(`${cap} to show the caption`) && b3.hintKeys.includes(`${cap} to hide the caption`)))
     : b1.caption === b0.caption && b1.desc === b0.desc;
-  out.hintToggles = hintKey ? !b2.hint && b3.hint === b0.hint : b2.hint === b0.hint;
-  out.bandGoes = capKey && hintKey ? !b2.band && b2.imgH >= b0.imgH - 1 : true;
+  // A hint shown at first goes; one that starts hidden (`hint: hide`, shown
+  // by the key; see expect-hint-key) or is off may show or stay hidden.
+  out.hintToggles = hintKey ? (!b0.hint || !b2.hint) && b3.hint === b0.hint : b2.hint === b0.hint;
+  out.bandGoes = capKey && hintKey && !b2.hint ? !b2.band && b2.imgH >= b0.imgH - 1 : true;
   await page.keyboard.press("Escape");
   await settle(page);
   out.escReturnsFocus = (await state(page)).opened !== "panzoom" && (await focusState()).onImage;
@@ -906,6 +908,9 @@ async function checkPage(browser, base, file) {
           })(),
           expectCaption: sec.dataset.expectCaption || null,
           expectHint: sec.dataset.expectHint || null,
+          // What the hint key does on the image (page F): "shows" the hint
+          // (`hint: hide`) or "nothing" (`hint: false`).
+          expectHintKey: sec.dataset.expectHintKey || null,
           expectMaxZoom: sec.dataset.expectMaxZoom ? +sec.dataset.expectMaxZoom : null,
           expectFormat: sec.dataset.expectFormat || null,
           // Styling checks: on the image itself, or on its case.
@@ -1312,6 +1317,31 @@ async function checkPage(browser, base, file) {
     await settle(page);
   }
 
+  // The hint key (`expect-hint-key`), checked last: what it does lasts for
+  // the page. On an image with no hint it does nothing, and an image with
+  // the hint on still shows it after; on one that starts hidden it shows it.
+  const keyCases = results.filter((r) => r.opened === "panzoom" && r.expectHintKey)
+    .sort((a, b) => (a.expectHintKey === "nothing" ? 0 : 1) - (b.expectHintKey === "nothing" ? 0 : 1));
+  if (keyCases.length) {
+    const bound = await page.evaluate(() => ((window.PANZOOM_OPTIONS || {}).keys || {}).hint);
+    const key = bound === false ? null : (bound || ["h"])[0];
+    const hintShown = () => page.evaluate(() => !document.querySelector(".panzoom-overlay .panzoom-hint").hidden);
+    const withHint = results.find((r) => r.opened === "panzoom" && r.expectHint === "shown");
+    for (const r of keyCases) {
+      await openImage(page, r);
+      if (key) await page.keyboard.press(key);
+      await settle(page);
+      const shown = await hintShown();
+      await closeAll(page);
+      r.hintKeyOk = r.expectHintKey === "shows" ? shown : !shown;
+      if (r.hintKeyOk && r.expectHintKey === "nothing" && withHint) {
+        await openImage(page, withHint);
+        r.hintKeyOk = await hintShown();
+        await closeAll(page);
+      }
+    }
+  }
+
   await page.close();
   const network = { url: url.startsWith("file:") ? "file://" : "http", external: [...external], failed: [...failed], offline: OFFLINE, pageTeX, mathjaxStalled };
   fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen }, null, 2));
@@ -1360,6 +1390,7 @@ function optionsOk(r) {
   if (r.expectOpen && r.opened !== r.expectOpen) return false;
   if (r.expectCaption === "none" && r.caption) return false;
   if (r.expectHint && r.hintShown !== (r.expectHint === "shown")) return false;
+  if (r.expectHintKey && r.hintKeyOk !== true) return false;
   if (r.expectMaxZoom && !(Math.abs((r.maxScaleReached ?? 0) - r.expectMaxZoom) < 0.01)) return false;
   if (r.expectFormat && r.format !== r.expectFormat) return false;
   if (r.expectClass && !(r.overlayClass || "").split(/\s+/).includes(r.expectClass)) return false;
@@ -1370,7 +1401,7 @@ function optionsOk(r) {
   return true;
 }
 function hasOptionChecks(r) {
-  return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectMaxZoom || r.expectFormat ||
+  return !!(r.expectOpen || r.expectCaption || r.expectHint || r.expectHintKey || r.expectMaxZoom || r.expectFormat ||
     r.expectClass || r.expectNoClass || r.expectOverlay || r.expectBand || r.expectDescPosition);
 }
 
@@ -1499,6 +1530,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         r.expectOpen && `opens ${r.expectOpen}`,
         r.expectCaption && `caption ${r.expectCaption}`,
         r.expectHint && `hint ${r.expectHint}`,
+        r.expectHintKey && `hint key ${r.expectHintKey === "shows" ? "shows it" : "does nothing"}`,
         r.expectMaxZoom && `zoom stops at ${r.expectMaxZoom}`,
         r.expectFormat && `as ${r.expectFormat}`,
         r.expectClass && `viewer class ${r.expectClass}`,
@@ -1511,6 +1543,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         `opened ${r.opened}`,
         r.expectCaption && `caption ${r.caption ? `"${r.caption}"` : "none"}`,
         r.expectHint && `hint ${r.hintShown ? "shown" : "hidden"}`,
+        r.expectHintKey && `hint key ${r.hintKeyOk ? "as expected" : "**NOT** as expected"}`,
         r.expectMaxZoom && `zoom stopped at ${r.maxScaleReached === null || r.maxScaleReached === undefined ? "?" : +r.maxScaleReached.toFixed(3)}`,
         r.expectFormat && `as ${r.format}`,
         (r.expectClass || r.expectNoClass) && `classes "${r.overlayClass}"`,

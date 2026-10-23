@@ -27,7 +27,7 @@ expect-errors:
   - "ℹ The error happened in location panzoom:desc-position."
   - 'Field "fit" has value sideways, which must instead be one of: `auto`, `contain`, `height`, `width`'
   - "ℹ The error happened in location panzoom:fit."
-  - 'Field "hint" has value maybe, which must instead be `true` or `false`'
+  - 'Field "hint" has value maybe, which must instead be `true`, `false`, `show`, or `hide`'
   - "ℹ The error happened in location panzoom:hint."
   - 'Field "loop" has value "true", which must instead be `true` or `false`'
   - "ℹ The error happened in location panzoom:loop."

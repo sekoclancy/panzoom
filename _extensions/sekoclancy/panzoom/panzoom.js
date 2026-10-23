@@ -125,8 +125,10 @@
   // The classes the shown image added to the viewer (see restyle()).
   var imageClasses = [];
   // The c and h keys hide the caption (with the description) and the hint,
-  // for as long as the page is open, so a gallery stays that way.
-  var hideCaption = false, hideHint = false;
+  // for as long as the page is open, so a gallery stays that way. For the
+  // hint, h flips each image's own start (shown, or hidden with `hint:
+  // hide`); an image with no hint ignores it.
+  var hideCaption = false, flipHint = false;
   // The document's keys (see keys()): action -> list of keys.
   var bindings = null;
   // The opening view fit() set ({ s, x, y }), to tell whether the reader
@@ -137,6 +139,12 @@
   function options(el) {
     var o = window.PANZOOM_OPTIONS || {};
     var d = (el && el.dataset) || {};
+    // `hint`: true or "show" (the default), "hide" (starts hidden), or
+    // false (none: the hint key does nothing).
+    var hintMode = function (v) {
+      if (v === false || v === "false") return "none";
+      return v === "hide" ? "hide" : "show";
+    };
     var flag = function (v, dflt) {
       return v !== undefined ? v !== "false" && v !== false : dflt;
     };
@@ -147,7 +155,7 @@
       fit: FITS.indexOf(fit) >= 0 ? fit : "auto",
       descPosition: POSITIONS.indexOf(pos) >= 0 ? pos : "bottom",
       maxZoom: typeof maxZoom === "number" && maxZoom > 0 ? maxZoom : 4,
-      hint: flag(d.panzoomHint, flag(o.hint, true)),
+      hint: hintMode(d.panzoomHint !== undefined ? d.panzoomHint : o.hint),
       caption: flag(d.panzoomCaption, flag(o.caption, true)),
       loop: flag(o.loop, false)
     };
@@ -361,7 +369,7 @@
   function showFooter() {
     caption.hidden = hideCaption || !caption.innerHTML;
     desc.hidden = hideCaption || !desc.innerHTML.trim();
-    hint.hidden = hideHint || !opts.hint || byTouch;
+    hint.hidden = opts.hint === "none" || byTouch || (opts.hint === "hide") !== flipHint;
     fillHint(hint.querySelector(".panzoom-hint-keys"),
       hintParts(!!caption.innerHTML || !!desc.innerHTML.trim()));
     footer.hidden = caption.hidden && desc.hidden && hint.hidden;
@@ -387,7 +395,9 @@
   // untouched view fits afresh, and a zoomed or panned one keeps its place,
   // held within the new space.
   function toggleFooter(which) {
-    if (which === "caption") hideCaption = !hideCaption; else hideHint = !hideHint;
+    if (which === "caption") hideCaption = !hideCaption;
+    else if (opts.hint === "none") return;
+    else flipHint = !flipHint;
     var refit = atOpening();
     showFooter();
     if (refit) fit(); else contain();

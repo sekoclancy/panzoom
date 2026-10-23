@@ -227,7 +227,7 @@ panel scrolls, from the keyboard too, while the image keeps its room.
 
 ![{{< lipsum 4 >}}](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 
-## Long caption above the image {#c11 expect-open="panzoom" expect-scroll="caption" expect-desc-position="top"}
+## Long caption above the image {#c11 expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="top"}
 
 An image with `.panzoom`, `desc-position="top"`, `hint="true"`, and a caption of
 placeholder text longer than its panel. It opens in panzoom with the caption
@@ -240,7 +240,7 @@ below it.
 
 ![{{< lipsum 4 >}}](../../images/mv-1.jpg){.panzoom desc-position="top" hint="true" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-## Long caption on the left {#c12 expect-open="panzoom" expect-scroll="caption" expect-desc-position="left"}
+## Long caption on the left {#c12 expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="left"}
 
 An image with `.panzoom`, `desc-position="left"`, `hint="true"`, and a caption
 of placeholder text longer than its panel. It opens in panzoom with the caption
@@ -253,7 +253,7 @@ view at the foot of the panel.
 
 ![{{< lipsum 4 >}}](../../images/mv-2.jpg){.panzoom desc-position="left" hint="true" fig-alt="A white lighthouse against a blue sky"}
 
-## Long caption on the right {#c13 expect-open="panzoom" expect-scroll="caption" expect-desc-position="right"}
+## Long caption on the right {#c13 expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="right"}
 
 An image with `.panzoom`, `desc-position="right"`, `hint="true"`, and a caption
 of placeholder text longer than its panel. It opens in panzoom with the caption

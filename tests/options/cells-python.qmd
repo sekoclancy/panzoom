@@ -9,7 +9,7 @@ expect-errors:
   - "property name gruop is invalid"
   - "ℹ The error happened in location panzoom:gruop, in the cell starting `import matplotlib.pyplot as plt`."
   - "ℹ Did you mean group?"
-  - 'Field "hint" has value maybe, which must instead be `true` or `false`'
+  - 'Field "hint" has value maybe, which must instead be `true`, `false`, `show`, or `hide`'
   - "ℹ The error happened in location panzoom:hint, in the cell starting `import matplotlib.pyplot as plt`."
   - "property name gruop is invalid"
   - "ℹ The error happened in location panzoom:gruop, in the cell starting `plt.plot([3, 4])`."

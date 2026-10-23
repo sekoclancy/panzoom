@@ -8,7 +8,7 @@ expect-errors:
   - "ℹ Did you mean group?"
   - 'Field "max-zoom" has value lots, which must instead be a number greater than 0'
   - "ℹ The error happened in location panzoom:max-zoom, in the cell starting `plot(1)`."
-  - 'Field "hint" has value "true", which must instead be `true` or `false`'
+  - 'Field "hint" has value "true", which must instead be `true`, `false`, `show`, or `hide`'
   - "ℹ The error happened in location panzoom:hint, in the cell starting `plot(1)`."
   - "ℹ Quarto uses YAML 1.2, which interprets booleans strictly."
   - "ℹ Try using true instead."
@@ -28,13 +28,16 @@ expect-errors:
   - "ℹ The error happened in location link-color, on the image ../../images/mv-1.jpg."
   - 'Field "desc-position" has value middle, which must instead be one of: `bottom`, `top`, `left`, `right`'
   - "ℹ The error happened in location desc-position, on the image ../../images/mv-2.jpg."
+  - 'Field "hint" has value maybe, which must instead be `true`, `false`, `show`, or `hide`'
+  - "ℹ The error happened in location hint, on the image ../../images/mv-3.jpg."
   - "property name gruop is invalid"
   - "ℹ The error happened in location panzoom:gruop, in the cell starting `plot(3)`."
   - "ℹ Did you mean group?"
 ---
 
 Mistakes in `#| panzoom:` cell options (also in a cell inside a `.panzoom` div),
-in a div's `panzoom=`, and in an image's styling and `desc-position` attributes.
+in a div's `panzoom=`, and in an image's styling, `desc-position`, and `hint`
+attributes.
 
 ```{r}
 #| panzoom:
@@ -62,6 +65,8 @@ plot(2)
 ![A marked image.](../../images/mv-1.jpg){.panzoom link-color="red; }"}
 
 ![Another marked image.](../../images/mv-2.jpg){.panzoom desc-position="middle"}
+
+![A third marked image.](../../images/mv-3.jpg){.panzoom hint="maybe"}
 
 ::: {.panzoom}
 ```{r}

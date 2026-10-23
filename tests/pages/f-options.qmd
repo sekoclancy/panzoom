@@ -92,10 +92,11 @@ wave(k = 1)
 ```
 :::
 
-## No hint {#c3 expect-open="panzoom" expect-hint="hidden"}
+## No hint {#c3 expect-open="panzoom" expect-hint="hidden" expect-hint-key="nothing"}
 
 An R cell with `hint: false` under the `panzoom` cell option. It opens in
-panzoom without the hint line, which the page shows by default.
+panzoom without the hint line, which the page shows by default, and the h key
+does nothing.
 
 ```{r}
 #| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
@@ -254,4 +255,18 @@ its own caption.
 wave(k = 1)
 print("Printed between the two plots.")
 wave(k = 2)
+```
+
+## Hint starts hidden {#c12 expect-open="panzoom" expect-hint="hidden" expect-hint-key="shows"}
+
+An R cell with `hint: hide` under the `panzoom` cell option. It opens in panzoom
+without the hint line, and the h key shows it.
+
+```{r}
+#| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   hint: hide
+#| fig-cap: "Wave 4: y = sin(4x), its area to the axis shaded."
+
+wave(k = 4)
 ```

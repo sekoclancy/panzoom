@@ -156,7 +156,7 @@ Options go under `panzoom:` in the document's YAML header, in place of `true`:
 panzoom:
   match: auto     # every figure, same as panzoom: true; omit to apply only to selected images
   max-zoom: 4     # number: screen pixels per image pixel, at most (default 4)
-  hint: true      # boolean: show the controls hint at the bottom, except when opened by a tap (default true)
+  hint: true      # true or show, hide (starts hidden; h shows it), or false (none): the controls hint, except when opened by a tap (default true)
   caption: true   # boolean: show the figure caption in the viewer (default true)
   loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
   fit: auto       # auto, contain, height, or width (default auto, see Wide and tall figures)

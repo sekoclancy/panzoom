@@ -51,8 +51,15 @@ plot(cumsum(rnorm(50)), type = "l")
 plot(1)
 ```
 
+```{r}
+#| panzoom:
+#|   hint: hide
+
+plot(2)
+```
+
 ::: {.panzoom panzoom="true"}
 ![An image in a div.](../../images/mv-0.jpg){css-class="image-viewer" backdrop="#000"}
 :::
 
-![A marked image.](../../images/mv-1.jpg){.panzoom desc-position="right" caption-background="#222" caption-color="white" link-color="#9cf"}
+![A marked image.](../../images/mv-1.jpg){.panzoom desc-position="right" caption-background="#222" caption-color="white" link-color="#9cf" hint="show"}
