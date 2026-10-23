@@ -27,6 +27,13 @@ format:
     template-partials:
       - _partials/toc.html
 
+knitr:
+  opts_chunk:
+    # Plots drawn on white, not transparent (R's own png device), so their
+    # black axes stay readable in the dark theme and the viewer.
+    dev.args:
+      bg: white
+
 execute:
   echo: fenced
   # Re-run a page's R code only when that page's source changes.
