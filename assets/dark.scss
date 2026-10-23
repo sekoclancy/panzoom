@@ -34,3 +34,9 @@ $navbar-fg: #ffffff;
 
 /* Links in captions are underlined, as in light.scss. */
 .quarto-dark figcaption :is(a, .citation a) { text-decoration: underline; }
+
+/* Match the hanging indent used for echoed source in the light theme. */
+.quarto-dark pre.sourceCode > code.sourceCode > span {
+  padding-left: 4ch;
+  text-indent: -4ch;
+}
