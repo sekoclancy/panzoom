@@ -3,6 +3,7 @@ title: "Styling with CSS"
 format:
   html:
     code-tools: true
+    include-in-header: ../../assets/amber-viewer.html
 filters:
   - path: ../../_filters/show-source.lua
     at: pre-ast
@@ -157,4 +158,35 @@ set on this page.
 
 ```markdown {.show-source}
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+```
+
+## Class from a file {#c7 expect-open="panzoom" expect-class="amber-viewer" expect-overlay="rgba(40, 25, 5, 0.92)" expect-band="rgb(58, 37, 8)"}
+
+A markdown image with `.panzoom` and `css-class="amber-viewer"`. The rules for
+that class are in a file, `assets/amber-viewer.html` in the panzoom repository,
+which this page's header includes. It opens with an amber viewer, an amber line
+along the top of the caption band, and an upright caption, and the link in its
+caption is gold.
+
+```yaml
+format:
+  html:
+    include-in-header: ../../assets/amber-viewer.html
+```
+
+The file holds a `<style>` block. Included in the header, its rules come before
+the page's own, so each starts with `.panzoom-overlay` too, to win over the
+`.plum-viewer` rules above:
+
+```css
+.panzoom-overlay.amber-viewer {
+  --panzoom-backdrop: rgba(40, 25, 5, 0.92);
+  --panzoom-bg: #3a2508;
+  --panzoom-fg: #fdf0d8;
+  --panzoom-link: #ffc966;
+}
+```
+
+```markdown {.show-source}
+![A sailboat off Edgartown, Martha's Vineyard ([photo](https://unsplash.com/photos/IiLiz7XpQpI)).](../../images/mv-4.jpg){.panzoom css-class="amber-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
