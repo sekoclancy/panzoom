@@ -77,8 +77,10 @@ buttons change collages.
 
 ```{r}
 #| fig-alt:
-#|   - "A row of 12 small line plots of random walks, each in its own color"
-#|   - "A row of 15 small line plots of random walks, each in its own color"
+#|   - >-
+#|     A row of 12 small line plots of random walks, each in its own color
+#|   - >-
+#|     A row of 15 small line plots of random walks, each in its own color
 #| panzoom:
 #|   group: collages
 #| fig-width: 25
@@ -126,8 +128,10 @@ form a gallery.
 #| fig-cap: "Collages of 12 and 15 random walks, stacked."
 #| fig-subcap: ["First collage", "Second collage"]
 #| fig-alt:
-#|   - "A row of 12 small line plots of random walks, each in its own color"
-#|   - "A row of 12 small line plots of random walks, each in its own color"
+#|   - >-
+#|     A row of 12 small line plots of random walks, each in its own color
+#|   - >-
+#|     A row of 12 small line plots of random walks, each in its own color
 #| layout-nrow: 2
 
 collage(n = 12)

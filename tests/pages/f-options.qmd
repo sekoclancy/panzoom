@@ -180,9 +180,12 @@ button goes back to wave one.
 
 ```{r}
 #| fig-alt:
-#|   - "Plot titled Wave 1: a sine curve with its area to the axis shaded"
-#|   - "Plot titled Wave 2: a sine curve with its area to the axis shaded"
-#|   - "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#|   - >-
+#|     Plot titled Wave 1: a sine curve with its area to the axis shaded
+#|   - >-
+#|     Plot titled Wave 2: a sine curve with its area to the axis shaded
+#|   - >-
+#|     Plot titled Wave 3: a sine curve with its area to the axis shaded
 #| panzoom:
 #|   group: waves
 #| fig-cap:
@@ -243,8 +246,10 @@ its own caption.
 
 ```{r}
 #| fig-alt:
-#|   - "Plot titled Wave 1: a sine curve with its area to the axis shaded"
-#|   - "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#|   - >-
+#|     Plot titled Wave 1: a sine curve with its area to the axis shaded
+#|   - >-
+#|     Plot titled Wave 2: a sine curve with its area to the axis shaded
 #| fig-show: hold
 #| panzoom:
 #|   group: held

@@ -145,8 +145,7 @@ a two-image gallery.
 #|     every other
 #|   - "Scatter plot of stopping distance against speed for 50 cars"
 #| fig-cap:
-#|   - >-
-#|     The mtcars data, each variable plotted against every other.
+#|   - "The mtcars data, each variable plotted against every other."
 #|   - "Stopping distance against speed for 50 cars."
 #| lightbox:
 #|   group: cars
