@@ -123,7 +123,7 @@ and a citation. It opens in panzoom with all of them rendered.
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| fig-cap: "Vapor pressure of mercury [@weast1973]."
 #| panzoom:
-#|   description: "Rises roughly as $p \\propto e^{-1/T}$; the data ship with R [@rcore2026]."
+#|   description: "Rises roughly as $p \\propto e^{-1/T}$ [@rcore2026]."
 
 plot(pressure)
 ```
