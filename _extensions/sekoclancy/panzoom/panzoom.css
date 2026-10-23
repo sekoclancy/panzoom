@@ -95,10 +95,14 @@ a.panzoom-link:focus-visible { outline: none; }
   background: rgba(0, 0, 0, 0.6); color: #eee; font-size: 0.9rem;
 }
 
-/* Caption and hint, below the image (fit() leaves room for this). */
+/* Caption and hint, below the image (fit() leaves room for this). They
+   share one column, as wide as the widest of them and centered, with every
+   line aligned left: a short caption starts where the hint does, and a long
+   one reads as a paragraph, not ragged on both sides. */
 .panzoom-footer {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
-  padding: 0.5rem 1rem 0.6rem; text-align: center;
+  padding: 0.5rem 1rem 0.6rem; text-align: left;
+  display: grid; grid-template-columns: fit-content(min(60rem, 100%)); justify-content: center;
   background: var(--panzoom-bg);
 }
 /* desc-position (panzoom.js sets the class, and the band's size as
@@ -122,6 +126,8 @@ a.panzoom-link:focus-visible { outline: none; }
   width: auto; max-width: none; margin: 0; max-height: none; min-height: 0; flex: 0 1 auto;
 }
 .panzoom-desc-left .panzoom-hint, .panzoom-desc-right .panzoom-hint { flex: none; margin-top: 0.5rem; }
+.panzoom-desc-left .panzoom-hint-part, .panzoom-desc-right .panzoom-hint-part { display: block; }
+.panzoom-desc-left .panzoom-hint-sep, .panzoom-desc-right .panzoom-hint-sep { display: none; }
 .panzoom-desc-top .panzoom-close { top: calc(var(--panzoom-band-height, 0px) + 10px); }
 .panzoom-desc-top .panzoom-counter { top: calc(var(--panzoom-band-height, 0px) + 14px); }
 .panzoom-desc-left .panzoom-prev { left: calc(var(--panzoom-band-width, 0px) + 10px); }
@@ -131,12 +137,10 @@ a.panzoom-link:focus-visible { outline: none; }
 
 /* Padding, not margin, below each panel: an inline box reaching past the
    last line (code in some fonts, as Safari's SF Mono) stays inside it, so a
-   short panel doesn't scroll. Each panel is as wide as its text and
-   centered, with its lines aligned left: a short caption sits in the
-   middle, and a long one reads as a paragraph, not ragged on both sides. */
+   short panel doesn't scroll. */
 .panzoom-caption, .panzoom-description {
-  width: fit-content; max-width: 60rem; margin: 0 auto; padding-bottom: 0.3rem;
-  overflow-y: auto; line-height: 1.4; text-align: left;
+  min-width: 0; margin: 0; padding-bottom: 0.3rem;
+  overflow-y: auto; line-height: 1.4;
   user-select: text; -webkit-user-select: text; cursor: auto;
 }
 .panzoom-caption a, .panzoom-description a { color: var(--panzoom-link); }
@@ -164,6 +168,7 @@ a.panzoom-link:focus-visible { outline: none; }
 }
 .panzoom-description p { margin: 0 0 0.3rem; }
 .panzoom-description p:last-child { margin-bottom: 0; }
+.panzoom-hint-part { white-space: nowrap; }
 .panzoom-hint {
   font-size: 0.8rem; pointer-events: none;
   color: color-mix(in srgb, var(--panzoom-fg) 70%, var(--panzoom-bg));

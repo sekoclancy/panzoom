@@ -172,10 +172,10 @@
     return null;
   }
 
-  // The hint line's text, naming the keys bound: the caption key only when
+  // The hint line's parts, naming the keys bound: the caption key only when
   // the image has a caption or description, to hide it or, once hidden, to
   // show it.
-  function hintText(captioned) {
+  function hintParts(captioned) {
     var named = function (a) {
       return keys()[a].map(function (k) { return k === "Escape" ? "Esc" : k; }).join(" or ");
     };
@@ -184,7 +184,26 @@
     if (cap) parts.push(cap + (hideCaption ? " to show" : " to hide") + " the caption");
     if (hin) parts.push(hin + " to hide the hint");
     if (shut) parts.push(shut + " to close");
-    return parts.join(" \u00b7 ");
+    return parts;
+  }
+
+  // Fills `el` with the parts, each kept whole on one line, between dots
+  // that stay with the part before them (see panzoom.css: in a panel beside
+  // the image, one part per line and no dots).
+  function fillHint(el, parts) {
+    el.textContent = "";
+    parts.forEach(function (p, i) {
+      if (i) {
+        var sep = document.createElement("span");
+        sep.className = "panzoom-hint-sep";
+        sep.textContent = "\u00a0\u00b7 ";
+        el.appendChild(sep);
+      }
+      var part = document.createElement("span");
+      part.className = "panzoom-hint-part";
+      part.textContent = p;
+      el.appendChild(part);
+    });
   }
 
   // The <figcaption> of `fig` itself (not of a nested subfigure), as HTML.
@@ -343,8 +362,8 @@
     caption.hidden = hideCaption || !caption.innerHTML;
     desc.hidden = hideCaption || !desc.innerHTML.trim();
     hint.hidden = hideHint || !opts.hint || byTouch;
-    hint.querySelector(".panzoom-hint-keys").textContent =
-      hintText(!!caption.innerHTML || !!desc.innerHTML.trim());
+    fillHint(hint.querySelector(".panzoom-hint-keys"),
+      hintParts(!!caption.innerHTML || !!desc.innerHTML.trim()));
     footer.hidden = caption.hidden && desc.hidden && hint.hidden;
     // The band's size, for the buttons it would cover (see panzoom.css).
     overlay.style.setProperty("--panzoom-band-height", footer.offsetHeight + "px");
@@ -762,7 +781,8 @@
       '<div class="panzoom-caption"></div>' +
       '<div class="panzoom-description"></div>' +
       '<div class="panzoom-hint"><span class="panzoom-hint-keys"></span>' +
-      '<span class="panzoom-hint-gallery"> &middot; previous/next buttons for other images</span></div>' +
+      '<span class="panzoom-hint-gallery"><span class="panzoom-hint-sep">&nbsp;&middot; </span>' +
+      '<span class="panzoom-hint-part">previous/next buttons for other images</span></span></div>' +
       '</div>';
     document.body.appendChild(overlay);
     img = overlay.querySelector("img");
