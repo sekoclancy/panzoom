@@ -323,8 +323,32 @@ async function closeAll(page) {
 }
 
 // Open the viewer on a result's image, from a closed viewer.
+// Shows an image a reader has to uncover first: one on a tab not selected,
+// or in a collapsed callout. Clicks the tab or the callout's header, as a
+// reader would, and says whether it did.
+async function reveal(page, handle) {
+  const clicked = await handle.evaluate((el) => {
+    let n = 0;
+    const pane = el.closest(".tab-pane");
+    if (pane && !pane.classList.contains("active")) {
+      const tab = document.querySelector(`[data-bs-target="#${pane.id}"]`);
+      if (tab) tab.click(), n++;
+    }
+    const body = el.closest(".callout-collapse");
+    if (body && !body.classList.contains("show")) {
+      const header = body.closest(".callout")?.querySelector('[data-bs-toggle="collapse"]');
+      if (header) header.click(), n++;
+    }
+    return n > 0;
+  });
+  // Bootstrap's collapse animates for 0.35 s.
+  if (clicked) await settle(page, 400);
+  return clicked;
+}
+
 async function openImage(page, r) {
   const handle = await page.$(`img[data-test-idx="${r.idx}"]`);
+  await reveal(page, handle);
   await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
   await settle(page);
   await handle.click();
@@ -927,6 +951,7 @@ async function checkPage(browser, base, file) {
     const r = { ...img };
     const handle = await page.$(`img[data-test-idx="${img.idx}"]`);
     if (!handle) { r.opened = "missing from DOM"; results.push(r); continue; }
+    r.revealed = await reveal(page, handle);
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
     await settle(page);
     const box = await handle.boundingBox();
@@ -964,6 +989,7 @@ async function checkPage(browser, base, file) {
   const first = results.find((r) => r.opened === "panzoom");
   if (first) {
     const handle = await page.$(`img[data-test-idx="${first.idx}"]`);
+    await reveal(page, handle);
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
     await settle(page);
     isolation = await checkIsolation(page, await handle.boundingBox());
@@ -976,6 +1002,7 @@ async function checkPage(browser, base, file) {
   const firstInGallery = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === "contain");
   if (firstInGallery) {
     const handle = await page.$(`img[data-test-idx="${firstInGallery.idx}"]`);
+    await reveal(page, handle);
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
     await settle(page);
     gallery = await checkGallery(page, handle);
@@ -1129,6 +1156,7 @@ async function checkPage(browser, base, file) {
   });
   const clickAt = async (r, fx, fy) => {
     const handle = await page.$(`img[data-test-idx="${r.idx}"]`);
+    await reveal(page, handle);
     await handle.evaluate((el) => el.scrollIntoView({ block: "center" }));
     await settle(page);
     const b = await handle.boundingBox();
@@ -1391,7 +1419,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
   for (const r of results) {
     const details = r.opened === "glightbox"
       ? `title: ${r.title || "—"}; desc: ${r.description || "—"}; slides: ${r.slides}`
-      : r.opened === "panzoom" ? `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}; ${r.size}; ` +
+      : r.opened === "panzoom" ? (r.revealed ? "tab or callout opened first; " : "") + `caption: ${r.caption || "—"}; ${r.counter || "1 / 1"}; ${r.size}; ` +
         `opens: ${r.fit || "—"}` + (r.fitBySize ? (fitMisses(r).length ? `, but ${fitMisses(r).join(", ")}` : `, the same in ${Object.keys(r.fitBySize).length} other windows`) : "") + (r.expectFit ? (fitOk(r) ? " (as expected)" : ` (**expected ${r.expectFit}${r.expectZoomOut ? `, zoom-out ${r.expectZoomOut}` : ""}**)`) : "") +
         (r.zoomOut ? `; zooms out from ${+r.zoomOut.open.toFixed(3)} to ${+r.zoomOut.min.toFixed(3)}` : "") +
         (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
