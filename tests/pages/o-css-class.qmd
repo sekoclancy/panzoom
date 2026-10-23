@@ -95,7 +95,7 @@ above, with a line along the top of the caption band and a larger, italic
 caption, and the link in its caption is pink.
 
 ```markdown {.show-source}
-![The Edgartown lighthouse, with a [link](https://quarto.org).](../../images/mv-2.jpg){.panzoom fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse, Martha's Vineyard ([photo](https://unsplash.com/photos/f59MyOfLpi8)).](../../images/mv-2.jpg){.panzoom fig-alt="A white lighthouse against a blue sky"}
 ```
 
 ## Class for one image {#c2 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
@@ -107,7 +107,7 @@ link in its caption is teal. The page's class stays on the viewer too, so the
 `.sea-viewer` rules come after the `.plum-viewer` ones to win over them.
 
 ```markdown {.show-source}
-![A gingerbread cottage, with a class of its own and a [link](https://quarto.org).](../../images/mv-3.jpg){.panzoom css-class="sea-viewer" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard ([photo](https://unsplash.com/photos/HQEtvlNzUyA)).](../../images/mv-3.jpg){.panzoom css-class="sea-viewer" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
 ## Code cell {#c3 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
@@ -118,7 +118,7 @@ page.
 ```{r}
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
-#| fig-cap: "Vapor pressure, from a cell with `panzoom: true`."
+#| fig-cap: "Vapor pressure of mercury against temperature."
 
 plot(pressure, type = "b", pch = 19)
 ```
@@ -132,7 +132,7 @@ with the teal viewer.
 #| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| panzoom:
 #|   css-class: sea-viewer
-#| fig-cap: "Stopping distance against speed, with a class of its own."
+#| fig-cap: "Stopping distance against speed for 50 cars."
 
 plot(cars, pch = 19)
 ```
@@ -144,11 +144,11 @@ Each image has its class only while it is open, so the first and last show the
 teal viewer and the middle one the plum viewer, whichever way it is reached.
 
 ```markdown {.show-source}
-![Chilmark beach at sunset, with a class of its own.](../../images/mv-0.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
 
-![Aquinnah, with the class set on this page.](../../images/mv-1.jpg){.panzoom group="mixed" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah" expect-class="plum-viewer" expect-no-class="sea-viewer" expect-overlay="rgba(60, 20, 70, 0.9)"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.panzoom group="mixed" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah" expect-class="plum-viewer" expect-no-class="sea-viewer" expect-overlay="rgba(60, 20, 70, 0.9)"}
 
-![A sailboat, with a class of its own.](../../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
+![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)"}
 ```
 
 ## Margin image {#c6 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
@@ -157,5 +157,5 @@ A markdown image with `.panzoom` in the margin. It opens with the plum viewer
 set on this page.
 
 ```markdown {.show-source}
-![A gingerbread cottage in Oak Bluffs, placed in the page margin.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```

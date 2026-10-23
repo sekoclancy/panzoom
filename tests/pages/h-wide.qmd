@@ -116,7 +116,7 @@ moves sideways.
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
-#| fig-cap: "A 25 × 2 inch collage of 12 panels (png)."
+#| fig-cap: "A 25 × 2 inch collage of 12 random walks, as png."
 
 collage(n = 12)
 ```
@@ -132,7 +132,7 @@ strip.
 #|   fit: contain
 #| fig-width: 25
 #| fig-height: 2
-#| fig-cap: "The collage, forced to open whole."
+#| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
 ```
@@ -147,7 +147,7 @@ whole.
 #| panzoom: true
 #| fig-width: 16
 #| fig-height: 4
-#| fig-cap: "A 4:1 figure."
+#| fig-cap: "A 16 × 4 inch collage of 4 random walks."
 
 collage(n = 4)
 ```
@@ -162,7 +162,7 @@ moves up and down.
 #| panzoom: true
 #| fig-width: 4
 #| fig-height: 15
-#| fig-cap: "A tall strip of 8 panels."
+#| fig-cap: "A 4 × 15 inch strip of 8 random walks."
 
 strip(seed = 2, n = 8)
 ```
@@ -177,7 +177,7 @@ both ways, and Shift+scroll moves sideways.
 #| panzoom: true
 #| fig-width: 24
 #| fig-height: 18
-#| fig-cap: "A 24 × 18 inch poster of 48 panels."
+#| fig-cap: "A 24 × 18 inch poster of 48 random walks."
 
 set.seed(3)
 par(mfrow = c(6, 8), mar = c(2, 2, 2, 1))
@@ -197,7 +197,7 @@ for (i in 1:48) {
 A 9:16 portrait photo. It isn't a strip, so it opens whole on any screen width.
 
 ```markdown {.show-source}
-![A portrait photo.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## Small plot {#c7 expect-fit="contain" expect-scale="1"}
@@ -211,7 +211,7 @@ fill the screen, and scrolling still zooms in, up to `max-zoom`.
 #| fig-width: 3
 #| fig-height: 2
 #| fig-dpi: 48
-#| fig-cap: "A small plot."
+#| fig-cap: "Vapor pressure of mercury against temperature."
 
 plot(pressure)
 ```

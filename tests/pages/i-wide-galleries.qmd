@@ -84,8 +84,8 @@ buttons change collages.
 #| fig-width: 25
 #| fig-height: 2
 #| fig-cap:
-#|   - "First collage."
-#|   - "Second collage."
+#|   - "A 25 × 2 inch collage of 12 random walks."
+#|   - "A 25 × 2 inch collage of 15 random walks."
 
 collage(n = 12)
 collage(n = 15)
@@ -106,8 +106,8 @@ and the previous and next buttons change strips.
 #| fig-width: 4
 #| fig-height: 15
 #| fig-cap:
-#|   - "First strip."
-#|   - "Second strip."
+#|   - "A 4 × 15 inch strip of 8 random walks."
+#|   - "A 4 × 15 inch strip of 8 more random walks."
 
 strip(seed = 8, n = 8)
 strip(seed = 9, n = 8)
@@ -123,7 +123,7 @@ form a gallery.
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
-#| fig-cap: "Two collages, stacked."
+#| fig-cap: "Collages of 12 and 15 random walks, stacked."
 #| fig-subcap: ["First collage", "Second collage"]
 #| fig-alt:
 #|   - "A row of 12 small line plots of random walks, each in its own color"
@@ -144,7 +144,7 @@ two form a gallery.
 #| panzoom: true
 #| fig-width: 4
 #| fig-height: 15
-#| fig-cap: "Two tall strips, side by side."
+#| fig-cap: "Two 4 × 15 inch strips of 8 random walks, side by side."
 #| fig-subcap: ["First strip", "Second strip"]
 #| fig-alt:
 #|   - "A column of 8 small line plots of random walks"
@@ -183,9 +183,9 @@ strip(seed = 5, n = 8)
 A long collage (40 × 2 in, 24 panels) and a shorter one (24 × 2 in, 12 panels)
 from two cells, joined by `group`. Each opens at screen height, and stepping to
 the other fits it afresh, from its left end, so the short collage doesn't keep
-the scale or position of the long one. The captions differ in length, so the
-caption band changes height between them, and each collage stays clear of it.
-`fig-dpi: 48` only keeps the files small.
+the scale or position of the long one. Only the short collage has a description,
+so the caption band changes height between them, and each collage stays clear of
+it. `fig-dpi: 48` only keeps the files small.
 
 ```{r}
 #| fig-alt: "A row of 24 small line plots of random walks, each in its own color"
@@ -194,7 +194,7 @@ caption band changes height between them, and each collage stays clear of it.
 #| fig-width: 40
 #| fig-height: 2
 #| fig-dpi: 48
-#| fig-cap: "The long collage."
+#| fig-cap: "A 40 × 2 inch collage of 24 random walks."
 
 collage(n = 24)
 ```
@@ -204,14 +204,13 @@ collage(n = 24)
 #| panzoom:
 #|   group: mixed-collages
 #|   description: >-
-#|     A longer text under the short collage, so that the caption band grows
-#|     when the gallery steps to it. Each panel is a random walk of 200 steps,
-#|     colored along a single palette from the first panel to the last, and
-#|     titled with its panel number so the order can be read at any zoom.
+#|     Each panel is a random walk of 200 steps, colored along a single palette
+#|     from the first panel to the last, and titled with its panel number so the
+#|     order can be read at any zoom.
 #| fig-width: 24
 #| fig-height: 2
 #| fig-dpi: 48
-#| fig-cap: "The short collage, with a description."
+#| fig-cap: "A 24 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
 ```
@@ -227,7 +226,7 @@ its top, on its own, and the layout shows them at different heights on the page.
 #| fig-alt: "A column of 10 small line plots of random walks"
 #| fig-width: 4
 #| fig-height: 20
-#| fig-cap: "The long strip."
+#| fig-cap: "A 4 × 20 inch strip of 10 random walks."
 
 strip(seed = 6, n = 10)
 ```
@@ -237,8 +236,8 @@ strip(seed = 6, n = 10)
 #| fig-width: 3
 #| fig-height: 12
 #| fig-cap: >-
-#|   The short strip, with a caption long enough to wrap onto a second line in
-#|   the viewer.
+#|   A 3 × 12 inch strip of six random walks of 100 steps each, stacked in one
+#|   column, each row in its own color.
 
 strip(seed = 7, n = 6)
 ```

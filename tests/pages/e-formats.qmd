@@ -64,7 +64,7 @@ A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 #| dev.args:
 #|   units: "in"
 #|   res: 96
-#| fig-cap: "A 25 × 2 inch collage of 12 panels (webp)."
+#| fig-cap: "A 25 × 2 inch collage of 12 random walks, as webp."
 
 collage(n = 12)
 ```
@@ -79,7 +79,7 @@ The same collage written as svg. It opens in panzoom at screen height.
 #| fig-width: 25
 #| fig-height: 2
 #| dev: svg
-#| fig-cap: "The collage as svg."
+#| fig-cap: "A 25 × 2 inch collage of 12 random walks, as svg."
 
 collage(n = 12)
 ```
@@ -90,7 +90,7 @@ A small plot written as webp. It opens in panzoom at its real size.
 
 ```{r}
 #| fig-alt: >-
-#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
 #|   key
 #| panzoom: true
 #| dev: agg_webp
@@ -98,7 +98,7 @@ A small plot written as webp. It opens in panzoom at its real size.
 #| dev.args:
 #|   units: "in"
 #|   res: 96
-#| fig-cap: "A standard-size plot as webp."
+#| fig-cap: "Maunga Whau's heights as filled contours, as webp."
 
 filled.contour(volcano, color.palette = terrain.colors)
 ```
@@ -109,11 +109,11 @@ The same plot written as svg. It opens in panzoom at its real size.
 
 ```{r}
 #| fig-alt: >-
-#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
 #|   key
 #| panzoom: true
 #| dev: svg
-#| fig-cap: "A standard-size plot as svg."
+#| fig-cap: "Maunga Whau's heights as filled contours, as svg."
 
 filled.contour(volcano, color.palette = terrain.colors)
 ```
@@ -125,11 +125,11 @@ panzoom.
 
 ```{r}
 #| fig-alt: >-
-#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
 #|   key
 #| panzoom: true
 #| dev: [png, pdf]
-#| fig-cap: "png shown, pdf written alongside."
+#| fig-cap: "Maunga Whau's heights as filled contours, as png (and pdf)."
 
 filled.contour(volcano, color.palette = terrain.colors)
 ```
@@ -144,11 +144,13 @@ leaves alone.
 
 ```{r}
 #| fig-alt: >-
-#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
 #|   key, titled mu = 5, alpha = 0.05
 #| panzoom: true
 #| dev: [png, cairo_pdf]
-#| fig-cap: "png shown, cairo_pdf written alongside (mu = 5, alpha = 0.05)."
+#| fig-cap: >-
+#|   Maunga Whau's heights as filled contours, titled mu = 5, alpha = 0.05, as
+#|   png (and cairo_pdf).
 
 filled.contour(
   volcano,
@@ -174,7 +176,7 @@ loaded." in place of the image.
 #| dev.args:
 #|   units: "in"
 #|   res: 192
-#| fig-cap: "The collage as webp at 192 dpi."
+#| fig-cap: "A 100 × 5 inch collage of 12 random walks, as webp at 192 dpi."
 #| error: true
 
 collage(n = 12)

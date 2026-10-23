@@ -64,7 +64,7 @@ An image with `.panzoom` in a callout. It opens in panzoom.
 ```markdown {.show-source}
 ::: {.callout-note title="A note with a photo"}
 
-![Aquinnah, in a callout.](../../images/mv-1.jpg){.panzoom width=50% fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.panzoom width=50% fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 :::
 ```
 
@@ -77,7 +77,7 @@ in it, so the image opens in panzoom.
 ::: {.panzoom}
 ::: {.callout-tip title="A tip with a photo"}
 
-![Edgartown Lighthouse, in a callout in a `.panzoom` div.](../../images/mv-2.jpg){width=50% fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){width=50% fig-alt="A white lighthouse against a blue sky"}
 :::
 :::
 ```
@@ -90,7 +90,7 @@ and the image opens in panzoom.
 ```markdown {.show-source}
 ::: {.callout-note collapse="true" title="Expand for a photo"}
 
-![A gingerbread cottage, in a collapsed callout.](../../images/mv-3.jpg){.panzoom width=50% fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom width=50% fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 :::
 ```
 
@@ -103,11 +103,11 @@ on its own, the second once its tab is selected.
 ::: {.panel-tabset}
 ### Sunset
 
-![Sunset, on the first tab.](../../images/mv-0.jpg){.panzoom width=50% fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){.panzoom width=50% fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 
 ### Sailboat
 
-![A sailboat, on the second tab.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 :::
 ```
 
@@ -121,11 +121,11 @@ button shows the image on the other tab without selecting it.
 ::: {.panel-tabset}
 ### Cliffs
 
-![Aquinnah, the first of two images in a gallery across tabs.](../../images/mv-1.jpg){.panzoom group="tabs" width=50% fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.panzoom group="tabs" width=50% fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
 ### Lighthouse
 
-![Edgartown Lighthouse, on the other tab.](../../images/mv-2.jpg){.panzoom group="tabs" width=50% fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){.panzoom group="tabs" width=50% fig-alt="A white lighthouse against a blue sky"}
 :::
 ```
 
@@ -139,11 +139,11 @@ panzoom on its own.
 ::: {.panel-tabset}
 ### Cottage
 
-![A gingerbread cottage, on a tab in a `.panzoom` div.](../../images/mv-3.jpg){width=50% fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){width=50% fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
 ### Sunset
 
-![Sunset, on the other tab.](../../images/mv-0.jpg){width=50% fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){width=50% fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 :::
 :::
 ```
@@ -159,7 +159,7 @@ still a strip, so it opens in panzoom at screen height.
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
-#| fig-cap: "A 25 × 2 inch collage, as wide as the window."
+#| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
 ```
@@ -175,7 +175,7 @@ A plot with `column: page`, wider than the text. It opens in panzoom whole.
 #| panzoom: true
 #| fig-width: 12
 #| fig-height: 5
-#| fig-cap: "Wave 2, as wide as the page column."
+#| fig-cap: "Wave 2: y = sin(2x), its area to the axis shaded."
 
 wave(k = 2)
 ```
@@ -188,7 +188,7 @@ A plot in a `.column-margin` div. It opens in panzoom, at full size.
 ```{r}
 #| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 #| panzoom: true
-#| fig-cap: "Wave 3, in the margin."
+#| fig-cap: "Wave 3: y = sin(3x), its area to the axis shaded."
 
 wave(k = 3)
 ```
@@ -201,11 +201,11 @@ panzoom. The `.content-hidden` div next to it leaves nothing on the page.
 
 ```markdown {.show-source}
 ::: {.content-visible when-format="html"}
-![A sailboat, shown only in HTML.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 :::
 
 ::: {.content-hidden when-format="html"}
-![Left out of HTML.](../../images/mv-0.jpg){.panzoom}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){.panzoom}
 :::
 ```
 

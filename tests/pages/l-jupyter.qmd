@@ -62,7 +62,7 @@ per image pixel.
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
-#| fig-cap: "A cosine wave, with `max-zoom: 2` and `hint: false`."
+#| fig-cap: "A cosine wave, cos(x)."
 
 plt.plot(x, np.cos(x))
 plt.show()
@@ -79,7 +79,7 @@ description with math, quotes, and a cross-reference to the figure in [case
 #| fig-alt: "Scatter plot of 100 points along a rising diagonal"
 #| panzoom:
 #|   description: 'Points scattered around $y = x + \varepsilon$, with a "quote"; compare @fig-sub.'
-#| fig-cap: "A labeled scatter plot, $n = 100$, next to @fig-sub."
+#| fig-cap: "100 points scattered around a rising diagonal, $n = 100$; compare @fig-sub."
 
 pts = rng.normal(size=100)
 plt.scatter(pts, pts + rng.normal(scale=0.5, size=100))
@@ -94,7 +94,7 @@ Either one opens in panzoom, in a two-image gallery.
 ```{python}
 #| label: fig-sub
 #| panzoom: true
-#| fig-cap: "A random walk and a histogram, from one cell."
+#| fig-cap: "A random walk of 200 steps, and a histogram of 500 normal draws."
 #| fig-subcap: ["A random walk", "A histogram"]
 #| fig-alt:
 #|   - "Line plot of a random walk"
@@ -120,8 +120,8 @@ option. Either one opens in panzoom, in a two-image gallery.
 #| panzoom:
 #|   group: walks
 #| fig-cap:
-#|   - "First walk."
-#|   - "Second walk."
+#|   - "A random walk of 200 steps."
+#|   - "Another random walk of 200 steps."
 
 for i in range(2):
     fig, ax = plt.subplots()
@@ -139,7 +139,7 @@ the image), not shrunk to the column as with knitr. A 25 × 2 in collage would b
 ```{python}
 #| fig-alt: "A row of 8 small line plots of random walks"
 #| panzoom: true
-#| fig-cap: "An 8 × 0.8 inch collage of 8 panels."
+#| fig-cap: "An 8 × 0.8 inch collage of 8 random walks."
 
 fig, axes = plt.subplots(1, 8, figsize=(8, 0.8), layout="constrained")
 for ax in axes:
@@ -157,7 +157,7 @@ over the div, so clicking the plot does nothing.
 ```{python}
 #| panzoom: false
 #| fig-alt: "Line plot of a sine wave"
-#| fig-cap: "A sine wave, from a cell with `panzoom: false`."
+#| fig-cap: "A sine wave, sin(2x)."
 
 plt.plot(x, np.sin(2 * x))
 plt.show()
@@ -173,7 +173,7 @@ class.
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
 #| classes: panzoom
-#| fig-cap: "A sine wave, from a cell with `classes: panzoom`."
+#| fig-cap: "A sine wave, sin(3x)."
 
 plt.plot(x, np.sin(3 * x))
 plt.show()
@@ -186,7 +186,7 @@ A cell with only `#| lightbox: true`. It opens in lightbox, not panzoom.
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
 #| lightbox: true
-#| fig-cap: "A sine wave, from a cell with `lightbox: true`."
+#| fig-cap: "A sine wave, sin(4x)."
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -198,7 +198,7 @@ A cell with no options. With no lightbox on the page, clicking the plot does
 nothing.
 
 ```{python}
-#| fig-cap: "A sine wave, from a cell with no options."
+#| fig-cap: "A sine wave, sin(5x)."
 #| fig-alt: "Line plot of a sine wave"
 
 plt.plot(x, np.sin(5 * x))
@@ -215,7 +215,7 @@ lightbox would ignore those options anyway, unlike with knitr. Only
 ```{python}
 #| fig-alt: "Line plot of a sine wave"
 #| panzoom: true
-#| fig-cap: "A sine wave, from a cell with both options."
+#| fig-cap: "A sine wave, sin(6x)."
 #| lightbox:
 #|   group: both
 #|   description: "Should not reach lightbox."
@@ -255,7 +255,7 @@ green caption band.
 #|   backdrop: "rgba(20, 60, 40, 0.92)"
 #|   caption-background: "#e8f3ea"
 #|   caption-color: "#173d24"
-#| fig-cap: "A rising sine wave, with colors of its own."
+#| fig-cap: "A rising sine wave, sin(x) + x/5."
 
 plt.plot(x, np.sin(x) + x / 5)
 plt.show()
@@ -271,7 +271,7 @@ for a stylesheet to style.
 #| fig-alt: "Line plot of a sine wave with a growing frequency"
 #| panzoom:
 #|   css-class: py-viewer
-#| fig-cap: "A sine wave with a growing frequency, with a class of its own."
+#| fig-cap: "A sine wave with a growing frequency, sin(x²/4)."
 
 plt.plot(x, np.sin(x**2 / 4))
 plt.show()
@@ -291,8 +291,7 @@ per image pixel.
 #|   max-zoom: 2
 #|   hint: false
 #| fig-cap: >-
-#|   A cosine wave, from a cell with `max-zoom: 2` and `hint: false` in a
-#|   `.panzoom` div.
+#|   A cosine wave, cos(2x).
 
 plt.plot(x, np.cos(2 * x))
 plt.show()

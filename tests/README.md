@@ -269,7 +269,7 @@ Write a markdown case once, as a code block marked `.show-source`:
 
 ````markdown
 ```{.markdown .show-source}
-![Sub A](../../images/mv-1.jpg){#fig-md-a .panzoom}
+![Aquinnah](../../images/mv-1.jpg){#fig-md-a .panzoom}
 ```
 ````
 

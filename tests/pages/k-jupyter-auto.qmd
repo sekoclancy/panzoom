@@ -68,7 +68,7 @@ panzoom, in a two-image gallery.
 
 ```{python}
 #| label: fig-pair
-#| fig-cap: "Sine and cosine, from one cell."
+#| fig-cap: "A sine wave and a cosine wave, sin(2x) and cos(2x)."
 #| fig-subcap: ["Sine", "Cosine"]
 #| fig-alt:
 #|   - "Line plot of a sine wave"
@@ -111,7 +111,7 @@ alone, so clicking the plot does nothing.
 ```{python}
 #| lightbox: false
 #| fig-alt: "Line plot of a sine wave"
-#| fig-cap: "A sine wave, from a cell with `lightbox: false`."
+#| fig-cap: "A sine wave, sin(4x)."
 
 plt.plot(x, np.sin(4 * x))
 plt.show()
@@ -125,7 +125,7 @@ A cell with `#| panzoom: true`. It opens in panzoom, ahead of the document's
 ```{python}
 #| fig-alt: "Line plot of a cosine wave"
 #| panzoom: true
-#| fig-cap: "A cosine wave, from a cell with `panzoom: true`."
+#| fig-cap: "A cosine wave, cos(4x)."
 
 plt.plot(x, np.cos(4 * x))
 plt.show()
@@ -136,7 +136,7 @@ plt.show()
 A markdown image alone in a paragraph. It opens in panzoom.
 
 ```markdown {.show-source}
-![Chilmark beach at sunset.](../../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## Opt out of lightbox {#c8 expect-open="nothing"}
@@ -145,7 +145,7 @@ A markdown image with `.nolightbox`. panzoom only takes images lightbox would,
 so clicking it does nothing.
 
 ```markdown {.show-source}
-![Aquinnah, kept out with `.nolightbox`.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
 ## Caption on the left {#c9 expect-open="panzoom" expect-desc-position="left"}

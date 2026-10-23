@@ -110,9 +110,9 @@ button goes back to wave one.
 #| panzoom:
 #|   group: waves
 #| fig-cap:
-#|   - "Wave one, the first of three plots in a gallery."
-#|   - "Wave two."
-#|   - "Wave three."
+#|   - "Wave 1: y = sin(x), its area to the axis shaded."
+#|   - "Wave 2: y = sin(2x), its area to the axis shaded."
+#|   - "Wave 3: y = sin(3x), its area to the axis shaded."
 
 for k in range(1, 4):
     wave(k)
@@ -133,8 +133,8 @@ with its own caption.
 #| panzoom:
 #|   group: printed
 #| fig-cap:
-#|   - "Wave one, drawn before the print() call."
-#|   - "Wave two, drawn after it."
+#|   - "Wave 1: y = sin(x), its area to the axis shaded."
+#|   - "Wave 2: y = sin(2x), its area to the axis shaded."
 
 wave(1)
 print("Printed between the two plots.")
@@ -150,7 +150,7 @@ panzoom, with the caption above the image.
 #| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 #| panzoom:
 #|   desc-position: top
-#| fig-cap: "Wave 3."
+#| fig-cap: "Wave 3: y = sin(3x), its area to the axis shaded."
 
 wave(3)
 ```
@@ -164,7 +164,7 @@ caption on the page, but it opens in panzoom without one.
 #| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
 #| panzoom:
 #|   caption: false
-#| fig-cap: "This caption stays on the page."
+#| fig-cap: "Wave 2: y = sin(2x), its area to the axis shaded."
 
 wave(2)
 ```
@@ -178,7 +178,7 @@ listed under [References](#references).
 ```{python}
 #| label: fig-cited
 #| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
-#| fig-cap: "Wave 4 [@fenner2012]."
+#| fig-cap: "Wave 4: y = sin(4x), its area to the axis shaded [@fenner2012]."
 #| panzoom:
 #|   description: 'A sine wave, $y = \sin(kx)$ [@tufte2001].'
 
@@ -222,7 +222,7 @@ it.
 #|     points, enough that it looks smooth at any zoom the viewer allows.
 #|     Nothing in this description is needed for the test except its length: a
 #|     description this long scrolls in any window.
-#| fig-cap: "Wave 1, with a long description."
+#| fig-cap: "Wave 1: y = sin(x), its area to the axis shaded."
 
 wave(1)
 ```
@@ -236,7 +236,7 @@ after. The page shows the png, which opens in panzoom.
 ```{python}
 #| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
 #| panzoom: true
-#| fig-cap: "png shown, pdf written alongside."
+#| fig-cap: "Wave 2: y = sin(2x), its area to the axis shaded, as png (and pdf)."
 
 %config InlineBackend.figure_formats = ["png", "pdf"]
 wave(2)
@@ -250,7 +250,7 @@ A plot written as jpeg, set the same way. It opens in panzoom.
 ```{python}
 #| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 #| panzoom: true
-#| fig-cap: "A plot written as jpeg."
+#| fig-cap: "Wave 3: y = sin(3x), its area to the axis shaded, as jpeg."
 
 %config InlineBackend.figure_formats = ["jpeg"]
 wave(3)
@@ -265,7 +265,7 @@ moves up and down.
 ```{python}
 #| fig-alt: "A column of 8 small line plots of random walks"
 #| panzoom: true
-#| fig-cap: "A tall strip of 8 panels."
+#| fig-cap: "A 3 × 10 inch strip of 8 random walks."
 
 strip(seed=2)
 ```
@@ -311,8 +311,8 @@ next buttons change collages.
 #| panzoom:
 #|   group: collages
 #| fig-cap:
-#|   - "First collage."
-#|   - "Second collage."
+#|   - "An 8 × 0.8 inch collage of 12 random walks."
+#|   - "An 8 × 0.8 inch collage of 15 random walks."
 
 collage(n=12)
 collage(n=15)
@@ -326,7 +326,7 @@ two form a gallery.
 ```{python}
 #| label: fig-strip-cols
 #| panzoom: true
-#| fig-cap: "Two tall strips, side by side."
+#| fig-cap: "Two 3 × 10 inch strips of 8 random walks, side by side."
 #| fig-subcap: ["First strip", "Second strip"]
 #| fig-alt:
 #|   - "A column of 8 small line plots of random walks"

@@ -42,7 +42,7 @@ A markdown image with a description and `desc-position="left"`. It opens in
 panzoom, with the caption and description in a panel on the left of the image.
 
 ```markdown {.show-source}
-![Chilmark beach at sunset.](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## Gallery in a layout {#c2 expect-open="panzoom"}
@@ -52,11 +52,11 @@ in one three-image gallery.
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}
-![Aquinnah, one of three images joined by `group`. They open in panzoom as a three-image gallery.](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![Oak Bluffs, in the same gallery.](../../images/mv-3.jpg){group="elsewhere" description="Gingerbread cottages." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){group="elsewhere" description="Gingerbread cottages." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
-![Vineyard lighthouse, in the same gallery.](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse." fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse." fig-alt="A white lighthouse against a blue sky"}
 :::
 ```
 
@@ -77,11 +77,11 @@ two-image gallery. The figure's caption links to the heat map in [case
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
-![Sub A](../../images/mv-1.jpg){#fig-md-a fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Aquinnah](../../images/mv-1.jpg){#fig-md-a fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![Sub B](../../images/mv-2.jpg){#fig-md-b fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse](../../images/mv-2.jpg){#fig-md-b fig-alt="A white lighthouse against a blue sky"}
 
-Two markdown subfigures, with a link to the heat map at the end of the page (see @fig-plain). They open in panzoom as a two-image gallery.
+Aquinnah and Edgartown Lighthouse, on Martha's Vineyard. For heights of Maunga Whau instead, see @fig-plain.
 :::
 ```
 
@@ -93,8 +93,7 @@ panzoom, in a two-image gallery.
 ```{r}
 #| label: fig-r-sub
 #| fig-cap: >-
-#|   Two subfigures from one R cell. They open in panzoom as a two-image
-#|   gallery.
+#|   Vapor pressure of mercury, and stopping distances of cars.
 #| fig-subcap: ["Pressure", "Cars"]
 #| fig-alt:
 #|   - "Scatter plot of vapor pressure rising steeply with temperature"
@@ -114,9 +113,7 @@ two-image gallery, with its own description on the right.
 ```{r}
 #| fig-alt: "Scatter plot of ten random points"
 #| fig-cap: >-
-#|   An R cell with lightbox options for a group and a description. Asking for
-#|   lightbox keeps it out of panzoom, so it opens in lightbox, in a two-image
-#|   gallery with the next plot.
+#|   Ten random points against their index.
 #| lightbox:
 #|   group: r-graph
 #|   description: Ten random points.
@@ -127,8 +124,7 @@ plot(1:10, rnorm(10))
 ```{r}
 #| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| fig-cap: >-
-#|   The second R cell in the same group. It opens in lightbox, in the same
-#|   gallery.
+#|   Stopping distance against speed for 50 cars.
 #| lightbox:
 #|   group: r-graph
 #|   description: Stopping distance against speed.
@@ -148,9 +144,8 @@ a two-image gallery.
 #|   - "Scatter plot of stopping distance against speed for 50 cars"
 #| fig-cap:
 #|   - >-
-#|     One R cell with two plots and lightbox options. They open in lightbox as
-#|     a two-image gallery.
-#|   - "The second plot of the cell, in the same gallery."
+#|     The mtcars data, each variable plotted against every other.
+#|   - "Stopping distance against speed for 50 cars."
 #| lightbox:
 #|   group: cars
 #|   description:
@@ -167,7 +162,7 @@ An R cell with `lightbox: false`. Neither lightbox nor panzoom takes it, so
 clicking it does nothing.
 
 ```{r}
-#| fig-cap: "An R cell with `lightbox: false`. Clicking it does nothing."
+#| fig-cap: "The mtcars data, each variable plotted against every other."
 #| lightbox: false
 #| fig-alt: >-
 #|   Scatterplot matrix of the mtcars data, each variable plotted against every
@@ -191,7 +186,7 @@ A markdown image in the margin. It opens in panzoom, as any other block image
 does.
 
 ```markdown {.show-source}
-![A gingerbread cottage in Oak Bluffs, placed in the page margin.](../../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
 ## Inline image {#c11 expect-open="nothing"}
@@ -205,13 +200,15 @@ Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){widt
 
 ## Plain R figure {#c12 expect-open="panzoom"}
 
-A cross-referenced R figure with no options. It opens in panzoom. The caption of
-[case 4](#c4) links to it.
+Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red (high).
+The caption of [case 4](#c4) links to it.
 
 ```{r}
 #| label: fig-plain
 #| fig-alt: "Heat map of the Maunga Whau volcano's heights, in yellow, orange, and red"
-#| fig-cap: "A cross-referenced R figure with no options. It opens in panzoom."
+#| fig-cap: >-
+#|   Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red
+#|   (high).
 
 image(volcano)
 ```
