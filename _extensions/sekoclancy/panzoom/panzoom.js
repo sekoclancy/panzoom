@@ -106,6 +106,8 @@
   // Whether the viewer was opened with the mouse or a tap (see close()),
   // and whether by a tap (no hint line; see showFooter()).
   var byPointer = false, byTouch = false;
+  // The page's own inline overflow and scrollbar-gutter, put back on close.
+  var pageStyle = null;
   // The kind of pointer last pressed: a click doesn't say whether it came
   // from a tap in every browser.
   var lastPointer = "";
@@ -649,10 +651,14 @@
     byPointer = !!pointer;
     byTouch = byPointer && lastPointer === "touch";
     gallery = galleryOf(el);
+    var html = document.documentElement;
+    if (!overlay.classList.contains("open")) {
+      pageStyle = { overflow: html.style.overflow, gutter: html.style.scrollbarGutter };
+    }
     overlay.classList.add("open");
     // Stop the page scrolling; keep the scrollbar's space, if it has one,
     // so the page behind doesn't shift sideways, and cover that space too.
-    var html = document.documentElement, bar = window.innerWidth - html.clientWidth;
+    var bar = window.innerWidth - html.clientWidth;
     if (bar > 0) html.style.scrollbarGutter = "stable";
     overlay.style.right = -bar + "px";
     html.style.overflow = "hidden";
@@ -673,8 +679,11 @@
     overlay.classList.remove("open", "panzoom-loading", "panzoom-error");
     restyle(null);
     status.textContent = "";
-    document.documentElement.style.overflow = "";
-    document.documentElement.style.scrollbarGutter = "";
+    if (pageStyle) {
+      document.documentElement.style.overflow = pageStyle.overflow;
+      document.documentElement.style.scrollbarGutter = pageStyle.gutter;
+      pageStyle = null;
+    }
     press = null;
     gallery = [];
     // Opened with the mouse or a tap: no focus ring on the image focus
@@ -919,8 +928,9 @@
     var r = t.getBoundingClientRect();
     var frac = function (v) { return Math.min(1, Math.max(0, v)); };
     // A click from the mouse or a tap counts one or more clicks in
-    // `detail`; one made from the keyboard, none.
-    open(t, r.width && r.height ? {
+    // `detail`; one made from the keyboard or a script, none, and has no
+    // clicked spot: a strip opens at its start, as with Enter or Space.
+    open(t, e.detail > 0 && r.width && r.height ? {
       fx: frac((e.clientX - r.left) / r.width),
       fy: frac((e.clientY - r.top) / r.height)
     } : null, e.detail > 0);
