@@ -109,9 +109,13 @@ a.panzoom-link:focus-visible { outline: none; }
    image, or a panel beside it with its text centered up and down, and the
    buttons it would cover moved out of its way. */
 .panzoom-desc-top .panzoom-footer { top: 0; bottom: auto; }
+/* A panel beside the image is as wide as its text needs, between 12rem and
+   22rem (and no more than a third of the screen), so a short caption leaves
+   the image more room. */
 .panzoom-desc-left .panzoom-footer,
 .panzoom-desc-right .panzoom-footer {
-  top: 0; bottom: 0; width: min(22rem, 32vw); box-sizing: border-box;
+  top: 0; bottom: 0; box-sizing: border-box;
+  width: fit-content; min-width: min(12rem, 32vw); max-width: min(22rem, 32vw);
   display: flex; flex-direction: column; padding: 1rem; text-align: left;
 }
 .panzoom-desc-left .panzoom-footer { left: 0; right: auto; }
