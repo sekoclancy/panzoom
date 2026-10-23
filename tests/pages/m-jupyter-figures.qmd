@@ -106,9 +106,9 @@ panzoom:
 ```
 
 Jupyter figures are shown at their size in inches × 96 px, and written at twice
-that, so a figure here opens at up to twice its size on the page. Figures wider
-than about 8 inches would run past the column, so the collages here are 8 inches
-wide, not 25 as on the R pages.
+that, so a figure here opens at up to twice its size on the page. Quarto gives
+each figure that width, so one wider than about 8 inches runs past the column.
+The collages here are at most 8 inches wide, where the R pages use 25.
 
 The plots are drawn with these helpers:
 
@@ -128,9 +128,9 @@ def wave(k=1):
 
 
 # A collage: `n` panels side by side, like a wide patchwork figure.
-def collage(n=12, height=0.8):
+def collage(n=12, height=0.8, width=8):
     rng = np.random.default_rng(1)
-    fig, axes = plt.subplots(1, n, figsize=(8, height), layout="constrained")
+    fig, axes = plt.subplots(1, n, figsize=(width, height), layout="constrained")
     for i, ax in enumerate(axes):
         ax.plot(np.cumsum(rng.normal(size=200)), color=plt.cm.viridis(i / n))
         ax.set_title(f"Panel {i + 1}", fontsize=5)
@@ -362,9 +362,10 @@ collage(n=6, height=3)
 
 ## Gallery of two collages {#c12 expect-fit="height"}
 
-Two 8 × 0.8 inch collages in a gallery. Each opens at screen height. The left
-and right arrow keys and dragging pan along the collage, and the previous and
-next buttons change collages.
+Two collages in a gallery, 6.4 × 0.8 inches (12 panels) and 8 × 0.8 inches (15
+panels), so their panels have the same shape. Each opens at screen height. The
+left and right arrow keys and dragging pan along the collage, and the previous
+and next buttons change collages.
 
 ```{python}
 #| fig-alt:
@@ -373,10 +374,10 @@ next buttons change collages.
 #| panzoom:
 #|   group: collages
 #| fig-cap:
-#|   - "An 8 × 0.8 inch collage of 12 random walks."
+#|   - "A 6.4 × 0.8 inch collage of 12 random walks."
 #|   - "An 8 × 0.8 inch collage of 15 random walks."
 
-collage(n=12)
+collage(n=12, width=6.4)
 collage(n=15)
 ```
 
