@@ -89,7 +89,7 @@ the top of this page) and hides the hint.
 ```{r}
 #| label: fig-volcano
 #| fig-alt: >-
-#|   Filled contour map of the volcano's heights in terrain colors, with a color
+#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
 #|   key
 #| fig-cap: >-
 #|   Heights of Maunga Whau (Mount Eden) in Auckland as filled contours, from
@@ -116,7 +116,7 @@ Give a markdown image the `.panzoom` class. The text in brackets is the caption,
 and `fig-alt` is the alt text:
 
 ```markdown {.show-source}
-![The same heights as a shaded 3D surface.](images/volcano.png){.panzoom fig-alt="Perspective plot of the volcano, shaded green"}
+![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){.panzoom fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
 ```
 
 ## Div
@@ -127,30 +127,30 @@ included:
 ````markdown
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
-#| fig-alt: "Heat map of the volcano's heights in terrain colors, from green to white"
-#| fig-cap: "Heights as a heat map, from green (low) to white (high)."
+#| fig-alt: "Heat map of Maunga Whau's heights in terrain colors, from green to white"
+#| fig-cap: "Maunga Whau's heights as a heat map, from green (low) to white (high)."
 #| fig-width: 8
 #| fig-height: 5.5
 
 image(volcano, col = terrain.colors(100))
 ```
 
-![The same heights as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of the volcano, shaded green"}
+![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
 :::
 ````
 
 ::: {.panzoom layout-ncol="2"}
 ```{r}
-#| fig-alt: "Heat map of the volcano's heights in terrain colors, from green to white"
+#| fig-alt: "Heat map of Maunga Whau's heights in terrain colors, from green to white"
 #| echo: false
-#| fig-cap: "Heights as a heat map, from green (low) to white (high)."
+#| fig-cap: "Maunga Whau's heights as a heat map, from green (low) to white (high)."
 #| fig-width: 8
 #| fig-height: 5.5
 
 image(volcano, col = terrain.colors(100))
 ```
 
-![The same heights as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of the volcano, shaded green"}
+![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
 :::
 
 ## Captions and galleries
@@ -162,8 +162,8 @@ automatically.
 
 ```{r}
 #| fig-alt:
-#|   - "Heat map of the volcano's heights in Viridis colors, from dark blue to yellow"
-#|   - "Perspective plot of the volcano, shaded green"
+#|   - "Heat map of Maunga Whau's heights in Viridis colors, from dark blue to yellow"
+#|   - "Perspective plot of Maunga Whau's heights, shaded green"
 #| panzoom:
 #|   group: volcano-views
 #| fig-cap:
@@ -172,9 +172,9 @@ automatically.
 #|     from 94 m (dark blue) to 195 m (yellow). The crater is the darker hollow
 #|     inside the yellow rim.
 #|   - >-
-#|     The same 87 by 61 grid of heights drawn as a shaded surface and viewed
-#|     from above at an angle, so the crater rim and the slope down to the
-#|     surrounding ground read as relief instead of color.
+#|     Maunga Whau (Mount Eden) in Auckland, as a shaded surface of its heights
+#|     on a 10 m by 10 m grid, viewed from above at an angle. The crater rim and
+#|     the slope down to the surrounding ground read as relief.
 #| layout-ncol: 2
 
 image(volcano, col = hcl.colors(100, "Viridis"))
@@ -188,8 +188,8 @@ persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
 #|   - "Contour lines every 10 m."
 #|   - "A heat map, from pale yellow (low) to dark red (high)."
 #| fig-alt:
-#|   - "Contour lines of the volcano's heights"
-#|   - "Heat map of the volcano's heights, in yellow, orange, and red"
+#|   - "Contour lines of Maunga Whau's heights"
+#|   - "Heat map of Maunga Whau's heights, in yellow, orange, and red"
 #| layout-ncol: 2
 #| panzoom: true
 
@@ -262,7 +262,7 @@ lines(x, dnorm(x), lwd = 2)
 Without the option, a figure is left as it is, and clicking it does nothing.
 
 ```{r}
-#| fig-alt: "Contour lines of the volcano's heights"
+#| fig-alt: "Contour lines of Maunga Whau's heights"
 
 contour(volcano)
 ```
@@ -275,6 +275,6 @@ cell, use `#| panzoom: false`.
 
 ```markdown {.show-source}
 ::: {.panzoom}
-![The same heights as a shaded 3D surface.](images/volcano.png){.nopanzoom width=40% fig-alt="Perspective plot of the volcano, shaded green"}
+![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){.nopanzoom width=40% fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
 :::
 ```
