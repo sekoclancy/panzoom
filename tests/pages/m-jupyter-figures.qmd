@@ -11,29 +11,84 @@ panzoom:
   hint: false
   loop: true
 references:
-  - id: fenner2012
+  - id: harris2020
     type: article-journal
-    title: One-click science marketing
+    title: Array programming with NumPy
     author:
-      - family: Fenner
-        given: Martin
-    container-title: Nature Materials
-    volume: 11
-    page: 261-263
+      - family: Harris
+        given: Charles R.
+      - family: Millman
+        given: K. Jarrod
+      - family: van der Walt
+        given: Stéfan J.
+      - family: Gommers
+        given: Ralf
+      - family: Virtanen
+        given: Pauli
+      - family: Cournapeau
+        given: David
+      - family: Wieser
+        given: Eric
+      - family: Taylor
+        given: Julian
+      - family: Berg
+        given: Sebastian
+      - family: Smith
+        given: Nathaniel J.
+      - family: Kern
+        given: Robert
+      - family: Picus
+        given: Matti
+      - family: Hoyer
+        given: Stephan
+      - family: van Kerkwijk
+        given: Marten H.
+      - family: Brett
+        given: Matthew
+      - family: Haldane
+        given: Allan
+      - family: del Río
+        given: Jaime Fernández
+      - family: Wiebe
+        given: Mark
+      - family: Peterson
+        given: Pearu
+      - family: Gérard-Marchant
+        given: Pierre
+      - family: Sheppard
+        given: Kevin
+      - family: Reddy
+        given: Tyler
+      - family: Weckesser
+        given: Warren
+      - family: Abbasi
+        given: Hameer
+      - family: Gohlke
+        given: Christoph
+      - family: Oliphant
+        given: Travis E.
+    container-title: Nature
+    volume: 585
+    issue: 7825
+    page: 357-362
+    DOI: 10.1038/s41586-020-2649-2
     issued:
       date-parts:
-        - [2012, 3]
-  - id: tufte2001
-    type: book
-    title: The visual display of quantitative information
+        - [2020, 9]
+  - id: hunter2007
+    type: article-journal
+    title: "Matplotlib: A 2D graphics environment"
     author:
-      - family: Tufte
-        given: Edward R.
-    publisher: Graphics Press
-    edition: 2
+      - family: Hunter
+        given: John D.
+    container-title: Computing in Science & Engineering
+    volume: 9
+    issue: 3
+    page: 90-95
+    DOI: 10.1109/MCSE.2007.55
     issued:
       date-parts:
-        - [2001]
+        - [2007]
 ---
 
 The cell cases from the R pages on [cell options](f-options.html), [captions and
@@ -178,9 +233,9 @@ listed under [References](#references).
 ```{python}
 #| label: fig-cited
 #| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
-#| fig-cap: "Wave 4: y = sin(4x), its area to the axis shaded [@fenner2012]."
+#| fig-cap: "Wave 4: y = sin(4x), computed with NumPy [@harris2020]."
 #| panzoom:
-#|   description: 'A sine wave, $y = \sin(kx)$ [@tufte2001].'
+#|   description: 'A sine wave, $y = \sin(kx)$, drawn with Matplotlib [@hunter2007].'
 
 wave(4)
 ```

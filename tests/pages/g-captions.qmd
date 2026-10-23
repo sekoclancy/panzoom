@@ -10,18 +10,32 @@ filters:
 panzoom:
   hint: false
 references:
-  - id: fenner2012
-    type: article-journal
-    title: One-click science marketing
-    author:
-      - family: Fenner
-        given: Martin
-    container-title: Nature Materials
-    volume: 11
-    page: 261-263
+  - id: weast1973
+    type: book
+    title: >-
+      Handbook of Chemistry and Physics: A Ready-Reference Book of Chemical and
+      Physical Data
+    editor:
+      - family: Weast
+        given: Robert C.
+    publisher: CRC Press
+    publisher-place: Cleveland, OH
+    ISBN: "9780878194544"
     issued:
       date-parts:
-        - [2012, 3]
+        - [1973]
+  - id: rcore2026
+    type: book
+    title: "R: A Language and Environment for Statistical Computing"
+    author:
+      - literal: R Core Team
+    publisher: R Foundation for Statistical Computing
+    publisher-place: Vienna, Austria
+    DOI: 10.32614/R.manuals
+    URL: https://www.R-project.org/
+    issued:
+      date-parts:
+        - [2026]
   - id: tufte2001
     type: book
     title: The visual display of quantitative information
@@ -77,7 +91,7 @@ with the citation resolved, where lightbox shows it raw
 ([quarto-cli#10709](https://github.com/quarto-dev/quarto-cli/issues/10709)).
 
 ```markdown {.show-source}
-![Sunset at Chilmark Beach, Martha's Vineyard [@fenner2012].](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface, from heights digitized by Ross Ihaka [@rcore2026].](../../images/volcano.png){.panzoom fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
 ```
 
 ## Citation in a description {#c2 expect-references=""}
@@ -107,9 +121,9 @@ and a citation. It opens in panzoom with all of them rendered.
 ```{r}
 #| label: fig-pressure
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
-#| fig-cap: "Vapor pressure of mercury [@fenner2012]."
+#| fig-cap: "Vapor pressure of mercury [@weast1973]."
 #| panzoom:
-#|   description: "Rises roughly as $p \\propto e^{-1/T}$ [@tufte2001]."
+#|   description: "Rises roughly as $p \\propto e^{-1/T}$; the data ship with R [@rcore2026]."
 
 plot(pressure)
 ```
@@ -123,7 +137,7 @@ its reference resolved.
 ```markdown {.show-source}
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom group="refs" description="Painted trim on a shingled cottage. For a plot rather than a photo, see @fig-pressure." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
-![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="refs" description="Taken off Edgartown. On one-click science marketing, see @fenner2012." fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="refs" description="Taken off Edgartown. On graphics for data rather than photos, see @tufte2001." fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## No caption {#c6 expect-open="panzoom" expect-caption="none"}
