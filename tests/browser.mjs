@@ -975,12 +975,17 @@ async function checkPage(browser, base, file) {
 
     if (r.opened === "panzoom") {
       Object.assign(r, await exercisePanzoom(page));
-      // Background click: reopen, click the top-left corner.
+      // Background click: reopen, click the top-left corner of the space the
+      // image is shown in (clear of a caption band above or beside it).
       await closeAll(page);
       await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
       await settle(page, 200);
       if ((await state(page)).opened === "panzoom") {
-        await page.mouse.click(5, 5);
+        const corner = await page.evaluate(() => {
+          const o = document.querySelector(".panzoom-overlay"), a = window.__area(o), r = o.getBoundingClientRect();
+          return { x: r.left + a.x + 5, y: r.top + a.y + 5 };
+        });
+        await page.mouse.click(corner.x, corner.y);
         await settle(page);
         r.backgroundCloses = (await state(page)).opened !== "panzoom";
       }
