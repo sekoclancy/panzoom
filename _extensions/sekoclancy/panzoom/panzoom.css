@@ -96,12 +96,11 @@ a.panzoom-link:focus-visible { outline: none; }
 }
 
 /* Caption and hint, below the image (fit() leaves room for this). They
-   share one column, as wide as the widest of them and centered, with every
-   line aligned left: a short caption starts where the hint does, and a long
-   one reads as a paragraph, not ragged on both sides. */
+   share one column, as wide as the widest of them, with every line
+   centered. */
 .panzoom-footer {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
-  padding: 0.5rem 1rem 0.6rem; text-align: left;
+  padding: 0.5rem 1rem 0.6rem; text-align: center;
   display: grid; grid-template-columns: fit-content(min(60rem, 100%)); justify-content: center;
   background: var(--panzoom-bg);
 }
@@ -126,8 +125,11 @@ a.panzoom-link:focus-visible { outline: none; }
   width: auto; max-width: none; margin: 0; max-height: none; min-height: 0; flex: 0 1 auto;
 }
 .panzoom-desc-left .panzoom-hint, .panzoom-desc-right .panzoom-hint { flex: none; margin-top: 0.5rem; }
-.panzoom-desc-left .panzoom-hint-part, .panzoom-desc-right .panzoom-hint-part { display: block; }
-.panzoom-desc-left .panzoom-hint-sep, .panzoom-desc-right .panzoom-hint-sep { display: none; }
+/* In a panel beside the image, one hint part per line, each but the last
+   ending in its dot. */
+.panzoom-desc-left .panzoom-hint-sep::after, .panzoom-desc-right .panzoom-hint-sep::after {
+  content: "\A"; white-space: pre;
+}
 .panzoom-desc-top .panzoom-close { top: calc(var(--panzoom-band-height, 0px) + 10px); }
 .panzoom-desc-top .panzoom-counter { top: calc(var(--panzoom-band-height, 0px) + 14px); }
 .panzoom-desc-left .panzoom-prev { left: calc(var(--panzoom-band-width, 0px) + 10px); }

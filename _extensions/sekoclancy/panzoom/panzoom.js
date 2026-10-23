@@ -189,7 +189,7 @@
 
   // Fills `el` with the parts, each kept whole on one line, between dots
   // that stay with the part before them (see panzoom.css: in a panel beside
-  // the image, one part per line and no dots).
+  // the image, one part per line).
   function fillHint(el, parts) {
     el.textContent = "";
     parts.forEach(function (p, i) {
