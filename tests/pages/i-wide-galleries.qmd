@@ -160,8 +160,29 @@ strip(seed = 3, n = 8)
 Two code cells in a `.panzoom` div with a layout. Each strip opens at screen
 width on its own, with no gallery, since they aren't subfigures.
 
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panzoom layout-ncol="2"}
+```{{r}}
+#| fig-width: 4
+#| fig-height: 15
+#| fig-alt: "A column of 8 small line plots of random walks"
+
+strip(seed = 4, n = 8)
+```
+
+```{{r}}
+#| fig-width: 4
+#| fig-height: 15
+#| fig-alt: "A column of 8 small line plots of random walks"
+
+strip(seed = 5, n = 8)
+```
+:::
+````
+
 ::: {.panzoom layout-ncol="2"}
 ```{r}
+#| echo: false
 #| fig-width: 4
 #| fig-height: 15
 #| fig-alt: "A column of 8 small line plots of random walks"
@@ -170,6 +191,7 @@ strip(seed = 4, n = 8)
 ```
 
 ```{r}
+#| echo: false
 #| fig-width: 4
 #| fig-height: 15
 #| fig-alt: "A column of 8 small line plots of random walks"
@@ -223,8 +245,33 @@ Strips of different sizes, 4 × 20 in (10 rows) and 3 × 12 in (6 rows), in a
 layout div with captions of different lengths. Each opens at screen width from
 its top, on its own, and the layout shows them at different heights on the page.
 
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panzoom layout-ncol="2"}
+```{{r}}
+#| fig-alt: "A column of 10 small line plots of random walks"
+#| fig-width: 4
+#| fig-height: 20
+#| fig-cap: "A 4 × 20 inch strip of 10 random walks."
+
+strip(seed = 6, n = 10)
+```
+
+```{{r}}
+#| fig-alt: "A column of 6 small line plots of random walks"
+#| fig-width: 3
+#| fig-height: 12
+#| fig-cap: >-
+#|   A 3 × 12 inch strip of six random walks of 100 steps each, stacked in one
+#|   column, each row in its own color.
+
+strip(seed = 7, n = 6)
+```
+:::
+````
+
 ::: {.panzoom layout-ncol="2"}
 ```{r}
+#| echo: false
 #| fig-alt: "A column of 10 small line plots of random walks"
 #| fig-width: 4
 #| fig-height: 20
@@ -234,6 +281,7 @@ strip(seed = 6, n = 10)
 ```
 
 ```{r}
+#| echo: false
 #| fig-alt: "A column of 6 small line plots of random walks"
 #| fig-width: 3
 #| fig-height: 12

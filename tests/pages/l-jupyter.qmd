@@ -156,8 +156,22 @@ plt.show()
 A cell with `#| panzoom: false` inside a `.panzoom` div. The cell option wins
 over the div, so clicking the plot does nothing.
 
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panzoom}
+```{{python}}
+#| panzoom: false
+#| fig-alt: "Line plot of a sine wave"
+#| fig-cap: "A sine wave, sin(2x)."
+
+plt.plot(x, np.sin(2 * x))
+plt.show()
+```
+:::
+````
+
 ::: {.panzoom}
 ```{python}
+#| echo: false
 #| panzoom: false
 #| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A sine wave, sin(2x)."
@@ -287,8 +301,25 @@ inside a `.panzoom` div. The cell's options apply as they do outside the div: it
 opens in panzoom without the hint line, and zooming in stops at 2 screen pixels
 per image pixel.
 
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panzoom}
+```{{python}}
+#| fig-alt: "Line plot of a cosine wave"
+#| panzoom:
+#|   max-zoom: 2
+#|   hint: false
+#| fig-cap: >-
+#|   A cosine wave, cos(2x).
+
+plt.plot(x, np.cos(2 * x))
+plt.show()
+```
+:::
+````
+
 ::: {.panzoom}
 ```{python}
+#| echo: false
 #| fig-alt: "Line plot of a cosine wave"
 #| panzoom:
 #|   max-zoom: 2

@@ -174,9 +174,26 @@ A labeled plot and a labeled markdown image in a `.panzoom` div. Each opens in
 panzoom on its own, and both keep their numbers and anchors (see @fig-div-plot
 and @fig-div-image).
 
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panzoom layout-ncol="2"}
+```{{r}}
+#| label: fig-div-plot
+#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| fig-cap: "Wave 3: y = sin(3x), its area to the axis shaded."
+#| fig-width: 7.5
+#| fig-height: 5
+
+wave(k = 3)
+```
+
+![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){#fig-div-image fig-alt="A white lighthouse against a blue sky"}
+:::
+````
+
 ::: {.panzoom layout-ncol="2"}
 ```{r}
 #| label: fig-div-plot
+#| echo: false
 #| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
 #| fig-cap: "Wave 3: y = sin(3x), its area to the axis shaded."
 #| fig-width: 7.5
