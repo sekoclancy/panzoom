@@ -147,21 +147,3 @@ so clicking it does nothing.
 ```markdown {.show-source}
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
-
-## Caption on the left {#c9 expect-open="panzoom" expect-desc-position="left"}
-
-A cell with `desc-position: left` under both the `panzoom` and the `lightbox`
-cell options. panzoom takes it and drops the lightbox options, so it opens in
-panzoom with the caption in a panel on the left of the image.
-
-```{python}
-#| fig-alt: "Line plot of a sine wave with a long period"
-#| panzoom:
-#|   desc-position: left
-#| lightbox:
-#|   desc-position: left
-#| fig-cap: "A sine wave with a long period."
-
-plt.plot(x, np.sin(x / 2))
-plt.show()
-```

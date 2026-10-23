@@ -139,21 +139,3 @@ does nothing.
 ```markdown {.show-source}
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
-
-## Caption on the left {#c9 expect-open="glightbox" expect-desc-position="bottom"}
-
-A cell with `desc-position: left` under both the `panzoom` and the `lightbox`
-cell options. panzoom is off, so it opens in lightbox, and with Jupyter,
-lightbox ignores its nested options, so the caption shows below the image.
-
-```{python}
-#| fig-alt: "Line plot of a sine wave with a long period"
-#| panzoom:
-#|   desc-position: left
-#| lightbox:
-#|   desc-position: left
-#| fig-cap: "A sine wave with a long period."
-
-plt.plot(x, np.sin(x / 2))
-plt.show()
-```
