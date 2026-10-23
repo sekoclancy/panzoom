@@ -20,7 +20,8 @@ change without notice.
 :::
 
 This [Quarto](https://quarto.org) extension opens figures in a full-screen
-viewer. It is built on [Panzoom](https://github.com/timmywil/panzoom) and
+viewer: markdown images, and plots from R (knitr) and Python (Jupyter) code
+cells. It is built on [Panzoom](https://github.com/timmywil/panzoom) and
 inspired by
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 
