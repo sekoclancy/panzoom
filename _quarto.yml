@@ -48,7 +48,7 @@ website:
         aria-label: GitHub repository
   # The sidebar names the page, so no breadcrumbs above the title.
   bread-crumbs: false
-  # The example pages, by letter. index.qmd turns it off.
+  # The example pages, by letter.
   sidebar:
     style: docked
     contents:
