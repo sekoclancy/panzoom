@@ -26,12 +26,14 @@ by
 and natively supports markdown images and output from R (knitr) and Python
 (Jupyter) code cells.
 
-To install it, run this in your project's directory. It adds the extension to
-the project's `_extensions` folder.
+You can install this extension using the Quarto CLI (Quarto >=1.8.27):
 
 ```bash
 quarto add sekoclancy/panzoom
 ```
+
+This will install the extension under the `_extensions` subdirectory. If you're
+using version control, you will want to check in this directory.
 
 Source and documentation: <https://github.com/sekoclancy/panzoom>.
 
