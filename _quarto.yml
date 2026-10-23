@@ -80,9 +80,11 @@ website:
             text: "K. `panzoom` on every figure"
           - href: tests/pages/l-jupyter.qmd
             text: "L. Cell options"
+          - href: tests/pages/m-jupyter-figures.qmd
+            text: "M. Captions, formats, and shapes"
       - section: "Styling"
         contents:
-          - href: tests/pages/m-styling-options.qmd
-            text: "M. Color options"
-          - href: tests/pages/n-css-class.qmd
-            text: "N. Styling with CSS"
+          - href: tests/pages/n-styling-options.qmd
+            text: "N. Color options"
+          - href: tests/pages/o-css-class.qmd
+            text: "O. Styling with CSS"

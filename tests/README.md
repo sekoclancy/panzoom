@@ -85,20 +85,21 @@ the expected result.
   | [i-wide-galleries](pages/i-wide-galleries.qmd)       | The same shapes in galleries and layouts, of different lengths          | on      | none          |
 
 **Python (Jupyter).** J and K are the Jupyter counterparts of A and C, on eight
-cases:
+cases. L and M carry the R pages' cell cases:
 
-  | Page                                               | Description                                                                                | panzoom | Lightbox |
-  | -------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------- | -------- |
-  | [j-jupyter-lightbox](pages/j-jupyter-lightbox.qmd) | **Reference:** the lightbox alone (it ignores nested `#\| lightbox:` options with Jupyter) | off     | `true`   |
-  | [k-jupyter-auto](pages/k-jupyter-auto.qmd)         | **`panzoom: true`:** J's cases; keep the two in step                                       | `true`  | `true`   |
-  | [l-jupyter](pages/l-jupyter.qmd)                   | The R pages' cell options on matplotlib figures, and svg output                            | on      | none     |
+  | Page                                               | Description                                                                                                             | panzoom | Lightbox |
+  | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------- | -------- |
+  | [j-jupyter-lightbox](pages/j-jupyter-lightbox.qmd) | **Reference:** the lightbox alone (it ignores nested `#\| lightbox:` options with Jupyter)                              | off     | `true`   |
+  | [k-jupyter-auto](pages/k-jupyter-auto.qmd)         | **`panzoom: true`:** J's cases; keep the two in step                                                                    | `true`  | `true`   |
+  | [l-jupyter](pages/l-jupyter.qmd)                   | The R pages' cell options on matplotlib figures, and svg output                                                         | on      | none     |
+  | [m-jupyter-figures](pages/m-jupyter-figures.qmd)   | The cell cases from E to I: `loop`, captions and citations, png + pdf and jpeg, `fit`, strips and collages in galleries | on      | none     |
 
 **Styling**, checked with `expect-overlay` and `expect-band`:
 
   | Page                                             | Description                                                                              |
   | ------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-  | [m-styling-options](pages/m-styling-options.qmd) | The color options, no CSS                                                                |
-  | [n-css-class](pages/n-css-class.qmd)             | `css-class` with CSS rules in a raw HTML block: the CSS variables and the viewer's parts |
+  | [n-styling-options](pages/n-styling-options.qmd) | The color options, no CSS                                                                |
+  | [o-css-class](pages/o-css-class.qmd)             | `css-class` with CSS rules in a raw HTML block: the CSS variables and the viewer's parts |
 
 **Outside the site** ([standalone/](standalone/)), rendered by
 `npm run standalone` as plain documents:

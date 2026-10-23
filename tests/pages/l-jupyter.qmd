@@ -228,9 +228,9 @@ plt.show()
 
 Jupyter saves the figure file itself, unlike knitr, and ignores a cell's
 `fig-format`, so the cell switches the matplotlib output to svg itself, and back
-to png after. svg from R is on [image formats](e-formats.html). The plot opens
-in panzoom and stays sharp when zoomed, since the viewer redraws svg at each
-zoom.
+to the default (retina png) after. svg from R is on [image
+formats](e-formats.html). The plot opens in panzoom and stays sharp when zoomed,
+since the viewer redraws svg at each zoom.
 
 ```{python}
 #| fig-alt: "Line plot of a damped sine wave"
@@ -240,13 +240,13 @@ zoom.
 %config InlineBackend.figure_formats = ["svg"]
 plt.plot(x, np.exp(-x / 4) * np.sin(3 * x))
 plt.show()
-%config InlineBackend.figure_formats = ["png"]
+%config InlineBackend.figure_formats = ["retina"]
 ```
 
 ## Colors for one cell {#c13 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
 
 A cell with colors of its own under the `panzoom` cell option, as on [color
-options](m-styling-options.html). It opens with a deep green backdrop and a pale
+options](n-styling-options.html). It opens with a deep green backdrop and a pale
 green caption band.
 
 ```{python}
@@ -264,7 +264,7 @@ plt.show()
 ## Class for one cell {#c14 expect-open="panzoom" expect-class="py-viewer"}
 
 A cell with `css-class: py-viewer` under the `panzoom` cell option, as on
-[styling with CSS](n-css-class.html). It opens with that class on the viewer,
+[styling with CSS](o-css-class.html). It opens with that class on the viewer,
 for a stylesheet to style.
 
 ```{python}

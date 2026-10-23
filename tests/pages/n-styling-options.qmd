@@ -27,7 +27,7 @@ panzoom:
 ```
 
 Each option sets one of the viewer's CSS variables. [Styling with
-CSS](n-css-class.html) sets the same variables from a stylesheet, for some pages
+CSS](o-css-class.html) sets the same variables from a stylesheet, for some pages
 only. A single image or code cell can set its own colors, which apply while that
 image is open ([case 2](#c2) and [case 4](#c4)).
 

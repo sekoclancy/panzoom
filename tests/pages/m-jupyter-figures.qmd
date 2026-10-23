@@ -1,0 +1,340 @@
+---
+title: "Captions, formats, and shapes"
+engine: jupyter
+jupyter: python3
+format:
+  html:
+    code-tools: true
+filters:
+  - panzoom
+panzoom:
+  hint: false
+  loop: true
+references:
+  - id: fenner2012
+    type: article-journal
+    title: One-click science marketing
+    author:
+      - family: Fenner
+        given: Martin
+    container-title: Nature Materials
+    volume: 11
+    page: 261-263
+    issued:
+      date-parts:
+        - [2012, 3]
+  - id: tufte2001
+    type: book
+    title: The visual display of quantitative information
+    author:
+      - family: Tufte
+        given: Edward R.
+    publisher: Graphics Press
+    edition: 2
+    issued:
+      date-parts:
+        - [2001]
+---
+
+The cell cases from the R pages on [cell options](f-options.html), [captions and
+descriptions](g-captions.html), [image formats](e-formats.html), [wide and tall
+figures](h-wide.html), and [wide figures in galleries](i-wide-galleries.html),
+on matplotlib figures. The page sets `loop`, so the gallery in [case 1](#c1)
+wraps around.
+
+```yaml
+filters:
+  - panzoom
+panzoom:
+  hint: false
+  loop: true
+```
+
+Jupyter figures are shown at their size in inches × 96 px, and written at twice
+that, so a figure here opens at up to twice its size on the page. Figures wider
+than about 8 inches would run past the column, so the collages here are 8 inches
+wide, not 25 as on the R pages.
+
+The plots are drawn with these helpers:
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def wave(k=1):
+    x = np.linspace(0, 4 * np.pi, 400)
+    col = plt.cm.Dark2(k - 1)
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.fill_between(x, np.sin(k * x), color=col, alpha=0.35, linewidth=0)
+    ax.plot(x, np.sin(k * x), color=col, linewidth=2)
+    ax.set(title=f"Wave {k}", xlabel="x", ylabel="sin(kx)")
+    plt.show()
+
+
+# A collage: `n` panels side by side, like a wide patchwork figure.
+def collage(n=12, height=0.8):
+    rng = np.random.default_rng(1)
+    fig, axes = plt.subplots(1, n, figsize=(8, height), layout="constrained")
+    for i, ax in enumerate(axes):
+        ax.plot(np.cumsum(rng.normal(size=200)), color=plt.cm.viridis(i / n))
+        ax.set_title(f"Panel {i + 1}", fontsize=5)
+        ax.tick_params(labelsize=4)
+    plt.show()
+
+
+# A tall strip: `n` rows stacked, like a tall patchwork figure.
+def strip(seed=2, n=8):
+    rng = np.random.default_rng(seed)
+    fig, axes = plt.subplots(n, 1, figsize=(3, 10), layout="constrained")
+    for i, ax in enumerate(axes):
+        ax.plot(np.cumsum(rng.normal(size=100)), color=plt.cm.plasma(i / n))
+        ax.set_title(f"Strip {seed}, row {i + 1}", fontsize=7)
+        ax.tick_params(labelsize=5)
+    plt.show()
+```
+
+## Looping gallery {#c1 expect-open="panzoom"}
+
+One cell with three plots, joined by `group: waves` under the `panzoom` cell
+option. Each opens in panzoom, in a three-image gallery. The page sets `loop`,
+so the gallery wraps around: on wave one, the left arrow key or the previous
+button goes to wave three, and on wave three, the right arrow key or the next
+button goes back to wave one.
+
+```{python}
+#| fig-alt:
+#|   - "Plot titled Wave 1: a sine curve with its area to the axis shaded"
+#|   - "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#|   - "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   group: waves
+#| fig-cap:
+#|   - "Wave one, the first of three plots in a gallery."
+#|   - "Wave two."
+#|   - "Wave three."
+
+for k in range(1, 4):
+    wave(k)
+```
+
+## Text between plots in a group {#c2 expect-open="panzoom" expect-steps="true"}
+
+One cell with `group: printed` under the `panzoom` cell option, printing text
+between its two plots. Jupyter keeps the outputs in order, so the text sits
+between the plots on the page, unlike knitr's `fig-show: hold` ([cell
+options](f-options.html#c11)). They open in panzoom as a two-image gallery, each
+with its own caption.
+
+```{python}
+#| fig-alt:
+#|   - "Plot titled Wave 1: a sine curve with its area to the axis shaded"
+#|   - "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   group: printed
+#| fig-cap:
+#|   - "Wave one, drawn before the print() call."
+#|   - "Wave two, drawn after it."
+
+wave(1)
+print("Printed between the two plots.")
+wave(2)
+```
+
+## Caption above the image {#c3 expect-open="panzoom" expect-desc-position="top"}
+
+A cell with `desc-position: top` under the `panzoom` cell option. It opens in
+panzoom, with the caption above the image.
+
+```{python}
+#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   desc-position: top
+#| fig-cap: "Wave 3."
+
+wave(3)
+```
+
+## No caption {#c4 expect-open="panzoom" expect-caption="none"}
+
+A cell with `caption: false` under the `panzoom` cell option. The figure has a
+caption on the page, but it opens in panzoom without one.
+
+```{python}
+#| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   caption: false
+#| fig-cap: "This caption stays on the page."
+
+wave(2)
+```
+
+## Citations {#c5 expect-references=""}
+
+A labeled figure with a citation in its caption, and a description with math and
+a citation. It opens in panzoom with all of them rendered, and both works are
+listed under [References](#references).
+
+```{python}
+#| label: fig-cited
+#| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
+#| fig-cap: "Wave 4 [@fenner2012]."
+#| panzoom:
+#|   description: 'A sine wave, $y = \sin(kx)$ [@tufte2001].'
+
+wave(4)
+```
+
+## Long description {#c6 expect-open="panzoom" expect-scroll="description"}
+
+A cell with a description longer than its panel, under the `panzoom` cell
+option. It opens in panzoom, and the description panel scrolls. Tab reaches the
+panel, and the arrow keys, Page Up and Page Down, Home, End, and Space scroll
+it.
+
+```{python}
+#| fig-alt: "Plot titled Wave 1: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   description: >-
+#|     This description is long on purpose: it is taller than the space the
+#|     viewer gives a description, so its panel scrolls. With a mouse or
+#|     trackpad, scrolling over the panel scrolls it. From the keyboard, Tab
+#|     moves focus to the panel, and then the arrow keys, Page Up and Page Down,
+#|     Home, End and Space scroll it, as they would scroll a page. The image
+#|     stays where it is meanwhile, and the page behind the viewer doesn't move.
+#|     Tab again moves on to the close button, and Esc still closes the viewer.
+#|     Plots like this one often come with long notes: what was measured, how,
+#|     and over what range; what the axes mean; what to look for and what to
+#|     ignore. Notes like these can run to several paragraphs, and a reader who
+#|     uses the keyboard must be able to read all of them, not just the lines
+#|     that fit. In a short window, or on a phone, the panel is smaller still,
+#|     so even a description of two or three sentences can scroll there. The
+#|     panel is a Tab stop only while it scrolls, so a short description adds no
+#|     extra stop. The rest of this description only adds length, so that it
+#|     scrolls in every window the tests use, including the wide screen, where
+#|     the panel is tallest and its lines are longest. The wave rises from zero
+#|     to one over the first quarter of each period, falls back to zero at the
+#|     half period, reaches minus one at three quarters, and returns to zero at
+#|     the end of the period. The shaded area above the axis equals the shaded
+#|     area below it over each whole period, so the wave's mean is zero.
+#|     Doubling k halves the period and doubles the number of crossings, and the
+#|     shading follows the curve wherever it goes. The curve is drawn with 400
+#|     points, enough that it looks smooth at any zoom the viewer allows.
+#|     Nothing in this description is needed for the test except its length: a
+#|     description this long scrolls in any window.
+#| fig-cap: "Wave 1, with a long description."
+
+wave(1)
+```
+
+## png and pdf {#c7 expect-open="panzoom" expect-fit="contain"}
+
+A plot written as both png and pdf. Jupyter ignores a cell's `fig-format`, so
+the cell sets matplotlib's formats itself, and back to the default (retina png)
+after. The page shows the png, which opens in panzoom.
+
+```{python}
+#| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#| panzoom: true
+#| fig-cap: "png shown, pdf written alongside."
+
+%config InlineBackend.figure_formats = ["png", "pdf"]
+wave(2)
+%config InlineBackend.figure_formats = ["retina"]
+```
+
+## jpeg {#c8 expect-open="panzoom" expect-fit="contain"}
+
+A plot written as jpeg, set the same way. It opens in panzoom.
+
+```{python}
+#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| panzoom: true
+#| fig-cap: "A plot written as jpeg."
+
+%config InlineBackend.figure_formats = ["jpeg"]
+wave(3)
+%config InlineBackend.figure_formats = ["retina"]
+```
+
+## Tall strip {#c9 expect-fit="width" shift-scroll="y"}
+
+A 3 × 10 inch strip. It opens at screen width from its top, and Shift+scroll
+moves up and down.
+
+```{python}
+#| fig-alt: "A column of 8 small line plots of random walks"
+#| panzoom: true
+#| fig-cap: "A tall strip of 8 panels."
+
+strip(seed=2)
+```
+
+## Fit to width {#c10 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
+
+An ordinary plot with `fit: width`. Filling the width makes the plot taller than
+the screen, so it opens closer than the whole plot and zooms out to it.
+
+```{python}
+#| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   fit: width
+
+wave(4)
+```
+
+## Fit to height on a wide figure {#c11 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+
+An 8 × 3 inch figure with `fit: height`. It isn't a strip, since shown whole it
+is over a quarter of the screen tall, so `fit: auto` would open it whole. With
+`fit: height`, it opens filling the screen height, up to its real size, at the
+spot you clicked, and zooms out to the whole figure.
+
+```{python}
+#| fig-alt: "A row of 6 small line plots of random walks, each in its own color"
+#| panzoom:
+#|   fit: height
+
+collage(n=6, height=3)
+```
+
+## Gallery of two collages {#c12 expect-fit="height"}
+
+Two 8 × 0.8 inch collages in a gallery. Each opens at screen height. The left
+and right arrow keys and dragging pan along the collage, and the previous and
+next buttons change collages.
+
+```{python}
+#| fig-alt:
+#|   - "A row of 12 small line plots of random walks, each in its own color"
+#|   - "A row of 15 small line plots of random walks, each in its own color"
+#| panzoom:
+#|   group: collages
+#| fig-cap:
+#|   - "First collage."
+#|   - "Second collage."
+
+collage(n=12)
+collage(n=15)
+```
+
+## Strips side by side {#c13 expect-fit="width"}
+
+Two tall strips side by side as subfigures. Each opens at screen width, and the
+two form a gallery.
+
+```{python}
+#| label: fig-strip-cols
+#| panzoom: true
+#| fig-cap: "Two tall strips, side by side."
+#| fig-subcap: ["First strip", "Second strip"]
+#| fig-alt:
+#|   - "A column of 8 small line plots of random walks"
+#|   - "A column of 8 small line plots of random walks"
+#| layout-ncol: 2
+
+strip(seed=3)
+strip(seed=4)
+```
+
+## References {.unnumbered}

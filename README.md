@@ -389,9 +389,9 @@ plot(pressure)
 ````
 
 The [color
-options](https://sekoclancy.github.io/panzoom/tests/pages/m-styling-options.html)
+options](https://sekoclancy.github.io/panzoom/tests/pages/n-styling-options.html)
 and [styling with
-CSS](https://sekoclancy.github.io/panzoom/tests/pages/n-css-class.html) examples
+CSS](https://sekoclancy.github.io/panzoom/tests/pages/o-css-class.html) examples
 have each way, and the classes of the viewer's parts.
 
 ## Development
