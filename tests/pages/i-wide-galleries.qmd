@@ -188,7 +188,8 @@ so the caption band changes height between them, and each collage stays clear of
 it. `fig-dpi: 48` only keeps the files small.
 
 ```{r}
-#| fig-alt: "A row of 24 small line plots of random walks, each in its own color"
+#| fig-alt: >-
+#|   A row of 24 small line plots of random walks, each in its own color
 #| panzoom:
 #|   group: mixed-collages
 #| fig-width: 40
@@ -200,7 +201,8 @@ collage(n = 24)
 ```
 
 ```{r}
-#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom:
 #|   group: mixed-collages
 #|   description: >-

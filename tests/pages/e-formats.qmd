@@ -55,7 +55,8 @@ collage <- function(n = 12) {
 A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 
 ```{r}
-#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
@@ -74,7 +75,8 @@ collage(n = 12)
 The same collage written as svg. It opens in panzoom at screen height.
 
 ```{r}
-#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
@@ -167,7 +169,8 @@ broken image, and clicking it opens the viewer with "The image could not be
 loaded." in place of the image.
 
 ```{r}
-#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 100
 #| fig-height: 5

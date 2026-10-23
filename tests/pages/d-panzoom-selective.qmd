@@ -134,7 +134,9 @@ options, so each plot opens in panzoom on its own, without a description.
 
 ```{r}
 #| fig-alt:
-#|   - "Scatterplot matrix of the mtcars data, each variable plotted against every other"
+#|   - >-
+#|     Scatterplot matrix of the mtcars data, each variable plotted against
+#|     every other
 #|   - "Scatter plot of stopping distance against speed for 50 cars"
 #| panzoom: true
 #| fig-cap:
@@ -200,7 +202,8 @@ The caption of [case 4](#c4) links to it.
 
 ```{r}
 #| label: fig-plain
-#| fig-alt: "Heat map of the Maunga Whau volcano's heights, in yellow, orange, and red"
+#| fig-alt: >-
+#|   Heat map of the Maunga Whau volcano's heights, in yellow, orange, and red
 #| fig-cap: >-
 #|   Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red
 #|   (high).

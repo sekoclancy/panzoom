@@ -236,7 +236,8 @@ after. The page shows the png, which opens in panzoom.
 ```{python}
 #| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
 #| panzoom: true
-#| fig-cap: "Wave 2: y = sin(2x), its area to the axis shaded, as png (and pdf)."
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x), its area to the axis shaded, as png (and pdf).
 
 %config InlineBackend.figure_formats = ["png", "pdf"]
 wave(2)

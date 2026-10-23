@@ -112,7 +112,8 @@ A 25 × 2 inch collage. It opens in panzoom at screen height, and Shift+scroll
 moves sideways.
 
 ```{r}
-#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
@@ -127,7 +128,8 @@ The collage from [case 1](#c1) with `fit: contain`. It opens whole, as a thin
 strip.
 
 ```{r}
-#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom:
 #|   fit: contain
 #| fig-width: 25

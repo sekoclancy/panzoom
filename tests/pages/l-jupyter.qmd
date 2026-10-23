@@ -78,8 +78,11 @@ description with math, quotes, and a cross-reference to the figure in [case
 #| label: fig-scatter
 #| fig-alt: "Scatter plot of 100 points along a rising diagonal"
 #| panzoom:
-#|   description: 'Points scattered around $y = x + \varepsilon$, with a "quote"; compare @fig-sub.'
-#| fig-cap: "100 points scattered around a rising diagonal, $n = 100$; compare @fig-sub."
+#|   description: >-
+#|     Points scattered around $y = x + \varepsilon$, with a "quote"; compare
+#|     @fig-sub.
+#| fig-cap: >-
+#|   100 points scattered around a rising diagonal, $n = 100$; compare @fig-sub.
 
 pts = rng.normal(size=100)
 plt.scatter(pts, pts + rng.normal(scale=0.5, size=100))

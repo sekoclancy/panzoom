@@ -155,7 +155,8 @@ still a strip, so it opens in panzoom at screen height.
 
 ::: {.column-screen}
 ```{r}
-#| fig-alt: "A row of 12 small line plots of random walks, each in its own color"
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2

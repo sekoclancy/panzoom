@@ -129,8 +129,10 @@ included:
 ````markdown
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
-#| fig-alt: "Heat map of Maunga Whau's heights in terrain colors, from green to white"
-#| fig-cap: "Maunga Whau's heights as a heat map, from green (low) to white (high)."
+#| fig-alt: >-
+#|   Heat map of Maunga Whau's heights in terrain colors, from green to white
+#| fig-cap: >-
+#|   Maunga Whau's heights as a heat map, from green (low) to white (high).
 #| fig-width: 8
 #| fig-height: 5.5
 
@@ -143,9 +145,11 @@ image(volcano, col = terrain.colors(100))
 
 ::: {.panzoom layout-ncol="2"}
 ```{r}
-#| fig-alt: "Heat map of Maunga Whau's heights in terrain colors, from green to white"
+#| fig-alt: >-
+#|   Heat map of Maunga Whau's heights in terrain colors, from green to white
 #| echo: false
-#| fig-cap: "Maunga Whau's heights as a heat map, from green (low) to white (high)."
+#| fig-cap: >-
+#|   Maunga Whau's heights as a heat map, from green (low) to white (high).
 #| fig-width: 8
 #| fig-height: 5.5
 
@@ -164,7 +168,9 @@ automatically.
 
 ```{r}
 #| fig-alt:
-#|   - "Heat map of Maunga Whau's heights in Viridis colors, from dark blue to yellow"
+#|   - >-
+#|     Heat map of Maunga Whau's heights in Viridis colors, from dark blue to
+#|     yellow
 #|   - "Perspective plot of Maunga Whau's heights, shaded green"
 #| panzoom:
 #|   group: volcano-views
@@ -215,7 +221,8 @@ right on it.
 #|   fit: height
 #| fig-width: 16
 #| fig-height: 2
-#| fig-cap: "Eight simulated random walks of 200 steps each, with the sixth highlighted."
+#| fig-cap: >-
+#|   Eight simulated random walks of 200 steps each, with the sixth highlighted.
 
 set.seed(1)
 par(mfrow = c(1, 8), mar = c(3, 3, 2, 1), cex.main = 1.3)
