@@ -32,7 +32,7 @@ const held = new Map(), refused = new Set();
 
 function serve(root) {
   const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".png": "image/png",
-    ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".json": "application/json" };
+    ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".json": "application/json" };
   const server = http.createServer((req, res) => {
     const p = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
     const f = path.join(root, p);

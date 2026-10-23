@@ -41,7 +41,7 @@ const PHONE = { width: 390, height: 844, deviceScaleFactor: 3, isMobile: true, h
 
 function serve(root) {
   const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".png": "image/png",
-    ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".json": "application/json" };
+    ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".json": "application/json" };
   const server = http.createServer((req, res) => {
     const f = path.join(root, decodeURIComponent(new URL(req.url, "http://localhost").pathname));
     if (!f.startsWith(root + path.sep) || !fs.existsSync(f) || !fs.statSync(f).isFile()) {

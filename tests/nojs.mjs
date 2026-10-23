@@ -55,7 +55,7 @@ function selfContained(file) {
 
 // Minimal static file server for the repo, as in browser.mjs.
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript",
-  ".css": "text/css", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg",
+  ".css": "text/css", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
   ".svg": "image/svg+xml", ".webp": "image/webp", ".gif": "image/gif", ".woff": "font/woff", ".woff2": "font/woff2", ".ttf": "font/ttf" };
 function serve(root) {
   const server = http.createServer((req, res) => {
