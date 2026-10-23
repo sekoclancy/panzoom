@@ -1239,6 +1239,15 @@ async function checkPage(browser, base, file) {
     const view = await viewerTransform(page);
     const pageY = await page.evaluate(() => scrollY);
     const s = { overflows: (await panel()).max > 1 };
+    // A hint line shown with the long panel stays whole on the screen, clear
+    // of the panel.
+    s.hintClear = await page.evaluate((sel) => {
+      const h = document.querySelector(".panzoom-overlay .panzoom-hint");
+      if (h.hidden) return true;
+      const b = h.getBoundingClientRect(), p = document.querySelector(`.panzoom-overlay ${sel}`).getBoundingClientRect();
+      return b.top >= 0 && b.bottom <= innerHeight + 0.5 && b.left >= 0 && b.right <= innerWidth + 0.5 &&
+        (b.top >= p.bottom - 0.5 || b.bottom <= p.top + 0.5);
+    }, sel);
     let tabs = 0;
     while (!(await panel()).focused && tabs < 10) { await page.keyboard.press("Tab"); tabs++; }
     s.reached = (await panel()).focused;
