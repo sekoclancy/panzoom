@@ -16,9 +16,11 @@ lightbox is on for the whole page, and only images marked with the `.panzoom`
 class or the `#| panzoom: true` cell option open in panzoom. Every other image
 opens in lightbox. The same cases open in lightbox alone on the [lightbox
 page](a-lightbox.html), and the same markup without lightbox is on [panzoom on
-marked images only](d-panzoom-selective.html). The hint line is off.
+marked images only](d-panzoom-selective.html). The YAML header turns on lightbox
+and panzoom, and turns off the hint line:
 
 ```yaml
+---
 format:
   html:
     lightbox: true
@@ -26,6 +28,7 @@ filters:
   - panzoom
 panzoom:
   hint: false
+---
 ```
 
 ## Single image {#c1 expect-open="panzoom" expect-desc-position="left"}

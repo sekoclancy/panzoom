@@ -89,24 +89,32 @@ Not offered (lightbox has this):
 
 ## Usage
 
-panzoom is a filter: turn it on for one document in its YAML header, or for
-every page of a Quarto project (website, book) in `_quarto.yml`:
+panzoom is a filter: turn it on for one document in the YAML header at the top
+of its `.qmd` file:
 
 ```yaml
+---
 filters:
   - panzoom
+---
 ```
+
+For every page of a Quarto project (website, book), put the same lines in
+`_quarto.yml`, without the `---` lines. The other YAML examples below work in
+either place too.
 
 ### Global Panzoom
 
-With `panzoom: true`, every figure opens in the viewer, as does any image alone
-in its own paragraph. Images inside a line of text are left out. These are the
-same images Quarto's `lightbox: true` takes.
+With `panzoom: true` in the YAML header, every figure opens in the viewer, as
+does any image alone in its own paragraph. Images inside a line of text are left
+out. These are the same images `lightbox: true` takes.
 
 ```yaml
+---
 filters:
   - panzoom
 panzoom: true
+---
 ```
 
 `panzoom: auto` is the same as `true` (to match `lightbox:` options), and
@@ -154,6 +162,7 @@ markdown image, give it `.nopanzoom`. An image inside a link keeps its link.
 Options go under `panzoom:` in the document's YAML header, in place of `true`:
 
 ```yaml
+---
 panzoom:
   match: auto     # every figure, same as panzoom: true; omit to apply only to selected images
   max-zoom: 4     # number: screen pixels per image pixel, at most (default 4)
@@ -169,6 +178,7 @@ panzoom:
   caption-background: black   # the caption band,
   caption-color: white        # caption, description, and hint text,
   link-color: lightblue       # and links in captions (defaults follow the theme)
+---
 ```
 
 A code cell can set `max-zoom`, `hint`, `caption`, `fit`, `desc-position`,
@@ -199,14 +209,17 @@ property name max-zom is invalid
 
 ### Keys
 
-`keys` sets the document's viewer keys. Actions left out keep their defaults:
+`keys` in the YAML header sets the viewer keys. Actions left out keep their
+defaults:
 
 ```yaml
+---
 panzoom:
   keys:
     caption: k          # one key
     hint: false         # no key
     close: [Escape, q]  # several keys
+---
 ```
 
   | Action                                               | Default      |
@@ -317,12 +330,14 @@ for (i in 1:12) plot(cumsum(rnorm(200)), type = "l", main = paste("Panel", i))
 ```
 ````
 
-or for a whole document:
+or for a whole document, in its YAML header:
 
 ```yaml
+---
 panzoom:
   match: auto
   fit: contain    # every figure opens whole
+---
 ```
 
 ### Math
@@ -330,21 +345,27 @@ panzoom:
 Math in captions and descriptions is displayed in the viewer.
 
 MathJax and KaTeX are loaded from the web, so math needs a connection. To make
-math work offline, render with MathJax (Quarto's default) and:
+math work offline, render with MathJax (the Quarto default) and add to the YAML
+header:
 
 ```yaml
+---
 embed-resources: true
 self-contained-math: true
+---
 ```
 
 ### Self-contained documents
 
-panzoom works in a self-contained document, with no internet access:
+panzoom works in a self-contained document, with no internet access. In the YAML
+header:
 
 ```yaml
+---
 filters:
   - panzoom
 embed-resources: true
+---
 ```
 
 For math, use `html-math-method: mathml`, or `katex` with
@@ -363,11 +384,15 @@ for in your own CSS (a `css:` file, or the theme's `.scss`):
   | `caption-color`      | `--panzoom-fg`       | Caption, description, and hint | The page's text color |
   | `link-color`         | `--panzoom-link`     | Links in captions              | The page's link color |
 
+In the YAML header, for the whole document:
+
 ```yaml
+---
 panzoom:
   backdrop: rgba(0, 0, 0, 0.9)   # any CSS color: rgba(),
   caption-background: "#222"     # hex (quoted, for YAML),
   caption-color: white           # or a name
+---
 ```
 
 In CSS, for every viewer on the site:

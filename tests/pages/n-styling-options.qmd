@@ -20,11 +20,13 @@ apply to every image on the page that opens in the viewer, except an
 [image](#c2) or [code cell](#c4) that sets its own.
 
 ```yaml
+---
 panzoom:
   backdrop: "rgba(18, 52, 86, 0.92)"  # deep blue
   caption-background: "#f4e9d8"       # cream
   caption-color: "#3b2a1a"            # dark brown
   link-color: "#a0361b"               # rust
+---
 ```
 
 Each option sets one of the viewer's CSS variables. [Styling with

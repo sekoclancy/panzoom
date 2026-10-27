@@ -94,15 +94,17 @@ references:
 The cell cases from the R pages on [cell options](f-options.html), [captions and
 descriptions](g-captions.html), [image formats](e-formats.html), [wide and tall
 figures](h-wide.html), and [wide figures in galleries](i-wide-galleries.html),
-on matplotlib figures. The page sets `loop`, so the gallery in [case 1](#c1)
-wraps around.
+on matplotlib figures. The YAML header sets `loop`, so the gallery in [case
+1](#c1) wraps around.
 
 ```yaml
+---
 filters:
   - panzoom
 panzoom:
   hint: false
   loop: true
+---
 ```
 
 Jupyter figures are shown at their size in inches × 96 px, and written at twice

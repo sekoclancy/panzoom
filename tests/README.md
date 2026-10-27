@@ -279,13 +279,15 @@ the image they click, and that source can't drift from the case the tests check,
 as a hand-made copy could. The filter belongs to the example site, not to the
 panzoom extension.
 
-List it first in the page's `filters:`, at `pre-ast`:
+List it first under `filters:` in the YAML header, at `pre-ast`:
 
 ```yaml
+---
 filters:
   - path: ../../_filters/show-source.lua
     at: pre-ast
   - panzoom
+---
 ```
 
 `pre-ast` runs it before Quarto builds figures and cross-references, so the

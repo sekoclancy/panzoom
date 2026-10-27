@@ -12,13 +12,16 @@ panzoom:
   css-class: plum-viewer
 ---
 
-The viewer styled with CSS. `css-class` adds a class to the viewer, and the
-rules below use it to set the viewer's colors (plum, with pink links), draw a
-line along the top of the caption band, and make the caption larger and italic.
+The viewer styled with CSS. `css-class`, in the YAML header, adds a class to the
+viewer, and the rules below use it to set the viewer colors (plum, with pink
+links), draw a line along the top of the caption band, and make the caption
+larger and italic.
 
 ```yaml
+---
 panzoom:
   css-class: plum-viewer
+---
 ```
 
 The rules apply only to a viewer with that class, so other pages keep the
@@ -60,15 +63,19 @@ Quarto document:
 ```
 ````
 
-The same rules can also go in a stylesheet file, or in the page's header:
+The same rules can also go in a stylesheet file, or straight into the HTML
+header, each set in the YAML header:
 
 ```yaml
+---
 format:
   html:
     css: viewer.css   # a file holding the rules above
+---
 ```
 
 ```yaml
+---
 format:
   html:
     include-in-header:
@@ -76,6 +83,7 @@ format:
         <style>
         .plum-viewer { --panzoom-backdrop: rgba(60, 20, 70, 0.9); }
         </style>
+---
 ```
 
 A theme's `.scss` file works too. Rules on the viewer's parts start with the
@@ -164,14 +172,16 @@ set on this page.
 
 A markdown image with `.panzoom` and `css-class="amber-viewer"`. The rules for
 that class are in a file, `assets/amber-viewer.html` in the panzoom repository,
-which this page's header includes. It opens with an amber viewer, an amber line
+which the YAML header includes. It opens with an amber viewer, an amber line
 along the top of the caption band, and an upright caption, and the link in its
 caption is gold.
 
 ```yaml
+---
 format:
   html:
     include-in-header: ../../assets/amber-viewer.html
+---
 ```
 
 The file holds a `<style>` block. Included in the header, its rules come before

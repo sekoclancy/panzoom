@@ -16,13 +16,16 @@ option open in panzoom. lightbox is off, so clicking any other image does
 nothing, except in [cells that ask for lightbox](#c6) with options of their own.
 The same cases open in lightbox alone on the [lightbox page](a-lightbox.html),
 and with lightbox on for the whole page on [lightbox and panzoom
-together](b-panzoom-lightbox.html). The hint line is off.
+together](b-panzoom-lightbox.html). The YAML header turns on panzoom and turns
+off the hint line:
 
 ```yaml
+---
 filters:
   - panzoom
 panzoom:
   hint: false
+---
 ```
 
 ## Single image {#c1 expect-open="panzoom" expect-desc-position="left"}

@@ -12,14 +12,16 @@ panzoom:
 ---
 
 Keeping an image or a cell out of panzoom, and setting options on one cell. The
-page sets `loop`, so the gallery in [case 7](#c7) wraps around. lightbox is off,
-so clicking an image panzoom leaves alone does nothing.
+YAML header sets `loop`, so the gallery in [case 7](#c7) wraps around. lightbox
+is off, so clicking an image panzoom leaves alone does nothing.
 
 ```yaml
+---
 filters:
   - panzoom
 panzoom:
   loop: true
+---
 ```
 
 The `caption` and `description` options are on [captions and

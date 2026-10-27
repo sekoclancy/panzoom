@@ -56,15 +56,18 @@ Click a figure to open it, or reach it with Tab and press Enter.
 
 ## Custom keybinds
 
-The `keys` option changes the keys for zooming, resetting, hiding the caption or
-the hint line, and closing. Actions left out keep their defaults:
+The `keys` option in the YAML header changes the keys for zooming, resetting,
+hiding the caption or the hint line, and closing. Actions left out keep their
+defaults:
 
 ```yaml
+---
 panzoom:
   keys:
     caption: k          # one key
     hint: false         # no key
     close: [Escape, q]  # several keys
+---
 ```
 
 ## Code cell

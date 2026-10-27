@@ -21,9 +21,11 @@ panzoom takes every image lightbox would take on its own, so no image needs to
 be marked. lightbox is set up too, but only cells that ask for it with the
 `#| lightbox: true` cell option, or with lightbox options such as `group`, open
 in it. The same cases open in lightbox alone on the [lightbox
-page](a-lightbox.html). The hint line is off.
+page](a-lightbox.html). The YAML header sets up both, and turns off the hint
+line:
 
 ```yaml
+---
 filters:
   - panzoom
 panzoom:
@@ -34,6 +36,7 @@ lightbox:
   effect: fade
   desc-position: right
   loop: true
+---
 ```
 
 ## Single image {#c1 expect-open="panzoom" expect-desc-position="left"}

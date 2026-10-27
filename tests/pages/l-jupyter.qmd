@@ -12,11 +12,13 @@ filters:
 The cell options from the R examples, on matplotlib figures, and svg output.
 lightbox is off, so only cells marked for panzoom open in it. Clicking any other
 figure does nothing, unless [its cell](#c9) turns lightbox on with
-`#| lightbox: true`.
+`#| lightbox: true`. The YAML header turns on panzoom:
 
 ```yaml
+---
 filters:
   - panzoom
+---
 ```
 
 Jupyter leaves the `panzoom` and `lightbox` options out of the code shown on the
