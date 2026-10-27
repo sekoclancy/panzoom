@@ -849,6 +849,7 @@
     overlay.addEventListener("wheel", function (e) {
       if (footer.contains(e.target)) return;
       e.preventDefault();
+      if (e.ctrlKey && gesture) return;
       var unit = e.deltaMode === 1 ? 16 : 1;
       if (!e.ctrlKey && (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))) {
         // Some browsers turn Shift+wheel into deltaX, others keep deltaY.
@@ -860,6 +861,27 @@
       // ctrlKey = trackpad pinch (small deltas), so it gets a higher gain
       zoomAt(Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015)), e.clientX, e.clientY);
     }, { passive: false });
+
+    // Desktop Safari reports a trackpad pinch as gesture events (scale since
+    // the pinch began), not as ctrlKey wheel events; while one runs, any
+    // ctrlKey wheel events are skipped so the pinch never counts twice. A
+    // touch pinch (iOS) also sends them, but Panzoom already follows the
+    // pointers, so they are ignored while a finger is down.
+    var gesture = null;
+    overlay.addEventListener("gesturestart", function (e) {
+      e.preventDefault();
+      gesture = press ? null : { scale: 1 };
+    });
+    overlay.addEventListener("gesturechange", function (e) {
+      e.preventDefault();
+      if (!gesture || press || !e.scale) return;
+      zoomAt(e.scale / gesture.scale, e.clientX, e.clientY);
+      gesture.scale = e.scale;
+    });
+    overlay.addEventListener("gestureend", function (e) {
+      e.preventDefault();
+      gesture = null;
+    });
 
     // Panzoom handles the drag itself. A press and release on the background
     // without moving closes the viewer; a horizontal swipe switches images
