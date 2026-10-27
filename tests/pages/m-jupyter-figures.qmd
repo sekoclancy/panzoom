@@ -403,4 +403,67 @@ strip(seed=3)
 strip(seed=4)
 ```
 
+## Gallery with the caption on the right {#c14 expect-open="panzoom" expect-desc-position="right" expect-steps="true"}
+
+One cell with three plots, joined by `group: right-waves` and set to
+`desc-position: right` under the `panzoom` cell option. Each opens in panzoom,
+in a three-image gallery, with its caption in a panel on the right of the image.
+The captions differ in length, so the panel changes width from one image to the
+next, and the image refits beside it.
+
+```{python}
+#| fig-alt:
+#|   - "Plot titled Wave 1: a sine curve with its area to the axis shaded"
+#|   - "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#|   - "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   group: right-waves
+#|   desc-position: right
+#| fig-cap:
+#|   - "Wave 1: y = sin(x)."
+#|   - "Wave 2: y = sin(2x), its area to the axis shaded."
+#|   - "Wave 3: y = sin(3x), its area shaded, three periods across the plot."
+
+wave(1)
+wave(2)
+wave(3)
+```
+
+## Gallery with mixed caption positions {#c15 expect-open="panzoom" expect-desc-position="right; top; bottom" expect-steps="true"}
+
+Three cells joined by `group: sides` under the `panzoom` cell option: the first
+with `desc-position: right`, the second with `desc-position: top`, and the third
+with neither. They open in panzoom as a three-image gallery, with the caption on
+the right, above, and below in turn; stepping between them moves the caption and
+refits the image.
+
+```{python}
+#| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   group: sides
+#|   desc-position: right
+#| fig-cap: "Wave 4: y = sin(4x), its area to the axis shaded."
+
+wave(4)
+```
+
+```{python}
+#| fig-alt: "Plot titled Wave 5: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   group: sides
+#|   desc-position: top
+#| fig-cap: "Wave 5: y = sin(5x), its area to the axis shaded."
+
+wave(5)
+```
+
+```{python}
+#| fig-alt: "Plot titled Wave 6: a sine curve with its area to the axis shaded"
+#| panzoom:
+#|   group: sides
+#| fig-cap: "Wave 6: y = sin(6x), its area to the axis shaded."
+
+wave(6)
+```
+
 ## References {.unnumbered}
