@@ -154,10 +154,10 @@ def strip(seed=2, n=8):
 ## Looping gallery {#c1 expect-open="panzoom"}
 
 One cell with three plots, joined by `group: waves` under the `panzoom` cell
-option. Each opens in panzoom, in a three-image gallery. The page sets `loop`,
-so the gallery wraps around: on wave one, the left arrow key or the previous
-button goes to wave three, and on wave three, the right arrow key or the next
-button goes back to wave one.
+option. Each opens in panzoom, in a three-image gallery. The YAML header sets
+`loop: true` under the `panzoom:` option, so the gallery wraps around: on wave
+one, the left arrow key or the previous button goes to wave three, and on wave
+three, the right arrow key or the next button goes back to wave one.
 
 ```{python}
 #| fig-alt:

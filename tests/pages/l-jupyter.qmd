@@ -10,9 +10,9 @@ filters:
 ---
 
 The cell options from the R examples, on matplotlib figures, and svg output.
-lightbox is off, so only cells marked for panzoom open in it. Clicking any other
-figure does nothing, unless [its cell](#c9) turns lightbox on with
-`#| lightbox: true`. The YAML header turns on panzoom:
+lightbox is not set in the YAML header, so only cells marked for panzoom open in
+it. Clicking any other figure does nothing, unless [its cell](#c9) turns
+lightbox on with `#| lightbox: true`. The YAML header turns on panzoom:
 
 ```yaml
 ---
@@ -213,8 +213,8 @@ plt.show()
 
 ## Plain cell {#c10 expect-open="nothing"}
 
-A cell with no options. With no lightbox on the page, clicking the plot does
-nothing.
+A cell with no options. lightbox is not set in the YAML header, so clicking the
+plot does nothing.
 
 ```{python}
 #| fig-cap: "A sine wave, sin(5x)."

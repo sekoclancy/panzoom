@@ -92,8 +92,8 @@ cross-references: @fig-volcano links here, and the viewer shows the caption as
 "Figure 1: ...".
 
 Options under `#| panzoom:` override the document's settings for one cell. This
-figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set at
-the top of this page) and hides the hint.
+figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set
+under the `panzoom:` option in the YAML header) and hides the hint.
 
 ```{r}
 #| label: fig-volcano

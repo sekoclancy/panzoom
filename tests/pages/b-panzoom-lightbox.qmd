@@ -12,9 +12,10 @@ panzoom:
   hint: false
 ---
 
-lightbox is on for the whole page, and only images marked with the `.panzoom`
-class or the `#| panzoom: true` cell option open in panzoom. Every other image
-opens in lightbox. The same cases open in lightbox alone on the [lightbox
+`lightbox: true` under `format: html:` in the YAML header turns lightbox on for
+the whole page, and only images marked with the `.panzoom` class or the
+`#| panzoom: true` cell option open in panzoom. Every other image opens in
+lightbox. The same cases open in lightbox alone on the [lightbox
 page](a-lightbox.html), and the same markup without lightbox is on [panzoom on
 marked images only](d-panzoom-selective.html). The YAML header turns on lightbox
 and panzoom, and turns off the hint line:

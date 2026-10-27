@@ -13,10 +13,11 @@ lightbox:
   loop: true
 ---
 
-This page has no panzoom, and every image opens in lightbox. Its cases are the
-same as on the panzoom examples, so each one can be compared with the case of
-the same number on [lightbox and panzoom together](b-panzoom-lightbox.html),
-[panzoom on every figure](c-panzoom-auto.html), and [panzoom on marked images
+panzoom is not listed under `filters:` in the YAML header, so every image opens
+in lightbox. Its cases are the same as on the panzoom examples, so each one can
+be compared with the case of the same number on [lightbox and panzoom
+together](b-panzoom-lightbox.html), [panzoom on every
+figure](c-panzoom-auto.html), and [panzoom on marked images
 only](d-panzoom-selective.html). These are the lightbox settings in the YAML
 header:
 
@@ -33,9 +34,10 @@ lightbox:
 ## Single image {#c1 expect-open="glightbox" expect-desc-position="right"}
 
 A markdown image with a description and `desc-position="left"`. It opens in
-lightbox, with the caption and description on the right, the page's setting,
-because Quarto (1.10) drops an image's own `desc-position`. panzoom puts them on
-the left.
+lightbox, with the caption and description on the right, as set by
+`desc-position: right` under the `lightbox:` option in the YAML header, because
+Quarto (1.10) drops the `desc-position` of an image. panzoom puts them on the
+left.
 
 ```markdown {.show-source}
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
@@ -44,8 +46,8 @@ the left.
 ## Gallery in a layout {#c2 expect-open="glightbox"}
 
 Three images in a layout, joined by `group="elsewhere"`. Each opens in lightbox,
-in one three-image gallery. The page sets `loop: true`, so the next arrow on the
-last image goes back to the first.
+in one three-image gallery. The YAML header sets `loop: true` under the
+`lightbox:` option, so the next arrow on the last image goes back to the first.
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}

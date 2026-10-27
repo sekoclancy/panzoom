@@ -14,11 +14,11 @@ lightbox: true
 ---
 
 panzoom takes every Python (Jupyter) figure lightbox would take on its own, so
-no figure needs to be marked. lightbox is on too, but only [cells that ask for
-it](#c4) with lightbox options open in it. The same cases open in lightbox alone
-on [lightbox on the Python cases](j-jupyter-lightbox.html), and the R cases are
-on [panzoom on every figure](c-panzoom-auto.html). The YAML header turns on
-panzoom and lightbox:
+no figure needs to be marked. `lightbox: true` in the YAML header turns lightbox
+on too, but only [cells that ask for it](#c4) with lightbox options open in it.
+The same cases open in lightbox alone on [lightbox on the Python
+cases](j-jupyter-lightbox.html), and the R cases are on [panzoom on every
+figure](c-panzoom-auto.html). The YAML header turns on panzoom and lightbox:
 
 ```yaml
 ---

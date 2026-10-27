@@ -11,11 +11,12 @@ filters:
     at: pre-ast
 ---
 
-This page has no panzoom, and every Python (Jupyter) figure opens in lightbox.
-Its cases are the same as on [panzoom on every figure](k-jupyter-auto.html), so
-each one can be compared with the case of the same number there. The R cases are
-on the [lightbox page](a-lightbox.html) and [panzoom on every
-figure](c-panzoom-auto.html). The YAML header turns on lightbox:
+panzoom is not listed under `filters:` in the YAML header, so every Python
+(Jupyter) figure opens in lightbox. Its cases are the same as on [panzoom on
+every figure](k-jupyter-auto.html), so each one can be compared with the case of
+the same number there. The R cases are on the [lightbox page](a-lightbox.html)
+and [panzoom on every figure](c-panzoom-auto.html). The YAML header turns on
+lightbox:
 
 ```yaml
 ---
@@ -113,8 +114,8 @@ plt.show()
 
 ## panzoom on a cell {#c6 expect-open="glightbox"}
 
-A cell with `#| panzoom: true`. The panzoom filter isn't loaded on this page, so
-the option does nothing, and the plot opens in lightbox.
+A cell with `#| panzoom: true`. panzoom is not listed under `filters:` in the
+YAML header, so the option does nothing, and the plot opens in lightbox.
 
 ```{python}
 #| fig-alt: "Line plot of a cosine wave"

@@ -12,12 +12,12 @@ panzoom:
 ---
 
 Only images marked with the `.panzoom` class or the `#| panzoom: true` cell
-option open in panzoom. lightbox is off, so clicking any other image does
-nothing, except in [cells that ask for lightbox](#c6) with options of their own.
-The same cases open in lightbox alone on the [lightbox page](a-lightbox.html),
-and with lightbox on for the whole page on [lightbox and panzoom
-together](b-panzoom-lightbox.html). The YAML header turns on panzoom and turns
-off the hint line:
+option open in panzoom. lightbox is not set in the YAML header, so clicking any
+other image does nothing, except in [cells that ask for lightbox](#c6) with
+options of their own. The same cases open in lightbox alone on the [lightbox
+page](a-lightbox.html), and with lightbox on for the whole page on [lightbox and
+panzoom together](b-panzoom-lightbox.html). The YAML header turns on panzoom and
+turns off the hint line:
 
 ```yaml
 ---
@@ -41,8 +41,8 @@ image.
 ## Gallery in a layout {#c2 expect-open="nothing panzoom nothing"}
 
 Three images in a layout, joined by `group="elsewhere"`. Only the middle one
-(Oak Bluffs) has `.panzoom`, so it opens in panzoom on its own. With no lightbox
-on the page, clicking the other two does nothing.
+(Oak Bluffs) has `.panzoom`, so it opens in panzoom on its own. lightbox is not
+set in the YAML header, so clicking the other two does nothing.
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}

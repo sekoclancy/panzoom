@@ -111,8 +111,9 @@ caption, and the link in its caption is pink.
 A markdown image with `.panzoom` and a class of its own,
 `css-class="sea-viewer"`. It opens with the dark teal `.sea-viewer` rules, a
 teal line along the top of the caption band, and an upright caption, and the
-link in its caption is teal. The page's class stays on the viewer too, so the
-`.sea-viewer` rules come after the `.plum-viewer` ones to win over them.
+link in its caption is teal. The `plum-viewer` class set under the `panzoom:`
+option in the YAML header stays on the viewer too, so the `.sea-viewer` rules
+come after the `.plum-viewer` ones to win over them.
 
 ```markdown {.show-source}
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard ([photo](https://unsplash.com/photos/HQEtvlNzUyA)).](../../images/mv-3.jpg){.panzoom css-class="sea-viewer" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
@@ -120,8 +121,8 @@ link in its caption is teal. The page's class stays on the viewer too, so the
 
 ## Code cell {#c3 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
-An R cell with `#| panzoom: true`. It opens with the plum viewer set on this
-page.
+An R cell with `#| panzoom: true`. It opens with the plum viewer set under the
+`panzoom:` option in the YAML header.
 
 ```{r}
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
@@ -162,7 +163,7 @@ teal viewer and the middle one the plum viewer, whichever way it is reached.
 ## Margin image {#c6 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 A markdown image with `.panzoom` in the margin. It opens with the plum viewer
-set on this page.
+set under the `panzoom:` option in the YAML header.
 
 ```markdown {.show-source}
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
