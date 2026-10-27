@@ -6,8 +6,8 @@
   double-click to reset, next image, Esc; open the wide figure on its
   highlighted panel and pan with the right and left arrow keys), with
   a drawn mouse pointer, since headless Chrome draws none, and a label
-  naming each key, scroll, drag, and double-click, which the pointer alone doesn't
-  show. Frames come from Chrome's screencast, each with its own timestamp,
+  naming each click, key, scroll, drag, and double-click, shown before
+  the action so it never trails what it names. Frames come from Chrome's screencast, each with its own timestamp,
   so the GIF plays at the session's real speed.
 
   Usage: render first (`quarto render` from the repo root), then from tests/:
@@ -159,13 +159,14 @@ async function session(page) {
   await wait(600);
   let p = await pointIn(page, GALLERY, 0.42, 0.45);
   await moveTo(page, p.x, p.y, 500);
-  await wait(150);
+  await label(page, "click", 1000);
+  await wait(400);
   await page.mouse.click(p.x, p.y);
   await wait(600);
   if (!(await isOpen(page))) throw new Error("viewer didn't open on the gallery");
   p = await pointIn(page, ".panzoom-overlay img", 0.35, 0.4);
   await moveTo(page, p.x, p.y, 400);
-  await label(page, "scroll", 1300);
+  await label(page, "scroll in", 1300);
   for (let i = 0; i < 7; i++) { await page.mouse.wheel({ deltaY: -120 }); await wait(110); }
   await wait(200);
   // Drag right, down, left and up, to show panning every way.
@@ -182,7 +183,8 @@ async function session(page) {
   await wait(800);
   p = await pointIn(page, ".panzoom-next");
   await moveTo(page, p.x, p.y, 450);
-  await wait(100);
+  await label(page, "click", 1000);
+  await wait(400);
   await page.mouse.click(p.x, p.y);
   await wait(800);
   await label(page, "Esc", 700);
@@ -190,10 +192,12 @@ async function session(page) {
   await wait(300);
 
   // 2. The wide figure: open on the highlighted panel, pan right, then left.
+  await label(page, "scroll down", 1200);
   await scrollToEl(page, WIDE, 0.4);
   p = await pointIn(page, WIDE, 5.5 / 8, 0.55);
   await moveTo(page, p.x, p.y, 500);
-  await wait(150);
+  await label(page, "click", 1000);
+  await wait(400);
   await page.mouse.click(p.x, p.y);
   await wait(700);
   if (!(await isOpen(page))) throw new Error("viewer didn't open on the wide figure");
@@ -208,6 +212,7 @@ async function session(page) {
   await wait(300);
 
   // 3. Back to the gallery, pointer off screen, so the loop is seamless.
+  await label(page, "scroll up", 1200);
   await Promise.all([scrollToEl(page, GALLERY, 0.3), moveTo(page, START.x, START.y, 600)]);
   await page.evaluate(() => window.__hidePointer());
   await wait(200);
