@@ -85,8 +85,8 @@
   // Per-image color options: data attribute (as in `dataset`) -> CSS variable.
   var STYLES = {
     panzoomBackdrop: "--panzoom-backdrop",
-    panzoomCaptionBackground: "--panzoom-bg",
-    panzoomCaptionColor: "--panzoom-fg",
+    panzoomPanelBackground: "--panzoom-panel-bg",
+    panzoomPanelColor: "--panzoom-panel-fg",
     panzoomLinkColor: "--panzoom-link"
   };
   // The default keys of the actions `keys:` can rebind (KeyboardEvent.key
@@ -812,7 +812,7 @@
       '<button class="panzoom-close panzoom-exclude" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
       '<button class="panzoom-prev panzoom-exclude" aria-label="Previous image"><span aria-hidden="true">&lsaquo;</span></button>' +
       '<button class="panzoom-next panzoom-exclude" aria-label="Next image"><span aria-hidden="true">&rsaquo;</span></button>' +
-      '<div class="panzoom-footer panzoom-exclude">' +
+      '<div class="panzoom-panel panzoom-exclude">' +
       '<div class="panzoom-caption"></div>' +
       '<div class="panzoom-description"></div>' +
       '<div class="panzoom-hint"><span class="panzoom-hint-keys"></span>' +
@@ -826,7 +826,7 @@
     nextBtn = overlay.querySelector(".panzoom-next");
     counter = overlay.querySelector(".panzoom-counter");
     status = overlay.querySelector(".panzoom-status");
-    footer = overlay.querySelector(".panzoom-footer");
+    footer = overlay.querySelector(".panzoom-panel");
     caption = overlay.querySelector(".panzoom-caption");
     desc = overlay.querySelector(".panzoom-description");
     hint = overlay.querySelector(".panzoom-hint");

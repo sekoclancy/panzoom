@@ -36,11 +36,11 @@ Quarto document:
 <style>
 .plum-viewer {
   --panzoom-backdrop: rgba(60, 20, 70, 0.9);
-  --panzoom-bg: #2d1236;
-  --panzoom-fg: #f3e8f7;
+  --panzoom-panel-bg: #2d1236;
+  --panzoom-panel-fg: #f3e8f7;
   --panzoom-link: #ffb3d9;
 }
-.plum-viewer .panzoom-footer {
+.plum-viewer .panzoom-panel {
   border-top: 4px solid #d58cf0;
 }
 .plum-viewer .panzoom-caption {
@@ -49,11 +49,11 @@ Quarto document:
 }
 .sea-viewer {
   --panzoom-backdrop: rgba(10, 50, 60, 0.9);
-  --panzoom-bg: #0f3640;
-  --panzoom-fg: #e0f4f7;
+  --panzoom-panel-bg: #0f3640;
+  --panzoom-panel-fg: #e0f4f7;
   --panzoom-link: #7fe0d0;
 }
-.sea-viewer .panzoom-footer {
+.sea-viewer .panzoom-panel {
   border-top-color: #4fc3c9;
 }
 .sea-viewer .panzoom-caption {
@@ -88,9 +88,9 @@ format:
 
 A theme's `.scss` file works too. Rules on the viewer's parts start with the
 viewer's class, as above, so they win over the defaults. The parts are
-`.panzoom-footer` (the caption band), `.panzoom-caption`,
-`.panzoom-description`, `.panzoom-hint`, `.panzoom-close`, `.panzoom-prev`,
-`.panzoom-next`, and `.panzoom-counter`.
+`.panzoom-panel` (the band or side panel around the caption, description, and
+hint), `.panzoom-caption`, `.panzoom-description`, `.panzoom-hint`,
+`.panzoom-close`, `.panzoom-prev`, `.panzoom-next`, and `.panzoom-counter`.
 
 For a whole site, put `css-class` (or any option) under `format: html:` in
 `_quarto.yml`. A top-level `panzoom:` there is replaced, not merged, by a page's
@@ -192,8 +192,8 @@ the page's own, so each starts with `.panzoom-overlay` too, to win over the
 ```css
 .panzoom-overlay.amber-viewer {
   --panzoom-backdrop: rgba(40, 25, 5, 0.92);
-  --panzoom-bg: #3a2508;
-  --panzoom-fg: #fdf0d8;
+  --panzoom-panel-bg: #3a2508;
+  --panzoom-panel-fg: #fdf0d8;
   --panzoom-link: #ffc966;
 }
 ```

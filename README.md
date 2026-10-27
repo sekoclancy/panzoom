@@ -175,8 +175,8 @@ panzoom:
   keys:           # the viewer's keys (see Keys)
     caption: k
   backdrop: black             # colors (see Styling): the layer over the page,
-  caption-background: black   # the caption band,
-  caption-color: white        # caption, description, and hint text,
+  panel-background: black     # the band or side panel with the caption,
+  panel-color: white          # caption, description, and hint text,
   link-color: lightblue       # and links in captions (defaults follow the theme)
 ---
 ```
@@ -247,6 +247,10 @@ screen narrower than 769 px, `left` and `right` show below, as in lightbox:
 ```markdown
 ![Beach](beach.jpg){.panzoom desc-position="left"}
 ```
+
+The caption text and colors match lightbox. The layout differs: the band spans
+the screen width, and a side panel sits at the screen edge, so the image keeps
+the rest of the screen to zoom and pan in.
 
 ### Descriptions
 
@@ -377,12 +381,12 @@ For math, use `html-math-method: mathml`, or `katex` with
 Set the viewer's colors with the options, or with the CSS variables they stand
 for in your own CSS (a `css:` file, or the theme's `.scss`):
 
-  | Option               | CSS variable         | Element                        | Default               |
-  | -------------------- | -------------------- | ------------------------------ | --------------------- |
-  | `backdrop`           | `--panzoom-backdrop` | The layer over the page        | `rgba(0, 0, 0, 0.7)`  |
-  | `caption-background` | `--panzoom-bg`       | The caption band               | The page's background |
-  | `caption-color`      | `--panzoom-fg`       | Caption, description, and hint | The page's text color |
-  | `link-color`         | `--panzoom-link`     | Links in captions              | The page's link color |
+  | Option             | CSS variable         | Element                                 | Default              |
+  | ------------------ | -------------------- | --------------------------------------- | -------------------- |
+  | `backdrop`         | `--panzoom-backdrop` | The layer over the page                 | `rgba(0, 0, 0, 0.7)` |
+  | `panel-background` | `--panzoom-panel-bg` | The band or side panel with the caption | Page background      |
+  | `panel-color`      | `--panzoom-panel-fg` | Caption, description, and hint          | Page text color      |
+  | `link-color`       | `--panzoom-link`     | Links in captions                       | Page link color      |
 
 In the YAML header, for the whole document:
 
@@ -390,8 +394,8 @@ In the YAML header, for the whole document:
 ---
 panzoom:
   backdrop: rgba(0, 0, 0, 0.9)   # any CSS color: rgba(),
-  caption-background: "#222"     # hex (quoted, for YAML),
-  caption-color: white           # or a name
+  panel-background: "#222"       # hex (quoted, for YAML),
+  panel-color: white             # or a name
 ---
 ```
 
@@ -400,13 +404,22 @@ In CSS, for every viewer on the site:
 ```css
 .panzoom-overlay {
   --panzoom-backdrop: black;
-  --panzoom-bg: black;
-  --panzoom-fg: white;
+  --panzoom-panel-bg: black;
+  --panzoom-panel-fg: white;
 }
 ```
 
 For some documents only, set `css-class: dark-viewer` and write the same rule
 for `.dark-viewer`.
+
+These variables have no option, only CSS:
+
+  | CSS variable                | Element                                        | Default              |
+  | --------------------------- | ---------------------------------------------- | -------------------- |
+  | `--panzoom-button-bg`       | Close, previous, and next buttons, and counter | `rgba(0, 0, 0, 0.6)` |
+  | `--panzoom-button-fg`       | Their text and focus ring                      | `#eee`               |
+  | `--panzoom-panel-min-width` | Side panel (`desc-position` `left` or `right`) | `min(12rem, 32vw)`   |
+  | `--panzoom-panel-max-width` | Side panel, which is as wide as its text needs | `min(22rem, 32vw)`   |
 
 For one image, give its code cell the same options under `#| panzoom:`, or write
 them as attributes on a markdown image. They apply while that image is open, on
@@ -421,7 +434,7 @@ top of the document's:
 plot(pressure)
 ```
 
-![A photo.](photo.jpg){.panzoom caption-background="#222" caption-color="white"}
+![A photo.](photo.jpg){.panzoom panel-background="#222" panel-color="white"}
 ````
 
 The [color

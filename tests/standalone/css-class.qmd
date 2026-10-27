@@ -10,8 +10,8 @@ include-in-header:
     <style>
     .dark-viewer {
       --panzoom-backdrop: #000;
-      --panzoom-bg: #000;
-      --panzoom-fg: #eee;
+      --panzoom-panel-bg: #000;
+      --panzoom-panel-fg: #eee;
     }
     </style>
     <script>

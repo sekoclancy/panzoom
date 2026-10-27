@@ -10,7 +10,7 @@ a:not(.panzoom-link) img.panzoom,
 .panzoom img:not(.nopanzoom):focus-visible,
 img.panzoom:not(.nopanzoom):focus-visible,
 a.panzoom-link:focus-visible img {
-  outline: 3px solid #2780e3; outline-offset: 2px;
+  outline: 3px solid var(--bs-link-color, #0d6efd); outline-offset: 2px;
 }
 a.panzoom-link:focus-visible { outline: none; }
 /* No ring on the image focus returns to after a viewer opened with the
@@ -28,9 +28,16 @@ a.panzoom-link:focus-visible { outline: none; }
    rule that sets them wins, whatever order the stylesheets load in. */
 :where(.panzoom-overlay) {
   --panzoom-backdrop: rgba(0, 0, 0, 0.7);
-  --panzoom-bg: var(--quarto-body-bg, #fff);
-  --panzoom-fg: var(--quarto-body-color, #212529);
+  --panzoom-panel-bg: var(--quarto-body-bg, #fff);
+  --panzoom-panel-fg: var(--quarto-body-color, #212529);
   --panzoom-link: var(--bs-link-color, #0d6efd);
+  /* The close, previous, and next buttons, the counter, and the status. */
+  --panzoom-button-bg: rgba(0, 0, 0, 0.6);
+  --panzoom-button-fg: #eee;
+  /* A side panel (desc-position left or right) is as wide as its text
+     needs, between these. */
+  --panzoom-panel-min-width: min(12rem, 32vw);
+  --panzoom-panel-max-width: min(22rem, 32vw);
 }
 .panzoom-overlay {
   position: fixed; inset: 0; z-index: 100000; display: none;
@@ -47,7 +54,7 @@ a.panzoom-link:focus-visible { outline: none; }
    !important); the counter, status and caption band don't, so they keep
    the arrow (text and links in the caption have their own cursors). */
 .panzoom-overlay.dragging { cursor: grabbing !important; }
-.panzoom-counter, .panzoom-status, .panzoom-footer { cursor: default; }
+.panzoom-counter, .panzoom-status, .panzoom-panel { cursor: default; }
 /* will-change keeps panning large bitmaps smooth, but makes the browser
    scale one cached bitmap of an svg, which blurs it when zoomed in. */
 .panzoom-overlay img.panzoom-vector { will-change: auto; }
@@ -55,11 +62,13 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-close {
   position: absolute; top: 10px; right: 14px; z-index: 1;
   border: 0; border-radius: 4px; padding: 0.1em 0.35em;
-  background: rgba(0, 0, 0, 0.6); color: #eee; font-size: 2rem; line-height: 1;
+  background: var(--panzoom-button-bg); color: var(--panzoom-button-fg); font-size: 2rem; line-height: 1;
   cursor: pointer;
 }
-.panzoom-close:hover { color: #fff; background: rgba(0, 0, 0, 0.7); }
-.panzoom-close:focus-visible { color: #fff; outline: 2px solid #fff; outline-offset: 2px; }
+/* Hover: the button background with a quarter black mixed in, which takes
+   the default 0.6 black to 0.7. */
+.panzoom-close:hover { background: color-mix(in srgb, var(--panzoom-button-bg), black 25%); }
+.panzoom-close:focus-visible { outline: 2px solid var(--panzoom-button-fg); outline-offset: 2px; }
 .panzoom-overlay:focus { outline: none; }
 
 .panzoom-overlay [hidden] { display: none !important; }
@@ -67,15 +76,15 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-prev, .panzoom-next {
   position: absolute; top: 50%; transform: translateY(-50%); z-index: 1;
   border: 0; border-radius: 4px; padding: 0.2em 0.45em;
-  background: rgba(0, 0, 0, 0.6); color: #eee;
+  background: var(--panzoom-button-bg); color: var(--panzoom-button-fg);
   font-size: 2.5rem; line-height: 1; cursor: pointer;
 }
 .panzoom-prev { left: 10px; }
 .panzoom-next { right: 10px; }
-.panzoom-prev:hover, .panzoom-next:hover { color: #fff; background: rgba(0, 0, 0, 0.7); }
+.panzoom-prev:hover, .panzoom-next:hover { background: color-mix(in srgb, var(--panzoom-button-bg), black 25%); }
 .panzoom-prev:disabled, .panzoom-next:disabled { opacity: 0.3; cursor: default; }
 .panzoom-prev:focus-visible, .panzoom-next:focus-visible {
-  color: #fff; outline: 2px solid #fff; outline-offset: 2px;
+  outline: 2px solid var(--panzoom-button-fg); outline-offset: 2px;
 }
 
 /* While an image loads it is hidden, so the last one doesn't show in its
@@ -85,43 +94,44 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-status {
   position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
   border-radius: 4px; padding: 0.4em 0.8em;
-  background: rgba(0, 0, 0, 0.6); color: #eee; font-size: 1rem;
+  background: var(--panzoom-button-bg); color: var(--panzoom-button-fg); font-size: 1rem;
 }
 .panzoom-status:empty { display: none; }
 
 .panzoom-counter {
   position: absolute; top: 14px; left: 16px; z-index: 1;
   border-radius: 4px; padding: 0.15em 0.5em;
-  background: rgba(0, 0, 0, 0.6); color: #eee; font-size: 0.9rem;
+  background: var(--panzoom-button-bg); color: var(--panzoom-button-fg); font-size: 0.9rem;
 }
 
 /* Caption and hint, below the image (fit() leaves room for this). They
-   share one column, as wide as the widest of them, with every line
-   centered. */
-.panzoom-footer {
+   share one column, as wide as the widest of them and centered; the hint
+   is centered in it, the caption and description start at its left edge,
+   as in lightbox. */
+.panzoom-panel {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
   padding: 0.5rem 1rem 0.6rem; text-align: center;
   display: grid; grid-template-columns: fit-content(min(60rem, 100%)); justify-content: center;
-  background: var(--panzoom-bg);
+  background: var(--panzoom-panel-bg);
 }
 /* desc-position (panzoom.js sets the class, and the band's size as
    --panzoom-band-height and --panzoom-band-width): the band above the
    image, or a panel beside it with its text centered up and down, and the
    buttons it would cover moved out of its way. */
-.panzoom-desc-top .panzoom-footer { top: 0; bottom: auto; }
+.panzoom-desc-top .panzoom-panel { top: 0; bottom: auto; }
 /* A panel beside the image is as wide as its text needs, between 12rem and
    22rem (and no more than a third of the screen), so a short caption leaves
    the image more room. */
-.panzoom-desc-left .panzoom-footer,
-.panzoom-desc-right .panzoom-footer {
+.panzoom-desc-left .panzoom-panel,
+.panzoom-desc-right .panzoom-panel {
   top: 0; bottom: 0; box-sizing: border-box;
-  width: fit-content; min-width: min(12rem, 32vw); max-width: min(22rem, 32vw);
+  width: fit-content; min-width: var(--panzoom-panel-min-width); max-width: var(--panzoom-panel-max-width);
   display: flex; flex-direction: column; padding: 1rem; text-align: left;
 }
-.panzoom-desc-left .panzoom-footer { left: 0; right: auto; }
-.panzoom-desc-right .panzoom-footer { right: 0; left: auto; }
-.panzoom-desc-left .panzoom-footer::before, .panzoom-desc-left .panzoom-footer::after,
-.panzoom-desc-right .panzoom-footer::before, .panzoom-desc-right .panzoom-footer::after {
+.panzoom-desc-left .panzoom-panel { left: 0; right: auto; }
+.panzoom-desc-right .panzoom-panel { right: 0; left: auto; }
+.panzoom-desc-left .panzoom-panel::before, .panzoom-desc-left .panzoom-panel::after,
+.panzoom-desc-right .panzoom-panel::before, .panzoom-desc-right .panzoom-panel::after {
   content: ""; flex: 1 1 0;
 }
 .panzoom-desc-left .panzoom-caption, .panzoom-desc-left .panzoom-description,
@@ -145,7 +155,7 @@ a.panzoom-link:focus-visible { outline: none; }
    last line (code in some fonts, as Safari's SF Mono) stays inside it, so a
    short panel doesn't scroll. */
 .panzoom-caption, .panzoom-description {
-  min-width: 0; margin: 0; padding-bottom: 0.3rem;
+  min-width: 0; margin: 0; padding-bottom: 0.3rem; text-align: start;
   overflow-y: auto; line-height: 1.4;
   user-select: text; -webkit-user-select: text; cursor: auto;
 }
@@ -154,7 +164,7 @@ a.panzoom-link:focus-visible { outline: none; }
    code background under the band's light text in a dark theme). */
 .panzoom-caption code, .panzoom-description code {
   color: inherit;
-  background: color-mix(in srgb, var(--panzoom-fg) 12%, var(--panzoom-bg));
+  background: color-mix(in srgb, var(--panzoom-panel-fg) 12%, var(--panzoom-panel-bg));
 }
 /* MathJax's inline math boxes reach below the line, which made a one-line
    caption or description with math scroll; clip keeps the math in place. */
@@ -163,21 +173,22 @@ a.panzoom-link:focus-visible { outline: none; }
   display: inline-block; overflow: clip;
 }
 .panzoom-scrollable:focus-visible { outline: 2px solid var(--panzoom-link); outline-offset: 2px; }
-.panzoom-caption { max-height: 35vh; color: var(--panzoom-fg); font-size: 0.95rem; }
+/* Caption and description text as in lightbox: the page font size, weight
+   500, and 0.86em, in the panel text color (tests/lightbox-match.mjs). */
+.panzoom-caption {
+  max-height: 35vh; color: var(--panzoom-panel-fg); font-size: 1em; font-weight: 500;
+}
 .panzoom-caption-parent {
   margin-top: 0.2rem; font-size: 0.85rem;
-  color: color-mix(in srgb, var(--panzoom-fg) 80%, var(--panzoom-bg));
+  color: color-mix(in srgb, var(--panzoom-panel-fg) 80%, var(--panzoom-panel-bg));
 }
-.panzoom-description {
-  max-height: 25vh; font-size: 0.85rem;
-  color: color-mix(in srgb, var(--panzoom-fg) 85%, var(--panzoom-bg));
-}
+.panzoom-description { max-height: 25vh; font-size: 0.86em; color: var(--panzoom-panel-fg); }
 .panzoom-description p { margin: 0 0 0.3rem; }
 .panzoom-description p:last-child { margin-bottom: 0; }
 .panzoom-hint-part { white-space: nowrap; }
 .panzoom-hint {
   font-size: 0.8rem; pointer-events: none;
-  color: color-mix(in srgb, var(--panzoom-fg) 70%, var(--panzoom-bg));
+  color: color-mix(in srgb, var(--panzoom-panel-fg) 70%, var(--panzoom-panel-bg));
 }
 
 /* Descriptions, rendered on the page for the viewer to copy (panzoom.lua) */

@@ -12,8 +12,8 @@ panzoom:
   desc-position: top
   css-class: my-viewer
   backdrop: "#000"
-  caption-background: "#111"
-  caption-color: "rgb(230, 230, 230)"
+  panel-background: "#111"
+  panel-color: "rgb(230, 230, 230)"
   link-color: "#9cf"
   keys:
     caption: k
@@ -38,8 +38,8 @@ Every option, with a valid value: the page must render, with no errors.
 #|   description: "A plot, with $x^2$ in its description."
 #|   css-class: cell-viewer
 #|   backdrop: "rgba(0, 0, 0, 0.8)"
-#|   caption-background: "#eee"
-#|   caption-color: black
+#|   panel-background: "#eee"
+#|   panel-color: black
 #|   link-color: navy
 
 plot(cumsum(rnorm(50)), type = "l")
@@ -62,4 +62,4 @@ plot(2)
 ![An image in a div.](../../images/mv-0.jpg){css-class="image-viewer" backdrop="#000"}
 :::
 
-![A marked image.](../../images/mv-1.jpg){.panzoom desc-position="right" caption-background="#222" caption-color="white" link-color="#9cf" hint="show"}
+![A marked image.](../../images/mv-1.jpg){.panzoom desc-position="right" panel-background="#222" panel-color="white" link-color="#9cf" hint="show"}

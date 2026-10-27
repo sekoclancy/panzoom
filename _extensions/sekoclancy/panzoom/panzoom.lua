@@ -17,7 +17,7 @@
 -- attributes on the cell's images; document options (`max-zoom`, `hint`,
 -- `caption`, `loop`, `fit`, `desc-position`, `css-class`, `keys`) go to
 -- `window.PANZOOM_OPTIONS`; the document's color options
--- (`backdrop`, `caption-background`, `caption-color`, `link-color`) set the
+-- (`backdrop`, `panel-background`, `panel-color`, `link-color`) set the
 -- viewer's CSS variables in a <style> rule. The styling options
 -- (`css-class` and the colors) also work for one cell, or for one markdown
 -- image as attributes (`![](x.png){.panzoom backdrop="black"}`); panzoom.js
@@ -47,8 +47,8 @@ local match_auto = false
 -- Color options and the CSS variables they set (see panzoom.css).
 local COLORS = {
   { "backdrop", "--panzoom-backdrop" },
-  { "caption-background", "--panzoom-bg" },
-  { "caption-color", "--panzoom-fg" },
+  { "panel-background", "--panzoom-panel-bg" },
+  { "panel-color", "--panzoom-panel-fg" },
   { "link-color", "--panzoom-link" },
 }
 

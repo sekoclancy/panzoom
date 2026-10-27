@@ -7,6 +7,7 @@
     "standalone": "node standalone.mjs && node browser.mjs standalone/*.html",
     "nojs": "node nojs.mjs",
     "contrast": "node contrast.mjs",
+    "lightbox": "node lightbox-match.mjs",
     "a11y": "node a11y.mjs",
     "touch": "node touch.mjs",
     "loading": "node loading.mjs",

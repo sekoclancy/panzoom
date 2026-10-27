@@ -106,7 +106,7 @@ function defineTexClass() {
   // caption band, which desc-position puts below (default), above, or
   // beside the image; { x, y } is where the space starts in the overlay.
   window.__area = (o) => {
-    const f = o.querySelector(".panzoom-footer");
+    const f = o.querySelector(".panzoom-panel");
     const side = (/\bpanzoom-desc-(top|bottom|left|right)\b/.exec(o.className) || [])[1] || "bottom";
     const w = o.clientWidth, h = o.clientHeight;
     const a = side === "left" || side === "right"
@@ -260,7 +260,7 @@ async function state(page) {
             (!!caption.innerHTML || !!pz.querySelector(".panzoom-description").innerHTML.trim())),
         overlayClass: pz.className,
         overlayBg: getComputedStyle(pz).backgroundColor,
-        bandBg: getComputedStyle(pz.querySelector(".panzoom-footer")).backgroundColor,
+        bandBg: getComputedStyle(pz.querySelector(".panzoom-panel")).backgroundColor,
         // Where the caption band is: below, above, or beside the image.
         descPosition: a.side,
         // Whether the image opened larger than the screen, sideways (overX)
@@ -627,7 +627,7 @@ async function checkKeyboard(page, handle) {
     (hin ? items.includes(`${hin} to hide the hint`) : !hintText.includes("the hint")) &&
     (shut ? items.includes(`${shut} to close`) : !hintText.includes("close"));
   const band = () => page.evaluate(() => {
-    const o = document.querySelector(".panzoom-overlay"), f = o.querySelector(".panzoom-footer");
+    const o = document.querySelector(".panzoom-overlay"), f = o.querySelector(".panzoom-panel");
     const shown = (sel) => o.querySelector(sel).offsetParent !== null;
     return {
       caption: shown(".panzoom-caption"), desc: shown(".panzoom-description"), hint: shown(".panzoom-hint"),

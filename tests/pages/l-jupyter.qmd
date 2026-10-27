@@ -272,8 +272,8 @@ green caption band.
 #| fig-alt: "Line plot of a slowly rising sine wave"
 #| panzoom:
 #|   backdrop: "rgba(20, 60, 40, 0.92)"
-#|   caption-background: "#e8f3ea"
-#|   caption-color: "#173d24"
+#|   panel-background: "#e8f3ea"
+#|   panel-color: "#173d24"
 #| fig-cap: "A rising sine wave, sin(x) + x/5."
 
 plt.plot(x, np.sin(x) + x / 5)

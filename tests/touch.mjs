@@ -86,7 +86,7 @@ async function state(page) {
     const img = o.querySelector("img"), r = img.getBoundingClientRect();
     const m = /scale\(([-\d.e]+)\)/.exec(img.style.transform);
     const c = o.querySelector(".panzoom-counter");
-    const h = o.clientHeight - o.querySelector(".panzoom-footer").offsetHeight;
+    const h = o.clientHeight - o.querySelector(".panzoom-panel").offsetHeight;
     return { open: true, counter: c.hidden ? "" : c.textContent, scale: m ? +m[1] : null,
       left: r.left, right: r.right, top: r.top, bottom: r.bottom, w: o.clientWidth, h,
       margin: 0.025 * Math.min(o.clientWidth, h), moving: o.classList.contains("panzoom-moving") };
@@ -260,7 +260,7 @@ try {
   s = await openImage(page, cdp, "#c9 img.panzoom");
   const side = await page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay.open");
-    const f = o && o.querySelector(".panzoom-footer").getBoundingClientRect();
+    const f = o && o.querySelector(".panzoom-panel").getBoundingClientRect();
     return o && { bottom: o.classList.contains("panzoom-desc-bottom"), atBottom: Math.abs(f.bottom - o.clientHeight) < 1 };
   });
   check("caption below the image on a phone", s.open && side.bottom && side.atBottom,

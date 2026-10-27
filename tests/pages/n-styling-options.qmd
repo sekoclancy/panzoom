@@ -9,8 +9,8 @@ filters:
   - panzoom
 panzoom:
   backdrop: "rgba(18, 52, 86, 0.92)"
-  caption-background: "#f4e9d8"
-  caption-color: "#3b2a1a"
+  panel-background: "#f4e9d8"
+  panel-color: "#3b2a1a"
   link-color: "#a0361b"
 ---
 
@@ -23,8 +23,8 @@ apply to every image on the page that opens in the viewer, except an
 ---
 panzoom:
   backdrop: "rgba(18, 52, 86, 0.92)"  # deep blue
-  caption-background: "#f4e9d8"       # cream
-  caption-color: "#3b2a1a"            # dark brown
+  panel-background: "#f4e9d8"       # cream
+  panel-color: "#3b2a1a"            # dark brown
   link-color: "#a0361b"               # rust
 ---
 ```
@@ -51,7 +51,7 @@ colors set under the `panzoom:` option in the YAML header, and the link in its
 caption is dark green.
 
 ```markdown {.show-source}
-![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard ([photo](https://unsplash.com/photos/2iQnDPLIXwU)).](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard ([photo](https://unsplash.com/photos/2iQnDPLIXwU)).](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
 ## Code cell {#c3 expect-open="panzoom"}
@@ -76,8 +76,8 @@ a dark red backdrop and a peach caption band.
 #| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| panzoom:
 #|   backdrop: "rgba(70, 25, 15, 0.92)"
-#|   caption-background: "#fbe9dc"
-#|   caption-color: "#4a1f10"
+#|   panel-background: "#fbe9dc"
+#|   panel-color: "#4a1f10"
 #| fig-cap: "Stopping distance against speed for 50 cars."
 
 plot(cars, pch = 19)
@@ -92,9 +92,9 @@ a dark red backdrop and a peach band of its own. Each image shows its colors
 while it is open, and stepping to the next or previous one doesn't keep them.
 
 ```markdown {.show-source}
-![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" caption-background="#e8f3ea" caption-color="#173d24" fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" fig-alt="A white lighthouse against a blue sky"}
 
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
-![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" caption-background="#fbe9dc" caption-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" panel-background="#fbe9dc" panel-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```

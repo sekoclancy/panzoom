@@ -135,7 +135,7 @@ async function checkPage(browser, base, file, dark) {
         });
         if (restyled) return "restyled";
         const cs = (sel) => getComputedStyle(document.querySelector(sel));
-        const body = cs("body"), band = cs(".panzoom-overlay.open .panzoom-footer");
+        const body = cs("body"), band = cs(".panzoom-overlay.open .panzoom-panel");
         const cap = cs(".panzoom-overlay.open .panzoom-caption");
         const diffs = [];
         if (band.backgroundColor !== body.backgroundColor) diffs.push(`band ${band.backgroundColor}, page ${body.backgroundColor}`);

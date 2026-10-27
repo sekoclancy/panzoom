@@ -28,6 +28,7 @@ cd tests && npm test
   | `npm run loading`    | Slow and failed images: loading message, late arrivals, error message                                                                                                                                                          | ~5 s   |
   | `npm run nojs`       | Every page with JavaScript off: each marked image links to its file                                                                                                                                                            | ~10 s  |
   | `npm run contrast`   | Text contrast in light and dark mode, and that the viewer follows the theme                                                                                                                                                    | ~7 s   |
+  | `npm run lightbox`   | Caption text, band colors, and backdrop the same as lightbox, light and dark                                                                                                                                                   | ~5 s   |
   | `npm run a11y`       | axe-core at WCAG 2.2 AAA plus best practices, on each page and with the viewer open, light and dark. Only panzoom's own markup fails it; theme and content findings, and results axe can't decide ("needs review"), are listed | ~80 s  |
   | `npm run standalone` | Renders and checks the pages outside the site (self-contained, math, `panzoom:` forms)                                                                                                                                         | ~25 s  |
   | `npm run offline`    | The standalone and site pages with no network                                                                                                                                                                                  | ~70 s  |
@@ -201,6 +202,13 @@ the WCAG contrast of the text on the page and in the viewer, in light and dark
 mode; below 4.5:1 (3:1 for large text) fails. It also checks that the caption
 band takes the page's colors (`theme ok`), except on M and N, which restyle it.
 Text over images, typeset math, and Quarto's navbar and footer aren't measured.
+
+**Lightbox match.** `npm run lightbox`
+([lightbox-match.mjs](lightbox-match.mjs)) opens case 3 on the lightbox page (A)
+and on page D, in light and dark mode, and compares the backdrop, the band
+colors, and the caption and description text (font, size, weight, line height,
+color). Layout isn't compared: panzoom pins the band to the screen edge on
+purpose.
 
 **Without internet access.** `npm run offline` (Linux only) renders the
 standalone pages with no network, then checks every page with outside requests
