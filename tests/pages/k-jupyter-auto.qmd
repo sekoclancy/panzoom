@@ -99,6 +99,9 @@ description.
 #| fig-alt:
 #|   - "Line plot of a sine wave"
 #|   - "Line plot of a cosine wave"
+#| fig-cap:
+#|   - "A sine wave, sin(3x)."
+#|   - "A cosine wave, cos(3x)."
 
 plt.plot(x, np.sin(3 * x))
 plt.show()
