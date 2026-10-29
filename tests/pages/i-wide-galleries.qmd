@@ -297,3 +297,30 @@ strip(seed = 6, n = 10)
 strip(seed = 7, n = 6)
 ```
 :::
+
+## Collages in a custom layout {#c8 expect-fit="height" expect-steps="true"}
+
+Three collages as subfigures with `layout: [[1, 1], [1]]`: two side by side, and
+one across the row below. Each opens at screen height, and the three form a
+gallery in reading order.
+
+```{r}
+#| label: fig-collage-layout
+#| panzoom: true
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "Collages of 12, 15, and 9 random walks."
+#| fig-subcap: ["First collage", "Second collage", "Third collage"]
+#| fig-alt:
+#|   - >-
+#|     A row of 12 small line plots of random walks, each in its own color
+#|   - >-
+#|     A row of 15 small line plots of random walks, each in its own color
+#|   - >-
+#|     A row of 9 small line plots of random walks, each in its own color
+#| layout: [[1, 1], [1]]
+
+collage(n = 12)
+collage(n = 15)
+collage(n = 9)
+```
