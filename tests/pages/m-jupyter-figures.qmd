@@ -483,4 +483,34 @@ wave(5)
 wave(6)
 ```
 
+## Caption in the margin {#c16 expect-open="panzoom"}
+
+A Python cell with `panzoom: true` and `fig-cap-location: margin`. The page
+shows the caption in the margin, beside the plot.
+
+```{python}
+#| panzoom: true
+#| fig-cap-location: margin
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
+
+wave(2)
+```
+
+## Caption above the figure {#c17 expect-open="panzoom"}
+
+A Python cell with `panzoom: true` and `fig-cap-location: top`. The page shows
+the caption above the plot.
+
+```{python}
+#| panzoom: true
+#| fig-cap-location: top
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
+
+wave(4)
+```
+
 ## References {.unnumbered}

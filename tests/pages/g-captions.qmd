@@ -270,6 +270,36 @@ view at the foot of the panel.
 
 ![{{< lipsum 4 >}}](../../images/mv-3.jpg){.panzoom desc-position="right" hint="true" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
+## Caption in the margin {#c14 expect-open="panzoom"}
+
+An R cell with `panzoom: true` and `fig-cap-location: margin`. The page shows
+the caption in the margin, beside the plot.
+
+```{r}
+#| panzoom: true
+#| fig-cap-location: margin
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
+
+wave(k = 2)
+```
+
+## Caption above the figure {#c15 expect-open="panzoom"}
+
+An R cell with `panzoom: true` and `fig-cap-location: top`. The page shows the
+caption above the plot.
+
+```{r}
+#| panzoom: true
+#| fig-cap-location: top
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
+
+wave(k = 4)
+```
+
 ## References {.unnumbered}
 
 ::: {#refs}
