@@ -922,11 +922,17 @@
     overlay.addEventListener("dblclick", function (e) {
       if (!e.target.closest(".panzoom-exclude")) resetView();
     });
+    // Resize events can fire many times a frame; lay out once per frame.
+    var resizeFrame = 0;
     window.addEventListener("resize", function () {
-      if (!overlay.classList.contains("open")) return;
-      place();
-      showFooter();
-      if (!overlay.classList.contains("panzoom-loading")) fit();
+      if (resizeFrame) return;
+      resizeFrame = requestAnimationFrame(function () {
+        resizeFrame = 0;
+        if (!overlay.classList.contains("open")) return;
+        place();
+        showFooter();
+        if (!overlay.classList.contains("panzoom-loading")) fit();
+      });
     });
   }
 
