@@ -281,12 +281,20 @@
     return d.panzoomGroup || d.group || d.refParent || null;
   }
 
+  // Whether `el` is the rendering Quarto hides in the current color mode
+  // (a cell with `renderings: [light, dark]` writes both).
+  function otherRendering(el) {
+    var body = document.body.classList;
+    return (body.contains("quarto-light") && !!el.closest(".dark-content")) ||
+      (body.contains("quarto-dark") && !!el.closest(".light-content"));
+  }
+
   // The images the viewer can step through from `el`, in page order.
   function galleryOf(el) {
     var g = groupOf(el);
     if (!g) return [el];
     return Array.prototype.filter.call(document.querySelectorAll(SELECTOR), function (x) {
-      return groupOf(x) === g && opens(x);
+      return groupOf(x) === g && opens(x) && !otherRendering(x);
     });
   }
 

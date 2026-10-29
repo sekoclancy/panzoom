@@ -899,8 +899,10 @@ async function checkPage(browser, base, file) {
         : h && /^(\d+)\.\s*(.*)$/.exec(h.textContent.trim());
       if (!m && h && Object.keys(sec.dataset).some((d) => d.startsWith("expect"))) m = [null, String(k + 1), h.textContent.trim()];
       if (!m) return;
-      // Not webtex's math images.
-      [...sec.querySelectorAll("img")].filter((img) => !img.closest(".math")).forEach((img, i) => {
+      // Not webtex's math images, nor the rendering Quarto hides in this
+      // color mode (`renderings: [light, dark]`), which the viewer skips.
+      const hidden = document.body.classList.contains("quarto-dark") ? ".light-content" : ".dark-content";
+      [...sec.querySelectorAll("img")].filter((img) => !img.closest(".math") && !img.closest(hidden)).forEach((img, i) => {
         const idx = out.length;
         img.dataset.testIdx = idx;
         const link = img.closest("a");
