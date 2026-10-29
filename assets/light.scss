@@ -20,6 +20,8 @@ figcaption :is(a, .citation a) { text-decoration: underline; }
 pre.sourceCode > code.sourceCode > span {
   padding-left: 3ch;
   text-indent: -3ch;
+  /* Wrapped lines are spaced like separate lines (Quarto sets 1.25 on each). */
+  line-height: inherit;
 }
 /* Markdown examples wrap flush left: their long lines are one image each. */
 pre.sourceCode.markdown-example > code.sourceCode > span {

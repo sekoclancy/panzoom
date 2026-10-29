@@ -39,6 +39,7 @@ $navbar-fg: #ffffff;
 .quarto-dark pre.sourceCode > code.sourceCode > span {
   padding-left: 3ch;
   text-indent: -3ch;
+  line-height: inherit;
 }
 .quarto-dark pre.sourceCode.markdown-example > code.sourceCode > span {
   padding-left: 0;
