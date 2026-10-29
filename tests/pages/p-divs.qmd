@@ -187,12 +187,13 @@ collage(n = 12)
 A plot with `column: page`, wider than the text. It opens in panzoom whole.
 
 ```{r}
-#| fig-alt: "Plot titled Wave 2: a sine curve with its area to the axis shaded"
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
 #| column: page
 #| panzoom: true
 #| fig-width: 12
 #| fig-height: 5
-#| fig-cap: "Wave 2: y = sin(2x), its area to the axis shaded."
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
 
 wave(k = 2)
 ```
@@ -204,9 +205,10 @@ A plot in a `.column-margin` div. It opens in panzoom, at full size.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.column-margin}
 ```{{r}}
-#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
 #| panzoom: true
-#| fig-cap: "Wave 3: y = sin(3x), its area to the axis shaded."
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
 
 wave(k = 3)
 ```
@@ -216,9 +218,10 @@ wave(k = 3)
 ::: {.column-margin}
 ```{r}
 #| echo: false
-#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
 #| panzoom: true
-#| fig-cap: "Wave 3: y = sin(3x), its area to the axis shaded."
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
 
 wave(k = 3)
 ```

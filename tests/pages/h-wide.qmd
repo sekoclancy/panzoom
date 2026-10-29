@@ -228,7 +228,7 @@ difference.
 ```{r}
 #| panzoom:
 #|   fit: height
-#| fig-alt: "Plot titled Wave 3: a sine curve with its area to the axis shaded"
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
 
 wave(k = 3)
 ```
@@ -241,7 +241,7 @@ the screen, so it opens closer than the whole plot and zooms out to it.
 ```{r}
 #| panzoom:
 #|   fit: width
-#| fig-alt: "Plot titled Wave 4: a sine curve with its area to the axis shaded"
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
 
 wave(k = 4)
 ```
