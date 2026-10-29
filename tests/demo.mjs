@@ -1,5 +1,6 @@
 /*
-  Records the README's demo GIF from the rendered demo page.
+  Records the demo from the rendered demo page: a GIF for the README, and
+  an MP4 with a poster image for the demo page.
 
   Opens docs/index.html in headless Chrome, plays a short scripted session
   (from the gallery: open its first image, wheel-zoom, drag,
@@ -11,16 +12,18 @@
   so the GIF plays at the session's real speed.
 
   Usage: render first (`quarto render` from the repo root), then from tests/:
-    npm run demo                 # writes ../images/demo.gif
+    npm run demo                 # writes ../images/demo.gif, demo.mp4, demo-poster.png
 
   Nothing re-records it on its own: run it again after changing the demo
-  page (index.qmd) or how the viewer looks or behaves, and commit the GIF.
+  page (index.qmd) or how the viewer looks or behaves, and commit the three
+  files.
 
   ffmpeg: from `imageio-ffmpeg` in the repo's .venv (`uv sync --group
   demo`, from the `demo` group in pyproject.toml), or set
   FFMPEG=/path/to/ffmpeg.
 
-  Output: ../images/demo.gif; frames in results/demo/.
+  Output: ../images/demo.gif, demo.mp4, and demo-poster.png (the first
+  frame); frames in results/demo/.
 
   Chrome: as for browser.mjs.
 */
@@ -39,6 +42,8 @@ const CHROME = process.env.CHROME || path.join(os.homedir(),
   ".local/share/quarto/chrome-headless-shell/chrome-headless-shell-linux64/chrome-headless-shell");
 const FRAMES = path.join(HERE, "results", "demo");
 const OUT = path.join(ROOT, "images", "demo.gif");
+const MP4 = path.join(ROOT, "images", "demo.mp4");
+const POSTER = path.join(ROOT, "images", "demo-poster.png");
 const VIEWPORT = { width: 960, height: 600 };
 const GIF_WIDTH = 800;
 const FPS = 10;
@@ -271,6 +276,19 @@ try {
       "[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle",
     "-loop", "0", OUT], { stdio: "inherit" });
   console.log(`${path.relative(process.cwd(), OUT)}: ${(fs.statSync(OUT).size / 1e6).toFixed(2)} MB`);
+
+  // The demo page plays an MP4: smaller than the GIF at the full window
+  // width, and a video can be paused. Tagged as sRGB, as the frames are,
+  // or browsers on a Mac play it washed out.
+  execFileSync(ffmpeg(), ["-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
+    "-i", path.join(FRAMES, "frames.txt"),
+    "-vf", `fps=30,scale=${VIEWPORT.width}:-2:flags=lanczos:out_color_matrix=bt709:out_range=tv,format=yuv420p`,
+    "-c:v", "libx264", "-preset", "slow", "-crf", "20",
+    "-color_primaries", "bt709", "-color_trc", "iec61966-2-1", "-colorspace", "bt709", "-color_range", "tv",
+    "-movflags", "+faststart", "-an", MP4], { stdio: "inherit" });
+  execFileSync(ffmpeg(), ["-y", "-loglevel", "error", "-i", path.join(FRAMES, "f0000.png"),
+    "-vf", `scale=${VIEWPORT.width}:-2`, POSTER], { stdio: "inherit" });
+  console.log(`${path.relative(process.cwd(), MP4)}: ${(fs.statSync(MP4).size / 1e6).toFixed(2)} MB`);
 } finally {
   await browser.close();
   server.close();

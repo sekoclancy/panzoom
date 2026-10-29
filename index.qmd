@@ -11,6 +11,9 @@ filters:
   - panzoom
 panzoom:
   max-zoom: 6
+resources:
+  - images/demo.mp4
+  - images/demo-poster.png
 ---
 
 ::: {.callout-warning}
@@ -36,9 +39,32 @@ using version control, you will want to check in this directory.
 
 ## Demo
 
-![](images/demo.gif){fig-alt="Opening a gallery image, zooming with the wheel,
-dragging, resetting with a double-click, stepping to the next image, and panning
-a wide figure with the arrow keys."}
+```{=html}
+<video id="demo-video" src="images/demo.mp4" poster="images/demo-poster.png"
+  muted loop playsinline controls preload="metadata" style="width: 100%; height: auto;"
+  aria-label="Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with the arrow keys.">
+</video>
+<script>
+  // Plays while at least half of it is on screen, unless the reader paused
+  // it or asks for reduced motion.
+  (function () {
+    var video = document.getElementById("demo-video");
+    if (!("IntersectionObserver" in window)) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var paused = false, ours = false;
+    video.addEventListener("pause", function () { if (!ours) paused = true; ours = false; });
+    video.addEventListener("play", function () { paused = false; });
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        if (!paused) video.play().catch(function () {});
+      } else if (!video.paused) {
+        ours = true;
+        video.pause();
+      }
+    }, { threshold: 0.5 }).observe(video);
+  })();
+</script>
+```
 
 ## Controls
 
