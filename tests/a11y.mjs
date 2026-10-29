@@ -136,7 +136,9 @@ async function checkPage(browser, base, file, dark) {
     notes.push(`  page: alt-repeats-caption, ${repeats.length}x: Alt text should describe the image, not repeat the caption; e.g. ${repeats[0]}`);
   }
   let viewer = "no viewer";
-  const img = await page.$(".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)");
+  // Not the rendering Quarto hides in this color mode (`renderings: [light, dark]`).
+  const hidden = scheme === "dark" ? ".light-content" : ".dark-content";
+  const img = await page.$(`:is(.panzoom img, img.panzoom):not(.nopanzoom, ${hidden} img)`);
   if (img) {
     await img.evaluate((el) => el.scrollIntoView({ block: "center" }));
     await img.click();
