@@ -105,3 +105,7 @@ website:
         contents:
           - href: tests/pages/r-dark-plots.qmd
             text: "R. Dark plots"
+          - href: tests/pages/s-renderings.qmd
+            text: "S. Renderings in R"
+          - href: tests/pages/t-jupyter-renderings.qmd
+            text: "T. Renderings in Python"

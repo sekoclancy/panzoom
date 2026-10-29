@@ -11,7 +11,8 @@ filters:
 
 Plots with dark backgrounds and plots with transparent backgrounds, in the
 viewer's default 70% black backdrop. Each one is worth opening in light and dark
-mode (the toggle in the navbar).
+mode (the toggle in the navbar). [Renderings in R](s-renderings.html) draws a
+plot for each mode instead.
 
 The site draws R plots on white (`dev.args: bg: white` in `_quarto.yml`), so the
 transparent plots set `bg = "transparent"` in their own cells. They use the
@@ -133,55 +134,4 @@ black ink, in a gallery.
 wave(k = 1, paper = "white")
 wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
 wave(k = 3, paper = "transparent")
-```
-
-## Light and dark renderings {#c6 expect-open="panzoom"}
-
-An R cell with `renderings: [light, dark]` and two plots: black ink for light
-mode and light gray ink for dark mode, both on a transparent background. The
-page shows the one for its mode.
-
-```{r}
-#| panzoom: true
-#| renderings: [light, dark]
-#| dev: ragg_png
-#| dev.args: !expr list(bg = "transparent")
-#| fig-alt: "A sine curve in blue with axes in the text color"
-#| fig-cap: >-
-#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
-
-wave(k = 4)
-wave(k = 4, ink = "gray85")
-```
-
-## Gallery with light and dark renderings {#c7 expect-open="panzoom" expect-steps="true"}
-
-Two cells with `renderings: [light, dark]` in one gallery.
-
-```{r}
-#| panzoom:
-#|   group: renderings
-#| renderings: [light, dark]
-#| dev: ragg_png
-#| dev.args: !expr list(bg = "transparent")
-#| fig-alt: "A sine curve in blue with axes in the text color"
-#| fig-cap: >-
-#|   Wave 5: y = sin(5x); the area between the curve and the x-axis is shaded.
-
-wave(k = 5)
-wave(k = 5, ink = "gray85")
-```
-
-```{r}
-#| panzoom:
-#|   group: renderings
-#| renderings: [light, dark]
-#| dev: ragg_png
-#| dev.args: !expr list(bg = "transparent")
-#| fig-alt: "A sine curve in blue with axes in the text color"
-#| fig-cap: >-
-#|   Wave 6: y = sin(6x); the area between the curve and the x-axis is shaded.
-
-wave(k = 6)
-wave(k = 6, ink = "gray85")
 ```

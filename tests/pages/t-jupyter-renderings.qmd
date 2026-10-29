@@ -1,0 +1,160 @@
+---
+title: "Renderings in Python"
+engine: jupyter
+jupyter: python3
+format:
+  html:
+    code-tools: true
+filters:
+  - panzoom
+---
+
+Python cells with `renderings: [light, dark]`, which draw one plot for each
+color mode, as [Renderings in R](s-renderings.html) does for R cells. The page
+shows the one for its mode (the toggle in the navbar), and so does the viewer.
+Each one is worth opening in light and dark mode.
+
+Each case shows its source above the plot: Jupyter leaves `panzoom:` out of the
+echoed code of a cell.
+
+The plots are drawn with this helper. `ink` colors the axes, labels, and title;
+`paper` fills the plot background, and `"none"` leaves it transparent.
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def wave(k=1, ink="black", paper="white", col="#3B7DB8"):
+    x = np.linspace(0, 4 * np.pi, 400)
+    fig, ax = plt.subplots(figsize=(7, 5))
+    fig.patch.set_facecolor(paper)
+    ax.set_facecolor(paper)
+    ax.fill_between(x, np.sin(k * x), color=col, alpha=0.35, linewidth=0)
+    ax.plot(x, np.sin(k * x), color=col, linewidth=2)
+    ax.set(title=f"Wave {k}", xlabel="x", ylabel="sin(kx)")
+    ax.title.set_color(ink)
+    ax.xaxis.label.set_color(ink)
+    ax.yaxis.label.set_color(ink)
+    ax.tick_params(colors=ink)
+    for spine in ax.spines.values():
+        spine.set_color(ink)
+    plt.show()
+```
+
+## Light and dark renderings {#c1 expect-open="panzoom"}
+
+A cell with two plots: black ink on white for light mode, and light gray ink on
+near-black for dark mode.
+
+````markdown {.code-overflow-wrap .cell-code}
+```{{python}}
+#| panzoom: true
+#| renderings: [light, dark]
+#| fig-alt: "A sine curve in blue on a background matching the page"
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(3)
+wave(3, ink="#D9D9D9", paper="#1E1E1E", col="#7FB8E6")
+```
+````
+
+```{python}
+#| echo: false
+#| panzoom: true
+#| renderings: [light, dark]
+#| fig-alt: "A sine curve in blue on a background matching the page"
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(3)
+wave(3, ink="#D9D9D9", paper="#1E1E1E", col="#7FB8E6")
+```
+
+## Transparent renderings {#c2 expect-open="panzoom"}
+
+A cell with two plots on a transparent background: black ink for light mode and
+light gray ink for dark mode.
+
+````markdown {.code-overflow-wrap .cell-code}
+```{{python}}
+#| panzoom: true
+#| renderings: [light, dark]
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+
+wave(4, paper="none")
+wave(4, ink="#D9D9D9", paper="none")
+```
+````
+
+```{python}
+#| echo: false
+#| panzoom: true
+#| renderings: [light, dark]
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+
+wave(4, paper="none")
+wave(4, ink="#D9D9D9", paper="none")
+```
+
+## Gallery with light and dark renderings {#c3 expect-open="panzoom" expect-steps="true"}
+
+Two cells with `renderings: [light, dark]`, joined by `group: renderings`. The
+gallery steps through the two plots for the current mode.
+
+````markdown {.code-overflow-wrap .cell-code}
+```{{python}}
+#| panzoom:
+#|   group: renderings
+#| renderings: [light, dark]
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 5: y = sin(5x); the area between the curve and the x-axis is shaded.
+
+wave(5, paper="none")
+wave(5, ink="#D9D9D9", paper="none")
+```
+
+```{{python}}
+#| panzoom:
+#|   group: renderings
+#| renderings: [light, dark]
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 6: y = sin(6x); the area between the curve and the x-axis is shaded.
+
+wave(6, paper="none")
+wave(6, ink="#D9D9D9", paper="none")
+```
+````
+
+```{python}
+#| echo: false
+#| panzoom:
+#|   group: renderings
+#| renderings: [light, dark]
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 5: y = sin(5x); the area between the curve and the x-axis is shaded.
+
+wave(5, paper="none")
+wave(5, ink="#D9D9D9", paper="none")
+```
+
+```{python}
+#| echo: false
+#| panzoom:
+#|   group: renderings
+#| renderings: [light, dark]
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 6: y = sin(6x); the area between the curve and the x-axis is shaded.
+
+wave(6, paper="none")
+wave(6, ink="#D9D9D9", paper="none")
+```

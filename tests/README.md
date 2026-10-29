@@ -112,9 +112,11 @@ callouts uncovered first:
 
 **Theme.** Plots in light and dark mode:
 
-  | Page                                   | Description                                                                                           |
-  | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-  | [r-dark-plots](pages/r-dark-plots.qmd) | Dark and transparent plots on the default backdrop, a light backdrop, and `renderings: [light, dark]` |
+  | Page                                                   | Description                                                                                    |
+  | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+  | [r-dark-plots](pages/r-dark-plots.qmd)                 | Dark and transparent plots on the default backdrop and a light backdrop, and a gallery of both |
+  | [s-renderings](pages/s-renderings.qmd)                 | `renderings: [light, dark]`: opaque and transparent plots, and a gallery                       |
+  | [t-jupyter-renderings](pages/t-jupyter-renderings.qmd) | The cases from S, in Python                                                                    |
 
 **Outside the site** ([standalone/](standalone/)), rendered by
 `npm run standalone` as plain documents:
