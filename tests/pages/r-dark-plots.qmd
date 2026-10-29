@@ -56,7 +56,7 @@ backdrop, which is also dark.
 #| panzoom: true
 #| fig-alt: "A sine curve in light blue on a near-black background"
 #| fig-cap: >-
-#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
 wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
 ```
@@ -70,7 +70,7 @@ The [dark plot](#c1) with a light gray `backdrop` of its own.
 #|   backdrop: "rgba(225, 225, 225, 0.92)"
 #| fig-alt: "A sine curve in light blue on a near-black background"
 #| fig-cap: >-
-#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
 wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
 ```
@@ -87,7 +87,7 @@ mode, on the page and in the viewer alike.
 #| dev.args: !expr list(bg = "transparent")
 #| fig-alt: "A sine curve in blue with black axes on a transparent background"
 #| fig-cap: >-
-#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
 wave(k = 3)
 ```
@@ -104,7 +104,7 @@ mode and hard to see in light mode.
 #| fig-alt: >-
 #|   A sine curve in blue with light gray axes on a transparent background
 #| fig-cap: >-
-#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
 wave(k = 3, ink = "gray85")
 ```
@@ -125,11 +125,11 @@ black ink, in a gallery.
 #|   - "A sine curve in blue with black axes on a transparent background"
 #| fig-cap:
 #|   - >-
-#|     Wave 1: y = sin(x); the area between the curve and the x-axis is shaded.
+#|     Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
 #|   - >-
-#|     Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+#|     Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 #|   - >-
-#|     Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+#|     Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
 wave(k = 1, paper = "white")
 wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")

@@ -228,9 +228,9 @@ difference.
 ```{r}
 #| panzoom:
 #|   fit: height
-#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
-#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
 wave(k = 3)
 ```
@@ -243,9 +243,9 @@ the screen, so it opens closer than the whole plot and zooms out to it.
 ```{r}
 #| panzoom:
 #|   fit: width
-#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
-#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+#|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
 wave(k = 4)
 ```

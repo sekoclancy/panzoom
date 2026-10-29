@@ -52,7 +52,7 @@ near-black for dark mode.
 #| renderings: [light, dark]
 #| fig-alt: "A sine curve in blue on a background matching the page"
 #| fig-cap: >-
-#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
 wave(k = 3, paper = "white")
 wave(k = 3, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
@@ -70,7 +70,7 @@ light gray ink for dark mode.
 #| dev.args: !expr list(bg = "transparent")
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
-#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+#|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
 wave(k = 4)
 wave(k = 4, ink = "gray85")
@@ -89,7 +89,7 @@ gallery steps through the two plots for the current mode.
 #| dev.args: !expr list(bg = "transparent")
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
-#|   Wave 5: y = sin(5x); the area between the curve and the x-axis is shaded.
+#|   Wave 5: y = sin(5x); the area between the curve and y = 0 is shaded.
 
 wave(k = 5)
 wave(k = 5, ink = "gray85")
@@ -103,7 +103,7 @@ wave(k = 5, ink = "gray85")
 #| dev.args: !expr list(bg = "transparent")
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
-#|   Wave 6: y = sin(6x); the area between the curve and the x-axis is shaded.
+#|   Wave 6: y = sin(6x); the area between the curve and y = 0 is shaded.
 
 wave(k = 6)
 wave(k = 6, ink = "gray85")

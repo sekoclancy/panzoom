@@ -146,11 +146,11 @@ An R cell with `caption: false` under the `panzoom` cell option. The figure has
 a caption on the page, but it opens in panzoom without one.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   caption: false
 #| fig-cap: >-
-#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
 wave(k = 2)
 ```
@@ -161,11 +161,11 @@ An R cell with the `description` option, written in markdown with math. It opens
 in panzoom with the description under the caption.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   description: "A sine wave, $y = \\sin(kx)$, **k = 2**."
 #| fig-cap: >-
-#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
 wave(k = 2)
 ```
@@ -180,9 +180,9 @@ and @fig-div-image).
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
 #| label: fig-div-plot
-#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
-#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 #| fig-width: 7.5
 #| fig-height: 5
 
@@ -197,9 +197,9 @@ wave(k = 3)
 ```{r}
 #| label: fig-div-plot
 #| echo: false
-#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
-#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 #| fig-width: 7.5
 #| fig-height: 5
 
