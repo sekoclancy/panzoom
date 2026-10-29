@@ -753,6 +753,12 @@
     if (bar > 0) html.style.scrollbarGutter = "stable";
     overlay.style.right = -bar + "px";
     html.style.overflow = "hidden";
+    // Firefox paints the page in the kept space, over the viewer (a point
+    // there hits the page, where Chrome finds nothing): stop the viewer at
+    // it, so the image is centered on the part that shows.
+    if (bar > 0 && document.elementFromPoint(window.innerWidth - Math.ceil(bar / 2), window.innerHeight / 2) === html) {
+      overlay.style.right = "0px";
+    }
     show(Math.max(0, gallery.indexOf(el)));
     overlay.focus({ preventScroll: true });
   }
