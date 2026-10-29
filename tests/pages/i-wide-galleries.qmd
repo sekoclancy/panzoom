@@ -324,3 +324,31 @@ collage(n = 12)
 collage(n = 15)
 collage(n = 9)
 ```
+
+## Collages in a layout with a gap {#c9 expect-fit="height" expect-steps="true"}
+
+Three collages as subfigures with `layout: [[45, -10, 45], [100]]`: two at 45%
+of the width with an empty 10% between them, and one across the row below. The
+gap is an empty cell, not an image, so the three still form a gallery in reading
+order.
+
+```{r}
+#| label: fig-collage-gap
+#| panzoom: true
+#| fig-width: 25
+#| fig-height: 2
+#| fig-cap: "Collages of 12, 15, and 9 random walks."
+#| fig-subcap: ["First collage", "Second collage", "Third collage"]
+#| fig-alt:
+#|   - >-
+#|     A row of 12 small line plots of random walks, each in its own color
+#|   - >-
+#|     A row of 15 small line plots of random walks, each in its own color
+#|   - >-
+#|     A row of 9 small line plots of random walks, each in its own color
+#| layout: [[45, -10, 45], [100]]
+
+collage(n = 12)
+collage(n = 15)
+collage(n = 9)
+```
