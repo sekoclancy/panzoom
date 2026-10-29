@@ -350,3 +350,19 @@ left of the image.
 plt.plot(x, (1 + x / 4) * np.sin(x))
 plt.show()
 ```
+
+## Plot aligned right {#c17 expect-open="panzoom" expect-fit="contain"}
+
+A 3 × 2 inch plot with `fig-align: right`, narrower than the column, so the page
+puts it at the right edge. It opens in panzoom centered, like any other plot.
+
+```{python}
+#| fig-alt: "Line plot of a cosine wave"
+#| panzoom: true
+#| fig-align: right
+#| fig-cap: "A cosine wave, cos(x)."
+
+plt.figure(figsize=(3, 2))
+plt.plot(x, np.cos(x))
+plt.show()
+```

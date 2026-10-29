@@ -314,3 +314,19 @@ on the page.
 wave(k = 5)
 ```
 
+## Plot aligned right {#c13 expect-open="panzoom" expect-fit="contain"}
+
+A 4 × 3 inch plot with `fig-align: right`, narrower than the column, so the page
+puts it at the right edge. It opens in panzoom centered, like any other plot.
+
+```{r}
+#| panzoom: true
+#| fig-align: right
+#| fig-width: 4
+#| fig-height: 3
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 6: y = sin(6x); the area between the curve and y = 0 is shaded.
+
+wave(k = 6)
+```
