@@ -366,12 +366,12 @@ is over a quarter of the screen tall, so `fit: auto` would open it whole. With
 spot you clicked, and zooms out to the whole figure.
 
 ```{python}
-#| fig-alt: "A row of 6 small line plots of random walks, each in its own color"
+#| fig-alt: "A row of 3 small line plots of random walks, each in its own color"
 #| panzoom:
 #|   fit: height
-#| fig-cap: "An 8 × 3 inch collage of 6 random walks."
+#| fig-cap: "An 8 × 3 inch collage of 3 random walks."
 
-collage(n=6, height=3)
+collage(n=3, height=3)
 ```
 
 ## Gallery of two collages {#c12 expect-fit="height"}
