@@ -375,3 +375,18 @@ cat(
 )
 ```
 
+## Cached cell {#c16 expect-open="panzoom"}
+
+A cell with `panzoom: true` and `cache: true`. After the first render, knitr
+takes its plot from the cache instead of running the cell, and it still opens in
+panzoom.
+
+```{r}
+#| panzoom: true
+#| cache: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
+
+wave(k = 2)
+```
