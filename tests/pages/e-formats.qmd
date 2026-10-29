@@ -184,3 +184,23 @@ loaded." in place of the image.
 
 collage(n = 12)
 ```
+
+## Animation {#c8 expect-open="panzoom" expect-fit="contain"}
+
+One cell with `fig-show: animate` and twelve plots, which knitr joins into one
+animated gif with the gifski package (`animation.hook: gifski`). It opens in
+panzoom and keeps playing while it zooms and pans.
+
+```{r}
+#| panzoom: true
+#| fig-show: animate
+#| animation.hook: gifski
+#| interval: 0.2
+#| fig-alt: "A sine curve sliding to the right over one period, frame by frame"
+#| fig-cap: "A sine wave, y = sin(x - t), as t runs over one period."
+
+x <- seq(0, 4 * pi, length.out = 400)
+for (t in seq(0, 2 * pi, length.out = 13)[-13]) {
+  plot(x, sin(x - t), type = "l", lwd = 2, col = "#3B7DB8", ylab = "sin(x - t)")
+}
+```
