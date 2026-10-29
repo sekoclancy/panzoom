@@ -381,3 +381,19 @@ Clicking the plot follows the link.
 plt.plot(x, np.sin(x))
 plt.show()
 ```
+
+## Markdown image from code {#c19 expect-open="panzoom"}
+
+A cell with `panzoom: true` and `output: asis` that prints a markdown image,
+which Quarto then reads as markdown on the page.
+
+```{python}
+#| panzoom: true
+#| output: asis
+
+print(
+    "\n![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.]"
+    "(../../images/mv-1.jpg)"
+    '{fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}\n'
+)
+```
