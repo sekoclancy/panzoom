@@ -1,0 +1,447 @@
+---
+title: "Divs in Python"
+engine: jupyter
+jupyter: python3
+format:
+  html:
+    code-tools: true
+filters:
+  - panzoom
+---
+
+Python cells inside the divs Quarto provides: callouts, tabsets, and page
+columns, each on its own and inside a `.panzoom` div, as [Divs in
+R](p-divs.html) does for R cells and images. lightbox is off, so clicking a plot
+panzoom leaves alone does nothing.
+
+A plot on a tab not selected, or in a collapsed callout, opens once the reader
+selects the tab or expands the callout.
+
+Each case shows its source above the plot: Jupyter leaves `panzoom:` out of the
+echoed code of a cell.
+
+The plots are drawn with these helpers:
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def wave(k=1):
+    x = np.linspace(0, 4 * np.pi, 400)
+    col = plt.cm.Dark2(k - 1)
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.fill_between(x, np.sin(k * x), color=col, alpha=0.35, linewidth=0)
+    ax.plot(x, np.sin(k * x), color=col, linewidth=2)
+    ax.set(title=f"Wave {k}", xlabel="x", ylabel="sin(kx)")
+    plt.show()
+
+
+# A collage: `n` panels side by side, like a wide patchwork figure.
+def collage(n=12, height=0.8, width=8):
+    rng = np.random.default_rng(1)
+    fig, axes = plt.subplots(1, n, figsize=(width, height), layout="constrained")
+    for i, ax in enumerate(axes):
+        ax.plot(np.cumsum(rng.normal(size=200)), color=plt.cm.viridis(i / n))
+        ax.set_title(f"Panel {i + 1}", fontsize=5)
+        ax.tick_params(labelsize=4)
+    plt.show()
+```
+
+## Plot in a callout {#c1 expect-open="panzoom"}
+
+A cell with `panzoom: true` in a callout. It opens in panzoom.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.callout-note title="A note with a plot"}
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 1: y = sin(x); the area between the curve and the x-axis is shaded.
+
+wave(1)
+```
+:::
+````
+
+::: {.callout-note title="A note with a plot"}
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 1: y = sin(x); the area between the curve and the x-axis is shaded.
+
+wave(1)
+```
+:::
+
+## Callout in a `.panzoom` div {#c2 expect-open="panzoom"}
+
+A callout with a cell that has no `panzoom` option, inside a `.panzoom` div. The
+div marks every figure in it, so the plot opens in panzoom.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panzoom}
+::: {.callout-tip title="A tip with a plot"}
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+
+wave(2)
+```
+:::
+:::
+````
+
+::: {.panzoom}
+::::: {.callout-tip title="A tip with a plot"}
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+
+wave(2)
+```
+:::::
+:::
+
+## Collapsed callout {#c3 expect-open="panzoom"}
+
+A cell with `panzoom: true` in a callout that starts collapsed. Expand the
+callout, and the plot opens in panzoom.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.callout-note collapse="true" title="Expand for a plot"}
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(3)
+```
+:::
+````
+
+::: {.callout-note collapse="true" title="Expand for a plot"}
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(3)
+```
+:::
+
+## Tabset {#c4 expect-open="panzoom"}
+
+Two cells with `panzoom: true`, one on each tab of a tabset. Each plot opens in
+panzoom on its own, the second once its tab is selected.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panel-tabset}
+### Wave 1
+
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 1: y = sin(x); the area between the curve and the x-axis is shaded.
+
+wave(1)
+```
+
+### Wave 4
+
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+
+wave(4)
+```
+:::
+````
+
+::: {.panel-tabset}
+### Wave 1
+
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 1: y = sin(x); the area between the curve and the x-axis is shaded.
+
+wave(1)
+```
+
+### Wave 4
+
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+
+wave(4)
+```
+:::
+
+## Gallery across tabs {#c5 expect-open="panzoom" expect-steps="true"}
+
+Two cells joined by `group: tabs` under the `panzoom` cell option, on different
+tabs. They open in panzoom as a two-image gallery, each with its own caption:
+the next button shows the plot on the other tab without selecting it.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panel-tabset}
+### Wave 2
+
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom:
+#|   group: tabs
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+
+wave(2)
+```
+
+### Wave 5
+
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom:
+#|   group: tabs
+#| fig-cap: >-
+#|   Wave 5: y = sin(5x); the area between the curve and the x-axis is shaded.
+
+wave(5)
+```
+:::
+````
+
+::: {.panel-tabset}
+### Wave 2
+
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom:
+#|   group: tabs
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+
+wave(2)
+```
+
+### Wave 5
+
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom:
+#|   group: tabs
+#| fig-cap: >-
+#|   Wave 5: y = sin(5x); the area between the curve and the x-axis is shaded.
+
+wave(5)
+```
+:::
+
+## Tabset in a `.panzoom` div {#c6 expect-open="panzoom"}
+
+A tabset with a cell that has no `panzoom` option on each tab, inside a
+`.panzoom` div. Each plot opens in panzoom on its own.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panzoom}
+::: {.panel-tabset}
+### Wave 3
+
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(3)
+```
+
+### Wave 6
+
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 6: y = sin(6x); the area between the curve and the x-axis is shaded.
+
+wave(6)
+```
+:::
+:::
+````
+
+::: {.panzoom}
+::::: {.panel-tabset}
+### Wave 3
+
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(3)
+```
+
+### Wave 6
+
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 6: y = sin(6x); the area between the curve and the x-axis is shaded.
+
+wave(6)
+```
+:::::
+:::
+
+## Collage across the screen {#c7 expect-fit="height"}
+
+An 8 × 0.8 inch collage in a `.column-screen` div, so it spans the window. It is
+a strip, so it opens in panzoom at screen height.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.column-screen}
+```{{python}}
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
+#| panzoom: true
+#| fig-cap: "An 8 × 0.8 inch collage of 12 random walks."
+
+collage(n=12)
+```
+:::
+````
+
+::: {.column-screen}
+```{python}
+#| echo: false
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
+#| panzoom: true
+#| fig-cap: "An 8 × 0.8 inch collage of 12 random walks."
+
+collage(n=12)
+```
+:::
+
+## Plot in the page column {#c8 expect-fit="contain"}
+
+A plot with `column: page`, wider than the text. It opens in panzoom whole.
+
+````markdown {.code-overflow-wrap .cell-code}
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| column: page
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+
+wave(2)
+```
+````
+
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| column: page
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+
+wave(2)
+```
+
+## Plot in the margin {#c9 expect-open="panzoom"}
+
+A plot in a `.column-margin` div. It opens in panzoom, at full size.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.column-margin}
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(3)
+```
+:::
+````
+
+::: {.column-margin}
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| panzoom: true
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(3)
+```
+:::
+
+## Gallery from a div {#c10 expect-open="panzoom" expect-steps="true"}
+
+Two cells in a `.panzoom` div with `group="div-gallery"`. The group on the div
+joins their plots, so either opens in panzoom in a two-image gallery.
+
+````markdown {.code-overflow-wrap .cell-code}
+::: {.panzoom group="div-gallery" layout-ncol="2"}
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 1: y = sin(x); the area between the curve and the x-axis is shaded.
+
+wave(1)
+```
+
+```{{python}}
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+
+wave(4)
+```
+:::
+````
+
+::: {.panzoom group="div-gallery" layout-ncol="2"}
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 1: y = sin(x); the area between the curve and the x-axis is shaded.
+
+wave(1)
+```
+
+```{python}
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+
+wave(4)
+```
+:::

@@ -105,9 +105,10 @@ cases. L and M carry the R pages' cell cases:
 **Divs.** Quarto's own divs around figures, with images on tabs and in collapsed
 callouts uncovered first:
 
-  | Page                       | Description                                                                                                                                                       |
-  | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | [p-divs](pages/p-divs.qmd) | Callouts (collapsed too), tabsets (a gallery across tabs), `column-screen`, `column: page`, `column-margin`, and `content-visible`, alone and in a `.panzoom` div |
+  | Page                                       | Description                                                                                                                                                       |
+  | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | [p-divs](pages/p-divs.qmd)                 | Callouts (collapsed too), tabsets (a gallery across tabs), `column-screen`, `column: page`, `column-margin`, and `content-visible`, alone and in a `.panzoom` div |
+  | [q-jupyter-divs](pages/q-jupyter-divs.qmd) | The cell cases from P, in Python: callouts, tabsets, `column-screen`, `column: page`, `column-margin`, and a gallery from a div                                   |
 
 **Theme.** Plots in light and dark mode:
 

@@ -1,5 +1,5 @@
 ---
-title: "Divs"
+title: "Divs in R"
 format:
   html:
     code-tools: true

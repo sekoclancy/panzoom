@@ -98,7 +98,9 @@ website:
       - section: "Divs"
         contents:
           - href: tests/pages/p-divs.qmd
-            text: "P. Divs"
+            text: "P. Divs in R"
+          - href: tests/pages/q-jupyter-divs.qmd
+            text: "Q. Divs in Python"
       - section: "Theme"
         contents:
           - href: tests/pages/r-dark-plots.qmd
