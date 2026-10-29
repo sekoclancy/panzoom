@@ -297,3 +297,20 @@ fifth, so the image keeps about half.
 
 collage(n = 6)
 ```
+
+## Plot shown at half width {#c12 expect-open="panzoom" expect-fit="contain"}
+
+An ordinary plot with `out-width: 50%`, so the page shows it at half the column
+width. It opens in panzoom whole, at the size of the screen, not the size it has
+on the page.
+
+```{r}
+#| panzoom: true
+#| out-width: 50%
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 5: y = sin(5x); the area between the curve and y = 0 is shaded.
+
+wave(k = 5)
+```
+
