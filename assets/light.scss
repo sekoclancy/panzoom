@@ -21,6 +21,11 @@ pre.sourceCode > code.sourceCode > span {
   padding-left: 3ch;
   text-indent: -3ch;
 }
+/* Markdown examples wrap flush left: their long lines are one image each. */
+pre.sourceCode.markdown-example > code.sourceCode > span {
+  padding-left: 0;
+  text-indent: 0;
+}
 
 /* Code in sidebar and table-of-contents links takes the link's color, as in
    the dark theme, so a label reads as one link and the active one is

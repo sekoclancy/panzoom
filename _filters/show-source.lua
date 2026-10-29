@@ -27,6 +27,8 @@ function CodeBlock(el)
   shown.classes:insert("code-overflow-wrap")
   -- Shown like a code cell's code, so cell styling reaches it too.
   shown.classes:insert("cell-code")
+  -- A markdown example: the themes wrap it flush left, unlike code.
+  shown.classes:insert("markdown-example")
   local blocks = pandoc.List({ pandoc.Div({ shown }, pandoc.Attr("", { "cell" })) })
   blocks:extend(pandoc.read(el.text, "markdown").blocks)
   return blocks

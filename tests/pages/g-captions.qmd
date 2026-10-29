@@ -225,7 +225,7 @@ An image with `.panzoom` and a caption of placeholder text, from the `lipsum`
 shortcode, longer than the caption panel. It opens in panzoom, and the caption
 panel scrolls, from the keyboard too, while the image keeps its room.
 
-```markdown
+```markdown {.markdown-example}
 ![{{{< lipsum 4 >}}}](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
@@ -238,7 +238,7 @@ placeholder text longer than its panel. It opens in panzoom with the caption
 above the image. The caption panel scrolls, and the hint line stays in view
 below it.
 
-```markdown
+```markdown {.markdown-example}
 ![{{{< lipsum 4 >}}}](../../images/mv-1.jpg){.panzoom desc-position="top" hint="true" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
@@ -251,7 +251,7 @@ of placeholder text longer than its panel. It opens in panzoom with the caption
 in a panel on the left of the image. The caption scrolls, and the hint stays in
 view at the foot of the panel.
 
-```markdown
+```markdown {.markdown-example}
 ![{{{< lipsum 4 >}}}](../../images/mv-2.jpg){.panzoom desc-position="left" hint="true" fig-alt="A white lighthouse against a blue sky"}
 ```
 
@@ -264,7 +264,7 @@ of placeholder text longer than its panel. It opens in panzoom with the caption
 in a panel on the right of the image. The caption scrolls, and the hint stays in
 view at the foot of the panel.
 
-```markdown
+```markdown {.markdown-example}
 ![{{{< lipsum 4 >}}}](../../images/mv-3.jpg){.panzoom desc-position="right" hint="true" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 

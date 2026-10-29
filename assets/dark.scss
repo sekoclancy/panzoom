@@ -40,3 +40,7 @@ $navbar-fg: #ffffff;
   padding-left: 3ch;
   text-indent: -3ch;
 }
+.quarto-dark pre.sourceCode.markdown-example > code.sourceCode > span {
+  padding-left: 0;
+  text-indent: 0;
+}
