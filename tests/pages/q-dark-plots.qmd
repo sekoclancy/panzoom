@@ -1,0 +1,187 @@
+---
+title: "Dark plots"
+format:
+  html:
+    code-tools: true
+filters:
+  - path: ../../_filters/show-source.lua
+    at: pre-ast
+  - panzoom
+---
+
+Plots with dark backgrounds and plots with transparent backgrounds, in the
+viewer's default 70% black backdrop. Each one is worth opening in light and dark
+mode (the toggle in the navbar).
+
+The site draws R plots on white (`dev.args: bg: white` in `_quarto.yml`), so the
+transparent plots set `bg = "transparent"` in their own cells. They use the
+`ragg_png` device, since R's own png device tints light text drawn on a
+transparent background.
+
+The plots are drawn with this helper. `ink` colors the axes, labels, and title;
+`paper` fills the plot background, and `NULL` leaves the device background.
+
+```{r}
+wave <- function(k = 1, ink = "black", paper = NULL, col = "#3B7DB8") {
+  if (!is.null(paper)) {
+    par(bg = paper)
+  }
+  par(fg = ink, col.axis = ink, col.lab = ink, col.main = ink)
+  x <- seq(0, 4 * pi, length.out = 400)
+  plot(
+    x,
+    sin(k * x),
+    type = "n",
+    main = paste("Wave", k),
+    xlab = "x",
+    ylab = "sin(kx)"
+  )
+  polygon(
+    c(x, rev(x)),
+    c(sin(k * x), rep(0, length(x))),
+    col = adjustcolor(col, 0.35),
+    border = NA
+  )
+  lines(x, sin(k * x), lwd = 2, col = col)
+}
+```
+
+## Dark background {#c1 expect-open="panzoom"}
+
+A plot on a near-black background with light gray ink. It opens on the default
+backdrop, which is also dark.
+
+```{r}
+#| panzoom: true
+#| fig-alt: "A sine curve in light blue on a near-black background"
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+
+wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
+```
+
+## Dark background, light backdrop {#c2 expect-open="panzoom"}
+
+The [dark plot](#c1) with a light gray `backdrop` of its own.
+
+```{r}
+#| panzoom:
+#|   backdrop: "rgba(225, 225, 225, 0.92)"
+#| fig-alt: "A sine curve in light blue on a near-black background"
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+
+wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
+```
+
+## Transparent background, dark ink {#c3 expect-open="panzoom"}
+
+A plot with a transparent background and black ink. The viewer shows it on the
+page background, so its axes are readable in light mode and hard to see in dark
+mode, on the page and in the viewer alike.
+
+```{r}
+#| panzoom: true
+#| dev: ragg_png
+#| dev.args: !expr list(bg = "transparent")
+#| fig-alt: "A sine curve in blue with black axes on a transparent background"
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(k = 3)
+```
+
+## Transparent background, light ink {#c4 expect-open="panzoom"}
+
+The [transparent plot](#c3) with light gray ink: the reverse, readable in dark
+mode and hard to see in light mode.
+
+```{r}
+#| panzoom: true
+#| dev: ragg_png
+#| dev.args: !expr list(bg = "transparent")
+#| fig-alt: >-
+#|   A sine curve in blue with light gray axes on a transparent background
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(k = 3, ink = "gray85")
+```
+
+## Gallery of light and dark plots {#c5 expect-open="panzoom" expect-steps="true"}
+
+A plot on white, the [dark plot](#c1), and the [transparent plot](#c3) with
+black ink, in a gallery.
+
+```{r}
+#| panzoom:
+#|   group: light-dark
+#| dev: ragg_png
+#| dev.args: !expr list(bg = "transparent")
+#| fig-alt:
+#|   - "A sine curve in blue with black axes on a white background"
+#|   - "A sine curve in light blue on a near-black background"
+#|   - "A sine curve in blue with black axes on a transparent background"
+#| fig-cap:
+#|   - >-
+#|     Wave 1: y = sin(x); the area between the curve and the x-axis is shaded.
+#|   - >-
+#|     Wave 2: y = sin(2x); the area between the curve and the x-axis is shaded.
+#|   - >-
+#|     Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
+
+wave(k = 1, paper = "white")
+wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
+wave(k = 3, paper = "transparent")
+```
+
+## Light and dark renderings {#c6 expect-open="panzoom"}
+
+An R cell with `renderings: [light, dark]` and two plots: black ink for light
+mode and light gray ink for dark mode, both on a transparent background. The
+page shows the one for its mode.
+
+```{r}
+#| panzoom: true
+#| renderings: [light, dark]
+#| dev: ragg_png
+#| dev.args: !expr list(bg = "transparent")
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
+
+wave(k = 4)
+wave(k = 4, ink = "gray85")
+```
+
+## Gallery with light and dark renderings {#c7 expect-open="panzoom" expect-steps="true"}
+
+Two cells with `renderings: [light, dark]` in one gallery.
+
+```{r}
+#| panzoom:
+#|   group: renderings
+#| renderings: [light, dark]
+#| dev: ragg_png
+#| dev.args: !expr list(bg = "transparent")
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 5: y = sin(5x); the area between the curve and the x-axis is shaded.
+
+wave(k = 5)
+wave(k = 5, ink = "gray85")
+```
+
+```{r}
+#| panzoom:
+#|   group: renderings
+#| renderings: [light, dark]
+#| dev: ragg_png
+#| dev.args: !expr list(bg = "transparent")
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 6: y = sin(6x); the area between the curve and the x-axis is shaded.
+
+wave(k = 6)
+wave(k = 6, ink = "gray85")
+```
