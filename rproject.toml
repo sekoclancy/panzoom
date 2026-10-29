@@ -1,0 +1,16 @@
+sandbox = true
+
+[project]
+name = "panzoom"
+r_version = "4.6"
+
+repositories = [
+  { alias = "CRAN", url = "https://p3m.dev/cran/2026-10-28" },
+]
+
+dependencies = [
+  { name = "knitr" },
+  { name = "rmarkdown" },
+  { name = "ragg" },
+  { name = "gifski" },
+]

@@ -54,14 +54,14 @@ quarto render --profile axe    # then, with caddy run, open /axe/
 
 ## Setup
 
-  | Need                                                                           | For                                            | Install                                             |
-  | ------------------------------------------------------------------------------ | ---------------------------------------------- | --------------------------------------------------- |
-  | [Quarto](https://quarto.org) 1.8.27 or later                                   | Rendering                                      |                                                     |
-  | R with the `ragg` package                                                      | The R pages (`ragg` for page E's webp figures) |                                                     |
-  | Python 3.14 venv                                                               | Pages J–L                                      | `uv sync` ([From source](../README.md#from-source)) |
-  | [Node.js](https://nodejs.org) 22.12 or later                                   | The scripts                                    |                                                     |
-  | Chrome Headless Shell (about 115 MB)                                           | The browser the tests drive                    | `quarto install chrome-headless-shell --no-prompt`  |
-  | Puppeteer (`puppeteer-core`, pinned in [package-lock.json](package-lock.json)) | Controlling Chrome                             | `cd tests && npm install`                           |
+  | Need                                                                           | For                         | Install                                             |
+  | ------------------------------------------------------------------------------ | --------------------------- | --------------------------------------------------- |
+  | [Quarto](https://quarto.org) 1.8.27 or later                                   | Rendering                   |                                                     |
+  | R 4.6 and [rv](https://github.com/A2-ai/rv)                                    | The R pages                 | `rv sync` ([From source](../README.md#from-source)) |
+  | Python 3.14 venv                                                               | Pages J–L                   | `uv sync` ([From source](../README.md#from-source)) |
+  | [Node.js](https://nodejs.org) 22.12 or later                                   | The scripts                 |                                                     |
+  | Chrome Headless Shell (about 115 MB)                                           | The browser the tests drive | `quarto install chrome-headless-shell --no-prompt`  |
+  | Puppeteer (`puppeteer-core`, pinned in [package-lock.json](package-lock.json)) | Controlling Chrome          | `cd tests && npm install`                           |
 
 Set `CHROME=/path/to/chrome` to use another Chrome or Chromium.
 

@@ -25,11 +25,12 @@ using version control, you will want to check in this directory.
 ### From source
 
 To build the demo site and examples from a clone, with
-[uv](https://docs.astral.sh/uv/):
+[uv](https://docs.astral.sh/uv/) and [rv](https://github.com/A2-ai/rv):
 
 ```bash
 git clone https://github.com/sekoclancy/panzoom && cd panzoom
 uv sync          # creates .venv with Python 3.14 and the locked packages
+rv sync          # installs the locked R packages into rv/library
 quarto render    # build into docs/
 ```
 
@@ -447,8 +448,10 @@ have each way, and the classes of the viewer's parts.
 
 Set up a clone as in [From source](#from-source). The venv is only for the
 Python (Jupyter) examples, with its packages listed in
-[pyproject.toml](pyproject.toml) and pinned in [uv.lock](uv.lock). The rest need
-R, with the `ragg` package. Then:
+[pyproject.toml](pyproject.toml) and pinned in [uv.lock](uv.lock). The R
+examples use the rv library, with its packages listed in
+[rproject.toml](rproject.toml) and pinned in [rv.lock](rv.lock); rv keeps out
+packages installed with R itself. Then:
 
 ```bash
 quarto render              # build the site into docs/
