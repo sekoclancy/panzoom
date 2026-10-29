@@ -308,8 +308,7 @@ after. The page shows the png, which opens in panzoom.
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
 #| fig-cap: >-
-#|   Wave 2: y = sin(2x), as png (and pdf); the area between the curve and y = 0
-#|   is shaded.
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
 %config InlineBackend.figure_formats = ["png", "pdf"]
 wave(2)
@@ -324,8 +323,7 @@ A plot written as jpeg, set the same way. It opens in panzoom.
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
 #| fig-cap: >-
-#|   Wave 3: y = sin(3x), as jpeg; the area between the curve and y = 0 is
-#|   shaded.
+#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
 %config InlineBackend.figure_formats = ["jpeg"]
 wave(3)

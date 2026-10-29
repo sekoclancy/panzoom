@@ -117,7 +117,7 @@ moves sideways.
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
-#| fig-cap: "A 25 × 2 inch collage of 12 random walks, as png."
+#| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
 ```

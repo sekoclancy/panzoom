@@ -65,7 +65,7 @@ A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 #| dev.args:
 #|   units: "in"
 #|   res: 96
-#| fig-cap: "A 25 × 2 inch collage of 12 random walks, as webp."
+#| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
 ```
@@ -81,7 +81,7 @@ The same collage written as svg. It opens in panzoom at screen height.
 #| fig-width: 25
 #| fig-height: 2
 #| dev: svg
-#| fig-cap: "A 25 × 2 inch collage of 12 random walks, as svg."
+#| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
 ```
@@ -100,7 +100,7 @@ A small plot written as webp. It opens in panzoom at its real size.
 #| dev.args:
 #|   units: "in"
 #|   res: 96
-#| fig-cap: "Maunga Whau's heights as filled contours, as webp."
+#| fig-cap: "Maunga Whau's heights as filled contours."
 
 filled.contour(volcano, color.palette = terrain.colors)
 ```
@@ -115,7 +115,7 @@ The same plot written as svg. It opens in panzoom at its real size.
 #|   key
 #| panzoom: true
 #| dev: svg
-#| fig-cap: "Maunga Whau's heights as filled contours, as svg."
+#| fig-cap: "Maunga Whau's heights as filled contours."
 
 filled.contour(volcano, color.palette = terrain.colors)
 ```
@@ -131,7 +131,7 @@ panzoom.
 #|   key
 #| panzoom: true
 #| dev: [png, pdf]
-#| fig-cap: "Maunga Whau's heights as filled contours, as png (and pdf)."
+#| fig-cap: "Maunga Whau's heights as filled contours."
 
 filled.contour(volcano, color.palette = terrain.colors)
 ```
@@ -179,7 +179,7 @@ loaded." in place of the image.
 #| dev.args:
 #|   units: "in"
 #|   res: 192
-#| fig-cap: "A 100 × 5 inch collage of 12 random walks, as webp at 192 dpi."
+#| fig-cap: "A 100 × 5 inch collage of 12 random walks."
 #| error: true
 
 collage(n = 12)
