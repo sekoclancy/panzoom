@@ -133,7 +133,7 @@ and `fig-alt` is the alt text:
 Wrap any block in a `.panzoom` div to select every image in it, code cell output
 included:
 
-````markdown
+````markdown {.markdown-example}
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
 #| fig-alt: >-

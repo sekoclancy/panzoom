@@ -176,7 +176,7 @@ A labeled plot and a labeled markdown image in a `.panzoom` div. Each opens in
 panzoom on its own, and both keep their numbers and anchors (see @fig-div-plot
 and @fig-div-image).
 
-````markdown {.code-overflow-wrap .cell-code}
+````markdown {.code-overflow-wrap .cell-code .markdown-example}
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
 #| label: fig-div-plot
