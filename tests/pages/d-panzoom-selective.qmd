@@ -213,6 +213,20 @@ The caption of [case 4](#c4) links to it.
 image(volcano)
 ```
 
+## Cell with a link {#c13 expect-open="navigation"}
+
+An R cell with `panzoom: true` and `fig-link`, which puts its plot inside a
+link. As for the [image in a link](#c9), clicking the plot follows the link.
+
+```{r}
+#| panzoom: true
+#| fig-link: "https://quarto.org"
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
+#| fig-cap: "Vapor pressure of mercury against temperature."
+
+plot(pressure)
+```
+
 ## Credits {.unnumbered}
 
 The photos are from Unsplash, under the [Unsplash

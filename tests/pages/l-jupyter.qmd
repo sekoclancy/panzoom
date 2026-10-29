@@ -366,3 +366,18 @@ plt.figure(figsize=(3, 2))
 plt.plot(x, np.cos(x))
 plt.show()
 ```
+
+## Cell with a link {#c18 expect-open="navigation"}
+
+A cell with `panzoom: true` and `fig-link`, which puts its plot inside a link.
+Clicking the plot follows the link.
+
+```{python}
+#| fig-alt: "Line plot of a sine wave"
+#| panzoom: true
+#| fig-link: "https://quarto.org"
+#| fig-cap: "A sine wave, sin(x)."
+
+plt.plot(x, np.sin(x))
+plt.show()
+```
