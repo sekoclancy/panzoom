@@ -18,8 +18,8 @@ figcaption :is(a, .citation a) { text-decoration: underline; }
 /* Keep wrapped lines in echoed source aligned under their code, rather than
    leaving a short word by itself at the edge of the page. */
 pre.sourceCode > code.sourceCode > span {
-  padding-left: 4ch;
-  text-indent: -4ch;
+  padding-left: 3ch;
+  text-indent: -3ch;
 }
 
 /* Code in sidebar and table-of-contents links takes the link's color, as in
