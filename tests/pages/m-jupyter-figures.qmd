@@ -483,10 +483,11 @@ wave(5)
 wave(6)
 ```
 
-## Caption in the margin {#c16 expect-open="panzoom"}
+## Caption in the margin {#c16 expect-open="panzoom" expect-desc-position="right"}
 
 A Python cell with `panzoom: true` and `fig-cap-location: margin`. The page
-shows the caption in the margin, beside the plot.
+shows the caption in the margin, beside the plot. It opens in panzoom with the
+caption in a panel on the right, the margin side, with no `desc-position` set.
 
 ```{python}
 #| panzoom: true
@@ -498,11 +499,12 @@ shows the caption in the margin, beside the plot.
 wave(2)
 ```
 
-## Caption above the figure {#c17 expect-open="panzoom"}
+## Caption above the figure {#c17 expect-open="panzoom" expect-desc-position="top"}
 
 A Python cell with a figure label, `panzoom: true`, and `fig-cap-location: top`.
 The page shows the caption above the plot: Quarto moves a caption to the top
-only for a labeled figure.
+only for a labeled figure. It opens in panzoom with the caption above the image,
+with no `desc-position` set.
 
 ```{python}
 #| label: fig-caption-top

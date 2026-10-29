@@ -60,8 +60,9 @@
 
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
   the document's `panzoom:` metadata): { maxZoom: 4, hint: true,
-  caption: true, loop: false, fit: "auto", descPosition: "bottom",
-  cssClass: "", keys: {} }; cssClass
+  caption: true, loop: false, fit: "auto", descPosition (default: where
+  the page puts the caption, see pagePosition()), cssClass: "", keys: {} };
+  cssClass
   is added to the viewer's classes, for styling it, and keys rebinds the
   viewer's keys (see KEYS). A cell's `#| panzoom:` options
   override maxZoom, hint, caption, fit and descPosition per image, via
@@ -155,7 +156,8 @@
     };
     var maxZoom = d.panzoomMaxZoom !== undefined ? Number(d.panzoomMaxZoom) : o.maxZoom;
     var fit = d.panzoomFit !== undefined ? d.panzoomFit : o.fit;
-    var pos = d.panzoomDescPosition !== undefined ? d.panzoomDescPosition : o.descPosition;
+    var pos = d.panzoomDescPosition !== undefined ? d.panzoomDescPosition :
+      o.descPosition !== undefined ? o.descPosition : pagePosition(el);
     return {
       fit: FITS.indexOf(fit) >= 0 ? fit : "auto",
       descPosition: POSITIONS.indexOf(pos) >= 0 ? pos : "bottom",
@@ -164,6 +166,24 @@
       caption: flag(d.panzoomCaption, flag(o.caption, true)),
       loop: flag(o.loop, false)
     };
+  }
+
+  // Where the page puts the image's caption (`fig-cap-location`), as a
+  // `desc-position`: the default when neither the image nor the document
+  // sets one. A margin caption is beside the image on the margin side,
+  // which a right-to-left page puts on the left. A subfigure looks at its
+  // own caption, then its parent figure's.
+  function pagePosition(el) {
+    var fig = el && el.closest("figure");
+    for (var i = 0; fig && i < 2; i++) {
+      var cap = fig.querySelector(":scope > figcaption");
+      if (cap && cap.classList.contains("quarto-float-caption-top")) return "top";
+      if (cap && cap.classList.contains("margin-caption")) {
+        return getComputedStyle(fig).direction === "rtl" ? "left" : "right";
+      }
+      fig = fig.parentElement && fig.parentElement.closest("figure");
+    }
+    return "bottom";
   }
 
   // Each action's keys: the document's `keys:` (a list, or false for

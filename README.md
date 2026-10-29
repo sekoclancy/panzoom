@@ -171,7 +171,7 @@ panzoom:
   caption: true   # boolean: show the figure caption in the viewer (default true)
   loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
   fit: auto       # auto, contain, height, or width (default auto, see Wide and tall figures)
-  desc-position: bottom  # bottom, top, left, or right: where the caption goes (default bottom, see Captions)
+  desc-position: bottom  # bottom, top, left, or right: where the caption goes (default: where the page has it, see Captions)
   css-class: my-viewer  # an extra class on the viewer, for styling it (default none; see Styling)
   keys:           # the viewer's keys (see Keys)
     caption: k
@@ -239,11 +239,14 @@ only do one action. The hint line names the keys in use.
 ### Captions
 
 The viewer shows the figure's caption, with its number, math, citations, and
-cross-references, under the image. Turn it off with `caption: false`.
+cross-references, where the page has it: under the image, above it with
+`fig-cap-location: top`, or beside it on the margin side with
+`fig-cap-location: margin`. Turn it off with `caption: false`.
 
-`desc-position` puts the caption and description above the image (`top`), or
-beside it (`left`, `right`), for a document, a code cell, or one image. On a
-screen narrower than 769 px, `left` and `right` show below, as in lightbox:
+`desc-position` puts the caption and description under the image (`bottom`),
+above it (`top`), or beside it (`left`, `right`) instead, for a document, a code
+cell, or one image. On a screen narrower than 769 px, `left` and `right` show
+below, as in lightbox:
 
 ```markdown
 ![Beach](beach.jpg){.panzoom desc-position="left"}
