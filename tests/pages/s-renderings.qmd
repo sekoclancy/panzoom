@@ -108,3 +108,21 @@ wave(k = 5, ink = "gray85")
 wave(k = 6)
 wave(k = 6, ink = "gray85")
 ```
+
+## Renderings in the other order {#c4 expect-open="panzoom"}
+
+A cell with `renderings: [dark, light]`: the first plot, with light gray ink, is
+for dark mode, and the second, with black ink, for light mode.
+
+```{r}
+#| panzoom: true
+#| renderings: [dark, light]
+#| dev: ragg_png
+#| dev.args: !expr list(bg = "transparent")
+#| fig-alt: "A sine curve in blue with axes in the text color"
+#| fig-cap: >-
+#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
+
+wave(k = 2, ink = "gray85")
+wave(k = 2)
+```
