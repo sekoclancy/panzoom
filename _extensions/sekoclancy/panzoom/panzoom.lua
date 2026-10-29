@@ -170,6 +170,7 @@ local function names(options)
   table.sort(list)
   return list
 end
+local STYLE_NAMES = names(STYLE_OPTIONS)
 
 -- Checks one value against its spec. `value` is a Lua boolean, number or
 -- string, `text` its text (nil for a list or map), `shown` how to print it.
@@ -445,7 +446,7 @@ local function mark(img)
     end
   end
   -- Styling options written on the image itself.
-  for _, key in ipairs(names(STYLE_OPTIONS)) do
+  for _, key in ipairs(STYLE_NAMES) do
     local v = img.attributes[key]
     if v ~= nil then
       img.attributes[key] = nil
@@ -641,7 +642,7 @@ local function cell_option(el)
     local cfg, raws = parse_options(value)
     validate_cell(cfg, raws, el)
     local keys = { "max-zoom", "hint", "caption", "group", "fit", "desc-position" }
-    for _, key in ipairs(names(STYLE_OPTIONS)) do table.insert(keys, key) end
+    for _, key in ipairs(STYLE_NAMES) do table.insert(keys, key) end
     for _, key in ipairs(keys) do
       if cfg[key] ~= nil then
         attrs["data-panzoom-" .. key] = tostring(cfg[key])
