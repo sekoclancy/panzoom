@@ -229,6 +229,8 @@ difference.
 #| panzoom:
 #|   fit: height
 #| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 3: y = sin(3x); the area between the curve and the x-axis is shaded.
 
 wave(k = 3)
 ```
@@ -242,6 +244,8 @@ the screen, so it opens closer than the whole plot and zooms out to it.
 #| panzoom:
 #|   fit: width
 #| fig-alt: "A sine curve, shaded between the curve and the x-axis"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
 
 wave(k = 4)
 ```
@@ -259,6 +263,7 @@ the spot you clicked, and zooms out to the whole figure.
 #| fig-width: 12
 #| fig-height: 4.5
 #| fig-alt: "A row of 6 small line plots of random walks, each in its own color"
+#| fig-cap: "A 12 × 4.5 inch collage of 6 random walks."
 
 collage(n = 6)
 ```

@@ -354,6 +354,8 @@ the screen, so it opens closer than the whole plot and zooms out to it.
 #| fig-alt: "A sine curve, shaded between the curve and the x-axis"
 #| panzoom:
 #|   fit: width
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and the x-axis is shaded.
 
 wave(4)
 ```
@@ -369,6 +371,7 @@ spot you clicked, and zooms out to the whole figure.
 #| fig-alt: "A row of 6 small line plots of random walks, each in its own color"
 #| panzoom:
 #|   fit: height
+#| fig-cap: "An 8 × 3 inch collage of 6 random walks."
 
 collage(n=6, height=3)
 ```
