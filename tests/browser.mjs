@@ -994,6 +994,7 @@ async function checkPage(browser, base, file) {
           idx, case: +m[1], caseTitle: m[2], n: i + 1,
           expectFit: sec.dataset.expectFit || null,
           shiftScroll: sec.dataset.shiftScroll || null,
+          altScroll: sec.dataset.altScroll || null,
           expectScale: sec.dataset.expectScale ? +sec.dataset.expectScale : null,
           expectZoomOut: sec.dataset.expectZoomOut || null,
           // `expect-scroll="description"` (or "caption"): that panel is too long
@@ -1279,26 +1280,29 @@ async function checkPage(browser, base, file) {
       (!containment.whole || containment.whole.stays);
   }
 
-  // Shift+scroll: which way it moves the image, for cases that say.
-  for (const r of results.filter((r) => r.opened === "panzoom" && r.shiftScroll)) {
-    await openImage(page, r);
-    if (r.shiftScroll.startsWith("zoomed-")) {
-      for (let i = 0; i < 4; i++) await page.keyboard.press("+");
-      await settle(page);
+  // Shift+scroll and Alt+scroll: which way each moves the image, for cases
+  // that say.
+  for (const [key, mod] of [["shiftScroll", "Shift"], ["altScroll", "Alt"]]) {
+    for (const r of results.filter((r) => r.opened === "panzoom" && r[key])) {
+      await openImage(page, r);
+      if (r[key].startsWith("zoomed-")) {
+        for (let i = 0; i < 4; i++) await page.keyboard.press("+");
+        await settle(page);
+      }
+      const t0 = await viewerTransform(page);
+      await page.mouse.move(VIEWPORT.width / 2, VIEWPORT.height / 2);
+      const beforeWheel = await transformOf(page);
+      await page.keyboard.down(mod);
+      await page.mouse.wheel({ deltaY: 300 });
+      await afterWheel(page, beforeWheel);
+      await page.keyboard.up(mod);
+      const t1 = await viewerTransform(page);
+      const dx = Math.abs(t1.x - t0.x), dy = Math.abs(t1.y - t0.y);
+      r[key + "ed"] = t1.s !== t0.s ? "zoomed" : dx > 1 && dy < 0.5 ? "x" : dy > 1 && dx < 0.5 ? "y" :
+        dx < 0.5 && dy < 0.5 ? "none" : "both";
+      r[key + "Ok"] = r[key + "ed"] === r[key].replace(/^zoomed-/, "");
+      await closeAll(page);
     }
-    const t0 = await viewerTransform(page);
-    await page.mouse.move(VIEWPORT.width / 2, VIEWPORT.height / 2);
-    const beforeWheel = await transformOf(page);
-    await page.keyboard.down("Shift");
-    await page.mouse.wheel({ deltaY: 300 });
-    await afterWheel(page, beforeWheel);
-    await page.keyboard.up("Shift");
-    const t1 = await viewerTransform(page);
-    const dx = Math.abs(t1.x - t0.x), dy = Math.abs(t1.y - t0.y);
-    r.shiftScrolled = t1.s !== t0.s ? "zoomed" : dx > 1 && dy < 0.5 ? "x" : dy > 1 && dx < 0.5 ? "y" :
-      dx < 0.5 && dy < 0.5 ? "none" : "both";
-    r.shiftScrollOk = r.shiftScrolled === r.shiftScroll.replace(/^zoomed-/, "");
-    await closeAll(page);
   }
 
   // Clicking a strip on the page opens it at the clicked spot; `0` returns
@@ -1624,6 +1628,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
         (r.expectScale ? `; opening scale ${+r.fitScale.toFixed(3)}` + (scaleOk(r) ? " (as expected)" : ` (**expected ${r.expectScale}**)`) : "") +
         (r.panelScroll ? `; long ${r.expectScroll} scrolls by keyboard: ` + (panelScrollOk(r) ? "yes" : `**NO** (${Object.entries(r.panelScroll).filter(([, v]) => !v).map(([k]) => k).join(", ")})`) : "") +
         (r.shiftScroll ? `; Shift+scroll: ${r.shiftScrolled}` + (r.shiftScrollOk ? " (as expected)" : ` (**expected ${r.shiftScroll}**)`) : "") +
+        (r.altScroll ? `; Alt+scroll: ${r.altScrolled}` + (r.altScrollOk ? " (as expected)" : ` (**expected ${r.altScroll}**)`) : "") +
         (r.captionHasMath ? ` (caption math ${TEX_LABEL[r.captionTeX]})` : "") +
         (r.citations ? `; ${r.citations} citations` : "") + (r.crossrefs ? `; ${r.crossrefs} cross-references` : "") +
         (r.unresolved?.length ? `; **unresolved: ${r.unresolved.join(", ")}**` : "") +
@@ -1920,6 +1925,8 @@ try {
     }
     const shift = results.filter((r) => r.shiftScroll && r.opened === "panzoom");
     if (shift.length) extra.push(shift.every((r) => r.shiftScrollOk) ? "shift-scroll ok" : "SHIFT-SCROLL FAILED");
+    const alt = results.filter((r) => r.altScroll && r.opened === "panzoom");
+    if (alt.length) extra.push(alt.every((r) => r.altScrollOk) ? "alt-scroll ok" : "ALT-SCROLL FAILED");
     if (still) {
       extra.push(still.ok ? "page still ok" : "PAGE STILL FAILED");
       const yes = (v) => (v ? "yes" : "**NO**");

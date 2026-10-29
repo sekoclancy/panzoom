@@ -31,7 +31,7 @@
 
   Panning: drag, arrow keys, Shift+wheel or sideways trackpad scrolling
   (along the direction the image extends past the screen; sideways if
-  both). The image is kept on screen: centered in a direction where it
+  both), and Alt+wheel (up and down). The image is kept on screen: centered in a direction where it
   fits, and stopping at its ends where it doesn't. The group
   is `data-panzoom-group` (cell option), else `data-group` (`group="..."` on
   a markdown image, as for Quarto's lightbox), else `data-ref-parent`
@@ -903,11 +903,16 @@
     // Shift+wheel, and sideways trackpad scrolling, pan instead: along the
     // one direction the image extends past the screen, or sideways when it
     // extends both ways (or neither, when containment keeps it still).
+    // Alt+wheel (Option on a Mac) pans up and down.
     overlay.addEventListener("wheel", function (e) {
       if (footer.contains(e.target)) return;
       e.preventDefault();
       if (e.ctrlKey && gesture) return;
       var unit = e.deltaMode === 1 ? 16 : 1;
+      if (e.altKey && !e.ctrlKey) {
+        panPx(0, (e.deltaY || e.deltaX) * unit);
+        return;
+      }
       if (!e.ctrlKey && (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))) {
         // Some browsers turn Shift+wheel into deltaX, others keep deltaY.
         var d = (e.deltaX || e.deltaY) * unit, o = overflow();

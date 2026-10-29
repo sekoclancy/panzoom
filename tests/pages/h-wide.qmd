@@ -106,7 +106,7 @@ wave <- function(k = 1) {
 }
 ```
 
-## Wide collage {#c1 expect-fit="height" shift-scroll="x"}
+## Wide collage {#c1 expect-fit="height" shift-scroll="x" alt-scroll="none"}
 
 A 25 × 2 inch collage. It opens in panzoom at screen height, and Shift+scroll
 moves sideways.
@@ -154,7 +154,7 @@ whole.
 collage(n = 4)
 ```
 
-## Tall strip {#c4 expect-fit="width" shift-scroll="y"}
+## Tall strip {#c4 expect-fit="width" shift-scroll="y" alt-scroll="y"}
 
 A 4 × 15 inch strip. It opens at screen width from its top, and Shift+scroll
 moves up and down.
@@ -169,7 +169,7 @@ moves up and down.
 strip(seed = 2, n = 8)
 ```
 
-## Large poster {#c5 expect-fit="contain" shift-scroll="zoomed-x"}
+## Large poster {#c5 expect-fit="contain" shift-scroll="zoomed-x" alt-scroll="zoomed-y"}
 
 A 24 × 18 inch poster. It opens whole. Zoomed in, it extends past the screen
 both ways, and Shift+scroll moves sideways.

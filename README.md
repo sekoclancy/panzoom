@@ -44,15 +44,15 @@ arrow keys.](images/demo.gif)
 
 ## Viewer controls
 
-  | Action                                   | Mouse or touch                              | Keyboard             |
-  | ---------------------------------------- | ------------------------------------------- | -------------------- |
-  | Zoom                                     | scroll or pinch, toward the cursor          | + and -              |
-  | Pan                                      | drag, or Shift+scroll                       | arrow keys           |
-  | Go back to the opening view              | double-click                                | 0                    |
-  | Change image in a gallery                | the previous and next buttons, or swipe     | left and right arrow |
-  | Hide or show the caption and description |                                             | c                    |
-  | Hide or show the hint line               |                                             | h                    |
-  | Close                                    | the × button, click the background, or Back | Esc                  |
+  | Action                                   | Mouse or touch                                                              | Keyboard             |
+  | ---------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
+  | Zoom                                     | scroll or pinch, toward the cursor                                          | + and -              |
+  | Pan                                      | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | arrow keys           |
+  | Go back to the opening view              | double-click                                                                | 0                    |
+  | Change image in a gallery                | the previous and next buttons, or swipe                                     | left and right arrow |
+  | Hide or show the caption and description |                                                                             | c                    |
+  | Hide or show the hint line               |                                                                             | h                    |
+  | Close                                    | the × button, click the background, or Back                                 | Esc                  |
 
 The [`keys`](#keys) option changes the keys for zooming, resetting, hiding the
 caption or the hint line, and closing. Zoom goes up to `max-zoom`. While an
@@ -70,7 +70,7 @@ focus to the image.
 - Zoom toward the cursor with scroll or pinch, in steps up to `max-zoom` (the
   lightbox only toggles between fit and real size, and not at all on screens 768
   px wide or less)
-- Pan by dragging, using the arrow keys, or Shift+scroll
+- Pan by dragging, using the arrow keys, Shift+scroll, or Alt+scroll
 - [Captions](#captions) and [descriptions](#descriptions) with math, citations,
   and cross-references (the lightbox shows raw TeX and `[@key]`)
 - [Galleries](#galleries) from groups and subfigures, and figure
