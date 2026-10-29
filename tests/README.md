@@ -109,6 +109,12 @@ callouts uncovered first:
   | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | [p-divs](pages/p-divs.qmd) | Callouts (collapsed too), tabsets (a gallery across tabs), `column-screen`, `column: page`, `column-margin`, and `content-visible`, alone and in a `.panzoom` div |
 
+**Theme.** Plots in light and dark mode:
+
+  | Page                                   | Description                                                                                           |
+  | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+  | [r-dark-plots](pages/r-dark-plots.qmd) | Dark and transparent plots on the default backdrop, a light backdrop, and `renderings: [light, dark]` |
+
 **Outside the site** ([standalone/](standalone/)), rendered by
 `npm run standalone` as plain documents:
 

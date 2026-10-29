@@ -99,7 +99,7 @@ website:
         contents:
           - href: tests/pages/p-divs.qmd
             text: "P. Divs"
-      - section: "Contrast"
+      - section: "Theme"
         contents:
-          - href: tests/pages/q-dark-plots.qmd
-            text: "Q. Dark plots"
+          - href: tests/pages/r-dark-plots.qmd
+            text: "R. Dark plots"
