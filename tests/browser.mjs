@@ -804,6 +804,90 @@ const KEYBOARD_CHECKS = [
   ["bandGoes", "With both hidden, the caption band goes and the image keeps or gains room"],
 ];
 
+// Back closes the viewer and stays on the page, scrolled where it was;
+// closing with Esc leaves no history entry behind, so Back after it and
+// Forward don't reopen the viewer. In a gallery, Back closes from any
+// image. A same-page link in a caption is followed once the viewer
+// closes, and Back from it returns to the page.
+async function checkBack(page, handle, galleryHandle, linkHandle) {
+  const r = {};
+  const where = () => page.evaluate(() => ({
+    open: !!document.querySelector(".panzoom-overlay.open"), href: location.href, y: Math.round(scrollY),
+    ours: !!(history.state && history.state.panzoom),
+  }));
+  const back = async () => { await page.evaluate(() => history.back()); await new Promise((f) => setTimeout(f, 300)); await settle(page); };
+  const forward = async () => { await page.evaluate(() => history.forward()); await new Promise((f) => setTimeout(f, 300)); await settle(page); };
+  const openOn = async (h) => {
+    await reveal(page, h);
+    await h.evaluate((el) => el.scrollIntoView({ block: "center" }));
+    await settle(page);
+    const before = await where();
+    await h.click();
+    await settle(page);
+    return before;
+  };
+
+  const before = await openOn(handle);
+  r.opens = (await where()).open;
+  await back();
+  const after = await where();
+  r.backCloses = !after.open;
+  r.backStays = after.href === before.href && Math.abs(after.y - before.y) <= 2;
+
+  await openOn(handle);
+  await page.keyboard.press("Escape");
+  await new Promise((f) => setTimeout(f, 300));
+  await settle(page);
+  r.escLeavesNoEntry = !(await where()).ours;
+  await forward();
+  const ahead = await where();
+  r.forwardStaysClosed = !ahead.open && ahead.href === before.href;
+
+  if (galleryHandle) {
+    await openOn(galleryHandle);
+    await page.keyboard.press("ArrowRight");
+    await settle(page);
+    await back();
+    const g = await where();
+    r.galleryBackCloses = !g.open && g.href === before.href;
+  }
+
+  if (linkHandle) {
+    const start = await openOn(linkHandle);
+        const link = await page.evaluateHandle(() => [...document.querySelectorAll(".panzoom-overlay.open .panzoom-panel a[href]")]
+      .find((a) => a.hash && a.href.split("#")[0] === location.href.split("#")[0]) || null);
+    if (await link.evaluate((a) => !!a)) {
+      const hash = await link.evaluate((a) => a.hash);
+      await link.click();
+      await new Promise((f) => setTimeout(f, 300));
+      await settle(page);
+      const followed = await page.evaluate((hash) => {
+        const t = document.getElementById(decodeURIComponent(hash.slice(1)));
+        const box = t && t.getBoundingClientRect();
+        return { open: !!document.querySelector(".panzoom-overlay.open"), hash: location.hash,
+          inView: !!box && box.bottom > 0 && box.top < innerHeight };
+      }, hash);
+      r.linkFollowed = !followed.open && followed.hash === hash && followed.inView;
+      await back();
+      const returned = await where();
+      r.linkBackReturns = !returned.open && returned.href === start.href;
+      r.link = hash;
+    }
+  }
+  return r;
+}
+
+const BACK_CHECKS = [
+  ["opens", "The viewer opens"],
+  ["backCloses", "Back closes the viewer"],
+  ["backStays", "Back stays on the page, scrolled where it was"],
+  ["escLeavesNoEntry", "Esc leaves no history entry for the viewer"],
+  ["forwardStaysClosed", "Forward after closing doesn't reopen the viewer"],
+  ["galleryBackCloses", "In a gallery, Back closes from the second image"],
+  ["linkFollowed", "A link in the caption closes the viewer and is followed"],
+  ["linkBackReturns", "Back from that link returns to the page"],
+];
+
 async function checkPage(browser, base, file) {
   const name = path.basename(file, ".html");
   const outDir = path.join(RESULTS, name);
@@ -1034,6 +1118,25 @@ async function checkPage(browser, base, file) {
     await settle(page);
     gallery = await checkGallery(page, handle);
     gallery.image = `${firstInGallery.case}. ${firstInGallery.caseTitle} (img ${firstInGallery.n})`;
+  }
+
+  // Back, on the first image that opens the viewer, the first gallery, and
+  // the first image with a same-page link in its caption.
+  let back = null;
+  if (first) {
+    const idx = (r) => r && page.$(`img[data-test-idx="${r.idx}"]`);
+    const linked = await page.evaluate((ids) => ids.find((i) => {
+      // The caption of a subfigure group is on an outer figure. Quarto
+      // writes cross-reference links out in full.
+      const here = location.href.split("#")[0];
+      for (let f = document.querySelector(`img[data-test-idx="${i}"]`)?.closest("figure"); f; f = f.parentElement.closest("figure")) {
+        if ([...f.querySelectorAll(":scope > figcaption a[href]")].some((a) => a.hash && a.href.split("#")[0] === here)) return true;
+      }
+      return false;
+    }), results.filter((r) => r.opened === "panzoom").map((r) => r.idx));
+    back = await checkBack(page, await idx(first), await idx(firstInGallery),
+      linked === undefined ? null : await page.$(`img[data-test-idx="${linked}"]`));
+    back.image = `${first.case}. ${first.caseTitle} (img ${first.n})`;
   }
 
   // Galleries of images that open larger than the screen: Left/Right pan
@@ -1400,9 +1503,9 @@ async function checkPage(browser, base, file) {
 
   await page.close();
   const network = { url: url.startsWith("file:") ? "file://" : "http", external: [...external], failed: [...failed], offline: OFFLINE, pageTeX, mathjaxStalled };
-  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen }, null, 2));
-  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen));
-  return { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen };
+  fs.writeFileSync(path.join(outDir, "results.json"), JSON.stringify({ file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen, back }, null, 2));
+  fs.writeFileSync(path.join(outDir, "report.md"), report(file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen, back));
+  return { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen, back };
 }
 
 function isolationOk(iso) {
@@ -1489,7 +1592,7 @@ function hasMath(r) {
 }
 const TEX_LABEL = { clean: "typeset", raw: "raw TeX", delimited: "not typeset" };
 
-function report(file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen) {
+function report(file, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen, back) {
   const yn = (v) => (v === undefined || v === null ? "" : v === true ? "yes" : v === false ? "NO" : String(v));
   const lines = [
     `# ${path.basename(file)}`, "",
@@ -1550,6 +1653,13 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       "", "## Keyboard access", "",
       `On the same image.`, "",
       ...KEYBOARD_CHECKS.map(([k, label]) => `- ${label}: ${yes(isolation.keyboard?.[k])}`));
+  }
+  lines.push("", "## Back", "");
+  if (!back) lines.push("No image opens the viewer on this page; skipped.");
+  else {
+    const yes = (v) => (v ? "yes" : "**NO**");
+    lines.push(`Opened on case ${back.image}` + (back.link ? `; the caption link is \`${back.link}\`` : "") + ".", "",
+      ...BACK_CHECKS.filter(([k]) => k in back).map(([k, label]) => `- ${label}: ${yes(back[k])}`));
   }
   lines.push("", "## Gallery navigation", "");
   if (!gallery) lines.push("No panzoom gallery on this page; skipped.");
@@ -1750,12 +1860,14 @@ try {
     return checked;
   });
   for (const run of runs) {
-    const { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen, still } = await run;
+    const { name, outDir, errors, network, results, isolation, gallery, overflowGalleries, containment, clickOpen, back, still } = await run;
     const counts = results.reduce((a, r) => ((a[r.opened] = (a[r.opened] || 0) + 1), a), {});
     const iso = isolation
       ? `${isolationOk(isolation) ? "isolation ok" : "ISOLATION FAILED"}, ${keyboardOk(isolation) ? "keyboard ok" : "KEYBOARD FAILED"}`
       : "isolation n/a, keyboard n/a";
     const gal = gallery ? (gallery.ok ? "gallery ok" : "GALLERY FAILED") : "gallery n/a";
+    const backs = back ? BACK_CHECKS.filter(([k]) => k in back) : [];
+    const bk = back ? (backs.every(([k]) => back[k]) ? "back ok" : "BACK FAILED") : "back n/a";
     const fits = results.filter((r) => r.expectFit && r.opened === "panzoom");
     const fit = fits.length ? (fits.every(fitOk) ? "fit ok" : "FIT FAILED") : "fit n/a";
     const extra = [];
@@ -1824,9 +1936,9 @@ try {
     const errText = errs.unexpected.length ? `${errs.unexpected.length} CONSOLE ERRORS` : `0 console errors` +
       (errs.expected.length ? ` (${errs.expected.length} expected)` : "");
     // A check that failed is in capitals (FIT FAILED, CAPTION OVERLAP, ...).
-    if ([errText, iso, gal, fit, ...extra].some((t) => /[A-Z]{3,}/.test(t))) failedPages++;
+    if ([errText, iso, gal, bk, fit, ...extra].some((t) => /[A-Z]{3,}/.test(t))) failedPages++;
     console.log(`${name}: ${results.length} images, ${JSON.stringify(counts)}, ` +
-      `${errText}, ${iso}, ${gal}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
+      `${errText}, ${iso}, ${gal}, ${bk}, ${fit}${wide ? ", " + wide : ""} -> ${path.relative(process.cwd(), outDir)}/report.md`);
   }
 } finally {
   await Promise.all(browsers.map((b) => b.close()));
