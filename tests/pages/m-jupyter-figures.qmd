@@ -500,10 +500,12 @@ wave(2)
 
 ## Caption above the figure {#c17 expect-open="panzoom"}
 
-A Python cell with `panzoom: true` and `fig-cap-location: top`. The page shows
-the caption above the plot.
+A Python cell with a figure label, `panzoom: true`, and `fig-cap-location: top`.
+The page shows the caption above the plot: Quarto moves a caption to the top
+only for a labeled figure.
 
 ```{python}
+#| label: fig-caption-top
 #| panzoom: true
 #| fig-cap-location: top
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"

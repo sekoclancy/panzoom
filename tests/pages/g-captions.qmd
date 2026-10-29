@@ -287,10 +287,12 @@ wave(k = 2)
 
 ## Caption above the figure {#c15 expect-open="panzoom"}
 
-An R cell with `panzoom: true` and `fig-cap-location: top`. The page shows the
-caption above the plot.
+An R cell with a figure label, `panzoom: true`, and `fig-cap-location: top`. The
+page shows the caption above the plot: Quarto moves a caption to the top only
+for a labeled figure.
 
 ```{r}
+#| label: fig-caption-top
 #| panzoom: true
 #| fig-cap-location: top
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
