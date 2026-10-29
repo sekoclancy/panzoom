@@ -122,6 +122,11 @@
   // keyboard).
   var clicked = null;
   var gallery = [], index = 0;
+  // Back closes the viewer: opening adds a history entry (same URL), which
+  // Back leaves, and closing any other way steps back over it (see
+  // close()). `leaving` is a link's address to follow once that step is
+  // done.
+  var inHistory = false, leaving = null;
   // The classes the shown image added to the viewer (see restyle()).
   var imageClasses = [];
   // The c and h keys hide the caption (with the description) and the hint,
@@ -717,6 +722,10 @@
     if (!overlay.classList.contains("open")) {
       pageStyle = { overflow: html.style.overflow, gutter: html.style.scrollbarGutter };
     }
+    if (!inHistory) {
+      history.pushState({ panzoom: true }, "");
+      inHistory = true;
+    }
     overlay.classList.add("open");
     // Stop the page scrolling; keep the scrollbar's space, if it has one,
     // so the page behind doesn't shift sideways, and cover that space too.
@@ -728,7 +737,12 @@
     overlay.focus({ preventScroll: true });
   }
 
-  function close() {
+  // `fromHistory`: Back closed the viewer, so its history entry is gone.
+  function close(fromHistory) {
+    if (inHistory) {
+      inHistory = false;
+      if (fromHistory !== true) history.back();
+    }
     stopBounce();
     if (pz) { pz.destroy(); pz = null; }
     // Forget the image being loaded (see load()), and stop downloading it.
@@ -838,14 +852,23 @@
     caption = overlay.querySelector(".panzoom-caption");
     desc = overlay.querySelector(".panzoom-description");
     hint = overlay.querySelector(".panzoom-hint");
-    closeBtn.addEventListener("click", close);
+    closeBtn.addEventListener("click", function () { close(); });
     img.addEventListener("panzoomchange", contain);
     prevBtn.addEventListener("click", function () { step(-1); });
     nextBtn.addEventListener("click", function () { step(1); });
     // A link in the caption or description (e.g. a cross-reference) leaves
-    // the viewer.
+    // the viewer. A plain click follows it once the viewer's history entry
+    // is gone, so Back from there returns to the page, not the viewer.
     footer.addEventListener("click", function (e) {
-      if (e.target.closest("a[href]")) close();
+      var a = e.target.closest("a[href]");
+      if (!a) return;
+      var plain = e.button === 0 && !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) &&
+        (!a.target || a.target === "_self") && !a.hasAttribute("download");
+      if (plain && inHistory) {
+        e.preventDefault();
+        leaving = a.href;
+      }
+      close();
     });
 
     // Panzoom's own zoomWithWheel takes a fixed step per event, which makes
@@ -986,6 +1009,22 @@
   }
   window.addEventListener("keydown", onKey, true);
   window.addEventListener("keyup", onKey, true);
+
+  window.addEventListener("popstate", function (e) {
+    var ours = e.state && e.state.panzoom;
+    if (inHistory && !ours) close(true);
+    else if (leaving && !ours) {
+      var href = leaving;
+      leaving = null;
+      // After the browser puts back the scroll position for this entry,
+      // which would undo a jump to an anchor on the page.
+      setTimeout(function () { location.assign(href); }, 0);
+    }
+    // Forward into the entry of a viewer since closed: step back over it.
+    else if (ours && !inHistory) history.back();
+  });
+  // Reloaded with the viewer open: its entry stays, but the viewer doesn't.
+  if (history.state && history.state.panzoom) history.replaceState(null, "");
 
   // Whether a marked image opens the viewer: not one inside the viewer, and
   // not one inside an author's link, which keeps its link. panzoom.lua's

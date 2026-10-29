@@ -43,15 +43,15 @@ arrow keys.](images/demo.gif)
 
 ## Viewer controls
 
-  | Action                                   | Mouse or touch                          | Keyboard             |
-  | ---------------------------------------- | --------------------------------------- | -------------------- |
-  | Zoom                                     | scroll or pinch, toward the cursor      | + and -              |
-  | Pan                                      | drag, or Shift+scroll                   | arrow keys           |
-  | Go back to the opening view              | double-click                            | 0                    |
-  | Change image in a gallery                | the previous and next buttons, or swipe | left and right arrow |
-  | Hide or show the caption and description |                                         | c                    |
-  | Hide or show the hint line               |                                         | h                    |
-  | Close                                    | the × button, or click the background   | Esc                  |
+  | Action                                   | Mouse or touch                              | Keyboard             |
+  | ---------------------------------------- | ------------------------------------------- | -------------------- |
+  | Zoom                                     | scroll or pinch, toward the cursor          | + and -              |
+  | Pan                                      | drag, or Shift+scroll                       | arrow keys           |
+  | Go back to the opening view              | double-click                                | 0                    |
+  | Change image in a gallery                | the previous and next buttons, or swipe     | left and right arrow |
+  | Hide or show the caption and description |                                             | c                    |
+  | Hide or show the hint line               |                                             | h                    |
+  | Close                                    | the × button, click the background, or Back | Esc                  |
 
 The [`keys`](#keys) option changes the keys for zooming, resetting, hiding the
 caption or the hint line, and closing. Zoom goes up to `max-zoom`. While an
