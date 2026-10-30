@@ -28,6 +28,8 @@ the native Quarto
 It works with markdown images and with R (knitr) and Python (Jupyter) code
 cells.
 
+## Installation
+
 You can install this extension using the Quarto CLI (Quarto >=1.8.27):
 
 ```bash
@@ -70,17 +72,17 @@ using version control, you will want to check in this directory.
 
 Click a figure to open it, or reach it with Tab and press Enter.
 
-  | Action                                   | Mouse                                                                       | Keyboard             |
-  | ---                                      | ---                                                                         | ---                  |
-  | Zoom                                     | scroll, toward the cursor                                                   | + and -              |
+  | Action                                   | Mouse or touch                                                              | Keyboard             |
+  | ---------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
+  | Zoom                                     | scroll or pinch, toward the cursor                                          | + and -              |
   | Pan                                      | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | arrow keys           |
   | Go back to the opening view              | double-click                                                                | 0                    |
-  | Change image in a gallery                | the previous and next buttons                                               | left and right arrow |
+  | Change image in a gallery                | the previous and next buttons, or swipe                                     | left and right arrow |
   | Hide or show the caption and description |                                                                             | c                    |
   | Hide or show the hint line               |                                                                             | h                    |
-  | Close                                    | the × button, or click the background                                       | Esc                  |
+  | Close                                    | the × button, click the background, or Back                                 | Esc                  |
 
-## Custom keybinds
+## Keys
 
 The `keys` option in the YAML header changes the keys for zooming, resetting,
 hiding the caption or the hint line, and closing. Actions left out keep their
@@ -98,7 +100,8 @@ panzoom:
 
 ## Code cell
 
-Give a code cell the `#| panzoom: true` option:
+Give a code cell the `#| panzoom: true` option, and clicking its plot opens it
+in the viewer:
 
 ```{r}
 #| panzoom: true
@@ -107,6 +110,9 @@ Give a code cell the `#| panzoom: true` option:
 #| fig-alt: >-
 #|   Heat map of the Maunga Whau volcano's heights, from dark blue low ground to
 #|   a yellow peak
+#| fig-cap: >-
+#|   Heights of Maunga Whau (Mount Eden) in Auckland, from dark blue (low) to
+#|   yellow (high).
 
 image(volcano, col = hcl.colors(100, "Viridis"))
 ```
@@ -117,14 +123,8 @@ A figure with a label (`#| label: fig-volcano`) keeps its number and its
 cross-references: @fig-volcano links here, and the viewer shows the caption as
 "Figure 1: ...".
 
-Options under `#| panzoom:` override the document's settings for one cell. This
-figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set
-under the `panzoom:` option in the YAML header) and hides the hint.
-
 ```{r}
-#| panzoom:
-#|   max-zoom: 10
-#|   hint: false
+#| panzoom: true
 #| label: fig-volcano
 #| fig-alt: >-
 #|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
@@ -135,6 +135,25 @@ under the `panzoom:` option in the YAML header) and hides the hint.
 #|   in meters.
 
 filled.contour(volcano, color.palette = terrain.colors)
+```
+
+## Cell options
+
+Options under `#| panzoom:` override the document's settings for one cell. This
+figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set
+under the `panzoom:` option in the YAML header) and hides the hint.
+
+```{r}
+#| panzoom:
+#|   max-zoom: 10
+#|   hint: false
+#| fig-alt: >-
+#|   Heat map of Maunga Whau's heights in terrain colors, with contour lines
+#| fig-cap: >-
+#|   Maunga Whau's heights as a heat map, with contour lines.
+
+image(volcano, col = hcl.colors(100, "Terrain 2"))
+contour(volcano, add = TRUE)
 ```
 
 ## Markdown image
@@ -312,11 +331,34 @@ contour(volcano)
 ## Opting out
 
 Inside a `.panzoom` div, every image gets the viewer except one with the
-`.nopanzoom` class, so clicking the image below does nothing. For a whole code
-cell, use `#| panzoom: false`.
+`.nopanzoom` class, so clicking the image below does nothing.
 
 ```markdown {.show-source}
 ::: {.panzoom}
 ![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){.nopanzoom width=40% fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
 :::
 ```
+
+For a whole code cell, use `#| panzoom: false`. Clicking the plot below does
+nothing either:
+
+````markdown {.markdown-example}
+::: {.panzoom}
+```{{r}}
+#| panzoom: false
+#| fig-alt: "Contour lines of Maunga Whau's heights"
+
+contour(volcano)
+```
+:::
+````
+
+::: {.panzoom}
+```{r}
+#| panzoom: false
+#| echo: false
+#| fig-alt: "Contour lines of Maunga Whau's heights"
+
+contour(volcano)
+```
+:::
