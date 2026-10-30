@@ -5,7 +5,7 @@ project:
   output-dir: docs
   render:
     - index.qmd
-    - tests/pages/*.qmd
+    - examples/*.qmd
   preview:
     host: 127.0.0.1
     port: 4242
@@ -49,7 +49,7 @@ website:
   favicon: assets/favicon.png
   navbar:
     left:
-      - href: tests/pages/b-panzoom-lightbox.qmd
+      - href: examples/b-panzoom-lightbox.qmd
         text: Examples
     right:
       - icon: github
@@ -63,51 +63,51 @@ website:
     contents:
       - section: "R"
         contents:
-          - href: tests/pages/a-lightbox.qmd
+          - href: examples/a-lightbox.qmd
             text: "A. `lightbox` comparison"
-          - href: tests/pages/b-panzoom-lightbox.qmd
+          - href: examples/b-panzoom-lightbox.qmd
             text: "B. Selected images with `lightbox`"
-          - href: tests/pages/c-panzoom-auto.qmd
+          - href: examples/c-panzoom-auto.qmd
             text: "C. `panzoom` on every figure"
-          - href: tests/pages/d-panzoom-selective.qmd
+          - href: examples/d-panzoom-selective.qmd
             text: "D. Selected images only"
-          - href: tests/pages/e-formats.qmd
+          - href: examples/e-formats.qmd
             text: "E. Image formats"
-          - href: tests/pages/f-options.qmd
+          - href: examples/f-options.qmd
             text: "F. Cell options"
-          - href: tests/pages/g-captions.qmd
+          - href: examples/g-captions.qmd
             text: "G. Captions and descriptions"
-          - href: tests/pages/h-wide.qmd
+          - href: examples/h-wide.qmd
             text: "H. Wide and tall figures"
-          - href: tests/pages/i-wide-galleries.qmd
+          - href: examples/i-wide-galleries.qmd
             text: "I. Wide figures in galleries"
       - section: "Python"
         contents:
-          - href: tests/pages/j-jupyter-lightbox.qmd
+          - href: examples/j-jupyter-lightbox.qmd
             text: "J. `lightbox` comparison"
-          - href: tests/pages/k-jupyter-auto.qmd
+          - href: examples/k-jupyter-auto.qmd
             text: "K. `panzoom` on every figure"
-          - href: tests/pages/l-jupyter.qmd
+          - href: examples/l-jupyter.qmd
             text: "L. Cell options"
-          - href: tests/pages/m-jupyter-figures.qmd
+          - href: examples/m-jupyter-figures.qmd
             text: "M. Captions, formats, and shapes"
       - section: "Styling"
         contents:
-          - href: tests/pages/n-styling-options.qmd
+          - href: examples/n-styling-options.qmd
             text: "N. Color options"
-          - href: tests/pages/o-css-class.qmd
+          - href: examples/o-css-class.qmd
             text: "O. Styling with CSS"
       - section: "Divs"
         contents:
-          - href: tests/pages/p-divs.qmd
+          - href: examples/p-divs.qmd
             text: "P. Divs in R"
-          - href: tests/pages/q-jupyter-divs.qmd
+          - href: examples/q-jupyter-divs.qmd
             text: "Q. Divs in Python"
       - section: "Theme"
         contents:
-          - href: tests/pages/r-dark-plots.qmd
+          - href: examples/r-dark-plots.qmd
             text: "R. Dark plots"
-          - href: tests/pages/s-renderings.qmd
+          - href: examples/s-renderings.qmd
             text: "S. Renderings in R"
-          - href: tests/pages/t-jupyter-renderings.qmd
+          - href: examples/t-jupyter-renderings.qmd
             text: "T. Renderings in Python"

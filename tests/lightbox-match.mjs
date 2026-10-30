@@ -79,7 +79,7 @@ async function styles(browser, url, dark, which) {
 
 const results = [];
 const server = await serve(SITE);
-const base = `http://127.0.0.1:${server.address().port}/tests/pages/`;
+const base = `http://127.0.0.1:${server.address().port}/examples/`;
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ["--no-sandbox", "--disable-gpu"] });
 try {
   for (const dark of [false, true]) {

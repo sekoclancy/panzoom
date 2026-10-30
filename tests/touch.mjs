@@ -143,7 +143,7 @@ const results = [];
 const check = (name, ok, detail) => results.push({ name, ok, detail });
 
 const server = await serve(SITE);
-const base = `http://127.0.0.1:${server.address().port}/tests/pages/`;
+const base = `http://127.0.0.1:${server.address().port}/examples/`;
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ["--no-sandbox", "--disable-gpu"] });
 try {
   const page = await browser.newPage();

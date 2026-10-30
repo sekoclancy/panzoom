@@ -4,7 +4,7 @@ format:
   html:
     code-tools: true
 filters:
-  - path: ../../_filters/show-source.lua
+  - path: ../_filters/show-source.lua
     at: pre-ast
   - panzoom
 ---

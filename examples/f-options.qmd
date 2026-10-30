@@ -4,7 +4,7 @@ format:
   html:
     code-tools: true
 filters:
-  - path: ../../_filters/show-source.lua
+  - path: ../_filters/show-source.lua
     at: pre-ast
   - panzoom
 panzoom:
@@ -60,9 +60,9 @@ in panzoom.
 
 ```markdown {.show-source}
 ::: {.panzoom layout-ncol="2"}
-![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){.nopanzoom fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){.nopanzoom fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg){fig-alt="A white lighthouse against a blue sky"}
 :::
 ```
 
@@ -212,7 +212,7 @@ and the link around it is labeled "Open image" for screen readers. With no
 caption it isn't a figure, so it sits at the left like any image in a paragraph.
 
 ```markdown {.show-source}
-![](../../images/mv-4.jpg){.panzoom width=40%}
+![](../images/mv-4.jpg){.panzoom width=40%}
 ```
 
 ## Caption beside the image {#c9 expect-open="panzoom" expect-desc-position="right"}
@@ -368,7 +368,7 @@ which Quarto then reads as markdown on the page.
 cat(
   "\n\n",
   "![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.]",
-  "(../../images/mv-1.jpg)",
+  "(../images/mv-1.jpg)",
   "{fig-alt=\"Waves breaking below grassy clay cliffs at Aquinnah\"}",
   "\n\n",
   sep = ""

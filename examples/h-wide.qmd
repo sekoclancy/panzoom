@@ -4,7 +4,7 @@ format:
   html:
     code-tools: true
 filters:
-  - path: ../../_filters/show-source.lua
+  - path: ../_filters/show-source.lua
     at: pre-ast
   - panzoom
 panzoom:
@@ -199,7 +199,7 @@ for (i in 1:48) {
 A 9:16 portrait photo. It isn't a strip, so it opens whole on any screen width.
 
 ```markdown {.show-source}
-![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## Small plot {#c7 expect-fit="contain" expect-scale="1"}

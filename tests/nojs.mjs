@@ -19,7 +19,7 @@
 
   Usage: render first, then from tests/:
     npm run nojs                                  # the test pages and standalone pages
-    node nojs.mjs ../docs/tests/pages/b-panzoom-lightbox.html ...
+    node nojs.mjs ../docs/examples/b-panzoom-lightbox.html ...
 
   Self-contained pages (embed-resources) are opened from file:// and only
   their links are checked: Chrome won't open a data: URL from a link click.
@@ -42,8 +42,8 @@ const CHROME = process.env.CHROME || path.join(os.homedir(),
 const PAGES = process.argv.length > 2
   ? process.argv.slice(2).map((p) => path.resolve(p))
   : [
-    ...fs.readdirSync(path.join(ROOT, "docs", "tests", "pages"))
-      .filter((f) => f.endsWith(".html")).map((f) => path.join(ROOT, "docs", "tests", "pages", f)),
+    ...fs.readdirSync(path.join(ROOT, "docs", "examples"))
+      .filter((f) => f.endsWith(".html")).map((f) => path.join(ROOT, "docs", "examples", f)),
     ...fs.readdirSync(path.join(HERE, "standalone"))
       .filter((f) => f.endsWith(".html")).map((f) => path.join(HERE, "standalone", f)),
   ];

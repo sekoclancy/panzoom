@@ -30,7 +30,7 @@
 
   Usage: render first, then from tests/:
     npm run a11y                                  # every test page and index
-    node a11y.mjs ../docs/tests/pages/h-wide.html ...
+    node a11y.mjs ../docs/examples/h-wide.html ...
 */
 import fs from "node:fs";
 import http from "node:http";
@@ -53,8 +53,8 @@ const CHROME = process.env.CHROME || path.join(os.homedir(),
 const PAGES = process.argv.length > 2
   ? process.argv.slice(2).map((p) => path.resolve(p))
   : [path.join(SITE, "index.html"),
-    ...fs.readdirSync(path.join(SITE, "tests", "pages"))
-      .filter((f) => f.endsWith(".html")).map((f) => path.join(SITE, "tests", "pages", f))];
+    ...fs.readdirSync(path.join(SITE, "examples"))
+      .filter((f) => f.endsWith(".html")).map((f) => path.join(SITE, "examples", f))];
 
 // Minimal static file server for the rendered site, as in browser.mjs.
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript",

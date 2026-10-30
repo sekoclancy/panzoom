@@ -4,7 +4,7 @@ format:
   html:
     code-tools: true
 filters:
-  - path: ../../_filters/show-source.lua
+  - path: ../_filters/show-source.lua
     at: pre-ast
   - panzoom
 panzoom:
@@ -40,7 +40,7 @@ A markdown image with `.panzoom`. It opens with the colors set under the
 band, and the link in its caption is rust.
 
 ```markdown {.show-source}
-![Sunset at Chilmark Beach, Martha's Vineyard ([photo](https://unsplash.com/photos/VBDJGOMCwps)).](../../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Sunset at Chilmark Beach, Martha's Vineyard ([photo](https://unsplash.com/photos/VBDJGOMCwps)).](../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## Colors for one image {#c2 expect-open="panzoom"}
@@ -51,7 +51,7 @@ colors set under the `panzoom:` option in the YAML header, and the link in its
 caption is dark green.
 
 ```markdown {.show-source}
-![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard ([photo](https://unsplash.com/photos/2iQnDPLIXwU)).](../../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard ([photo](https://unsplash.com/photos/2iQnDPLIXwU)).](../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
 ## Code cell {#c3 expect-open="panzoom"}
@@ -92,9 +92,9 @@ a dark red backdrop and a peach band of its own. Each image shows its colors
 while it is open, and stepping to the next or previous one doesn't keep them.
 
 ```markdown {.show-source}
-![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" fig-alt="A white lighthouse against a blue sky"}
 
-![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
-![A sailboat off Edgartown, Martha's Vineyard.](../../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" panel-background="#fbe9dc" panel-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){.panzoom group="mixed" backdrop="rgba(70, 25, 15, 0.92)" panel-background="#fbe9dc" panel-color="#4a1f10" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```

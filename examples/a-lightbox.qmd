@@ -4,7 +4,7 @@ format:
   html:
     code-tools: true
 filters:
-  - path: ../../_filters/show-source.lua
+  - path: ../_filters/show-source.lua
     at: pre-ast
 lightbox:
   match: auto
@@ -40,7 +40,7 @@ Quarto (1.10) drops the `desc-position` of an image. panzoom puts them on the
 left.
 
 ```markdown {.show-source}
-![Sunset at Chilmark Beach, Martha's Vineyard.](../../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
 ## Gallery in a layout {#c2 expect-open="glightbox"}
@@ -51,11 +51,11 @@ in one three-image gallery. The YAML header sets `loop: true` under the
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}
-![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){group="elsewhere" description="Gingerbread cottages." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){group="elsewhere" description="Gingerbread cottages." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 
-![Edgartown Lighthouse, Martha's Vineyard.](../../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse." fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg){group="elsewhere" description="Edgartown Lighthouse." fig-alt="A white lighthouse against a blue sky"}
 :::
 ```
 
@@ -65,7 +65,7 @@ A markdown image with math in its caption and description. It opens in lightbox
 with both typeset.
 
 ```markdown {.show-source}
-![Caption with math $e^{i\pi}+1=0$](../../images/mv-4.jpg){description="Description with math $\\int_0^1 x^2\\,dx = 1/3$" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![Caption with math $e^{i\pi}+1=0$](../images/mv-4.jpg){description="Description with math $\\int_0^1 x^2\\,dx = 1/3$" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## Markdown subfigures {#c4 expect-open="glightbox"}
@@ -76,9 +76,9 @@ two-image gallery. The figure's caption links to the heat map in [case
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
-![Aquinnah](../../images/mv-1.jpg){#fig-md-a fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+![Aquinnah](../images/mv-1.jpg){#fig-md-a fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-![Edgartown Lighthouse](../../images/mv-2.jpg){#fig-md-b fig-alt="A white lighthouse against a blue sky"}
+![Edgartown Lighthouse](../images/mv-2.jpg){#fig-md-b fig-alt="A white lighthouse against a blue sky"}
 
 Aquinnah and Edgartown Lighthouse, on Martha's Vineyard. For heights of Maunga Whau instead, see @fig-plain.
 :::
@@ -176,7 +176,7 @@ An image inside a link. lightbox drops the link, so clicking the image does
 nothing.
 
 ```markdown {.show-source}
-[![A sailboat off Edgartown, linked to quarto.org.](../../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
+[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
 ```
 
 ## Margin image {#c10 expect-open="glightbox"}
@@ -185,7 +185,7 @@ A markdown image in the margin. It opens in lightbox, as any other block image
 does.
 
 ```markdown {.show-source}
-![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
 ## Inline image {#c11 expect-open="nothing"}
@@ -194,7 +194,7 @@ An image inside a sentence. lightbox skips inline images, so clicking it does
 nothing.
 
 ```markdown {.show-source}
-Some text with an inline image ![A white lighthouse](../../images/mv-2.jpg){width=60px} in the middle.
+Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){width=60px} in the middle.
 ```
 
 ## Plain R figure {#c12 expect-open="glightbox"}

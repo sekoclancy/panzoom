@@ -19,7 +19,7 @@
   Usage: render first (`quarto render` from the repo root, into ../docs/),
   then from tests/:
     npm test                                                          # checks the demo and the test pages
-    node browser.mjs ../docs/tests/pages/d-panzoom-selective.html ...   # checks the given pages
+    node browser.mjs ../docs/examples/d-panzoom-selective.html ...   # checks the given pages
     node browser.mjs standalone/_output/*.html                        # pages from standalone.mjs
     node browser.mjs --offline [pages]                                # with no internet access
 
@@ -56,8 +56,8 @@ const ARGS = process.argv.slice(2).filter((a) => a !== "--offline");
 const PAGES = ARGS.length
   ? ARGS.map((p) => path.resolve(p))
   : [path.join(ROOT, "docs", "index.html"),
-    ...fs.readdirSync(path.join(ROOT, "docs", "tests", "pages")).filter((f) => f.endsWith(".html")).sort()
-      .map((p) => path.join(ROOT, "docs", "tests", "pages", p))];
+    ...fs.readdirSync(path.join(ROOT, "docs", "examples")).filter((f) => f.endsWith(".html")).sort()
+      .map((p) => path.join(ROOT, "docs", "examples", p))];
 const VIEWPORT = { width: 1280, height: 900 };
 
 // Errors expected on some pages, from Quarto or a math library rather than

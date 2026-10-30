@@ -393,7 +393,7 @@ which Quarto then reads as markdown on the page.
 
 print(
     "\n![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.]"
-    "(../../images/mv-1.jpg)"
+    "(../images/mv-1.jpg)"
     '{fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}\n'
 )
 ```
