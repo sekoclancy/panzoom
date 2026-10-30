@@ -30,9 +30,9 @@
   they pan).
 
   Panning: drag, arrow keys, Shift+wheel or sideways trackpad scrolling
-  (along the direction the image extends past the screen; sideways if
-  both), and Alt+wheel (up and down). The image is kept on screen: centered in a direction where it
-  fits, and stopping at its ends where it doesn't. The group
+  (sideways), and Alt+wheel (up and down). The image is kept on screen:
+  centered in a direction where it fits, and stopping at its ends where it
+  doesn't. The group
   is `data-panzoom-group` (cell option), else `data-group` (`group="..."` on
   a markdown image, as for Quarto's lightbox), else `data-ref-parent`
   (subfigures of one figure, as Quarto's lightbox groups them).
@@ -900,9 +900,7 @@
     // Panzoom's own zoomWithWheel takes a fixed step per event, which makes
     // trackpad pinch (many small events) far too fast; scale by the delta.
     // Over the caption, the wheel scrolls a long caption instead.
-    // Shift+wheel, and sideways trackpad scrolling, pan instead: along the
-    // one direction the image extends past the screen, or sideways when it
-    // extends both ways (or neither, when containment keeps it still).
+    // Shift+wheel, and sideways trackpad scrolling, pan sideways instead;
     // Alt+wheel (Option on a Mac) pans up and down.
     overlay.addEventListener("wheel", function (e) {
       if (footer.contains(e.target)) return;
@@ -915,8 +913,7 @@
       }
       if (!e.ctrlKey && (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))) {
         // Some browsers turn Shift+wheel into deltaX, others keep deltaY.
-        var d = (e.deltaX || e.deltaY) * unit, o = overflow();
-        if (o.y && !o.x) panPx(0, d); else panPx(d, 0);
+        panPx((e.deltaX || e.deltaY) * unit, 0);
         return;
       }
       var dy = e.deltaY * unit;

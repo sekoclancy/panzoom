@@ -33,8 +33,8 @@ screen, or flush with the end near either end. The 0 key and double-click return
 to it. Opened from the keyboard, a strip starts at its left end or top. Zooming
 out still shows the whole figure.
 
-Shift+scroll, or a sideways trackpad swipe, pans along a collage sideways and
-along a tall strip up and down. Zoomed in both ways, it pans sideways.
+Shift+scroll, or a sideways trackpad swipe, pans sideways, and Alt+scroll pans
+up and down.
 
 The plots are drawn with these helpers:
 
@@ -154,10 +154,10 @@ whole.
 collage(n = 4)
 ```
 
-## Tall strip {#c4 expect-fit="width" shift-scroll="y" alt-scroll="y"}
+## Tall strip {#c4 expect-fit="width" shift-scroll="none" alt-scroll="y"}
 
-A 4 × 15 inch strip. It opens at screen width from its top, and Shift+scroll
-moves up and down.
+A 4 × 15 inch strip. It opens at screen width from its top, and Alt+scroll moves
+up and down. Shift+scroll doesn't move it.
 
 ```{r}
 #| fig-alt: "A column of 8 small line plots of random walks"

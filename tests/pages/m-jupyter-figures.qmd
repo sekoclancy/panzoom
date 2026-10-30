@@ -330,10 +330,10 @@ wave(3)
 %config InlineBackend.figure_formats = ["retina"]
 ```
 
-## Tall strip {#c9 expect-fit="width" shift-scroll="y"}
+## Tall strip {#c9 expect-fit="width" shift-scroll="none" alt-scroll="y"}
 
-A 3 × 10 inch strip. It opens at screen width from its top, and Shift+scroll
-moves up and down.
+A 3 × 10 inch strip. It opens at screen width from its top, and Alt+scroll moves
+up and down. Shift+scroll doesn't move it.
 
 ```{python}
 #| fig-alt: "A column of 8 small line plots of random walks"
