@@ -114,8 +114,10 @@ async function checkPage(browser, base, file, dark) {
   const found = main.low.map((g) => ({ ...g, where: "page" }));
   const checked = { page: main.checked, viewer: 0 };
   let theme = null;
-  // The viewer, on the first image that opens it.
-  const img = await page.$(".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)");
+  // The viewer, on the first image that opens it: not the rendering Quarto
+  // hides in this color mode (`renderings: [light, dark]`).
+  const hidden = scheme === "dark" ? ".light-content" : ".dark-content";
+  const img = await page.$(`:is(.panzoom img, img.panzoom):not(.nopanzoom, ${hidden} img)`);
   if (img) {
     await img.evaluate((el) => el.scrollIntoView({ block: "center" }));
     await img.click();
