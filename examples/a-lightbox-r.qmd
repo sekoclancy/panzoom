@@ -1,5 +1,5 @@
 ---
-title: "`lightbox` comparison"
+title: "`lightbox` comparison (R)"
 format:
   html:
     code-tools: true
@@ -16,10 +16,9 @@ lightbox:
 panzoom is not listed under `filters:` in the YAML header, so every image opens
 in lightbox. Its cases are the same as on the panzoom examples, so each one can
 be compared with the case of the same number on [lightbox and panzoom
-together](b-panzoom-lightbox.html), [panzoom on every
-figure](c-panzoom-auto.html), and [panzoom on marked images
-only](d-panzoom-selective.html). These are the lightbox settings in the YAML
-header:
+together](b-mixed-r.html), [panzoom on every figure](c-global-r.html), and
+[panzoom on marked images only](d-selecting-r.html). These are the lightbox
+settings in the YAML header:
 
 ```yaml
 ---

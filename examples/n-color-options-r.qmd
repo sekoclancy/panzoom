@@ -1,5 +1,5 @@
 ---
-title: "Color options"
+title: "Color options (R)"
 format:
   html:
     code-tools: true
@@ -30,7 +30,7 @@ panzoom:
 ```
 
 Each option sets one of the viewer's CSS variables. [Styling with
-CSS](o-css-class.html) sets the same variables from a stylesheet, for some pages
+CSS](o-css-r.html) sets the same variables from a stylesheet, for some pages
 only.
 
 ## Markdown image {#c1 expect-open="panzoom"}

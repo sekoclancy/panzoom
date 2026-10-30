@@ -1,5 +1,5 @@
 ---
-title: "Captions, formats, and shapes"
+title: "Captions, formats, and shapes (Python)"
 engine: jupyter
 jupyter: python3
 format:
@@ -91,11 +91,12 @@ references:
         - [2007]
 ---
 
-The cell cases from the R pages on [cell options](f-options.html), [captions and
-descriptions](g-captions.html), [image formats](e-formats.html), [wide and tall
-figures](h-wide.html), and [wide figures in galleries](i-wide-galleries.html),
-on matplotlib figures. The YAML header sets `loop`, so the gallery in [case
-1](#c1) wraps around.
+The cell cases from the R pages on [cell options](f-cell-options-r.html),
+[captions and descriptions](g-captions-r.html), [image
+formats](e-image-formats-r.html), [wide and tall
+figures](h-wide-and-tall-r.html), and [wide figures in
+galleries](i-wide-galleries-r.html), on matplotlib figures. The YAML header sets
+`loop`, so the gallery in [case 1](#c1) wraps around.
 
 ```yaml
 ---
@@ -183,8 +184,8 @@ for k in range(1, 4):
 One cell with `group: printed` under the `panzoom` cell option, printing text
 between its two plots. Jupyter keeps the outputs in order, so the text sits
 between the plots on the page, unlike knitr's `fig-show: hold` ([cell
-options](f-options.html#c11)). They open in panzoom as a two-image gallery, each
-with its own caption.
+options](f-cell-options-r.html#c11)). They open in panzoom as a two-image
+gallery, each with its own caption.
 
 ```{python}
 #| panzoom:

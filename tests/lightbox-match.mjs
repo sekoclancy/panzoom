@@ -84,8 +84,8 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
 try {
   for (const dark of [false, true]) {
     const mode = dark ? "dark" : "light";
-    const lb = await styles(browser, base + "a-lightbox.html", dark, "lightbox");
-    const pz = await styles(browser, base + "d-panzoom-selective.html", dark, "panzoom");
+    const lb = await styles(browser, base + "a-lightbox-r.html", dark, "lightbox");
+    const pz = await styles(browser, base + "d-selecting-r.html", dark, "panzoom");
     results.push({ name: `${mode} mode`, ok: lb.dark === dark && pz.dark === dark,
       detail: `lightbox page ${lb.dark ? "dark" : "light"}, panzoom page ${pz.dark ? "dark" : "light"}` });
     for (const p of PARTS) {

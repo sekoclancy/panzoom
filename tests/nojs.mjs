@@ -19,7 +19,7 @@
 
   Usage: render first, then from tests/:
     npm run nojs                                  # the test pages and standalone pages
-    node nojs.mjs ../docs/examples/b-panzoom-lightbox.html ...
+    node nojs.mjs ../docs/examples/b-mixed-r.html ...
 
   Self-contained pages (embed-resources) are opened from file:// and only
   their links are checked: Chrome won't open a data: URL from a link click.

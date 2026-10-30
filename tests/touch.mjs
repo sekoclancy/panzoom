@@ -153,7 +153,7 @@ try {
   page.on("pageerror", (e) => errors.push(String(e)));
 
   // A standard plot (page B, case 6): tap, pinch, drag, double-tap, tap outside.
-  await page.goto(base + "b-panzoom-lightbox.html", { waitUntil: "networkidle0" });
+  await page.goto(base + "b-mixed-r.html", { waitUntil: "networkidle0" });
   let s = await openImage(page, cdp, "#c6 img.panzoom");
   check("tap opens the viewer", s.open, s.open ? `scale ${s.scale?.toFixed(3)}` : "viewer not open");
   const opening = s.scale;
@@ -242,7 +242,7 @@ try {
     const h = document.querySelector(".panzoom-overlay.open .panzoom-hint");
     return !!h && !h.hidden;
   });
-  await page.goto(base + "f-options.html", { waitUntil: "networkidle0" });
+  await page.goto(base + "f-cell-options-r.html", { waitUntil: "networkidle0" });
   s = await openImage(page, cdp, "#c4 img.panzoom");
   const tapped = await hintShown();
   check("no hint line after a tap", s.open && !tapped, s.open ? (tapped ? "shown" : "hidden") : "viewer not open");

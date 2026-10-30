@@ -323,8 +323,9 @@ Heuristic:
   | Very tall                             | at screen width, from the top             | `fit: width`   |
 
 The [wide and tall figures
-example](https://sekoclancy.github.io/panzoom/examples/h-wide.html) has the
-exact rules and an example of each shape. Set `fit:` to choose for one figure:
+example](https://sekoclancy.github.io/panzoom/examples/h-wide-and-tall-r.html)
+has the exact rules and an example of each shape. Set `fit:` to choose for one
+figure:
 
 ````markdown
 ```{r}
@@ -442,10 +443,10 @@ plot(pressure)
 ````
 
 The [color
-options](https://sekoclancy.github.io/panzoom/examples/n-styling-options.html)
+options](https://sekoclancy.github.io/panzoom/examples/n-color-options-r.html)
 and [styling with
-CSS](https://sekoclancy.github.io/panzoom/examples/o-css-class.html) examples
-have each way, and the classes of the viewer's parts.
+CSS](https://sekoclancy.github.io/panzoom/examples/o-css-r.html) examples have
+each way, and the classes of the viewer's parts.
 
 ## Development
 

@@ -1,5 +1,5 @@
 ---
-title: "Renderings in R"
+title: "Renderings (R)"
 format:
   html:
     code-tools: true

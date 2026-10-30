@@ -49,7 +49,7 @@ website:
   favicon: assets/favicon.png
   navbar:
     left:
-      - href: examples/b-panzoom-lightbox.qmd
+      - href: examples/b-mixed-r.qmd
         text: Examples
     right:
       - icon: github
@@ -63,51 +63,51 @@ website:
     contents:
       - section: "R"
         contents:
-          - href: examples/a-lightbox.qmd
-            text: "A. `lightbox` comparison"
-          - href: examples/b-panzoom-lightbox.qmd
-            text: "B. Selected images with `lightbox`"
-          - href: examples/c-panzoom-auto.qmd
-            text: "C. `panzoom` on every figure"
-          - href: examples/d-panzoom-selective.qmd
-            text: "D. Selected images only"
-          - href: examples/e-formats.qmd
-            text: "E. Image formats"
-          - href: examples/f-options.qmd
-            text: "F. Cell options"
-          - href: examples/g-captions.qmd
-            text: "G. Captions and descriptions"
-          - href: examples/h-wide.qmd
-            text: "H. Wide and tall figures"
-          - href: examples/i-wide-galleries.qmd
-            text: "I. Wide figures in galleries"
+          - href: examples/a-lightbox-r.qmd
+            text: "A. `lightbox` comparison (R)"
+          - href: examples/b-mixed-r.qmd
+            text: "B. Selected images with `lightbox` (R)"
+          - href: examples/c-global-r.qmd
+            text: "C. `panzoom` on every figure (R)"
+          - href: examples/d-selecting-r.qmd
+            text: "D. Selecting images (R)"
+          - href: examples/e-image-formats-r.qmd
+            text: "E. Image formats (R)"
+          - href: examples/f-cell-options-r.qmd
+            text: "F. Cell options (R)"
+          - href: examples/g-captions-r.qmd
+            text: "G. Captions and descriptions (R)"
+          - href: examples/h-wide-and-tall-r.qmd
+            text: "H. Wide and tall figures (R)"
+          - href: examples/i-wide-galleries-r.qmd
+            text: "I. Wide figures in galleries (R)"
       - section: "Python"
         contents:
-          - href: examples/j-jupyter-lightbox.qmd
-            text: "J. `lightbox` comparison"
-          - href: examples/k-jupyter-auto.qmd
-            text: "K. `panzoom` on every figure"
-          - href: examples/l-jupyter.qmd
-            text: "L. Cell options"
-          - href: examples/m-jupyter-figures.qmd
-            text: "M. Captions, formats, and shapes"
+          - href: examples/j-lightbox-python.qmd
+            text: "J. `lightbox` comparison (Python)"
+          - href: examples/k-global-python.qmd
+            text: "K. `panzoom` on every figure (Python)"
+          - href: examples/l-cell-options-python.qmd
+            text: "L. Cell options (Python)"
+          - href: examples/m-figures-python.qmd
+            text: "M. Captions, formats, and shapes (Python)"
       - section: "Styling"
         contents:
-          - href: examples/n-styling-options.qmd
-            text: "N. Color options"
-          - href: examples/o-css-class.qmd
-            text: "O. Styling with CSS"
+          - href: examples/n-color-options-r.qmd
+            text: "N. Color options (R)"
+          - href: examples/o-css-r.qmd
+            text: "O. Styling with CSS (R)"
       - section: "Divs"
         contents:
-          - href: examples/p-divs.qmd
-            text: "P. Divs in R"
-          - href: examples/q-jupyter-divs.qmd
-            text: "Q. Divs in Python"
+          - href: examples/p-divs-r.qmd
+            text: "P. Divs (R)"
+          - href: examples/q-divs-python.qmd
+            text: "Q. Divs (Python)"
       - section: "Theme"
         contents:
-          - href: examples/r-dark-plots.qmd
-            text: "R. Dark plots"
-          - href: examples/s-renderings.qmd
-            text: "S. Renderings in R"
-          - href: examples/t-jupyter-renderings.qmd
-            text: "T. Renderings in Python"
+          - href: examples/r-dark-plots-r.qmd
+            text: "R. Dark plots (R)"
+          - href: examples/s-renderings-r.qmd
+            text: "S. Renderings (R)"
+          - href: examples/t-renderings-python.qmd
+            text: "T. Renderings (Python)"

@@ -1,5 +1,5 @@
 ---
-title: "Image formats"
+title: "Image formats (R)"
 format:
   html:
     code-tools: true
@@ -13,7 +13,7 @@ Two figures, a wide collage and a standard plot, written by different knitr
 graphics devices: webp, svg, png, and pdf. Every figure has the
 `#| panzoom: true` cell option and opens in panzoom unless its case says
 otherwise. How figures of other shapes open is on [wide and tall
-figures](h-wide.html).
+figures](h-wide-and-tall-r.html).
 
 knitr has no built-in webp device, so the webp cases use `agg_webp` from ragg.
 knitr passes it sizes in inches and no resolution, while ragg expects pixels and

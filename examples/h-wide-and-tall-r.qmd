@@ -1,5 +1,5 @@
 ---
-title: "Wide and tall figures"
+title: "Wide and tall figures (R)"
 format:
   html:
     code-tools: true
@@ -12,9 +12,9 @@ panzoom:
 ---
 
 Figures of different shapes, each opened on its own, and the `fit` option. All
-are png. Other formats are on [image formats](e-formats.html), and the same
-shapes in galleries and layouts are on [wide figures in
-galleries](i-wide-galleries.html).
+are png. Other formats are on [image formats](e-image-formats-r.html), and the
+same shapes in galleries and layouts are on [wide figures in
+galleries](i-wide-galleries-r.html).
 
 With `fit: auto`, the default, a figure opens by its shape:
 

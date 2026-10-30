@@ -1,5 +1,5 @@
 ---
-title: "Cell options"
+title: "Cell options (R)"
 format:
   html:
     code-tools: true
@@ -25,8 +25,8 @@ panzoom:
 ```
 
 The `caption` and `description` options are on [captions and
-descriptions](g-captions.html), and `fit` is on [wide and tall
-figures](h-wide.html).
+descriptions](g-captions-r.html), and `fit` is on [wide and tall
+figures](h-wide-and-tall-r.html).
 
 The plots are drawn with this helper:
 

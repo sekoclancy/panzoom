@@ -1,5 +1,5 @@
 ---
-title: "Wide figures in galleries"
+title: "Wide figures in galleries (R)"
 format:
   html:
     code-tools: true
@@ -11,7 +11,7 @@ panzoom:
 
 Collages (25 × 2 inches) and tall strips in galleries, as subfigures, and in a
 layout div. The same shapes on their own, and the `fit` option, are on [wide and
-tall figures](h-wide.html).
+tall figures](h-wide-and-tall-r.html).
 
 Wide figures open at screen height, and tall ones at screen width. The one you
 click opens at the spot you clicked, and stepping to another in a gallery starts

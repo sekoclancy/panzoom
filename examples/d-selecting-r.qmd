@@ -1,5 +1,5 @@
 ---
-title: "Selected images only"
+title: "Selecting images (R)"
 format:
   html:
     code-tools: true
@@ -15,8 +15,8 @@ Only images marked with the `.panzoom` class or the `#| panzoom: true` cell
 option open in panzoom. lightbox is not set in the YAML header, so clicking any
 other image does nothing, except in [cells that ask for lightbox](#c6) with
 options of their own. The same cases open in lightbox alone on the [lightbox
-page](a-lightbox.html), and with lightbox on for the whole page on [lightbox and
-panzoom together](b-panzoom-lightbox.html). The YAML header turns on panzoom and
+page](a-lightbox-r.html), and with lightbox on for the whole page on [lightbox
+and panzoom together](b-mixed-r.html). The YAML header turns on panzoom and
 turns off the hint line:
 
 ```yaml

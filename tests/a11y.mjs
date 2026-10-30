@@ -30,7 +30,7 @@
 
   Usage: render first, then from tests/:
     npm run a11y                                  # every test page and index
-    node a11y.mjs ../docs/examples/h-wide.html ...
+    node a11y.mjs ../docs/examples/h-wide-and-tall-r.html ...
 */
 import fs from "node:fs";
 import http from "node:http";

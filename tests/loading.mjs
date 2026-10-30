@@ -118,7 +118,7 @@ try {
   await page.setViewport({ width: 1280, height: 900 });
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
-  await page.goto(base + "b-panzoom-lightbox.html", { waitUntil: "networkidle0" });
+  await page.goto(base + "b-mixed-r.html", { waitUntil: "networkidle0" });
   await page.setCacheEnabled(false);
 
   // The page keeps each image it has shown in memory and doesn't request it

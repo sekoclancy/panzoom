@@ -1,5 +1,5 @@
 ---
-title: "Styling with CSS"
+title: "Styling with CSS (R)"
 format:
   html:
     code-tools: true

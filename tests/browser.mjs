@@ -19,7 +19,7 @@
   Usage: render first (`quarto render` from the repo root, into ../docs/),
   then from tests/:
     npm test                                                          # checks the demo and the test pages
-    node browser.mjs ../docs/examples/d-panzoom-selective.html ...   # checks the given pages
+    node browser.mjs ../docs/examples/d-selecting-r.html ...   # checks the given pages
     node browser.mjs standalone/_output/*.html                        # pages from standalone.mjs
     node browser.mjs --offline [pages]                                # with no internet access
 

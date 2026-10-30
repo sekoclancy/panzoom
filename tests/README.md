@@ -41,8 +41,8 @@ tests read `docs/`, so render again after changing the extension or a page. To
 check one page:
 
 ```bash
-quarto render examples/d-panzoom-selective.qmd                 # from the repo root
-node browser.mjs ../docs/examples/d-panzoom-selective.html     # from tests/
+quarto render examples/d-selecting-r.qmd                 # from the repo root
+node browser.mjs ../docs/examples/d-selecting-r.html     # from tests/
 ```
 
 Quarto's own axe check (Quarto 1.10 or later) shows each page's violations at
@@ -74,50 +74,50 @@ describing the expected result.
 
 **R (knitr).** A–D render the same 12 cases four ways:
 
-  | Page                                                       | Description                                                             | panzoom | Lightbox      |
-  | ---------------------------------------------------------- | ----------------------------------------------------------------------- | ------- | ------------- |
-  | [a-lightbox](../examples/a-lightbox.qmd)                   | **Reference:** Quarto's lightbox on each case                           | off     | `match: auto` |
-  | [b-panzoom-lightbox](../examples/b-panzoom-lightbox.qmd)   | **The usual setup:** marked images; the lightbox for the rest           | on      | `true`        |
-  | [c-panzoom-auto](../examples/c-panzoom-auto.qmd)           | **Every figure:** A's markup, panzoom with `match: auto`                | auto    | `match: auto` |
-  | [d-panzoom-selective](../examples/d-panzoom-selective.qmd) | **Marked images only**, no lightbox                                     | on      | none          |
-  | [e-formats](../examples/e-formats.qmd)                     | webp, svg, png + pdf, and webp past its 16,383 px limit                 | on      | none          |
-  | [f-options](../examples/f-options.qmd)                     | Opting out, the `hint`, `max-zoom`, `loop`, and `desc-position` options | on      | none          |
-  | [g-captions](../examples/g-captions.qmd)                   | Citations and cross-references in captions and descriptions             | on      | none          |
-  | [h-wide](../examples/h-wide.qmd)                           | Wide collages, tall strips, and other shapes, each on its own; `fit`    | on      | none          |
-  | [i-wide-galleries](../examples/i-wide-galleries.qmd)       | The same shapes in galleries and layouts, of different lengths          | on      | none          |
+  | Page                                                     | Description                                                             | panzoom | Lightbox      |
+  | -------------------------------------------------------- | ----------------------------------------------------------------------- | ------- | ------------- |
+  | [a-lightbox-r](../examples/a-lightbox-r.qmd)             | **Reference:** Quarto's lightbox on each case                           | off     | `match: auto` |
+  | [b-mixed-r](../examples/b-mixed-r.qmd)                   | **The usual setup:** marked images; the lightbox for the rest           | on      | `true`        |
+  | [c-global-r](../examples/c-global-r.qmd)                 | **Every figure:** A's markup, panzoom with `match: auto`                | auto    | `match: auto` |
+  | [d-selecting-r](../examples/d-selecting-r.qmd)           | **Marked images only**, no lightbox                                     | on      | none          |
+  | [e-image-formats-r](../examples/e-image-formats-r.qmd)   | webp, svg, png + pdf, and webp past its 16,383 px limit                 | on      | none          |
+  | [f-cell-options-r](../examples/f-cell-options-r.qmd)     | Opting out, the `hint`, `max-zoom`, `loop`, and `desc-position` options | on      | none          |
+  | [g-captions-r](../examples/g-captions-r.qmd)             | Citations and cross-references in captions and descriptions             | on      | none          |
+  | [h-wide-and-tall-r](../examples/h-wide-and-tall-r.qmd)   | Wide collages, tall strips, and other shapes, each on its own; `fit`    | on      | none          |
+  | [i-wide-galleries-r](../examples/i-wide-galleries-r.qmd) | The same shapes in galleries and layouts, of different lengths          | on      | none          |
 
 **Python (Jupyter).** J and K are the Jupyter counterparts of A and C, on eight
 cases. L and M carry the R pages' cell cases:
 
-  | Page                                                     | Description                                                                                                             | panzoom | Lightbox |
-  | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------- | -------- |
-  | [j-jupyter-lightbox](../examples/j-jupyter-lightbox.qmd) | **Reference:** the lightbox alone (it ignores nested `#\| lightbox:` options with Jupyter)                              | off     | `true`   |
-  | [k-jupyter-auto](../examples/k-jupyter-auto.qmd)         | **`panzoom: true`:** J's cases; keep the two in step                                                                    | `true`  | `true`   |
-  | [l-jupyter](../examples/l-jupyter.qmd)                   | The R pages' cell options on matplotlib figures, and svg output                                                         | on      | none     |
-  | [m-jupyter-figures](../examples/m-jupyter-figures.qmd)   | The cell cases from E to I: `loop`, captions and citations, png + pdf and jpeg, `fit`, strips and collages in galleries | on      | none     |
+  | Page                                                           | Description                                                                                                             | panzoom | Lightbox |
+  | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------- | -------- |
+  | [j-lightbox-python](../examples/j-lightbox-python.qmd)         | **Reference:** the lightbox alone (it ignores nested `#\| lightbox:` options with Jupyter)                              | off     | `true`   |
+  | [k-global-python](../examples/k-global-python.qmd)             | **`panzoom: true`:** J's cases; keep the two in step                                                                    | `true`  | `true`   |
+  | [l-cell-options-python](../examples/l-cell-options-python.qmd) | The R pages' cell options on matplotlib figures, and svg output                                                         | on      | none     |
+  | [m-figures-python](../examples/m-figures-python.qmd)           | The cell cases from E to I: `loop`, captions and citations, png + pdf and jpeg, `fit`, strips and collages in galleries | on      | none     |
 
 **Styling**, checked with `expect-overlay` and `expect-band`:
 
   | Page                                                   | Description                                                                              |
   | ------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-  | [n-styling-options](../examples/n-styling-options.qmd) | The color options, no CSS                                                                |
-  | [o-css-class](../examples/o-css-class.qmd)             | `css-class` with CSS rules in a raw HTML block: the CSS variables and the viewer's parts |
+  | [n-color-options-r](../examples/n-color-options-r.qmd) | The color options, no CSS                                                                |
+  | [o-css-r](../examples/o-css-r.qmd)                     | `css-class` with CSS rules in a raw HTML block: the CSS variables and the viewer's parts |
 
 **Divs.** Quarto's own divs around figures, with images on tabs and in collapsed
 callouts uncovered first:
 
-  | Page                                             | Description                                                                                                                                                       |
-  | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | [p-divs](../examples/p-divs.qmd)                 | Callouts (collapsed too), tabsets (a gallery across tabs), `column-screen`, `column: page`, `column-margin`, and `content-visible`, alone and in a `.panzoom` div |
-  | [q-jupyter-divs](../examples/q-jupyter-divs.qmd) | The cell cases from P, in Python: callouts, tabsets, `column-screen`, `column: page`, `column-margin`, and a gallery from a div                                   |
+  | Page                                           | Description                                                                                                                                                       |
+  | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | [p-divs-r](../examples/p-divs-r.qmd)           | Callouts (collapsed too), tabsets (a gallery across tabs), `column-screen`, `column: page`, `column-margin`, and `content-visible`, alone and in a `.panzoom` div |
+  | [q-divs-python](../examples/q-divs-python.qmd) | The cell cases from P, in Python: callouts, tabsets, `column-screen`, `column: page`, `column-margin`, and a gallery from a div                                   |
 
 **Theme.** Plots in light and dark mode:
 
-  | Page                                                         | Description                                                                                    |
-  | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-  | [r-dark-plots](../examples/r-dark-plots.qmd)                 | Dark and transparent plots on the default backdrop and a light backdrop, and a gallery of both |
-  | [s-renderings](../examples/s-renderings.qmd)                 | `renderings: [light, dark]`: opaque and transparent plots, and a gallery                       |
-  | [t-jupyter-renderings](../examples/t-jupyter-renderings.qmd) | The cases from S, in Python                                                                    |
+  | Page                                                       | Description                                                                                    |
+  | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+  | [r-dark-plots-r](../examples/r-dark-plots-r.qmd)           | Dark and transparent plots on the default backdrop and a light backdrop, and a gallery of both |
+  | [s-renderings-r](../examples/s-renderings-r.qmd)           | `renderings: [light, dark]`: opaque and transparent plots, and a gallery                       |
+  | [t-renderings-python](../examples/t-renderings-python.qmd) | The cases from S, in Python                                                                    |
 
 **Outside the site** ([standalone/](standalone/)), rendered by
 `npm run standalone` as plain documents:
@@ -171,7 +171,7 @@ screenshot per click (`cNN-M.png`: image M of case NN), and `results.json`.
 For example, page B's summary line:
 
 ```
-b-panzoom-lightbox: 18 images, {"panzoom":12,"glightbox":4,"nothing":1,"navigation":1}, 0 console errors, isolation ok, keyboard ok, gallery ok, fit n/a, backdrop ok, caption clear ok, fast zoom ok, zoom anchor ok, options ok, descriptions ok, references ok, math ok (page: typeset), 10 external requests, containment ok, page still ok -> results/b-panzoom-lightbox/report.md
+b-mixed-r: 18 images, {"panzoom":12,"glightbox":4,"nothing":1,"navigation":1}, 0 console errors, isolation ok, keyboard ok, gallery ok, fit n/a, backdrop ok, caption clear ok, fast zoom ok, zoom anchor ok, options ok, descriptions ok, references ok, math ok (page: typeset), 10 external requests, containment ok, page still ok -> results/b-mixed-r/report.md
 ```
 
 the first row of its `report.md` (the Classes and Wrapper columns left out):
@@ -356,7 +356,7 @@ pages B, G, and I:
   `quarto install chrome-headless-shell --no-prompt`, or set `CHROME=`.
 - **`... is not a file inside ...`**: the scripts only check rendered pages in
   this repo. Render first, and pass paths like
-  `../docs/examples/d-panzoom-selective.html`.
+  `../docs/examples/d-selecting-r.html`.
 
 ## Credits
 

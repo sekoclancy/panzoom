@@ -1,5 +1,5 @@
 ---
-title: "Selected images with `lightbox`"
+title: "Selected images with `lightbox` (R)"
 format:
   html:
     code-tools: true
@@ -16,9 +16,9 @@ panzoom:
 the whole page, and only images marked with the `.panzoom` class or the
 `#| panzoom: true` cell option open in panzoom. Every other image opens in
 lightbox. The same cases open in lightbox alone on the [lightbox
-page](a-lightbox.html), and the same markup without lightbox is on [panzoom on
-marked images only](d-panzoom-selective.html). The YAML header turns on lightbox
-and panzoom, and turns off the hint line:
+page](a-lightbox-r.html), and the same markup without lightbox is on [panzoom on
+marked images only](d-selecting-r.html). The YAML header turns on lightbox and
+panzoom, and turns off the hint line:
 
 ```yaml
 ---

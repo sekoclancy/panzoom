@@ -1,5 +1,5 @@
 ---
-title: "Renderings in Python"
+title: "Renderings (Python)"
 engine: jupyter
 jupyter: python3
 format:
@@ -10,7 +10,7 @@ filters:
 ---
 
 Python cells with `renderings: [light, dark]`, which draw one plot for each
-color mode, as [Renderings in R](s-renderings.html) does for R cells. The page
+color mode, as [Renderings in R](s-renderings-r.html) does for R cells. The page
 shows the one for its mode (the toggle in the navbar), and so does the viewer.
 Each one is worth opening in light and dark mode.
 
