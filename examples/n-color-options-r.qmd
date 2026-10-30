@@ -17,7 +17,8 @@ panzoom:
 The YAML header sets the viewer's colors without CSS, giving a deep blue
 backdrop, a cream caption band, dark brown caption text, and rust links. They
 apply to every image on the page that opens in the viewer, except an
-[image](#c2) or [code cell](#c4) that sets its own.
+[image](#sec-colors-for-one-image) or [code cell](#sec-colors-for-one-cell) that
+sets its own.
 
 ```yaml
 ---
@@ -33,7 +34,7 @@ Each option sets one of the viewer's CSS variables. [Styling with
 CSS](o-css-r.html) sets the same variables from a stylesheet, for some pages
 only.
 
-## Markdown image {#c1 expect-open="panzoom"}
+## Markdown image {expect-open="panzoom"}
 
 A markdown image with `.panzoom`. It opens with the colors set under the
 `panzoom:` option in the YAML header, a deep blue backdrop and a cream caption
@@ -43,7 +44,7 @@ band, and the link in its caption is rust.
 ![Sunset at Chilmark Beach, Martha's Vineyard ([photo](https://unsplash.com/photos/VBDJGOMCwps)).](../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
-## Colors for one image {#c2 expect-open="panzoom"}
+## Colors for one image {#sec-colors-for-one-image expect-open="panzoom"}
 
 A markdown image with `.panzoom` and colors of its own, set as attributes. It
 opens with a deep green backdrop and a pale green caption band instead of the
@@ -54,7 +55,7 @@ caption is dark green.
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard ([photo](https://unsplash.com/photos/2iQnDPLIXwU)).](../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
-## Code cell {#c3 expect-open="panzoom"}
+## Code cell {expect-open="panzoom"}
 
 An R cell with `#| panzoom: true`. It opens with the blue and cream colors set
 under the `panzoom:` option in the YAML header.
@@ -67,7 +68,7 @@ under the `panzoom:` option in the YAML header.
 plot(pressure, type = "b", pch = 19)
 ```
 
-## Colors for one cell {#c4 expect-open="panzoom"}
+## Colors for one cell {#sec-colors-for-one-cell expect-open="panzoom"}
 
 An R cell with colors of its own under the `panzoom` cell option. It opens with
 a dark red backdrop and a peach caption band.
@@ -83,7 +84,7 @@ a dark red backdrop and a peach caption band.
 plot(cars, pch = 19)
 ```
 
-## Gallery with mixed colors {#c5 expect-open="panzoom" expect-steps="true" expect-overlay="rgba(20, 60, 40, 0.92); rgba(18, 52, 86, 0.92); rgba(70, 25, 15, 0.92)" expect-band="rgb(232, 243, 234); rgb(244, 233, 216); rgb(251, 233, 220)"}
+## Gallery with mixed colors {expect-open="panzoom" expect-steps="true" expect-overlay="rgba(20, 60, 40, 0.92); rgba(18, 52, 86, 0.92); rgba(70, 25, 15, 0.92)" expect-band="rgb(232, 243, 234); rgb(244, 233, 216); rgb(251, 233, 220)"}
 
 A gallery of three images. The first has a deep green backdrop and a pale green
 caption band of its own, the second has no colors of its own and shows the blue

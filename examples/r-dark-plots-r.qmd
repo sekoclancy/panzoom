@@ -47,7 +47,7 @@ wave <- function(k = 1, ink = "black", paper = NULL, col = "#3B7DB8") {
 }
 ```
 
-## Dark background {#c1 expect-open="panzoom"}
+## Dark background {#sec-dark-background expect-open="panzoom"}
 
 A plot on a near-black background with light gray ink. It opens on the default
 backdrop, which is also dark.
@@ -61,9 +61,9 @@ backdrop, which is also dark.
 wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
 ```
 
-## Dark background, light backdrop {#c2 expect-open="panzoom"}
+## Dark background, light backdrop {expect-open="panzoom"}
 
-The [dark plot](#c1) with a light gray `backdrop` of its own.
+The [dark plot](#sec-dark-background) with a light gray `backdrop` of its own.
 
 ```{r}
 #| panzoom:
@@ -75,7 +75,7 @@ The [dark plot](#c1) with a light gray `backdrop` of its own.
 wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
 ```
 
-## Transparent background, dark ink {#c3 expect-open="panzoom"}
+## Transparent background, dark ink {#sec-transparent-background-dark-ink expect-open="panzoom"}
 
 A plot with a transparent background and black ink. The viewer shows it on the
 page background, so its axes are readable in light mode and hard to see in dark
@@ -92,10 +92,10 @@ mode, on the page and in the viewer alike.
 wave(k = 3)
 ```
 
-## Transparent background, light ink {#c4 expect-open="panzoom"}
+## Transparent background, light ink {expect-open="panzoom"}
 
-The [transparent plot](#c3) with light gray ink: the reverse, readable in dark
-mode and hard to see in light mode.
+The [transparent plot](#sec-transparent-background-dark-ink) with light gray
+ink: the reverse, readable in dark mode and hard to see in light mode.
 
 ```{r}
 #| panzoom: true
@@ -109,10 +109,10 @@ mode and hard to see in light mode.
 wave(k = 3, ink = "gray85")
 ```
 
-## Gallery of light and dark plots {#c5 expect-open="panzoom" expect-steps="true"}
+## Gallery of light and dark plots {expect-open="panzoom" expect-steps="true"}
 
-A plot on white, the [dark plot](#c1), and the [transparent plot](#c3) with
-black ink, in a gallery.
+A plot on white, the [dark plot](#sec-dark-background), and the [transparent
+plot](#sec-transparent-background-dark-ink) with black ink, in a gallery.
 
 ```{r}
 #| panzoom:

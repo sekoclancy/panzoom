@@ -3,6 +3,7 @@ title: "Self-contained page"
 filters:
   - panzoom
 embed-resources: true
+number-sections: true
 ---
 
 {{< include _self-contained.qmd >}}

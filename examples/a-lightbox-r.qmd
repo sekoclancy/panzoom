@@ -30,7 +30,7 @@ lightbox:
 ---
 ```
 
-## Single image {#c1 expect-open="glightbox" expect-desc-position="right"}
+## Single image {expect-open="glightbox" expect-desc-position="right"}
 
 A markdown image with a description and `desc-position="left"`. It opens in
 lightbox, with the caption and description on the right, as set by
@@ -42,7 +42,7 @@ left.
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
-## Gallery in a layout {#c2 expect-open="glightbox"}
+## Gallery in a layout {expect-open="glightbox"}
 
 Three images in a layout, joined by `group="elsewhere"`. Each opens in lightbox,
 in one three-image gallery. The YAML header sets `loop: true` under the
@@ -58,7 +58,7 @@ in one three-image gallery. The YAML header sets `loop: true` under the
 :::
 ```
 
-## Math {#c3 expect-open="glightbox"}
+## Math {expect-open="glightbox"}
 
 A markdown image with math in its caption and description. It opens in lightbox
 with both typeset.
@@ -67,11 +67,11 @@ with both typeset.
 ![Caption with math $e^{i\pi}+1=0$](../images/mv-4.jpg){description="Description with math $\\int_0^1 x^2\\,dx = 1/3$" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
-## Markdown subfigures {#c4 expect-open="glightbox"}
+## Markdown subfigures {#sec-markdown-subfigures expect-open="glightbox"}
 
 A figure with two markdown subfigures. Either one opens in lightbox, in a
-two-image gallery. The figure's caption links to the heat map in [case
-12](#c12).
+two-image gallery. The figure's caption links to the heat map in
+@sec-plain-r-figure.
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -83,7 +83,7 @@ Aquinnah and Edgartown Lighthouse, on Martha's Vineyard. For heights of Maunga W
 :::
 ```
 
-## R subfigures {#c5 expect-open="glightbox"}
+## R subfigures {expect-open="glightbox"}
 
 One R cell with two plots, made subfigures by `fig-subcap`. Either one opens in
 lightbox, in a two-image gallery.
@@ -102,7 +102,7 @@ plot(pressure)
 plot(cars)
 ```
 
-## Cell options {#c6 expect-open="glightbox"}
+## Cell options {expect-open="glightbox"}
 
 Two R cells, joined by `group: r-graph` under the `lightbox` cell option. Either
 plot opens in lightbox, in a two-image gallery, with its own description on the
@@ -130,7 +130,7 @@ plot(1:10, rnorm(10))
 plot(cars)
 ```
 
-## Two plots in one cell {#c7 expect-open="glightbox"}
+## Two plots in one cell {expect-open="glightbox"}
 
 One R cell with two plots, each with its own caption and description, joined by
 `group: cars`. Either one opens in lightbox, in a two-image gallery.
@@ -154,7 +154,7 @@ plot(mtcars)
 plot(cars)
 ```
 
-## Opt out {#c8 expect-open="nothing"}
+## Opt out {expect-open="nothing"}
 
 An R cell with `lightbox: false`. lightbox skips it, so clicking it does
 nothing.
@@ -169,7 +169,7 @@ nothing.
 plot(mtcars)
 ```
 
-## Image in a link {#c9 expect-open="nothing"}
+## Image in a link {expect-open="nothing"}
 
 An image inside a link. lightbox drops the link, so clicking the image does
 nothing.
@@ -178,7 +178,7 @@ nothing.
 [![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
 ```
 
-## Margin image {#c10 expect-open="glightbox"}
+## Margin image {expect-open="glightbox"}
 
 A markdown image in the margin. It opens in lightbox, as any other block image
 does.
@@ -187,7 +187,7 @@ does.
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
-## Inline image {#c11 expect-open="nothing"}
+## Inline image {expect-open="nothing"}
 
 An image inside a sentence. lightbox skips inline images, so clicking it does
 nothing.
@@ -196,10 +196,10 @@ nothing.
 Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){width=60px} in the middle.
 ```
 
-## Plain R figure {#c12 expect-open="glightbox"}
+## Plain R figure {#sec-plain-r-figure expect-open="glightbox"}
 
 Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red (high).
-The caption of [case 4](#c4) links to it.
+The caption of @sec-markdown-subfigures links to it.
 
 ```{r}
 #| label: fig-plain

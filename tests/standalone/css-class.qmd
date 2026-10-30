@@ -19,6 +19,7 @@ include-in-header:
     // only the variables' zero specificity lets it win.
     document.head.prepend(document.currentScript.previousElementSibling);
     </script>
+number-sections: true
 ---
 
 ::: {.callout-note}
@@ -32,6 +33,6 @@ panzoom's stylesheet, so it also checks that the variables' defaults never win
 over it. It is not part of the website.
 :::
 
-## 1. Marked image {#c1 expect-class="dark-viewer" expect-overlay="rgb(0, 0, 0)" expect-band="rgb(0, 0, 0)"}
+## Marked image {expect-class="dark-viewer" expect-overlay="rgb(0, 0, 0)" expect-band="rgb(0, 0, 0)"}
 
 ![A marked image, on a black backdrop with a black caption band.](../../images/mv-0.jpg){.panzoom}

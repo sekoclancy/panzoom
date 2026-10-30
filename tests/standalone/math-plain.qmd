@@ -4,6 +4,7 @@ subtitle: "html-math-method: plain"
 filters:
   - panzoom
 html-math-method: plain
+number-sections: true
 ---
 
 {{< include _math.qmd >}}

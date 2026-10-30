@@ -5,3 +5,6 @@ format:
   html:
     number-sections: true
     toc: true
+# Section references (@sec-...) read "case 4", as the pages call them.
+crossref:
+  sec-prefix: case

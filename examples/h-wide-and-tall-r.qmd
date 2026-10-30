@@ -106,7 +106,7 @@ wave <- function(k = 1) {
 }
 ```
 
-## Wide collage {#c1 expect-fit="height" shift-scroll="x" alt-scroll="none"}
+## Wide collage {#sec-wide-collage expect-fit="height" shift-scroll="x" alt-scroll="none"}
 
 A 25 × 2 inch collage. It opens in panzoom at screen height, and Shift+scroll
 moves sideways.
@@ -122,10 +122,10 @@ moves sideways.
 collage(n = 12)
 ```
 
-## Whole figure {#c2 expect-fit="contain" shift-scroll="none"}
+## Whole figure {expect-fit="contain" shift-scroll="none"}
 
-The collage from [case 1](#c1) with `fit: contain`. It opens whole, as a thin
-strip.
+The collage from @sec-wide-collage with `fit: contain`. It opens whole, as a
+thin strip.
 
 ```{r}
 #| panzoom:
@@ -139,7 +139,7 @@ strip.
 collage(n = 12)
 ```
 
-## Moderately wide figure {#c3 expect-fit="contain"}
+## Moderately wide figure {expect-fit="contain"}
 
 A 16 × 4 inch figure, wide but readable whole. It isn't a strip, so it opens
 whole.
@@ -154,7 +154,7 @@ whole.
 collage(n = 4)
 ```
 
-## Tall strip {#c4 expect-fit="width" shift-scroll="none" alt-scroll="y"}
+## Tall strip {expect-fit="width" shift-scroll="none" alt-scroll="y"}
 
 A 4 × 15 inch strip. It opens at screen width from its top, and Alt+scroll moves
 up and down. Shift+scroll doesn't move it.
@@ -169,7 +169,7 @@ up and down. Shift+scroll doesn't move it.
 strip(seed = 2, n = 8)
 ```
 
-## Large poster {#c5 expect-fit="contain" shift-scroll="zoomed-x" alt-scroll="zoomed-y"}
+## Large poster {expect-fit="contain" shift-scroll="zoomed-x" alt-scroll="zoomed-y"}
 
 A 24 × 18 inch poster. It opens whole. Zoomed in, it extends past the screen
 both ways, and Shift+scroll moves sideways.
@@ -194,7 +194,7 @@ for (i in 1:48) {
 }
 ```
 
-## Portrait photo {#c6 expect-fit="contain"}
+## Portrait photo {expect-fit="contain"}
 
 A 9:16 portrait photo. It isn't a strip, so it opens whole on any screen width.
 
@@ -202,7 +202,7 @@ A 9:16 portrait photo. It isn't a strip, so it opens whole on any screen width.
 ![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
-## Small plot {#c7 expect-fit="contain" expect-scale="1"}
+## Small plot {expect-fit="contain" expect-scale="1"}
 
 A 288 × 192 px plot. It opens at its real size, centered, instead of enlarged to
 fill the screen, and scrolling still zooms in, up to `max-zoom`.
@@ -218,12 +218,12 @@ fill the screen, and scrolling still zooms in, up to `max-zoom`.
 plot(pressure)
 ```
 
-## Fit to height {#c8 expect-open="panzoom" expect-fit="height" expect-zoom-out="no"}
+## Fit to height {expect-open="panzoom" expect-fit="height" expect-zoom-out="no"}
 
 An ordinary plot with `fit: height`. On a screen wider than the plot (1.4:1),
 filling the height already shows the whole plot, so it opens like `fit: contain`
-and can't zoom out. [Case 10](#c10) shows `fit: height` where it makes a
-difference.
+and can't zoom out. @Sec-fit-to-height-on-a-wide-figure shows `fit: height`
+where it makes a difference.
 
 ```{r}
 #| panzoom:
@@ -235,7 +235,7 @@ difference.
 wave(k = 3)
 ```
 
-## Fit to width {#c9 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
+## Fit to width {expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
 
 An ordinary plot with `fit: width`. Filling the width makes the plot taller than
 the screen, so it opens closer than the whole plot and zooms out to it.
@@ -250,7 +250,7 @@ the screen, so it opens closer than the whole plot and zooms out to it.
 wave(k = 4)
 ```
 
-## Fit to height on a wide figure {#c10 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+## Fit to height on a wide figure {#sec-fit-to-height-on-a-wide-figure expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
 A 12 × 4.5 inch figure with `fit: height`. It isn't a strip, since shown whole
 it is over a quarter of the screen tall, so `fit: auto` would open it whole.
@@ -268,12 +268,12 @@ the spot you clicked, and zooms out to the whole figure.
 collage(n = 3)
 ```
 
-## Long caption and description {#c11 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+## Long caption and description {expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
-The figure from [case 10](#c10) with a long caption and description.
-`fit: height` fills the height left above them, so it opens smaller than case
-10. The caption scrolls past a quarter of the screen and the description past a
-fifth, so the image keeps about half.
+The figure from @sec-fit-to-height-on-a-wide-figure with a long caption and
+description. `fit: height` fills the height left above them, so it opens smaller
+than case 10. The caption scrolls past a quarter of the screen and the
+description past a fifth, so the image keeps about half.
 
 ```{r}
 #| panzoom:
@@ -298,7 +298,7 @@ fifth, so the image keeps about half.
 collage(n = 3)
 ```
 
-## Plot shown at half width {#c12 expect-open="panzoom" expect-fit="contain"}
+## Plot shown at half width {expect-open="panzoom" expect-fit="contain"}
 
 An ordinary plot with `out-width: 50%`, so the page shows it at half the column
 width. It opens in panzoom whole, at the size of the screen, not the size it has
@@ -314,7 +314,7 @@ on the page.
 wave(k = 5)
 ```
 
-## Plot aligned right {#c13 expect-open="panzoom" expect-fit="contain"}
+## Plot aligned right {expect-open="panzoom" expect-fit="contain"}
 
 A 4 × 3 inch plot with `fig-align: right`, narrower than the column, so the page
 puts it at the right edge. It opens in panzoom centered, like any other plot.

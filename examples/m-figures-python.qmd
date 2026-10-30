@@ -96,7 +96,7 @@ The cell cases from the R pages on [cell options](f-cell-options-r.html),
 formats](e-image-formats-r.html), [wide and tall
 figures](h-wide-and-tall-r.html), and [wide figures in
 galleries](i-wide-galleries-r.html), on matplotlib figures. The YAML header sets
-`loop`, so the gallery in [case 1](#c1) wraps around.
+`loop`, so the gallery in @sec-looping-gallery wraps around.
 
 ```yaml
 ---
@@ -152,7 +152,7 @@ def strip(seed=2, n=8):
     plt.show()
 ```
 
-## Looping gallery {#c1 expect-open="panzoom"}
+## Looping gallery {#sec-looping-gallery expect-open="panzoom"}
 
 One cell with three plots, joined by `group: waves` under the `panzoom` cell
 option. Each opens in panzoom, in a three-image gallery. The YAML header sets
@@ -179,13 +179,13 @@ for k in range(1, 4):
     wave(k)
 ```
 
-## Text between plots in a group {#c2 expect-open="panzoom" expect-steps="true"}
+## Text between plots in a group {expect-open="panzoom" expect-steps="true"}
 
 One cell with `group: printed` under the `panzoom` cell option, printing text
 between its two plots. Jupyter keeps the outputs in order, so the text sits
 between the plots on the page, unlike knitr's `fig-show: hold` ([cell
-options](f-cell-options-r.html#c11)). They open in panzoom as a two-image
-gallery, each with its own caption.
+options](f-cell-options-r.html#sec-plots-held-to-the-end-of-a-cell)). They open
+in panzoom as a two-image gallery, each with its own caption.
 
 ```{python}
 #| panzoom:
@@ -204,7 +204,7 @@ print("Printed between the two plots.")
 wave(2)
 ```
 
-## Caption above the image {#c3 expect-open="panzoom" expect-desc-position="top"}
+## Caption above the image {expect-open="panzoom" expect-desc-position="top"}
 
 A cell with `desc-position: top` under the `panzoom` cell option. It opens in
 panzoom, with the caption above the image.
@@ -219,7 +219,7 @@ panzoom, with the caption above the image.
 wave(3)
 ```
 
-## No caption {#c4 expect-open="panzoom" expect-caption="none"}
+## No caption {expect-open="panzoom" expect-caption="none"}
 
 A cell with `caption: false` under the `panzoom` cell option. The figure has a
 caption on the page, but it opens in panzoom without one.
@@ -234,7 +234,7 @@ caption on the page, but it opens in panzoom without one.
 wave(2)
 ```
 
-## Citations {#c5 expect-references=""}
+## Citations {expect-references=""}
 
 A labeled figure with a citation in its caption, and a description with math and
 a citation. It opens in panzoom with all of them rendered, and both works are
@@ -250,7 +250,7 @@ listed under [References](#references).
 wave(4)
 ```
 
-## Long description {#c6 expect-open="panzoom" expect-scroll="description"}
+## Long description {expect-open="panzoom" expect-scroll="description"}
 
 A cell with a description longer than its panel, under the `panzoom` cell
 option. It opens in panzoom, and the description panel scrolls. Tab reaches the
@@ -299,7 +299,7 @@ it.
 wave(1)
 ```
 
-## png and pdf {#c7 expect-open="panzoom" expect-fit="contain"}
+## png and pdf {expect-open="panzoom" expect-fit="contain"}
 
 A plot written as both png and pdf. Jupyter ignores a cell's `fig-format`, so
 the cell sets matplotlib's formats itself, and back to the default (retina png)
@@ -316,7 +316,7 @@ wave(2)
 %config InlineBackend.figure_formats = ["retina"]
 ```
 
-## jpeg {#c8 expect-open="panzoom" expect-fit="contain"}
+## jpeg {expect-open="panzoom" expect-fit="contain"}
 
 A plot written as jpeg, set the same way. It opens in panzoom.
 
@@ -331,7 +331,7 @@ wave(3)
 %config InlineBackend.figure_formats = ["retina"]
 ```
 
-## Tall strip {#c9 expect-fit="width" shift-scroll="none" alt-scroll="y"}
+## Tall strip {expect-fit="width" shift-scroll="none" alt-scroll="y"}
 
 A 3 × 10 inch strip. It opens at screen width from its top, and Alt+scroll moves
 up and down. Shift+scroll doesn't move it.
@@ -344,7 +344,7 @@ up and down. Shift+scroll doesn't move it.
 strip(seed=2)
 ```
 
-## Fit to width {#c10 expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
+## Fit to width {expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
 
 An ordinary plot with `fit: width`. Filling the width makes the plot taller than
 the screen, so it opens closer than the whole plot and zooms out to it.
@@ -359,7 +359,7 @@ the screen, so it opens closer than the whole plot and zooms out to it.
 wave(4)
 ```
 
-## Fit to height on a wide figure {#c11 expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+## Fit to height on a wide figure {expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
 An 8 × 3 inch figure with `fit: height`. It isn't a strip, since shown whole it
 is over a quarter of the screen tall, so `fit: auto` would open it whole. With
@@ -375,7 +375,7 @@ spot you clicked, and zooms out to the whole figure.
 collage(n=3, height=3)
 ```
 
-## Gallery of two collages {#c12 expect-fit="height"}
+## Gallery of two collages {expect-fit="height"}
 
 Two collages in a gallery, 6.4 × 0.8 inches (12 panels) and 8 × 0.8 inches (15
 panels), so their panels have the same shape. Each opens at screen height. The
@@ -397,7 +397,7 @@ collage(n=12, width=6.4)
 collage(n=15)
 ```
 
-## Strips side by side {#c13 expect-fit="width"}
+## Strips side by side {expect-fit="width"}
 
 Two tall strips side by side as subfigures. Each opens at screen width, and the
 two form a gallery.
@@ -416,7 +416,7 @@ strip(seed=3)
 strip(seed=4)
 ```
 
-## Gallery with the caption on the right {#c14 expect-open="panzoom" expect-desc-position="right" expect-steps="true"}
+## Gallery with the caption on the right {expect-open="panzoom" expect-desc-position="right" expect-steps="true"}
 
 One cell with three plots, joined by `group: right-waves` and set to
 `desc-position: right` under the `panzoom` cell option. Each opens in panzoom,
@@ -444,7 +444,7 @@ wave(2)
 wave(3)
 ```
 
-## Gallery with mixed caption positions {#c15 expect-open="panzoom" expect-desc-position="right; top; bottom" expect-steps="true"}
+## Gallery with mixed caption positions {expect-open="panzoom" expect-desc-position="right; top; bottom" expect-steps="true"}
 
 Three cells joined by `group: sides` under the `panzoom` cell option: the first
 with `desc-position: right`, the second with `desc-position: top`, and the third
@@ -484,7 +484,7 @@ wave(5)
 wave(6)
 ```
 
-## Caption in the margin {#c16 expect-open="panzoom" expect-desc-position="right"}
+## Caption in the margin {expect-open="panzoom" expect-desc-position="right"}
 
 A Python cell with `panzoom: true` and `fig-cap-location: margin`. The page
 shows the caption in the margin, beside the plot. It opens in panzoom with the
@@ -500,7 +500,7 @@ caption in a panel on the right, the margin side, with no `desc-position` set.
 wave(2)
 ```
 
-## Caption above the figure {#c17 expect-open="panzoom" expect-desc-position="top"}
+## Caption above the figure {expect-open="panzoom" expect-desc-position="top"}
 
 A Python cell with a figure label, `panzoom: true`, and `fig-cap-location: top`.
 The page shows the caption above the plot: Quarto moves a caption to the top
@@ -518,7 +518,7 @@ with no `desc-position` set.
 wave(4)
 ```
 
-## Collages in a custom layout {#c18 expect-fit="height" expect-steps="true"}
+## Collages in a custom layout {expect-fit="height" expect-steps="true"}
 
 Three collages as subfigures with `layout: [[1, 1], [1]]`: two side by side, and
 one across the row below. Each opens at screen height, and the three form a
@@ -543,7 +543,7 @@ collage(n=15)
 collage(n=9)
 ```
 
-## Collages in a layout with a gap {#c19 expect-fit="height" expect-steps="true"}
+## Collages in a layout with a gap {expect-fit="height" expect-steps="true"}
 
 Three collages as subfigures with `layout: [[45, -10, 45], [100]]`: two at 45%
 of the width with an empty 10% between them, and one across the row below. The

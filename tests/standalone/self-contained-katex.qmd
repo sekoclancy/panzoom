@@ -6,6 +6,7 @@ filters:
 embed-resources: true
 self-contained-math: true
 html-math-method: katex
+number-sections: true
 ---
 
 {{< include _self-contained.qmd >}}

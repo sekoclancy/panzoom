@@ -11,8 +11,9 @@ filters:
 
 The cell options from the R examples, on matplotlib figures, and svg output.
 lightbox is not set in the YAML header, so only cells marked for panzoom open in
-it. Clicking any other figure does nothing, unless [its cell](#c9) turns
-lightbox on with `#| lightbox: true`. The YAML header turns on panzoom:
+it. Clicking any other figure does nothing, unless [its
+cell](#sec-lightbox-only) turns lightbox on with `#| lightbox: true`. The YAML
+header turns on panzoom:
 
 ```yaml
 ---
@@ -39,7 +40,7 @@ def walk(ax, n=200, title=None):
         ax.set_title(title)
 ```
 
-## panzoom on a cell {#c1 expect-open="panzoom" expect-hint="shown"}
+## panzoom on a cell {expect-open="panzoom" expect-hint="shown"}
 
 A cell with `#| panzoom: true`. It opens in panzoom, with the hint line.
 
@@ -53,7 +54,7 @@ plt.plot(x, np.sin(x))
 plt.show()
 ```
 
-## Cell options {#c2 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
+## Cell options {expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
 
 A cell with `max-zoom: 2` and `hint: false` under the `panzoom` cell option. It
 opens in panzoom without the hint line, and zooming in stops at 2 screen pixels
@@ -70,11 +71,11 @@ plt.plot(x, np.cos(x))
 plt.show()
 ```
 
-## Labeled figure {#c3 expect-open="panzoom"}
+## Labeled figure {expect-open="panzoom"}
 
 A labeled figure with math and a cross-reference in its caption, and a
-description with math, quotes, and a cross-reference to the figure in [case
-4](#c4). It opens in panzoom with all of them rendered.
+description with math, quotes, and a cross-reference to the figure in
+@sec-subfigures. It opens in panzoom with all of them rendered.
 
 ```{python}
 #| panzoom:
@@ -91,7 +92,7 @@ plt.scatter(pts, pts + rng.normal(scale=0.5, size=100))
 plt.show()
 ```
 
-## Subfigures {#c4 expect-open="panzoom"}
+## Subfigures {#sec-subfigures expect-open="panzoom"}
 
 One cell with `#| panzoom: true` and two plots, made subfigures by `fig-subcap`.
 Either one opens in panzoom, in a two-image gallery.
@@ -113,7 +114,7 @@ plt.hist(rng.normal(size=500), bins=30)
 plt.show()
 ```
 
-## Plots in a group {#c5 expect-open="panzoom"}
+## Plots in a group {expect-open="panzoom"}
 
 One cell with two plots, joined by `group: walks` under the `panzoom` cell
 option. Either one opens in panzoom, in a two-image gallery.
@@ -134,7 +135,7 @@ for i in range(2):
     plt.show()
 ```
 
-## Wide collage {#c6 expect-open="panzoom" expect-fit="height"}
+## Wide collage {expect-open="panzoom" expect-fit="height"}
 
 An 8 × 0.8 inch collage. It is a strip, so it opens in panzoom at screen height.
 Jupyter figures are shown at their size in inches × 96 px (Quarto writes it on
@@ -153,7 +154,7 @@ for ax in axes:
 plt.show()
 ```
 
-## Opt out a cell {#c7 expect-open="nothing"}
+## Opt out a cell {expect-open="nothing"}
 
 A cell with `#| panzoom: false` inside a `.panzoom` div. The cell option wins
 over the div, so clicking the plot does nothing.
@@ -183,7 +184,7 @@ plt.show()
 ```
 :::
 
-## Select with a class {#c8 expect-open="panzoom"}
+## Select with a class {expect-open="panzoom"}
 
 A cell with `classes: panzoom`, which Quarto puts on the cell as a class. It
 opens in panzoom, since panzoom takes every image inside an element with that
@@ -198,7 +199,7 @@ plt.plot(x, np.sin(3 * x))
 plt.show()
 ```
 
-## lightbox only {#c9 expect-open="glightbox"}
+## lightbox only {#sec-lightbox-only expect-open="glightbox"}
 
 A cell with only `#| lightbox: true`. It opens in lightbox, not panzoom.
 
@@ -211,7 +212,7 @@ plt.plot(x, np.sin(4 * x))
 plt.show()
 ```
 
-## Plain cell {#c10 expect-open="nothing"}
+## Plain cell {expect-open="nothing"}
 
 A cell with no options. lightbox is not set in the YAML header, so clicking the
 plot does nothing.
@@ -224,12 +225,12 @@ plt.plot(x, np.sin(5 * x))
 plt.show()
 ```
 
-## Both options {#c11 expect-open="panzoom"}
+## Both options {expect-open="panzoom"}
 
 A cell with `#| panzoom: true` and `lightbox:` options for a group and a
 description. panzoom takes it and drops the lightbox options. With Jupyter,
 lightbox would ignore those options anyway, unlike with knitr. Only
-`lightbox: true` works, as in [case 9](#c9).
+`lightbox: true` works, as in @sec-lightbox-only.
 
 ```{python}
 #| panzoom: true
@@ -243,7 +244,7 @@ plt.plot(x, np.sin(6 * x))
 plt.show()
 ```
 
-## svg {#c12 expect-open="panzoom" expect-fit="contain" expect-format="svg"}
+## svg {expect-open="panzoom" expect-fit="contain" expect-format="svg"}
 
 Jupyter saves the figure file itself, unlike knitr, and ignores a cell's
 `fig-format`, so the cell switches the matplotlib output to svg itself, and back
@@ -262,7 +263,7 @@ plt.show()
 %config InlineBackend.figure_formats = ["retina"]
 ```
 
-## Colors for one cell {#c13 expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
+## Colors for one cell {expect-open="panzoom" expect-overlay="rgba(20, 60, 40, 0.92)" expect-band="rgb(232, 243, 234)"}
 
 A cell with colors of its own under the `panzoom` cell option, as on [color
 options](n-color-options-r.html). It opens with a deep green backdrop and a pale
@@ -280,7 +281,7 @@ plt.plot(x, np.sin(x) + x / 5)
 plt.show()
 ```
 
-## Class for one cell {#c14 expect-open="panzoom" expect-class="py-viewer"}
+## Class for one cell {expect-open="panzoom" expect-class="py-viewer"}
 
 A cell with `css-class: py-viewer` under the `panzoom` cell option, as on
 [styling with CSS](o-css-r.html). It opens with that class on the viewer, for a
@@ -296,7 +297,7 @@ plt.plot(x, np.sin(x**2 / 4))
 plt.show()
 ```
 
-## Options on a cell in a `.panzoom` div {#c15 expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
+## Options on a cell in a `.panzoom` div {expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
 
 A cell with `max-zoom: 2` and `hint: false` under the `panzoom` cell option,
 inside a `.panzoom` div. The cell's options apply as they do outside the div: it
@@ -334,7 +335,7 @@ plt.show()
 ```
 :::
 
-## Caption beside the image {#c16 expect-open="panzoom" expect-desc-position="left"}
+## Caption beside the image {expect-open="panzoom" expect-desc-position="left"}
 
 A cell with `desc-position: left` and a description under the `panzoom` cell
 option. It opens in panzoom, with the caption and description in a panel on the
@@ -351,7 +352,7 @@ plt.plot(x, (1 + x / 4) * np.sin(x))
 plt.show()
 ```
 
-## Plot aligned right {#c17 expect-open="panzoom" expect-fit="contain"}
+## Plot aligned right {expect-open="panzoom" expect-fit="contain"}
 
 A 3 × 2 inch plot with `fig-align: right`, narrower than the column, so the page
 puts it at the right edge. It opens in panzoom centered, like any other plot.
@@ -367,7 +368,7 @@ plt.plot(x, np.cos(x))
 plt.show()
 ```
 
-## Cell with a link {#c18 expect-open="navigation"}
+## Cell with a link {expect-open="navigation"}
 
 A cell with `panzoom: true` and `fig-link`, which puts its plot inside a link.
 Clicking the plot follows the link.
@@ -382,7 +383,7 @@ plt.plot(x, np.sin(x))
 plt.show()
 ```
 
-## Markdown image from code {#c19 expect-open="panzoom"}
+## Markdown image from code {expect-open="panzoom"}
 
 A cell with `panzoom: true` and `output: asis` that prints a markdown image,
 which Quarto then reads as markdown on the page.

@@ -124,7 +124,7 @@ try {
   // The page keeps each image it has shown in memory and doesn't request it
   // again, so each check that holds back or refuses an image opens one the
   // viewer hasn't shown yet.
-  const PLOT = "#c6 img.panzoom", SUB_A = "#c4 #fig-md-a img", SUB_B = "#c4 #fig-md-b img";
+  const PLOT = "section[data-number='6'] img.panzoom", SUB_A = "section[data-number='4'] #fig-md-a img", SUB_B = "section[data-number='4'] #fig-md-b img";
   const plot = await srcOf(page, PLOT), subA = await srcOf(page, SUB_A), subB = await srcOf(page, SUB_B);
   const others = await page.$$eval("section.level2 img", (imgs, taken) => {
     const seen = new Set(taken), out = [];

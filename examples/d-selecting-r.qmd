@@ -13,11 +13,11 @@ panzoom:
 
 Only images marked with the `.panzoom` class or the `#| panzoom: true` cell
 option open in panzoom. lightbox is not set in the YAML header, so clicking any
-other image does nothing, except in [cells that ask for lightbox](#c6) with
-options of their own. The same cases open in lightbox alone on the [lightbox
-page](a-lightbox-r.html), and with lightbox on for the whole page on [lightbox
-and panzoom together](b-mixed-r.html). The YAML header turns on panzoom and
-turns off the hint line:
+other image does nothing, except in [cells that ask for
+lightbox](#sec-cell-options) with options of their own. The same cases open in
+lightbox alone on the [lightbox page](a-lightbox-r.html), and with lightbox on
+for the whole page on [lightbox and panzoom together](b-mixed-r.html). The YAML
+header turns on panzoom and turns off the hint line:
 
 ```yaml
 ---
@@ -28,7 +28,7 @@ panzoom:
 ---
 ```
 
-## Single image {#c1 expect-open="panzoom" expect-desc-position="left"}
+## Single image {expect-open="panzoom" expect-desc-position="left"}
 
 A markdown image with `.panzoom`, a description, and `desc-position="left"`. It
 opens in panzoom, with the caption and description in a panel on the left of the
@@ -38,7 +38,7 @@ image.
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){.panzoom description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
-## Gallery in a layout {#c2 expect-open="nothing panzoom nothing"}
+## Gallery in a layout {expect-open="nothing panzoom nothing"}
 
 Three images in a layout, joined by `group="elsewhere"`. Only the middle one
 (Oak Bluffs) has `.panzoom`, so it opens in panzoom on its own. lightbox is not
@@ -54,7 +54,7 @@ set in the YAML header, so clicking the other two does nothing.
 :::
 ```
 
-## Math {#c3 expect-open="panzoom"}
+## Math {expect-open="panzoom"}
 
 A markdown image with `.panzoom` and math in its caption and description. It
 opens in panzoom, with both typeset.
@@ -63,11 +63,11 @@ opens in panzoom, with both typeset.
 ![Caption with math $e^{i\pi}+1=0$](../images/mv-4.jpg){.panzoom description="Description with math $\\int_0^1 x^2\\,dx = 1/3$" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
-## Markdown subfigures {#c4 expect-open="panzoom"}
+## Markdown subfigures {#sec-markdown-subfigures expect-open="panzoom"}
 
 A figure with two markdown subfigures, both with `.panzoom`. Either one opens in
 panzoom, in a two-image gallery. The figure's caption links to the heat map in
-[case 12](#c12).
+@sec-plain-r-figure.
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -79,7 +79,7 @@ Aquinnah and Edgartown Lighthouse, on Martha's Vineyard. For heights of Maunga W
 :::
 ```
 
-## R subfigures {#c5 expect-open="panzoom"}
+## R subfigures {expect-open="panzoom"}
 
 One R cell with `panzoom: true` and two plots, made subfigures by `fig-subcap`.
 Either one opens in panzoom, in a two-image gallery.
@@ -99,7 +99,7 @@ plot(pressure)
 plot(cars)
 ```
 
-## Cell options {#c6 expect-open="panzoom glightbox"}
+## Cell options {#sec-cell-options expect-open="panzoom glightbox"}
 
 Two R cells in the lightbox group `r-graph`. The first also has
 `#| panzoom: true`, so it opens in panzoom on its own, without the lightbox
@@ -129,7 +129,7 @@ plot(1:10, rnorm(10))
 plot(cars)
 ```
 
-## Two plots in one cell {#c7 expect-open="panzoom"}
+## Two plots in one cell {expect-open="panzoom"}
 
 One R cell with `#| panzoom: true`, two plots, and the lightbox options
 `group: cars` and a description for each plot. panzoom drops the lightbox
@@ -155,7 +155,7 @@ plot(mtcars)
 plot(cars)
 ```
 
-## Opt out {#c8 expect-open="nothing"}
+## Opt out {expect-open="nothing"}
 
 An R cell with `lightbox: false` and no `#| panzoom: true`. Neither viewer takes
 it, so clicking it does nothing.
@@ -170,7 +170,7 @@ it, so clicking it does nothing.
 plot(mtcars)
 ```
 
-## Image in a link {#c9 expect-open="navigation"}
+## Image in a link {#sec-image-in-a-link expect-open="navigation"}
 
 An image with `.panzoom` inside a link. panzoom leaves linked images alone, so
 clicking the image follows the link.
@@ -179,7 +179,7 @@ clicking the image follows the link.
 [![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
 ```
 
-## Margin image {#c10 expect-open="panzoom"}
+## Margin image {expect-open="panzoom"}
 
 A markdown image with `.panzoom` in the margin. It opens in panzoom, as any
 other marked image does.
@@ -188,7 +188,7 @@ other marked image does.
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
-## Inline image {#c11 expect-open="panzoom" expect-caption="none"}
+## Inline image {expect-open="panzoom" expect-caption="none"}
 
 An image with `.panzoom` inside a sentence. It opens in panzoom, with no
 caption, since an inline image isn't a figure and has none.
@@ -197,10 +197,10 @@ caption, since an inline image isn't a figure and has none.
 Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){.panzoom width=60px} in the middle.
 ```
 
-## Plain R figure {#c12 expect-open="nothing"}
+## Plain R figure {#sec-plain-r-figure expect-open="nothing"}
 
 Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red (high).
-The caption of [case 4](#c4) links to it.
+The caption of @sec-markdown-subfigures links to it.
 
 ```{r}
 #| label: fig-plain
@@ -213,10 +213,11 @@ The caption of [case 4](#c4) links to it.
 image(volcano)
 ```
 
-## Cell with a link {#c13 expect-open="navigation"}
+## Cell with a link {expect-open="navigation"}
 
 An R cell with `panzoom: true` and `fig-link`, which puts its plot inside a
-link. As for the [image in a link](#c9), clicking the plot follows the link.
+link. As for the [image in a link](#sec-image-in-a-link), clicking the plot
+follows the link.
 
 ```{r}
 #| panzoom: true

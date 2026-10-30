@@ -4,6 +4,7 @@ subtitle: "panzoom: false"
 filters:
   - panzoom
 panzoom: false
+number-sections: true
 ---
 
 ::: {.callout-note}
@@ -17,25 +18,25 @@ for the whole document, even for images marked `.panzoom`, as Quarto's
 tested on page C.
 :::
 
-## 1. Unmarked figure {#c1 expect-open="nothing"}
+## Unmarked figure {expect-open="nothing"}
 
 ![A figure with no marker.](../../images/mv-0.jpg)
 
-## 2. Image marked `.panzoom` {#c2 expect-open="nothing"}
+## Image marked `.panzoom` {expect-open="nothing"}
 
 ![A marked image.](../../images/mv-1.jpg){.panzoom}
 
-## 3. Image in a `.panzoom` div {#c3 expect-open="nothing"}
+## Image in a `.panzoom` div {expect-open="nothing"}
 
 ::: {.panzoom}
 ![In a div.](../../images/mv-2.jpg)
 :::
 
-## 4. Opted out with `.nopanzoom` {#c4 expect-open="nothing"}
+## Opted out with `.nopanzoom` {expect-open="nothing"}
 
 ![Opted out.](../../images/mv-3.jpg){.nopanzoom}
 
-## 5. Unmarked inline image {#c5 expect-open="nothing"}
+## Unmarked inline image {expect-open="nothing"}
 
 Text with an inline image ![](../../images/mv-4.jpg){width=60px} in it, which no
 setting marks.

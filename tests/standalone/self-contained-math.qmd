@@ -5,6 +5,7 @@ filters:
   - panzoom
 embed-resources: true
 self-contained-math: true
+number-sections: true
 ---
 
 {{< include _self-contained.qmd >}}

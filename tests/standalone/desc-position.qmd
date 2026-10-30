@@ -5,6 +5,7 @@ filters:
   - panzoom
 panzoom:
   desc-position: top
+number-sections: true
 ---
 
 ::: {.callout-note}
@@ -16,15 +17,15 @@ the gallery, each image's position applies while it is shown. It is not part of
 the website.
 :::
 
-## 1. Page setting {#c1 expect-open="panzoom" expect-desc-position="top"}
+## Page setting {expect-open="panzoom" expect-desc-position="top"}
 
 ![Chilmark beach at sunset.](../../images/mv-0.jpg){.panzoom description="Chilmark has some of the best beaches." fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 
-## 2. Image setting {#c2 expect-open="panzoom" expect-desc-position="right"}
+## Image setting {expect-open="panzoom" expect-desc-position="right"}
 
 ![Aquinnah.](../../images/mv-1.jpg){.panzoom desc-position="right" description="Clay cliffs above the beach." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
-## 3. Gallery with mixed positions {#c3 expect-open="panzoom" expect-steps="true"}
+## Gallery with mixed positions {expect-open="panzoom" expect-steps="true"}
 
 ![The Edgartown lighthouse.](../../images/mv-2.jpg){.panzoom group="mixed" desc-position="left" fig-alt="A white lighthouse against a blue sky" expect-desc-position="left"}
 

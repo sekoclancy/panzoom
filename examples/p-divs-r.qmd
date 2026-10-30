@@ -57,7 +57,7 @@ wave <- function(k = 1) {
 }
 ```
 
-## Image in a callout {#c1 expect-open="panzoom"}
+## Image in a callout {expect-open="panzoom"}
 
 An image with `.panzoom` in a callout. It opens in panzoom.
 
@@ -68,7 +68,7 @@ An image with `.panzoom` in a callout. It opens in panzoom.
 :::
 ```
 
-## Callout in a `.panzoom` div {#c2 expect-open="panzoom"}
+## Callout in a `.panzoom` div {expect-open="panzoom"}
 
 A callout with a plain image, inside a `.panzoom` div. The div marks every image
 in it, so the image opens in panzoom.
@@ -82,7 +82,7 @@ in it, so the image opens in panzoom.
 :::
 ```
 
-## Collapsed callout {#c3 expect-open="panzoom"}
+## Collapsed callout {expect-open="panzoom"}
 
 An image with `.panzoom` in a callout that starts collapsed. Expand the callout,
 and the image opens in panzoom.
@@ -94,7 +94,7 @@ and the image opens in panzoom.
 :::
 ```
 
-## Tabset {#c4 expect-open="panzoom"}
+## Tabset {expect-open="panzoom"}
 
 Two images with `.panzoom`, one on each tab of a tabset. Each opens in panzoom
 on its own, the second once its tab is selected.
@@ -111,7 +111,7 @@ on its own, the second once its tab is selected.
 :::
 ```
 
-## Gallery across tabs {#c5 expect-open="panzoom" expect-steps="true"}
+## Gallery across tabs {expect-open="panzoom" expect-steps="true"}
 
 Two images with `.panzoom`, joined by `group="tabs"`, on different tabs. They
 open in panzoom as a two-image gallery, each with its own caption: the next
@@ -129,7 +129,7 @@ button shows the image on the other tab without selecting it.
 :::
 ```
 
-## Tabset in a `.panzoom` div {#c6 expect-open="panzoom"}
+## Tabset in a `.panzoom` div {expect-open="panzoom"}
 
 A tabset with a plain image on each tab, inside a `.panzoom` div. Each opens in
 panzoom on its own.
@@ -148,7 +148,7 @@ panzoom on its own.
 :::
 ```
 
-## Collage across the screen {#c7 expect-fit="height"}
+## Collage across the screen {expect-fit="height"}
 
 A 25 × 2 inch collage in a `.column-screen` div, so it spans the window. It is
 still a strip, so it opens in panzoom at screen height.
@@ -182,7 +182,7 @@ collage(n = 12)
 ```
 :::
 
-## Plot in the page column {#c8 expect-fit="contain"}
+## Plot in the page column {expect-fit="contain"}
 
 A plot with `column: page`, wider than the text. It opens in panzoom whole.
 
@@ -198,7 +198,7 @@ A plot with `column: page`, wider than the text. It opens in panzoom whole.
 wave(k = 2)
 ```
 
-## Plot in the margin {#c9 expect-open="panzoom"}
+## Plot in the margin {expect-open="panzoom"}
 
 A plot in a `.column-margin` div. It opens in panzoom, at full size.
 
@@ -227,7 +227,7 @@ wave(k = 3)
 ```
 :::
 
-## Conditional content {#c10 expect-open="panzoom"}
+## Conditional content {expect-open="panzoom"}
 
 An image with `.panzoom` in a `.content-visible` div for HTML. It opens in
 panzoom. The `.content-hidden` div next to it leaves nothing on the page.
@@ -242,7 +242,7 @@ panzoom. The `.content-hidden` div next to it leaves nothing on the page.
 :::
 ```
 
-## Gallery from a div {#c11 expect-open="panzoom" expect-steps="true"}
+## Gallery from a div {expect-open="panzoom" expect-steps="true"}
 
 Two images in a `.panzoom` div with `group="div-gallery"`. The div's group joins
 them, so either opens in panzoom in a two-image gallery.

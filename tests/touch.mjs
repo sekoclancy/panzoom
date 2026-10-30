@@ -154,7 +154,7 @@ try {
 
   // A standard plot (page B, case 6): tap, pinch, drag, double-tap, tap outside.
   await page.goto(base + "b-mixed-r.html", { waitUntil: "networkidle0" });
-  let s = await openImage(page, cdp, "#c6 img.panzoom");
+  let s = await openImage(page, cdp, "section[data-number='6'] img.panzoom");
   check("tap opens the viewer", s.open, s.open ? `scale ${s.scale?.toFixed(3)}` : "viewer not open");
   const opening = s.scale;
   const cx = s.w / 2, cy = (s.top + s.bottom) / 2;
@@ -201,7 +201,7 @@ try {
 
   // The same, the resting finger down second: the viewer tracks the last
   // finger down, so this is the order that could read as a tap outside.
-  if (!s.open) s = await openImage(page, cdp, "#c6 img.panzoom");
+  if (!s.open) s = await openImage(page, cdp, "section[data-number='6'] img.panzoom");
   s = await reset(page);
   await background(page, s);
   await touch(cdp, "touchStart", [a0]);
@@ -215,7 +215,7 @@ try {
   check("pinch with a resting finger (down second) keeps the viewer open", s.open,
     s.open ? `scale ${s.scale?.toFixed(3)}` : "the viewer closed");
 
-  if (!s.open) s = await openImage(page, cdp, "#c6 img.panzoom");
+  if (!s.open) s = await openImage(page, cdp, "section[data-number='6'] img.panzoom");
   s = await reset(page);
   const bg = await background(page, s);
   await tap(cdp, bg.x, bg.y);
@@ -224,7 +224,7 @@ try {
   check("tap on the background closes", !s.open, s.open ? "still open" : "closed");
 
   // A gallery (page B, case 4: subfigures): swipe left at the opening size.
-  s = await openImage(page, cdp, "#c4 img.panzoom");
+  s = await openImage(page, cdp, "section[data-number='4'] img.panzoom");
   const first = s.counter;
   // Clear of the previous and next buttons at the screen's sides.
   const y = (s.top + s.bottom) / 2, x0 = s.w * 0.75, x1 = s.w * 0.25;
@@ -243,12 +243,12 @@ try {
     return !!h && !h.hidden;
   });
   await page.goto(base + "f-cell-options-r.html", { waitUntil: "networkidle0" });
-  s = await openImage(page, cdp, "#c4 img.panzoom");
+  s = await openImage(page, cdp, "section[data-number='4'] img.panzoom");
   const tapped = await hintShown();
   check("no hint line after a tap", s.open && !tapped, s.open ? (tapped ? "shown" : "hidden") : "viewer not open");
   await page.keyboard.press("Escape");
   await settle(page);
-  await page.click("#c4 img.panzoom");
+  await page.click("section[data-number='4'] img.panzoom");
   await settle(page);
   const clicked = await hintShown();
   check("hint line after a mouse click", clicked, clicked ? "shown" : "hidden");
@@ -257,7 +257,7 @@ try {
 
   // A caption set beside the image (page F, case 9: `desc-position:
   // right`) shows below it on a phone, as lightbox does on narrow screens.
-  s = await openImage(page, cdp, "#c9 img.panzoom");
+  s = await openImage(page, cdp, "section[data-number='9'] img.panzoom");
   const side = await page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay.open");
     const f = o && o.querySelector(".panzoom-panel").getBoundingClientRect();

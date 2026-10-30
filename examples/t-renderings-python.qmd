@@ -42,7 +42,7 @@ def wave(k=1, ink="black", paper="white", col="#3B7DB8"):
     plt.show()
 ```
 
-## Light and dark renderings {#c1 expect-open="panzoom"}
+## Light and dark renderings {expect-open="panzoom"}
 
 A cell with two plots: black ink on white for light mode, and light gray ink on
 near-black for dark mode.
@@ -72,7 +72,7 @@ wave(3)
 wave(3, ink="#D9D9D9", paper="#1E1E1E", col="#7FB8E6")
 ```
 
-## Transparent renderings {#c2 expect-open="panzoom"}
+## Transparent renderings {expect-open="panzoom"}
 
 A cell with two plots on a transparent background: black ink for light mode and
 light gray ink for dark mode.
@@ -102,7 +102,7 @@ wave(4, paper="none")
 wave(4, ink="#D9D9D9", paper="none")
 ```
 
-## Gallery with light and dark renderings {#c3 expect-open="panzoom" expect-steps="true"}
+## Gallery with light and dark renderings {expect-open="panzoom" expect-steps="true"}
 
 Two cells with `renderings: [light, dark]`, joined by `group: renderings`. The
 gallery steps through the two plots for the current mode.
@@ -159,7 +159,7 @@ wave(6, paper="none")
 wave(6, ink="#D9D9D9", paper="none")
 ```
 
-## Renderings in the other order {#c4 expect-open="panzoom"}
+## Renderings in the other order {expect-open="panzoom"}
 
 A cell with `renderings: [dark, light]`: the first plot, with light gray ink, is
 for dark mode, and the second, with black ink, for light mode.

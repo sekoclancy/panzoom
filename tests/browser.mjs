@@ -1832,6 +1832,27 @@ async function checkStill(base, file) {
   }
 }
 
+// Links within the site that name a spot (`#id`, on this page or another)
+// lead to an element with that id: section references (@sec-...) and links
+// to cases keep working when cases move or are renamed. Read from the
+// rendered files, so links added by scripts aren't seen.
+function brokenSiteLinks(file) {
+  const ids = new Map();
+  const idsOf = (f) => {
+    if (!ids.has(f)) ids.set(f, new Set([...fs.readFileSync(f, "utf8").matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));
+    return ids.get(f);
+  };
+  const broken = [];
+  for (const [, href] of fs.readFileSync(file, "utf8").matchAll(/\shref="([^"]*#[^"]+)"/g)) {
+    if (/^[a-z]+:/i.test(href)) continue;
+    const [where, hash] = href.split("#");
+    const target = where ? path.resolve(path.dirname(file), where) : file;
+    if (!target.startsWith(ROOT + path.sep) || !fs.existsSync(target)) continue;
+    if (!idsOf(target).has(decodeURIComponent(hash))) broken.push(href);
+  }
+  return [...new Set(broken)];
+}
+
 let failedPages = 0;
 for (const file of PAGES) {
   if (!file.startsWith(ROOT + path.sep) || !fs.existsSync(file)) {
@@ -1876,6 +1897,8 @@ try {
     const fits = results.filter((r) => r.expectFit && r.opened === "panzoom");
     const fit = fits.length ? (fits.every(fitOk) ? "fit ok" : "FIT FAILED") : "fit n/a";
     const extra = [];
+    const broken = brokenSiteLinks(PAGES[runs.indexOf(run)]);
+    extra.push(broken.length ? `BROKEN LINKS (${broken.join(", ")})` : "links ok");
     // Every image is shown on an opaque backdrop (transparent plots stay readable).
     const opened = results.filter((r) => r.opened === "panzoom");
     if (opened.length) extra.push(opened.every((r) => /^rgb\(/.test(r.backdrop || "")) ? "backdrop ok" : "BACKDROP FAILED");

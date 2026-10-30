@@ -8,6 +8,7 @@ panzoom:
     caption: [k, x]
     hint: false
     close: [Escape, q]
+number-sections: true
 ---
 
 ::: {.callout-note}
@@ -19,10 +20,10 @@ hint line names "k or x" and "Esc or q", and says nothing about hiding itself.
 It is not part of the website.
 :::
 
-## 1. Marked figure {#c1 expect-open="panzoom"}
+## Marked figure {expect-open="panzoom"}
 
 ![A marked figure; k hides this caption.](../../images/mv-0.jpg){.panzoom}
 
-## 2. Second figure {#c2 expect-open="panzoom"}
+## Second figure {expect-open="panzoom"}
 
 ![Another marked figure.](../../images/mv-1.jpg){.panzoom}

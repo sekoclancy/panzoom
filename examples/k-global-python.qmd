@@ -15,9 +15,9 @@ lightbox: true
 
 panzoom takes every Python (Jupyter) figure lightbox would take on its own, so
 no figure needs to be marked. `lightbox: true` in the YAML header turns lightbox
-on too, but only [cells that ask for it](#c4) with lightbox options open in it.
-The same cases open in lightbox alone on [lightbox on the Python
-cases](j-lightbox-python.html), and the R cases are on [panzoom on every
+on too, but only [cells that ask for it](#sec-lightbox-options) with lightbox
+options open in it. The same cases open in lightbox alone on [lightbox on the
+Python cases](j-lightbox-python.html), and the R cases are on [panzoom on every
 figure](c-global-r.html). The YAML header turns on panzoom and lightbox:
 
 ```yaml
@@ -41,7 +41,7 @@ import numpy as np
 x = np.linspace(0, 4 * np.pi, 400)
 ```
 
-## Figure with a caption {#c1 expect-open="panzoom"}
+## Figure with a caption {expect-open="panzoom"}
 
 A Python figure with a caption. It opens in panzoom.
 
@@ -53,7 +53,7 @@ plt.plot(x, np.sin(x))
 plt.show()
 ```
 
-## Plot without a caption {#c2 expect-open="panzoom"}
+## Plot without a caption {expect-open="panzoom"}
 
 A plot without a caption. It opens in panzoom.
 
@@ -64,7 +64,7 @@ plt.plot(x, np.cos(x))
 plt.show()
 ```
 
-## Subfigures {#c3 expect-open="panzoom"}
+## Subfigures {expect-open="panzoom"}
 
 One cell with two plots, made subfigures by `fig-subcap`. Either one opens in
 panzoom, in a two-image gallery.
@@ -84,7 +84,7 @@ plt.plot(x, np.cos(2 * x))
 plt.show()
 ```
 
-## lightbox options {#c4 expect-open="glightbox"}
+## lightbox options {#sec-lightbox-options expect-open="glightbox"}
 
 One cell with two plots and `lightbox:` options for a group and a description.
 Asking for lightbox keeps the cell out of panzoom, as in cases 6 and 7 of
@@ -109,7 +109,7 @@ plt.plot(x, np.cos(3 * x))
 plt.show()
 ```
 
-## lightbox off {#c5 expect-open="nothing"}
+## lightbox off {expect-open="nothing"}
 
 A cell with `lightbox: false`. panzoom leaves a cell's own lightbox setting
 alone, so clicking the plot does nothing.
@@ -123,7 +123,7 @@ plt.plot(x, np.sin(4 * x))
 plt.show()
 ```
 
-## panzoom on a cell {#c6 expect-open="panzoom"}
+## panzoom on a cell {expect-open="panzoom"}
 
 A cell with `#| panzoom: true`. It opens in panzoom, ahead of the document's
 `lightbox: true`.
@@ -137,7 +137,7 @@ plt.plot(x, np.cos(4 * x))
 plt.show()
 ```
 
-## Markdown image {#c7 expect-open="panzoom"}
+## Markdown image {expect-open="panzoom"}
 
 A markdown image alone in a paragraph. It opens in panzoom.
 
@@ -145,7 +145,7 @@ A markdown image alone in a paragraph. It opens in panzoom.
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
-## Opt out of lightbox {#c8 expect-open="nothing"}
+## Opt out of lightbox {expect-open="nothing"}
 
 A markdown image with `.nolightbox`. panzoom only takes images lightbox would,
 so clicking it does nothing.

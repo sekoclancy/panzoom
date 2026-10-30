@@ -61,7 +61,7 @@ async function styles(browser, url, dark, which) {
     try { localStorage.setItem("quarto-color-scheme", d ? "alternate" : "default"); } catch (e) {}
   }, dark);
   await page.goto(url, { waitUntil: "networkidle0" });
-  await page.evaluate(() => document.querySelector("#c3 img").click());
+  await page.evaluate(() => document.querySelector("section[data-number='3'] img").click());
   await wait(1200);
   const out = await page.evaluate((parts, which) => {
     const dark = document.body.classList.contains("quarto-dark");

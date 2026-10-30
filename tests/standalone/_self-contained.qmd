@@ -42,12 +42,12 @@ wave <- function(k = 1) {
 }
 ```
 
-## 1. Markdown image with math in caption and description {#c1}
+## Markdown image with math in caption and description
 
 ![Beach, $e^{i\pi} + 1 = 0$](../../images/mv-0.jpg){.panzoom
 description="Chilmark, with $\int_0^1 x^2\\ ,dx = \tfrac{1}{3}$."}
 
-## 2. Labeled R figure {#c2}
+## Labeled R figure
 
 ```{r}
 #| panzoom: true
@@ -57,7 +57,7 @@ description="Chilmark, with $\int_0^1 x^2\\ ,dx = \tfrac{1}{3}$."}
 wave(2)
 ```
 
-## 3. Gallery from one cell {#c3}
+## Gallery from one cell
 
 ```{r}
 #| panzoom:

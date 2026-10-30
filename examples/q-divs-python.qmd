@@ -48,7 +48,7 @@ def collage(n=12, height=0.8, width=8):
     plt.show()
 ```
 
-## Plot in a callout {#c1 expect-open="panzoom"}
+## Plot in a callout {expect-open="panzoom"}
 
 A cell with `panzoom: true` in a callout. It opens in panzoom.
 
@@ -77,7 +77,7 @@ wave(1)
 ```
 :::
 
-## Callout in a `.panzoom` div {#c2 expect-open="panzoom"}
+## Callout in a `.panzoom` div {expect-open="panzoom"}
 
 A callout with a cell that has no `panzoom` option, inside a `.panzoom` div. The
 div marks every figure in it, so the plot opens in panzoom.
@@ -109,7 +109,7 @@ wave(2)
 :::::
 :::
 
-## Collapsed callout {#c3 expect-open="panzoom"}
+## Collapsed callout {expect-open="panzoom"}
 
 A cell with `panzoom: true` in a callout that starts collapsed. Expand the
 callout, and the plot opens in panzoom.
@@ -139,7 +139,7 @@ wave(3)
 ```
 :::
 
-## Tabset {#c4 expect-open="panzoom"}
+## Tabset {expect-open="panzoom"}
 
 Two cells with `panzoom: true`, one on each tab of a tabset. Each plot opens in
 panzoom on its own, the second once its tab is selected.
@@ -196,7 +196,7 @@ wave(4)
 ```
 :::
 
-## Gallery across tabs {#c5 expect-open="panzoom" expect-steps="true"}
+## Gallery across tabs {expect-open="panzoom" expect-steps="true"}
 
 Two cells joined by `group: tabs` under the `panzoom` cell option, on different
 tabs. They open in panzoom as a two-image gallery, each with its own caption:
@@ -258,7 +258,7 @@ wave(5)
 ```
 :::
 
-## Tabset in a `.panzoom` div {#c6 expect-open="panzoom"}
+## Tabset in a `.panzoom` div {expect-open="panzoom"}
 
 A tabset with a cell that has no `panzoom` option on each tab, inside a
 `.panzoom` div. Each plot opens in panzoom on its own.
@@ -315,7 +315,7 @@ wave(6)
 :::::
 :::
 
-## Collage across the screen {#c7 expect-fit="height"}
+## Collage across the screen {expect-fit="height"}
 
 An 8 × 0.8 inch collage in a `.column-screen` div, so it spans the window. It is
 a strip, so it opens in panzoom at screen height.
@@ -345,7 +345,7 @@ collage(n=12)
 ```
 :::
 
-## Plot in the page column {#c8 expect-fit="contain"}
+## Plot in the page column {expect-fit="contain"}
 
 A plot with `column: page`, wider than the text. It opens in panzoom whole.
 
@@ -372,7 +372,7 @@ wave(2)
 wave(2)
 ```
 
-## Plot in the margin {#c9 expect-open="panzoom"}
+## Plot in the margin {expect-open="panzoom"}
 
 A plot in a `.column-margin` div. It opens in panzoom, at full size.
 
@@ -401,7 +401,7 @@ wave(3)
 ```
 :::
 
-## Gallery from a div {#c10 expect-open="panzoom" expect-steps="true"}
+## Gallery from a div {expect-open="panzoom" expect-steps="true"}
 
 Two cells in a `.panzoom` div with `group="div-gallery"`. The group on the div
 joins their plots, so either opens in panzoom in a two-image gallery.

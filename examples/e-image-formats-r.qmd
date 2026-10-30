@@ -50,7 +50,7 @@ collage <- function(n = 12) {
 }
 ```
 
-## webp collage {#c1 expect-fit="height"}
+## webp collage {expect-fit="height"}
 
 A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 
@@ -70,7 +70,7 @@ A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 collage(n = 12)
 ```
 
-## svg collage {#c2 expect-fit="height"}
+## svg collage {expect-fit="height"}
 
 The same collage written as svg. It opens in panzoom at screen height.
 
@@ -86,7 +86,7 @@ The same collage written as svg. It opens in panzoom at screen height.
 collage(n = 12)
 ```
 
-## webp plot {#c3 expect-fit="contain" shift-scroll="none" expect-scale="1"}
+## webp plot {expect-fit="contain" shift-scroll="none" expect-scale="1"}
 
 A small plot written as webp. It opens in panzoom at its real size.
 
@@ -105,7 +105,7 @@ A small plot written as webp. It opens in panzoom at its real size.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## svg plot {#c4 expect-fit="contain" expect-scale="1"}
+## svg plot {expect-fit="contain" expect-scale="1"}
 
 The same plot written as svg. It opens in panzoom at its real size.
 
@@ -120,7 +120,7 @@ The same plot written as svg. It opens in panzoom at its real size.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## png and pdf {#c5 expect-fit="contain"}
+## png and pdf {expect-fit="contain"}
 
 A plot written as both png and pdf. The page shows the png, which opens in
 panzoom.
@@ -136,7 +136,7 @@ panzoom.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## png and cairo_pdf {#c6 expect-fit="contain"}
+## png and cairo_pdf {expect-fit="contain"}
 
 Case 5 with the cairo PDF device, which embeds fonts and handles Unicode (µ,
 Greek letters) and transparency better than `pdf`. The page shows the png, which
@@ -161,7 +161,7 @@ filled.contour(
 )
 ```
 
-## webp past its size limit {#c7}
+## webp past its size limit
 
 A 100 × 5 inch collage as webp at 192 dpi. At 19,200 px wide it is past the webp
 limit of 16,383 px per side, so ragg can't write the file. The page shows a
@@ -185,7 +185,7 @@ loaded." in place of the image.
 collage(n = 12)
 ```
 
-## Animation {#c8 expect-open="panzoom" expect-fit="contain"}
+## Animation {expect-open="panzoom" expect-fit="contain"}
 
 One cell with `fig-show: animate` and twelve plots, which knitr joins into one
 animated gif with the gifski package (`animation.hook: gifski`). It opens in

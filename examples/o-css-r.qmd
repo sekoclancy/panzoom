@@ -25,8 +25,9 @@ panzoom:
 ```
 
 The rules apply only to a viewer with that class, so other pages keep the
-default viewer even if they load the same rules. A single [image](#c2) or [code
-cell](#c4) can add a class of its own, which applies while that image is open.
+default viewer even if they load the same rules. A single
+[image](#sec-class-for-one-image) or [code cell](#sec-class-for-one-cell) can
+add a class of its own, which applies while that image is open.
 
 The rules are in a raw HTML block on this page. The same block works in any
 Quarto document:
@@ -96,7 +97,7 @@ For a whole site, put `css-class` (or any option) under `format: html:` in
 `_quarto.yml`. A top-level `panzoom:` there is replaced, not merged, by a page's
 own `panzoom:` options.
 
-## Markdown image {#c1 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
+## Markdown image {expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 A markdown image with `.panzoom`. It opens with the plum viewer from the rules
 above, with a line along the top of the caption band and a larger, italic
@@ -106,7 +107,7 @@ caption, and the link in its caption is pink.
 ![Edgartown Lighthouse, Martha's Vineyard ([photo](https://unsplash.com/photos/f59MyOfLpi8)).](../images/mv-2.jpg){.panzoom fig-alt="A white lighthouse against a blue sky"}
 ```
 
-## Class for one image {#c2 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
+## Class for one image {#sec-class-for-one-image expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
 A markdown image with `.panzoom` and a class of its own,
 `css-class="sea-viewer"`. It opens with the dark teal `.sea-viewer` rules, a
@@ -119,7 +120,7 @@ come after the `.plum-viewer` ones to win over them.
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard ([photo](https://unsplash.com/photos/HQEtvlNzUyA)).](../images/mv-3.jpg){.panzoom css-class="sea-viewer" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
-## Code cell {#c3 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
+## Code cell {expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 An R cell with `#| panzoom: true`. It opens with the plum viewer set under the
 `panzoom:` option in the YAML header.
@@ -132,7 +133,7 @@ An R cell with `#| panzoom: true`. It opens with the plum viewer set under the
 plot(pressure, type = "b", pch = 19)
 ```
 
-## Class for one cell {#c4 expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
+## Class for one cell {#sec-class-for-one-cell expect-open="panzoom" expect-class="sea-viewer" expect-overlay="rgba(10, 50, 60, 0.9)" expect-band="rgb(15, 54, 64)"}
 
 An R cell with `css-class: sea-viewer` under the `panzoom` cell option. It opens
 with the teal viewer.
@@ -146,7 +147,7 @@ with the teal viewer.
 plot(cars, pch = 19)
 ```
 
-## Gallery with mixed classes {#c5 expect-open="panzoom" expect-steps="true" expect-class="sea-viewer; plum-viewer; sea-viewer" expect-no-class="; sea-viewer;" expect-overlay="rgba(10, 50, 60, 0.9); rgba(60, 20, 70, 0.9); rgba(10, 50, 60, 0.9)"}
+## Gallery with mixed classes {expect-open="panzoom" expect-steps="true" expect-class="sea-viewer; plum-viewer; sea-viewer" expect-no-class="; sea-viewer;" expect-overlay="rgba(10, 50, 60, 0.9); rgba(60, 20, 70, 0.9); rgba(10, 50, 60, 0.9)"}
 
 A gallery of three images, the first and last with `css-class="sea-viewer"`.
 Each image has its class only while it is open, so the first and last show the
@@ -160,7 +161,7 @@ teal viewer and the middle one the plum viewer, whichever way it is reached.
 ![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
-## Margin image {#c6 expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
+## Margin image {expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
 A markdown image with `.panzoom` in the margin. It opens with the plum viewer
 set under the `panzoom:` option in the YAML header.
@@ -169,7 +170,7 @@ set under the `panzoom:` option in the YAML header.
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
-## Class from a file {#c7 expect-open="panzoom" expect-class="amber-viewer" expect-overlay="rgba(40, 25, 5, 0.92)" expect-band="rgb(58, 37, 8)"}
+## Class from a file {expect-open="panzoom" expect-class="amber-viewer" expect-overlay="rgba(40, 25, 5, 0.92)" expect-band="rgb(58, 37, 8)"}
 
 A markdown image with `.panzoom` and `css-class="amber-viewer"`. The rules for
 that class are in a file, `assets/amber-viewer.html` in the panzoom repository,

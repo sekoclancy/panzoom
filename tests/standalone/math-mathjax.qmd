@@ -4,6 +4,7 @@ subtitle: "html-math-method: mathjax"
 filters:
   - panzoom
 html-math-method: mathjax
+number-sections: true
 ---
 
 {{< include _math.qmd >}}
