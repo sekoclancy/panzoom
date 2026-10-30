@@ -119,11 +119,11 @@ A labeled R figure with a citation in its caption, and a description with math
 and a citation. It opens in panzoom with all of them rendered.
 
 ```{r}
+#| panzoom:
+#|   description: "Rises roughly as $p \\propto e^{-1/T}$ [@rcore2026]."
 #| label: fig-pressure
 #| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| fig-cap: "Vapor pressure of mercury [@weast1973]."
-#| panzoom:
-#|   description: "Rises roughly as $p \\propto e^{-1/T}$ [@rcore2026]."
 
 plot(pressure)
 ```
@@ -146,9 +146,9 @@ An R cell with `caption: false` under the `panzoom` cell option. The figure has
 a caption on the page, but it opens in panzoom without one.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   caption: false
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -161,9 +161,9 @@ An R cell with the `description` option, written in markdown with math. It opens
 in panzoom with the description under the caption.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   description: "A sine wave, $y = \\sin(kx)$, **k = 2**."
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -180,11 +180,11 @@ and @fig-div-image).
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
 #| label: fig-div-plot
+#| fig-width: 7.5
+#| fig-height: 5
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
-#| fig-width: 7.5
-#| fig-height: 5
 
 wave(k = 3)
 ```
@@ -197,11 +197,11 @@ wave(k = 3)
 ```{r}
 #| label: fig-div-plot
 #| echo: false
+#| fig-width: 7.5
+#| fig-height: 5
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
-#| fig-width: 7.5
-#| fig-height: 5
 
 wave(k = 3)
 ```
@@ -278,10 +278,10 @@ in a panel on the right, the margin side, with no `desc-position` set.
 
 ```{r}
 #| panzoom: true
-#| fig-cap-location: margin
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
+#| fig-cap-location: margin
 
 wave(k = 2)
 ```
@@ -294,12 +294,12 @@ for a labeled figure. It opens in panzoom with the caption above the image, with
 no `desc-position` set.
 
 ```{r}
-#| label: fig-caption-top
 #| panzoom: true
-#| fig-cap-location: top
+#| label: fig-caption-top
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
+#| fig-cap-location: top
 
 wave(k = 4)
 ```

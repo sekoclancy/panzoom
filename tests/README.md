@@ -34,6 +34,7 @@ cd tests && npm test
   | `npm run offline`    | The standalone and site pages with no network                                                                                                                                                                                  | ~70 s  |
   | `npm run bench`      | Weight and speed against a saved baseline (`bench:save` saves a new one)                                                                                                                                                       | ~1 min |
   | `npm run options`    | Misspelled and wrong options: each mistake reported, as Quarto words it, and the render stopped; descriptions that look like options come through whole                                                                        | ~15 s  |
+  | `npm run order`      | The order of `#\|` options in every `.qmd`: `panzoom` first, the alt text and captions last                                                                                                                                    | ~1 s   |
 
 Each prints one line per page and exits with an error if a check fails. The
 tests read `docs/`, so render again after changing the extension or a page. To

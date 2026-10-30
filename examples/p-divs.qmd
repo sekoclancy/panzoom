@@ -156,11 +156,11 @@ still a strip, so it opens in panzoom at screen height.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.column-screen}
 ```{{r}}
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
@@ -170,12 +170,12 @@ collage(n = 12)
 
 ::: {.column-screen}
 ```{r}
-#| echo: false
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
+#| echo: false
 #| fig-width: 25
 #| fig-height: 2
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
@@ -187,11 +187,11 @@ collage(n = 12)
 A plot with `column: page`, wider than the text. It opens in panzoom whole.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| column: page
 #| panzoom: true
 #| fig-width: 12
 #| fig-height: 5
+#| column: page
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -205,8 +205,8 @@ A plot in a `.column-margin` div. It opens in panzoom, at full size.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.column-margin}
 ```{{r}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
@@ -217,9 +217,9 @@ wave(k = 3)
 
 ::: {.column-margin}
 ```{r}
+#| panzoom: true
 #| echo: false
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| panzoom: true
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 

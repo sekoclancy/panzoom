@@ -55,16 +55,16 @@ collage <- function(n = 12) {
 A 25 × 2 inch collage written as webp. It opens in panzoom at screen height.
 
 ```{r}
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
 #| dev: agg_webp
-#| fig-ext: webp
 #| dev.args:
 #|   units: "in"
 #|   res: 96
+#| fig-ext: webp
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
@@ -75,12 +75,12 @@ collage(n = 12)
 The same collage written as svg. It opens in panzoom at screen height.
 
 ```{r}
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
 #| dev: svg
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
@@ -91,15 +91,15 @@ collage(n = 12)
 A small plot written as webp. It opens in panzoom at its real size.
 
 ```{r}
-#| fig-alt: >-
-#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
-#|   key
 #| panzoom: true
 #| dev: agg_webp
-#| fig-ext: webp
 #| dev.args:
 #|   units: "in"
 #|   res: 96
+#| fig-ext: webp
+#| fig-alt: >-
+#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
+#|   key
 #| fig-cap: "Maunga Whau's heights as filled contours."
 
 filled.contour(volcano, color.palette = terrain.colors)
@@ -110,11 +110,11 @@ filled.contour(volcano, color.palette = terrain.colors)
 The same plot written as svg. It opens in panzoom at its real size.
 
 ```{r}
+#| panzoom: true
+#| dev: svg
 #| fig-alt: >-
 #|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
 #|   key
-#| panzoom: true
-#| dev: svg
 #| fig-cap: "Maunga Whau's heights as filled contours."
 
 filled.contour(volcano, color.palette = terrain.colors)
@@ -126,11 +126,11 @@ A plot written as both png and pdf. The page shows the png, which opens in
 panzoom.
 
 ```{r}
+#| panzoom: true
+#| dev: [png, pdf]
 #| fig-alt: >-
 #|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
 #|   key
-#| panzoom: true
-#| dev: [png, pdf]
 #| fig-cap: "Maunga Whau's heights as filled contours."
 
 filled.contour(volcano, color.palette = terrain.colors)
@@ -145,11 +145,11 @@ embeds the PDF in a small box with the browser's PDF viewer, which panzoom
 leaves alone.
 
 ```{r}
+#| panzoom: true
+#| dev: [png, cairo_pdf]
 #| fig-alt: >-
 #|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
 #|   key, titled mu = 5, alpha = 0.05
-#| panzoom: true
-#| dev: [png, cairo_pdf]
 #| fig-cap: >-
 #|   Maunga Whau's heights as filled contours, titled mu = 5, alpha = 0.05, as
 #|   png (and cairo_pdf).
@@ -169,18 +169,18 @@ broken image, and clicking it opens the viewer with "The image could not be
 loaded." in place of the image.
 
 ```{r}
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
+#| error: true
 #| fig-width: 100
 #| fig-height: 5
 #| dev: agg_webp
-#| fig-ext: webp
 #| dev.args:
 #|   units: "in"
 #|   res: 192
+#| fig-ext: webp
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| fig-cap: "A 100 × 5 inch collage of 12 random walks."
-#| error: true
 
 collage(n = 12)
 ```

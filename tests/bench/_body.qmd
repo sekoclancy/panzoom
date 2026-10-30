@@ -84,9 +84,9 @@ wave(k = 8)
 
 ```{r}
 #| label: fig-pair
+#| layout-ncol: 2
 #| fig-cap: "Two plots."
 #| fig-subcap: ["Pressure", "Cars"]
-#| layout-ncol: 2
 
 plot(pressure)
 plot(cars)

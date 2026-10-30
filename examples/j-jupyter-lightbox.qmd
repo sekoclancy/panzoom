@@ -66,12 +66,12 @@ lightbox, in a two-image gallery.
 
 ```{python}
 #| label: fig-pair
-#| fig-cap: "A sine wave and a cosine wave, sin(2x) and cos(2x)."
-#| fig-subcap: ["Sine", "Cosine"]
+#| layout-ncol: 2
 #| fig-alt:
 #|   - "Line plot of a sine wave"
 #|   - "Line plot of a cosine wave"
-#| layout-ncol: 2
+#| fig-cap: "A sine wave and a cosine wave, sin(2x) and cos(2x)."
+#| fig-subcap: ["Sine", "Cosine"]
 
 plt.plot(x, np.sin(2 * x))
 plt.show()
@@ -121,8 +121,8 @@ A cell with `#| panzoom: true`. panzoom is not listed under `filters:` in the
 YAML header, so the option does nothing, and the plot opens in lightbox.
 
 ```{python}
-#| fig-alt: "Line plot of a cosine wave"
 #| panzoom: true
+#| fig-alt: "Line plot of a cosine wave"
 #| fig-cap: "A cosine wave, cos(4x)."
 
 plt.plot(x, np.cos(4 * x))

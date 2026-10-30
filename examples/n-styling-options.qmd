@@ -60,8 +60,8 @@ An R cell with `#| panzoom: true`. It opens with the blue and cream colors set
 under the `panzoom:` option in the YAML header.
 
 ```{r}
-#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| fig-cap: "Vapor pressure of mercury against temperature."
 
 plot(pressure, type = "b", pch = 19)
@@ -73,11 +73,11 @@ An R cell with colors of its own under the `panzoom` cell option. It opens with
 a dark red backdrop and a peach caption band.
 
 ```{r}
-#| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| panzoom:
 #|   backdrop: "rgba(70, 25, 15, 0.92)"
 #|   panel-background: "#fbe9dc"
 #|   panel-color: "#4a1f10"
+#| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| fig-cap: "Stopping distance against speed for 50 cars."
 
 plot(cars, pch = 19)

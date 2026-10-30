@@ -160,12 +160,12 @@ one, the left arrow key or the previous button goes to wave three, and on wave
 three, the right arrow key or the next button goes back to wave one.
 
 ```{python}
+#| panzoom:
+#|   group: waves
 #| fig-alt:
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
-#| panzoom:
-#|   group: waves
 #| fig-cap:
 #|   - "Wave 1: y = sin(x); the area between the curve and y = 0 is
 #|     shaded."
@@ -187,11 +187,11 @@ options](f-options.html#c11)). They open in panzoom as a two-image gallery, each
 with its own caption.
 
 ```{python}
+#| panzoom:
+#|   group: printed
 #| fig-alt:
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
-#| panzoom:
-#|   group: printed
 #| fig-cap:
 #|   - "Wave 1: y = sin(x); the area between the curve and y = 0 is
 #|     shaded."
@@ -209,9 +209,9 @@ A cell with `desc-position: top` under the `panzoom` cell option. It opens in
 panzoom, with the caption above the image.
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   desc-position: top
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
@@ -224,9 +224,9 @@ A cell with `caption: false` under the `panzoom` cell option. The figure has a
 caption on the page, but it opens in panzoom without one.
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   caption: false
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -240,11 +240,11 @@ a citation. It opens in panzoom with all of them rendered, and both works are
 listed under [References](#references).
 
 ```{python}
+#| panzoom:
+#|   description: 'A sine wave, $y = \sin(kx)$, drawn with Matplotlib [@hunter2007].'
 #| label: fig-cited
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: "Wave 4: y = sin(4x), computed with NumPy [@harris2020]."
-#| panzoom:
-#|   description: 'A sine wave, $y = \sin(kx)$, drawn with Matplotlib [@hunter2007].'
 
 wave(4)
 ```
@@ -257,7 +257,6 @@ panel, and the arrow keys, Page Up and Page Down, Home, End, and Space scroll
 it.
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   description: >-
 #|     This description is long on purpose: it is taller than the space the
@@ -292,6 +291,7 @@ it.
 #|     every wave on this page is drawn the same way and only k changes. Nothing
 #|     in this description is needed for the test except its length: a
 #|     description this long scrolls in any window.
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
 
@@ -305,8 +305,8 @@ the cell sets matplotlib's formats itself, and back to the default (retina png)
 after. The page shows the png, which opens in panzoom.
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -320,8 +320,8 @@ wave(2)
 A plot written as jpeg, set the same way. It opens in panzoom.
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
@@ -336,8 +336,8 @@ A 3 × 10 inch strip. It opens at screen width from its top, and Alt+scroll move
 up and down. Shift+scroll doesn't move it.
 
 ```{python}
-#| fig-alt: "A column of 8 small line plots of random walks"
 #| panzoom: true
+#| fig-alt: "A column of 8 small line plots of random walks"
 #| fig-cap: "A 3 × 10 inch strip of 8 random walks."
 
 strip(seed=2)
@@ -349,9 +349,9 @@ An ordinary plot with `fit: width`. Filling the width makes the plot taller than
 the screen, so it opens closer than the whole plot and zooms out to it.
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   fit: width
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
@@ -366,9 +366,9 @@ is over a quarter of the screen tall, so `fit: auto` would open it whole. With
 spot you clicked, and zooms out to the whole figure.
 
 ```{python}
-#| fig-alt: "A row of 3 small line plots of random walks, each in its own color"
 #| panzoom:
 #|   fit: height
+#| fig-alt: "A row of 3 small line plots of random walks, each in its own color"
 #| fig-cap: "An 8 × 3 inch collage of 3 random walks."
 
 collage(n=3, height=3)
@@ -383,11 +383,11 @@ next press changes collages, as do the previous and next buttons. Each collage
 stops clear of the buttons.
 
 ```{python}
+#| panzoom:
+#|   group: collages
 #| fig-alt:
 #|   - "A row of 12 small line plots of random walks, each in its own color"
 #|   - "A row of 15 small line plots of random walks, each in its own color"
-#| panzoom:
-#|   group: collages
 #| fig-cap:
 #|   - "A 6.4 × 0.8 inch collage of 12 random walks."
 #|   - "An 8 × 0.8 inch collage of 15 random walks."
@@ -402,14 +402,14 @@ Two tall strips side by side as subfigures. Each opens at screen width, and the
 two form a gallery.
 
 ```{python}
-#| label: fig-strip-cols
 #| panzoom: true
-#| fig-cap: "Two 3 × 10 inch strips of 8 random walks, side by side."
-#| fig-subcap: ["First strip", "Second strip"]
+#| label: fig-strip-cols
+#| layout-ncol: 2
 #| fig-alt:
 #|   - "A column of 8 small line plots of random walks"
 #|   - "A column of 8 small line plots of random walks"
-#| layout-ncol: 2
+#| fig-cap: "Two 3 × 10 inch strips of 8 random walks, side by side."
+#| fig-subcap: ["First strip", "Second strip"]
 
 strip(seed=3)
 strip(seed=4)
@@ -424,13 +424,13 @@ The captions differ in length, so the panel changes width from one image to the
 next, and the image refits beside it.
 
 ```{python}
+#| panzoom:
+#|   group: right-waves
+#|   desc-position: right
 #| fig-alt:
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
-#| panzoom:
-#|   group: right-waves
-#|   desc-position: right
 #| fig-cap:
 #|   - "Wave 1: y = sin(x)."
 #|   - "Wave 2: y = sin(2x); the area between the curve and y = 0 is
@@ -452,10 +452,10 @@ the right, above, and below in turn; stepping between them moves the caption and
 refits the image.
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: sides
 #|   desc-position: right
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
@@ -463,10 +463,10 @@ wave(4)
 ```
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: sides
 #|   desc-position: top
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 5: y = sin(5x); the area between the curve and y = 0 is shaded.
 
@@ -474,9 +474,9 @@ wave(5)
 ```
 
 ```{python}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: sides
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 6: y = sin(6x); the area between the curve and y = 0 is shaded.
 
@@ -491,10 +491,10 @@ caption in a panel on the right, the margin side, with no `desc-position` set.
 
 ```{python}
 #| panzoom: true
-#| fig-cap-location: margin
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
+#| fig-cap-location: margin
 
 wave(2)
 ```
@@ -507,12 +507,12 @@ only for a labeled figure. It opens in panzoom with the caption above the image,
 with no `desc-position` set.
 
 ```{python}
-#| label: fig-caption-top
 #| panzoom: true
-#| fig-cap-location: top
+#| label: fig-caption-top
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
+#| fig-cap-location: top
 
 wave(4)
 ```
@@ -524,18 +524,18 @@ one across the row below. Each opens at screen height, and the three form a
 gallery in reading order.
 
 ```{python}
-#| label: fig-collage-layout
 #| panzoom: true
+#| label: fig-collage-layout
+#| layout: [[1, 1], [1]]
+#| fig-alt:
+#|   - "A row of 12 small line plots of random walks, each in its own color"
+#|   - "A row of 15 small line plots of random walks, each in its own color"
+#|   - "A row of 9 small line plots of random walks, each in its own color"
 #| fig-cap: "Collages of 12, 15, and 9 random walks."
 #| fig-subcap:
 #|   - "First collage"
 #|   - "Second collage"
 #|   - "Third collage"
-#| fig-alt:
-#|   - "A row of 12 small line plots of random walks, each in its own color"
-#|   - "A row of 15 small line plots of random walks, each in its own color"
-#|   - "A row of 9 small line plots of random walks, each in its own color"
-#| layout: [[1, 1], [1]]
 
 collage(n=12)
 collage(n=15)
@@ -550,18 +550,18 @@ gap is an empty cell, not an image, so the three still form a gallery in reading
 order.
 
 ```{python}
-#| label: fig-collage-gap
 #| panzoom: true
+#| label: fig-collage-gap
+#| layout: [[45, -10, 45], [100]]
+#| fig-alt:
+#|   - "A row of 12 small line plots of random walks, each in its own color"
+#|   - "A row of 15 small line plots of random walks, each in its own color"
+#|   - "A row of 9 small line plots of random walks, each in its own color"
 #| fig-cap: "Collages of 12, 15, and 9 random walks."
 #| fig-subcap:
 #|   - "First collage"
 #|   - "Second collage"
 #|   - "Third collage"
-#| fig-alt:
-#|   - "A row of 12 small line plots of random walks, each in its own color"
-#|   - "A row of 15 small line plots of random walks, each in its own color"
-#|   - "A row of 9 small line plots of random walks, each in its own color"
-#| layout: [[45, -10, 45], [100]]
 
 collage(n=12)
 collage(n=15)

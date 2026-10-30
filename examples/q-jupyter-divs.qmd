@@ -55,8 +55,8 @@ A cell with `panzoom: true` in a callout. It opens in panzoom.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.callout-note title="A note with a plot"}
 ```{{python}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
 
@@ -67,9 +67,9 @@ wave(1)
 
 ::: {.callout-note title="A note with a plot"}
 ```{python}
+#| panzoom: true
 #| echo: false
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| panzoom: true
 #| fig-cap: >-
 #|   Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
 
@@ -117,8 +117,8 @@ callout, and the plot opens in panzoom.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.callout-note collapse="true" title="Expand for a plot"}
 ```{{python}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
@@ -129,9 +129,9 @@ wave(3)
 
 ::: {.callout-note collapse="true" title="Expand for a plot"}
 ```{python}
+#| panzoom: true
 #| echo: false
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| panzoom: true
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
@@ -149,8 +149,8 @@ panzoom on its own, the second once its tab is selected.
 ### Wave 1
 
 ```{{python}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
 
@@ -160,8 +160,8 @@ wave(1)
 ### Wave 4
 
 ```{{python}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
@@ -174,9 +174,9 @@ wave(4)
 ### Wave 1
 
 ```{python}
+#| panzoom: true
 #| echo: false
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| panzoom: true
 #| fig-cap: >-
 #|   Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
 
@@ -186,9 +186,9 @@ wave(1)
 ### Wave 4
 
 ```{python}
+#| panzoom: true
 #| echo: false
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| panzoom: true
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
@@ -207,9 +207,9 @@ the next button shows the plot on the other tab without selecting it.
 ### Wave 2
 
 ```{{python}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: tabs
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -219,9 +219,9 @@ wave(2)
 ### Wave 5
 
 ```{{python}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: tabs
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 5: y = sin(5x); the area between the curve and y = 0 is shaded.
 
@@ -234,10 +234,10 @@ wave(5)
 ### Wave 2
 
 ```{python}
-#| echo: false
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: tabs
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -247,10 +247,10 @@ wave(2)
 ### Wave 5
 
 ```{python}
-#| echo: false
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: tabs
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 5: y = sin(5x); the area between the curve and y = 0 is shaded.
 
@@ -323,9 +323,9 @@ a strip, so it opens in panzoom at screen height.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.column-screen}
 ```{{python}}
+#| panzoom: true
 #| fig-alt: >-
 #|   A row of 12 small line plots of random walks, each in its own color
-#| panzoom: true
 #| fig-cap: "An 8 × 0.8 inch collage of 12 random walks."
 
 collage(n=12)
@@ -335,10 +335,10 @@ collage(n=12)
 
 ::: {.column-screen}
 ```{python}
+#| panzoom: true
 #| echo: false
 #| fig-alt: >-
 #|   A row of 12 small line plots of random walks, each in its own color
-#| panzoom: true
 #| fig-cap: "An 8 × 0.8 inch collage of 12 random walks."
 
 collage(n=12)
@@ -351,9 +351,9 @@ A plot with `column: page`, wider than the text. It opens in panzoom whole.
 
 ````markdown {.code-overflow-wrap .cell-code}
 ```{{python}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| column: page
 #| panzoom: true
+#| column: page
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -362,10 +362,10 @@ wave(2)
 ````
 
 ```{python}
-#| echo: false
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| column: page
 #| panzoom: true
+#| echo: false
+#| column: page
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -379,8 +379,8 @@ A plot in a `.column-margin` div. It opens in panzoom, at full size.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.column-margin}
 ```{{python}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
@@ -391,9 +391,9 @@ wave(3)
 
 ::: {.column-margin}
 ```{python}
+#| panzoom: true
 #| echo: false
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| panzoom: true
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 

@@ -77,15 +77,15 @@ right arrow keys and dragging pan along the collage, and at its end the next
 press changes collages, as do the previous and next buttons.
 
 ```{r}
+#| panzoom:
+#|   group: collages
+#| fig-width: 25
+#| fig-height: 2
 #| fig-alt:
 #|   - >-
 #|     A row of 12 small line plots of random walks, each in its own color
 #|   - >-
 #|     A row of 15 small line plots of random walks, each in its own color
-#| panzoom:
-#|   group: collages
-#| fig-width: 25
-#| fig-height: 2
 #| fig-cap:
 #|   - "A 25 × 2 inch collage of 12 random walks."
 #|   - "A 25 × 2 inch collage of 15 random walks."
@@ -101,13 +101,13 @@ The left and right arrow keys do nothing, since there is nowhere to go sideways,
 and the previous and next buttons change strips.
 
 ```{r}
-#| fig-alt:
-#|   - "A column of 8 small line plots of random walks"
-#|   - "A column of 8 small line plots of random walks"
 #| panzoom:
 #|   group: strips
 #| fig-width: 4
 #| fig-height: 15
+#| fig-alt:
+#|   - "A column of 8 small line plots of random walks"
+#|   - "A column of 8 small line plots of random walks"
 #| fig-cap:
 #|   - "A 4 × 15 inch strip of 8 random walks."
 #|   - "A 4 × 15 inch strip of 8 more random walks."
@@ -122,18 +122,18 @@ Two collages stacked as subfigures. Each opens at screen height, and the two
 form a gallery.
 
 ```{r}
-#| label: fig-collage-rows
 #| panzoom: true
+#| label: fig-collage-rows
 #| fig-width: 25
 #| fig-height: 2
-#| fig-cap: "Collages of 12 and 15 random walks, stacked."
-#| fig-subcap: ["First collage", "Second collage"]
+#| layout-nrow: 2
 #| fig-alt:
 #|   - >-
 #|     A row of 12 small line plots of random walks, each in its own color
 #|   - >-
 #|     A row of 12 small line plots of random walks, each in its own color
-#| layout-nrow: 2
+#| fig-cap: "Collages of 12 and 15 random walks, stacked."
+#| fig-subcap: ["First collage", "Second collage"]
 
 collage(n = 12)
 collage(n = 15)
@@ -145,16 +145,16 @@ Two tall strips side by side as subfigures. Each opens at screen width, and the
 two form a gallery.
 
 ```{r}
-#| label: fig-strip-cols
 #| panzoom: true
+#| label: fig-strip-cols
 #| fig-width: 4
 #| fig-height: 15
-#| fig-cap: "Two 4 × 15 inch strips of 8 random walks, side by side."
-#| fig-subcap: ["First strip", "Second strip"]
+#| layout-ncol: 2
 #| fig-alt:
 #|   - "A column of 8 small line plots of random walks"
 #|   - "A column of 8 small line plots of random walks"
-#| layout-ncol: 2
+#| fig-cap: "Two 4 × 15 inch strips of 8 random walks, side by side."
+#| fig-subcap: ["First strip", "Second strip"]
 
 strip(seed = 2, n = 8)
 strip(seed = 3, n = 8)
@@ -215,21 +215,19 @@ so the caption band changes height between them, and each collage stays clear of
 it. `fig-dpi: 48` only keeps the files small.
 
 ```{r}
-#| fig-alt: >-
-#|   A row of 24 small line plots of random walks, each in its own color
 #| panzoom:
 #|   group: mixed-collages
 #| fig-width: 40
 #| fig-height: 2
 #| fig-dpi: 48
+#| fig-alt: >-
+#|   A row of 24 small line plots of random walks, each in its own color
 #| fig-cap: "A 40 × 2 inch collage of 24 random walks."
 
 collage(n = 24)
 ```
 
 ```{r}
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom:
 #|   group: mixed-collages
 #|   description: >-
@@ -239,6 +237,8 @@ collage(n = 24)
 #| fig-width: 24
 #| fig-height: 2
 #| fig-dpi: 48
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| fig-cap: "A 24 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
@@ -253,18 +253,18 @@ its top, on its own, and the layout shows them at different heights on the page.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
-#| fig-alt: "A column of 10 small line plots of random walks"
 #| fig-width: 4
 #| fig-height: 20
+#| fig-alt: "A column of 10 small line plots of random walks"
 #| fig-cap: "A 4 × 20 inch strip of 10 random walks."
 
 strip(seed = 6, n = 10)
 ```
 
 ```{{r}}
-#| fig-alt: "A column of 6 small line plots of random walks"
 #| fig-width: 3
 #| fig-height: 12
+#| fig-alt: "A column of 6 small line plots of random walks"
 #| fig-cap: >-
 #|   A 3 × 12 inch strip of six random walks of 100 steps each, stacked in one
 #|   column, each row in its own color.
@@ -277,9 +277,9 @@ strip(seed = 7, n = 6)
 ::: {.panzoom layout-ncol="2"}
 ```{r}
 #| echo: false
-#| fig-alt: "A column of 10 small line plots of random walks"
 #| fig-width: 4
 #| fig-height: 20
+#| fig-alt: "A column of 10 small line plots of random walks"
 #| fig-cap: "A 4 × 20 inch strip of 10 random walks."
 
 strip(seed = 6, n = 10)
@@ -287,9 +287,9 @@ strip(seed = 6, n = 10)
 
 ```{r}
 #| echo: false
-#| fig-alt: "A column of 6 small line plots of random walks"
 #| fig-width: 3
 #| fig-height: 12
+#| fig-alt: "A column of 6 small line plots of random walks"
 #| fig-cap: >-
 #|   A 3 × 12 inch strip of six random walks of 100 steps each, stacked in one
 #|   column, each row in its own color.
@@ -305,12 +305,11 @@ one across the row below. Each opens at screen height, and the three form a
 gallery in reading order.
 
 ```{r}
-#| label: fig-collage-layout
 #| panzoom: true
+#| label: fig-collage-layout
 #| fig-width: 25
 #| fig-height: 2
-#| fig-cap: "Collages of 12, 15, and 9 random walks."
-#| fig-subcap: ["First collage", "Second collage", "Third collage"]
+#| layout: [[1, 1], [1]]
 #| fig-alt:
 #|   - >-
 #|     A row of 12 small line plots of random walks, each in its own color
@@ -318,7 +317,8 @@ gallery in reading order.
 #|     A row of 15 small line plots of random walks, each in its own color
 #|   - >-
 #|     A row of 9 small line plots of random walks, each in its own color
-#| layout: [[1, 1], [1]]
+#| fig-cap: "Collages of 12, 15, and 9 random walks."
+#| fig-subcap: ["First collage", "Second collage", "Third collage"]
 
 collage(n = 12)
 collage(n = 15)
@@ -333,12 +333,11 @@ gap is an empty cell, not an image, so the three still form a gallery in reading
 order.
 
 ```{r}
-#| label: fig-collage-gap
 #| panzoom: true
+#| label: fig-collage-gap
 #| fig-width: 25
 #| fig-height: 2
-#| fig-cap: "Collages of 12, 15, and 9 random walks."
-#| fig-subcap: ["First collage", "Second collage", "Third collage"]
+#| layout: [[45, -10, 45], [100]]
 #| fig-alt:
 #|   - >-
 #|     A row of 12 small line plots of random walks, each in its own color
@@ -346,7 +345,8 @@ order.
 #|     A row of 15 small line plots of random walks, each in its own color
 #|   - >-
 #|     A row of 9 small line plots of random walks, each in its own color
-#| layout: [[45, -10, 45], [100]]
+#| fig-cap: "Collages of 12, 15, and 9 random walks."
+#| fig-subcap: ["First collage", "Second collage", "Third collage"]
 
 collage(n = 12)
 collage(n = 15)

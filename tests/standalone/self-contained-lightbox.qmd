@@ -48,9 +48,9 @@ description="Chilmark, with $\int_0^1 x^2\\ ,dx = \tfrac{1}{3}$."}
 ## 2. Labeled R figure {#c2}
 
 ```{r}
+#| lightbox: true
 #| label: fig-wave
 #| fig-cap: "A wave, $\\sin(2x)$."
-#| lightbox: true
 
 wave(2)
 ```

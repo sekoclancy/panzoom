@@ -44,8 +44,8 @@ def walk(ax, n=200, title=None):
 A cell with `#| panzoom: true`. It opens in panzoom, with the hint line.
 
 ```{python}
-#| fig-alt: "Line plot of a sine wave"
 #| panzoom: true
+#| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A sine wave."
 
 x = np.linspace(0, 4 * np.pi, 400)
@@ -60,10 +60,10 @@ opens in panzoom without the hint line, and zooming in stops at 2 screen pixels
 per image pixel.
 
 ```{python}
-#| fig-alt: "Line plot of a cosine wave"
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
+#| fig-alt: "Line plot of a cosine wave"
 #| fig-cap: "A cosine wave, cos(x)."
 
 plt.plot(x, np.cos(x))
@@ -77,12 +77,12 @@ description with math, quotes, and a cross-reference to the figure in [case
 4](#c4). It opens in panzoom with all of them rendered.
 
 ```{python}
-#| label: fig-scatter
-#| fig-alt: "Scatter plot of 100 points along a rising diagonal"
 #| panzoom:
 #|   description: >-
 #|     Points scattered around $y = x + \varepsilon$, with a "quote"; compare
 #|     @fig-sub.
+#| label: fig-scatter
+#| fig-alt: "Scatter plot of 100 points along a rising diagonal"
 #| fig-cap: >-
 #|   100 points scattered around a rising diagonal, $n = 100$; compare @fig-sub.
 
@@ -97,14 +97,14 @@ One cell with `#| panzoom: true` and two plots, made subfigures by `fig-subcap`.
 Either one opens in panzoom, in a two-image gallery.
 
 ```{python}
-#| label: fig-sub
 #| panzoom: true
-#| fig-cap: "A random walk of 200 steps, and a histogram of 500 normal draws."
-#| fig-subcap: ["A random walk", "A histogram"]
+#| label: fig-sub
+#| layout-ncol: 2
 #| fig-alt:
 #|   - "Line plot of a random walk"
 #|   - "Histogram of 500 normal draws, peaked at zero"
-#| layout-ncol: 2
+#| fig-cap: "A random walk of 200 steps, and a histogram of 500 normal draws."
+#| fig-subcap: ["A random walk", "A histogram"]
 
 fig, ax = plt.subplots()
 walk(ax)
@@ -119,11 +119,11 @@ One cell with two plots, joined by `group: walks` under the `panzoom` cell
 option. Either one opens in panzoom, in a two-image gallery.
 
 ```{python}
+#| panzoom:
+#|   group: walks
 #| fig-alt:
 #|   - "Line plot of a random walk"
 #|   - "Line plot of a random walk"
-#| panzoom:
-#|   group: walks
 #| fig-cap:
 #|   - "A random walk of 200 steps."
 #|   - "Another random walk of 200 steps."
@@ -142,8 +142,8 @@ the image), not shrunk to the column as with knitr. A 25 × 2 in collage would b
 2,400 px wide on the page, cut off at the edge of the column. This one fits.
 
 ```{python}
-#| fig-alt: "A row of 8 small line plots of random walks"
 #| panzoom: true
+#| fig-alt: "A row of 8 small line plots of random walks"
 #| fig-cap: "An 8 × 0.8 inch collage of 8 random walks."
 
 fig, axes = plt.subplots(1, 8, figsize=(8, 0.8), layout="constrained")
@@ -173,8 +173,8 @@ plt.show()
 
 ::: {.panzoom}
 ```{python}
-#| echo: false
 #| panzoom: false
+#| echo: false
 #| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A sine wave, sin(2x)."
 
@@ -190,8 +190,8 @@ opens in panzoom, since panzoom takes every image inside an element with that
 class.
 
 ```{python}
-#| fig-alt: "Line plot of a sine wave"
 #| classes: panzoom
+#| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A sine wave, sin(3x)."
 
 plt.plot(x, np.sin(3 * x))
@@ -203,8 +203,8 @@ plt.show()
 A cell with only `#| lightbox: true`. It opens in lightbox, not panzoom.
 
 ```{python}
-#| fig-alt: "Line plot of a sine wave"
 #| lightbox: true
+#| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A sine wave, sin(4x)."
 
 plt.plot(x, np.sin(4 * x))
@@ -217,8 +217,8 @@ A cell with no options. lightbox is not set in the YAML header, so clicking the
 plot does nothing.
 
 ```{python}
-#| fig-cap: "A sine wave, sin(5x)."
 #| fig-alt: "Line plot of a sine wave"
+#| fig-cap: "A sine wave, sin(5x)."
 
 plt.plot(x, np.sin(5 * x))
 plt.show()
@@ -232,12 +232,12 @@ lightbox would ignore those options anyway, unlike with knitr. Only
 `lightbox: true` works, as in [case 9](#c9).
 
 ```{python}
-#| fig-alt: "Line plot of a sine wave"
 #| panzoom: true
-#| fig-cap: "A sine wave, sin(6x)."
 #| lightbox:
 #|   group: both
 #|   description: "Should not reach lightbox."
+#| fig-alt: "Line plot of a sine wave"
+#| fig-cap: "A sine wave, sin(6x)."
 
 plt.plot(x, np.sin(6 * x))
 plt.show()
@@ -252,8 +252,8 @@ formats](e-formats.html). The plot opens in panzoom and stays sharp when zoomed,
 since the viewer redraws svg at each zoom.
 
 ```{python}
-#| fig-alt: "Line plot of a damped sine wave"
 #| panzoom: true
+#| fig-alt: "Line plot of a damped sine wave"
 #| fig-cap: "A damped sine wave, written as svg."
 
 %config InlineBackend.figure_formats = ["svg"]
@@ -269,11 +269,11 @@ options](n-styling-options.html). It opens with a deep green backdrop and a pale
 green caption band.
 
 ```{python}
-#| fig-alt: "Line plot of a slowly rising sine wave"
 #| panzoom:
 #|   backdrop: "rgba(20, 60, 40, 0.92)"
 #|   panel-background: "#e8f3ea"
 #|   panel-color: "#173d24"
+#| fig-alt: "Line plot of a slowly rising sine wave"
 #| fig-cap: "A rising sine wave, sin(x) + x/5."
 
 plt.plot(x, np.sin(x) + x / 5)
@@ -287,9 +287,9 @@ A cell with `css-class: py-viewer` under the `panzoom` cell option, as on
 for a stylesheet to style.
 
 ```{python}
-#| fig-alt: "Line plot of a sine wave with a growing frequency"
 #| panzoom:
 #|   css-class: py-viewer
+#| fig-alt: "Line plot of a sine wave with a growing frequency"
 #| fig-cap: "A sine wave with a growing frequency, sin(x²/4)."
 
 plt.plot(x, np.sin(x**2 / 4))
@@ -306,10 +306,10 @@ per image pixel.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.panzoom}
 ```{{python}}
-#| fig-alt: "Line plot of a cosine wave"
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
+#| fig-alt: "Line plot of a cosine wave"
 #| fig-cap: >-
 #|   A cosine wave, cos(2x).
 
@@ -321,11 +321,11 @@ plt.show()
 
 ::: {.panzoom}
 ```{python}
-#| echo: false
-#| fig-alt: "Line plot of a cosine wave"
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
+#| echo: false
+#| fig-alt: "Line plot of a cosine wave"
 #| fig-cap: >-
 #|   A cosine wave, cos(2x).
 
@@ -341,10 +341,10 @@ option. It opens in panzoom, with the caption and description in a panel on the
 left of the image.
 
 ```{python}
-#| fig-alt: "Line plot of a sine wave with a slowly growing amplitude"
 #| panzoom:
 #|   desc-position: left
 #|   description: "The amplitude grows along the axis."
+#| fig-alt: "Line plot of a sine wave with a slowly growing amplitude"
 #| fig-cap: "A growing sine wave."
 
 plt.plot(x, (1 + x / 4) * np.sin(x))
@@ -357,9 +357,9 @@ A 3 × 2 inch plot with `fig-align: right`, narrower than the column, so the pag
 puts it at the right edge. It opens in panzoom centered, like any other plot.
 
 ```{python}
-#| fig-alt: "Line plot of a cosine wave"
 #| panzoom: true
 #| fig-align: right
+#| fig-alt: "Line plot of a cosine wave"
 #| fig-cap: "A cosine wave, cos(x)."
 
 plt.figure(figsize=(3, 2))
@@ -373,9 +373,9 @@ A cell with `panzoom: true` and `fig-link`, which puts its plot inside a link.
 Clicking the plot follows the link.
 
 ```{python}
-#| fig-alt: "Line plot of a sine wave"
 #| panzoom: true
 #| fig-link: "https://quarto.org"
+#| fig-alt: "Line plot of a sine wave"
 #| fig-cap: "A sine wave, sin(x)."
 
 plt.plot(x, np.sin(x))

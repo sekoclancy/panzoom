@@ -122,6 +122,9 @@ figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set
 under the `panzoom:` option in the YAML header) and hides the hint.
 
 ```{r}
+#| panzoom:
+#|   max-zoom: 10
+#|   hint: false
 #| label: fig-volcano
 #| fig-alt: >-
 #|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
@@ -130,9 +133,6 @@ under the `panzoom:` option in the YAML header) and hides the hint.
 #|   Heights of Maunga Whau (Mount Eden) in Auckland as filled contours, from
 #|   green on the low ground to white at the 195 m summit. The key gives heights
 #|   in meters.
-#| panzoom:
-#|   max-zoom: 10
-#|   hint: false
 
 filled.contour(volcano, color.palette = terrain.colors)
 ```
@@ -162,12 +162,12 @@ included:
 ````markdown {.markdown-example}
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
+#| fig-width: 8
+#| fig-height: 5.5
 #| fig-alt: >-
 #|   Heat map of Maunga Whau's heights in terrain colors, from green to white
 #| fig-cap: >-
 #|   Maunga Whau's heights as a heat map, from green (low) to white (high).
-#| fig-width: 8
-#| fig-height: 5.5
 
 image(volcano, col = terrain.colors(100))
 ```
@@ -178,13 +178,13 @@ image(volcano, col = terrain.colors(100))
 
 ::: {.panzoom layout-ncol="2"}
 ```{r}
-#| fig-alt: >-
-#|   Heat map of Maunga Whau's heights in terrain colors, from green to white
 #| echo: false
-#| fig-cap: >-
-#|   Maunga Whau's heights as a heat map, from green (low) to white (high).
 #| fig-width: 8
 #| fig-height: 5.5
+#| fig-alt: >-
+#|   Heat map of Maunga Whau's heights in terrain colors, from green to white
+#| fig-cap: >-
+#|   Maunga Whau's heights as a heat map, from green (low) to white (high).
 
 image(volcano, col = terrain.colors(100))
 ```
@@ -200,13 +200,14 @@ swipe to step through them. Subfigures of one figure are a gallery
 automatically.
 
 ```{r}
+#| panzoom:
+#|   group: volcano-views
+#| layout-ncol: 2
 #| fig-alt:
 #|   - >-
 #|     Heat map of Maunga Whau's heights in Viridis colors, from dark blue to
 #|     yellow
 #|   - "Perspective plot of Maunga Whau's heights, shaded green"
-#| panzoom:
-#|   group: volcano-views
 #| fig-cap:
 #|   - >-
 #|     Maunga Whau (Mount Eden) in Auckland, as heights on a 10 m by 10 m grid,
@@ -216,23 +217,22 @@ automatically.
 #|     Maunga Whau (Mount Eden) in Auckland, as a shaded surface of its heights
 #|     on a 10 m by 10 m grid, viewed from above at an angle. The crater rim and
 #|     the slope down to the surrounding ground read as relief.
-#| layout-ncol: 2
 
 image(volcano, col = hcl.colors(100, "Viridis"))
 persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
 ```
 
 ```{r}
+#| panzoom: true
 #| label: fig-volcano-sub
+#| layout-ncol: 2
+#| fig-alt:
+#|   - "Contour lines of Maunga Whau's heights"
+#|   - "Heat map of Maunga Whau's heights, in yellow, orange, and red"
 #| fig-cap: "Maunga Whau's heights, drawn two ways."
 #| fig-subcap:
 #|   - "Contour lines every 10 m."
 #|   - "A heat map, from pale yellow (low) to dark red (high)."
-#| fig-alt:
-#|   - "Contour lines of Maunga Whau's heights"
-#|   - "Heat map of Maunga Whau's heights, in yellow, orange, and red"
-#| layout-ncol: 2
-#| panzoom: true
 
 contour(volcano)
 image(volcano)
@@ -247,13 +247,13 @@ whatever the window's shape. Click the highlighted panel, and the viewer opens
 right on it.
 
 ```{r}
-#| fig-alt: >-
-#|   Eight line plots of random walks side by side; the sixth, titled Click
-#|   here, is highlighted in yellow and pink
 #| panzoom:
 #|   fit: height
 #| fig-width: 16
 #| fig-height: 2
+#| fig-alt: >-
+#|   Eight line plots of random walks side by side; the sixth, titled Click
+#|   here, is highlighted in yellow and pink
 #| fig-cap: >-
 #|   Eight simulated random walks of 200 steps each, with the sixth highlighted.
 
@@ -278,14 +278,14 @@ Captions and descriptions keep their math, typeset as on the page, along with
 citations, cross-references, and links.
 
 ```{r}
-#| fig-alt: >-
-#|   The bell curve of the standard normal density, with the area between -1 and
-#|   1 shaded grey
-#| fig-cap: "The standard normal density, $\\varphi(x)$."
 #| panzoom:
 #|   description: >-
 #|     $\varphi(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}$. The shaded area is
 #|     $P(|X| < 1) \approx 0.683$.
+#| fig-alt: >-
+#|   The bell curve of the standard normal density, with the area between -1 and
+#|   1 shaded grey
+#| fig-cap: "The standard normal density, $\\varphi(x)$."
 
 x <- seq(-4, 4, length.out = 400)
 plot(x, dnorm(x), type = "l", lwd = 2, xlab = "x", ylab = "density")

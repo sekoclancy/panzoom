@@ -65,9 +65,9 @@ light gray ink for dark mode.
 
 ```{r}
 #| panzoom: true
-#| renderings: [light, dark]
 #| dev: ragg_png
 #| dev.args: !expr list(bg = "transparent")
+#| renderings: [light, dark]
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
@@ -84,9 +84,9 @@ gallery steps through the two plots for the current mode.
 ```{r}
 #| panzoom:
 #|   group: renderings
-#| renderings: [light, dark]
 #| dev: ragg_png
 #| dev.args: !expr list(bg = "transparent")
+#| renderings: [light, dark]
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
 #|   Wave 5: y = sin(5x); the area between the curve and y = 0 is shaded.
@@ -98,9 +98,9 @@ wave(k = 5, ink = "gray85")
 ```{r}
 #| panzoom:
 #|   group: renderings
-#| renderings: [light, dark]
 #| dev: ragg_png
 #| dev.args: !expr list(bg = "transparent")
+#| renderings: [light, dark]
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
 #|   Wave 6: y = sin(6x); the area between the curve and y = 0 is shaded.
@@ -116,9 +116,9 @@ for dark mode, and the second, with black ink, for light mode.
 
 ```{r}
 #| panzoom: true
-#| renderings: [dark, light]
 #| dev: ragg_png
 #| dev.args: !expr list(bg = "transparent")
+#| renderings: [dark, light]
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.

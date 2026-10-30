@@ -86,8 +86,8 @@ wave(k = 1)
 
 ::: {.panzoom}
 ```{r}
-#| echo: false
 #| panzoom: false
+#| echo: false
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
@@ -103,9 +103,9 @@ panzoom without the hint line, which the page shows by default, and the h key
 does nothing.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   hint: false
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
@@ -118,8 +118,8 @@ An R cell with no hint option. It opens in panzoom with the hint line at the
 bottom, except when opened by a tap.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom: true
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
@@ -132,9 +132,9 @@ An R cell with `max-zoom: 2` under the `panzoom` cell option. It opens in
 panzoom, and zooming in stops at 2 screen pixels per image pixel.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   max-zoom: 2
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
 
@@ -151,10 +151,10 @@ per image pixel.
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.panzoom}
 ```{{r}}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -165,11 +165,11 @@ wave(k = 2)
 
 ::: {.panzoom}
 ```{r}
-#| echo: false
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   max-zoom: 2
 #|   hint: false
+#| echo: false
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -186,12 +186,12 @@ one, the left arrow key or the previous button goes to wave three, and on wave
 three, the right arrow key or the next button goes back to wave one.
 
 ```{r}
+#| panzoom:
+#|   group: waves
 #| fig-alt:
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
-#| panzoom:
-#|   group: waves
 #| fig-cap:
 #|   - >-
 #|     Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
@@ -222,10 +222,10 @@ option. It opens in panzoom, with the caption and description in a panel on the
 right of the image.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   desc-position: right
 #|   description: "The area between the curve and the axis is shaded."
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 
@@ -238,9 +238,9 @@ An R cell with `desc-position: top` under the `panzoom` cell option. It opens in
 panzoom, with the caption above the image.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   desc-position: top
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.
 
@@ -255,12 +255,12 @@ and the plots after it. They open in panzoom as a two-image gallery, each with
 its own caption.
 
 ```{r}
+#| panzoom:
+#|   group: held
+#| fig-show: hold
 #| fig-alt:
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
-#| fig-show: hold
-#| panzoom:
-#|   group: held
 #| fig-cap:
 #|   - >-
 #|     Wave 1: y = sin(x); the area between the curve and y = 0 is shaded.
@@ -278,9 +278,9 @@ An R cell with `hint: hide` under the `panzoom` cell option. It opens in panzoom
 without the hint line, and the h key shows it.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   hint: hide
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
@@ -296,13 +296,13 @@ The captions differ in length, so the panel changes width from one image to the
 next, and the image refits beside it.
 
 ```{r}
+#| panzoom:
+#|   group: right-waves
+#|   desc-position: right
 #| fig-alt:
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
 #|   - "A sine curve, shaded between the curve and y = 0"
-#| panzoom:
-#|   group: right-waves
-#|   desc-position: right
 #| fig-cap:
 #|   - "Wave 1: y = sin(x)."
 #|   - >-
@@ -325,10 +325,10 @@ caption on the right, above, and below in turn; stepping between them moves the
 caption and refits the image.
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: sides
 #|   desc-position: right
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
 
@@ -336,10 +336,10 @@ wave(k = 4)
 ```
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: sides
 #|   desc-position: top
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 5: y = sin(5x); the area between the curve and y = 0 is shaded.
 
@@ -347,9 +347,9 @@ wave(k = 5)
 ```
 
 ```{r}
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| panzoom:
 #|   group: sides
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 6: y = sin(6x); the area between the curve and y = 0 is shaded.
 

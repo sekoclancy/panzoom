@@ -125,8 +125,8 @@ An R cell with `#| panzoom: true`. It opens with the plum viewer set under the
 `panzoom:` option in the YAML header.
 
 ```{r}
-#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| fig-cap: "Vapor pressure of mercury against temperature."
 
 plot(pressure, type = "b", pch = 19)
@@ -138,9 +138,9 @@ An R cell with `css-class: sea-viewer` under the `panzoom` cell option. It opens
 with the teal viewer.
 
 ```{r}
-#| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| panzoom:
 #|   css-class: sea-viewer
+#| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
 #| fig-cap: "Stopping distance against speed for 50 cars."
 
 plot(cars, pch = 19)

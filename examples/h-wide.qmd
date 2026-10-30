@@ -112,11 +112,11 @@ A 25 × 2 inch collage. It opens in panzoom at screen height, and Shift+scroll
 moves sideways.
 
 ```{r}
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom: true
 #| fig-width: 25
 #| fig-height: 2
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
@@ -128,12 +128,12 @@ The collage from [case 1](#c1) with `fit: contain`. It opens whole, as a thin
 strip.
 
 ```{r}
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
 #| panzoom:
 #|   fit: contain
 #| fig-width: 25
 #| fig-height: 2
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
 #| fig-cap: "A 25 × 2 inch collage of 12 random walks."
 
 collage(n = 12)
@@ -145,10 +145,10 @@ A 16 × 4 inch figure, wide but readable whole. It isn't a strip, so it opens
 whole.
 
 ```{r}
-#| fig-alt: "A row of 4 small line plots of random walks, each in its own color"
 #| panzoom: true
 #| fig-width: 16
 #| fig-height: 4
+#| fig-alt: "A row of 4 small line plots of random walks, each in its own color"
 #| fig-cap: "A 16 × 4 inch collage of 4 random walks."
 
 collage(n = 4)
@@ -160,10 +160,10 @@ A 4 × 15 inch strip. It opens at screen width from its top, and Alt+scroll move
 up and down. Shift+scroll doesn't move it.
 
 ```{r}
-#| fig-alt: "A column of 8 small line plots of random walks"
 #| panzoom: true
 #| fig-width: 4
 #| fig-height: 15
+#| fig-alt: "A column of 8 small line plots of random walks"
 #| fig-cap: "A 4 × 15 inch strip of 8 random walks."
 
 strip(seed = 2, n = 8)
@@ -175,10 +175,10 @@ A 24 × 18 inch poster. It opens whole. Zoomed in, it extends past the screen
 both ways, and Shift+scroll moves sideways.
 
 ```{r}
-#| fig-alt: "A grid of 48 small line plots of random walks, in 6 rows of 8"
 #| panzoom: true
 #| fig-width: 24
 #| fig-height: 18
+#| fig-alt: "A grid of 48 small line plots of random walks, in 6 rows of 8"
 #| fig-cap: "A 24 × 18 inch poster of 48 random walks."
 
 set.seed(3)
@@ -208,11 +208,11 @@ A 288 × 192 px plot. It opens at its real size, centered, instead of enlarged t
 fill the screen, and scrolling still zooms in, up to `max-zoom`.
 
 ```{r}
-#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| panzoom: true
 #| fig-width: 3
 #| fig-height: 2
 #| fig-dpi: 48
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
 #| fig-cap: "Vapor pressure of mercury against temperature."
 
 plot(pressure)
@@ -276,8 +276,6 @@ The figure from [case 10](#c10) with a long caption and description.
 fifth, so the image keeps about half.
 
 ```{r}
-#| fig-alt: >-
-#|   A row of 3 small line plots of random walks, each in its own color
 #| panzoom:
 #|   fit: height
 #|   description: >-
@@ -289,11 +287,13 @@ fifth, so the image keeps about half.
 #|     this text allows, and no taller than its real size. Drag or use the arrow
 #|     keys to move along the figure, scroll or press the minus key to zoom out
 #|     to the whole of it, and press 0 to come back to this opening view.
+#| fig-width: 12
+#| fig-height: 4.5
+#| fig-alt: >-
+#|   A row of 3 small line plots of random walks, each in its own color
 #| fig-cap: >-
 #|   Three random walks side by side, opened with `fit: height` under a long
 #|   description.
-#| fig-width: 12
-#| fig-height: 4.5
 
 collage(n = 3)
 ```
@@ -321,9 +321,9 @@ puts it at the right edge. It opens in panzoom centered, like any other plot.
 
 ```{r}
 #| panzoom: true
-#| fig-align: right
 #| fig-width: 4
 #| fig-height: 3
+#| fig-align: right
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"
 #| fig-cap: >-
 #|   Wave 6: y = sin(6x); the area between the curve and y = 0 is shaded.

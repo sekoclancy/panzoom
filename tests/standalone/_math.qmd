@@ -37,10 +37,10 @@ $$
 ## 4. R figure with math in caption and cell description {#c4}
 
 ```{r}
-#| label: fig-pressure
-#| fig-cap: "Pressure, $p \\propto e^{-1/T}$."
 #| panzoom:
 #|   description: "Fitted with $\\log p = a - b/T$."
+#| label: fig-pressure
+#| fig-cap: "Pressure, $p \\propto e^{-1/T}$."
 
 plot(pressure)
 ```

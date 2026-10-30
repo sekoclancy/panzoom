@@ -71,12 +71,12 @@ panzoom, in a two-image gallery.
 
 ```{python}
 #| label: fig-pair
-#| fig-cap: "A sine wave and a cosine wave, sin(2x) and cos(2x)."
-#| fig-subcap: ["Sine", "Cosine"]
+#| layout-ncol: 2
 #| fig-alt:
 #|   - "Line plot of a sine wave"
 #|   - "Line plot of a cosine wave"
-#| layout-ncol: 2
+#| fig-cap: "A sine wave and a cosine wave, sin(2x) and cos(2x)."
+#| fig-subcap: ["Sine", "Cosine"]
 
 plt.plot(x, np.sin(2 * x))
 plt.show()
@@ -129,8 +129,8 @@ A cell with `#| panzoom: true`. It opens in panzoom, ahead of the document's
 `lightbox: true`.
 
 ```{python}
-#| fig-alt: "Line plot of a cosine wave"
 #| panzoom: true
+#| fig-alt: "Line plot of a cosine wave"
 #| fig-cap: "A cosine wave, cos(4x)."
 
 plt.plot(x, np.cos(4 * x))

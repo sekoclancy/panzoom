@@ -95,13 +95,13 @@ panzoom, in a two-image gallery.
 
 ```{r}
 #| label: fig-r-sub
-#| fig-cap: >-
-#|   Vapor pressure of mercury, and stopping distances of cars.
-#| fig-subcap: ["Pressure", "Cars"]
+#| layout-ncol: 2
 #| fig-alt:
 #|   - "Scatter plot of vapor pressure rising steeply with temperature"
 #|   - "Scatter plot of stopping distance against speed for 50 cars"
-#| layout-ncol: 2
+#| fig-cap: >-
+#|   Vapor pressure of mercury, and stopping distances of cars.
+#| fig-subcap: ["Pressure", "Cars"]
 
 plot(pressure)
 plot(cars)
@@ -114,23 +114,23 @@ for lightbox keeps them out of panzoom, so either plot opens in lightbox, in a
 two-image gallery, with its own description on the right.
 
 ```{r}
-#| fig-alt: "Scatter plot of ten random points"
-#| fig-cap: >-
-#|   Ten random points against their index.
 #| lightbox:
 #|   group: r-graph
 #|   description: Ten random points.
+#| fig-alt: "Scatter plot of ten random points"
+#| fig-cap: >-
+#|   Ten random points against their index.
 
 plot(1:10, rnorm(10))
 ```
 
 ```{r}
-#| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
-#| fig-cap: >-
-#|   Stopping distance against speed for 50 cars.
 #| lightbox:
 #|   group: r-graph
 #|   description: Stopping distance against speed.
+#| fig-alt: "Scatter plot of stopping distance against speed for 50 cars"
+#| fig-cap: >-
+#|   Stopping distance against speed for 50 cars.
 
 plot(cars)
 ```
@@ -142,6 +142,11 @@ One R cell with two plots, each with its own caption and description, joined by
 a two-image gallery.
 
 ```{r}
+#| lightbox:
+#|   group: cars
+#|   description:
+#|     - The mtcars data, each variable against every other.
+#|     - Stopping distance against speed.
 #| fig-alt:
 #|   - >-
 #|     Scatterplot matrix of the mtcars data, each variable plotted against
@@ -150,11 +155,6 @@ a two-image gallery.
 #| fig-cap:
 #|   - "The mtcars data, each variable plotted against every other."
 #|   - "Stopping distance against speed for 50 cars."
-#| lightbox:
-#|   group: cars
-#|   description:
-#|     - The mtcars data, each variable against every other.
-#|     - Stopping distance against speed.
 
 plot(mtcars)
 plot(cars)
@@ -166,11 +166,11 @@ An R cell with `lightbox: false`. Neither lightbox nor panzoom takes it, so
 clicking it does nothing.
 
 ```{r}
-#| fig-cap: "The mtcars data, each variable plotted against every other."
 #| lightbox: false
 #| fig-alt: >-
 #|   Scatterplot matrix of the mtcars data, each variable plotted against every
 #|   other
+#| fig-cap: "The mtcars data, each variable plotted against every other."
 
 plot(mtcars)
 ```

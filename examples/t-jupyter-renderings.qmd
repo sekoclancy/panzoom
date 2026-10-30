@@ -61,8 +61,8 @@ wave(3, ink="#D9D9D9", paper="#1E1E1E", col="#7FB8E6")
 ````
 
 ```{python}
-#| echo: false
 #| panzoom: true
+#| echo: false
 #| renderings: [light, dark]
 #| fig-alt: "A sine curve in blue on a background matching the page"
 #| fig-cap: >-
@@ -91,8 +91,8 @@ wave(4, ink="#D9D9D9", paper="none")
 ````
 
 ```{python}
-#| echo: false
 #| panzoom: true
+#| echo: false
 #| renderings: [light, dark]
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
@@ -134,9 +134,9 @@ wave(6, ink="#D9D9D9", paper="none")
 ````
 
 ```{python}
-#| echo: false
 #| panzoom:
 #|   group: renderings
+#| echo: false
 #| renderings: [light, dark]
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
@@ -147,9 +147,9 @@ wave(5, ink="#D9D9D9", paper="none")
 ```
 
 ```{python}
-#| echo: false
 #| panzoom:
 #|   group: renderings
+#| echo: false
 #| renderings: [light, dark]
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
@@ -178,8 +178,8 @@ wave(2, paper="none")
 ````
 
 ```{python}
-#| echo: false
 #| panzoom: true
+#| echo: false
 #| renderings: [dark, light]
 #| fig-alt: "A sine curve in blue with axes in the text color"
 #| fig-cap: >-
