@@ -787,6 +787,7 @@
       pageStyle = null;
     }
     press = null;
+    overlay.classList.remove("dragging");
     gallery = [];
     // Opened with the mouse or a tap: no focus ring on the image focus
     // returns to, though a key (Esc) may have closed the viewer, until the

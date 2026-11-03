@@ -541,6 +541,20 @@ async function checkIsolation(page, box) {
   await settle(page);
   out.escCloses = (await state(page)).opened !== "panzoom";
   await page.evaluate(() => document.getElementById("test-fixed-widget").remove());
+
+  const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
+  const overlayHas = (c) => page.evaluate((c) => !!document.querySelector(`.panzoom-overlay.${c}`), c);
+
+  // Closed with Esc during a drag: no grabbing cursor left for the next open.
+  await page.mouse.click(cx, cy);
+  await settle(page);
+  await page.mouse.move(cx, cy);
+  await page.mouse.down();
+  await page.mouse.move(cx + 20, cy, { steps: 2 });
+  await page.keyboard.press("Escape");
+  out.dragCleared = (await state(page)).opened !== "panzoom" && !(await overlayHas("dragging"));
+  await page.mouse.up();
+  await settle(page);
   return out;
 }
 
@@ -1514,7 +1528,8 @@ async function checkPage(browser, base, file) {
 
 function isolationOk(iso) {
   return iso.opened && iso.leaked.length === 0 && iso.stillOpen && iso.modifierPasses &&
-    iso.functionKeysPass && iso.stillOpenAfterFKeys && iso.widgetBelow && iso.escCloses;
+    iso.functionKeysPass && iso.stillOpenAfterFKeys && iso.widgetBelow && iso.escCloses &&
+    iso.dragCleared;
 }
 
 function keyboardOk(iso) {
@@ -1655,6 +1670,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- F3 and F9 reach the page, viewer stays open: ${yes(isolation.functionKeysPass && isolation.stillOpenAfterFKeys)}`,
       `- A fixed widget at z-index 10000 stays below the viewer: ${yes(isolation.widgetBelow)}`,
       `- Esc closes: ${yes(isolation.escCloses)}`,
+      `- Esc during a drag leaves no grabbing cursor: ${yes(isolation.dragCleared)}`,
       "", "## Keyboard access", "",
       `On the same image.`, "",
       ...KEYBOARD_CHECKS.map(([k, label]) => `- ${label}: ${yes(isolation.keyboard?.[k])}`));
