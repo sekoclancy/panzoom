@@ -575,6 +575,20 @@ async function checkIsolation(page, box) {
   await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
   out.reducedMotionStill = !(await bounces());
   await page.emulateMediaFeatures([]);
+
+  // Ctrl+click on the fallback link (null: no link here) is left to the
+  // browser, and doesn't open the viewer. The link navigation listener in
+  // checkPage() records where it would go.
+  out.modifiedClick = await page.evaluate((x, y) => {
+    const el = document.elementFromPoint(x, y);
+    const link = el && el.closest("a.panzoom-link[href]");
+    if (!link) return null;
+    window.__navigatedTo = null;
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, ctrlKey: true, detail: 1, clientX: x, clientY: y }));
+    const followed = window.__navigatedTo === link.href;
+    window.__navigatedTo = null;
+    return followed && !document.querySelector(".panzoom-overlay.open");
+  }, cx, cy);
   return out;
 }
 
@@ -1549,7 +1563,8 @@ async function checkPage(browser, base, file) {
 function isolationOk(iso) {
   return iso.opened && iso.leaked.length === 0 && iso.stillOpen && iso.modifierPasses &&
     iso.functionKeysPass && iso.stillOpenAfterFKeys && iso.widgetBelow && iso.escCloses &&
-    iso.dragCleared && iso.bouncesByDefault && iso.reducedMotionStill;
+    iso.dragCleared && iso.bouncesByDefault && iso.reducedMotionStill &&
+    iso.modifiedClick !== false;
 }
 
 function keyboardOk(iso) {
@@ -1692,6 +1707,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- Esc closes: ${yes(isolation.escCloses)}`,
       `- Esc during a drag leaves no grabbing cursor: ${yes(isolation.dragCleared)}`,
       `- A drag springs back, but not with reduced motion: ${yes(isolation.bouncesByDefault && isolation.reducedMotionStill)}`,
+      `- Ctrl+click on the fallback link left to the browser: ${isolation.modifiedClick === null ? "n/a (no link)" : yes(isolation.modifiedClick)}`,
       "", "## Keyboard access", "",
       `On the same image.`, "",
       ...KEYBOARD_CHECKS.map(([k, label]) => `- ${label}: ${yes(isolation.keyboard?.[k])}`));

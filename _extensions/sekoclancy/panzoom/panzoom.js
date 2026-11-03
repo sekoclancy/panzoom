@@ -1091,6 +1091,9 @@
   document.addEventListener("click", function (e) {
     var t = target(e);
     if (!t) return;
+    // A modified click on the fallback link does what it does on any link
+    // (a new tab or window, a download).
+    if ((e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) && t.closest("a.panzoom-link[href]")) return;
     e.preventDefault();
     e.stopPropagation();
     var r = t.getBoundingClientRect();
