@@ -15,9 +15,9 @@ panzoom:
 `lightbox: true` under `format: html:` in the YAML header turns lightbox on for
 the whole page, and only images marked with the `.panzoom` class or the
 `#| panzoom: true` cell option open in panzoom. Every other image opens in
-lightbox. The same cases open in lightbox alone on the [lightbox
-page](a-lightbox-r.html), and the same markup without lightbox is on [panzoom on
-marked images only](d-selecting-r.html). The YAML header turns on lightbox and
+lightbox. The same cases open in lightbox alone on the [`lightbox`
+comparison](a-lightbox-r.html), and the same markup without lightbox is on
+[selecting images](d-selecting-r.html). The YAML header turns on lightbox and
 panzoom, and turns off the hint line:
 
 ```yaml
@@ -63,7 +63,7 @@ the wheel doesn't zoom.
 ## Math {expect-open="panzoom"}
 
 A markdown image with `.panzoom` and math in its caption and description. It
-opens in panzoom, with both typeset.
+opens in panzoom with both typeset.
 
 ```markdown {.show-source}
 ![Caption with math $e^{i\pi}+1=0$](../images/mv-4.jpg){.panzoom description="Description with math $\\int_0^1 x^2\\,dx = 1/3$" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
@@ -83,6 +83,33 @@ panzoom, in a two-image gallery. The figure's caption links to the heat map in
 
 Aquinnah and Edgartown Lighthouse, on Martha's Vineyard. For heights of Maunga Whau instead, see @fig-plain.
 :::
+```
+
+## Image in a link {expect-open="navigation"}
+
+An image with `.panzoom` inside a link. panzoom leaves linked images alone, so
+clicking the image follows the link.
+
+```markdown {.show-source}
+[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
+```
+
+## Margin image {expect-open="panzoom"}
+
+A markdown image with `.panzoom` in the margin. It opens in panzoom, as any
+other marked image does.
+
+```markdown {.show-source}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+```
+
+## Inline image {expect-open="panzoom" expect-caption="none"}
+
+An image with `.panzoom` inside a sentence. It opens in panzoom, with no
+caption, since an inline image isn't a figure and has none.
+
+```markdown {.show-source}
+Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){.panzoom width=60px} in the middle.
 ```
 
 ## R subfigures {expect-open="panzoom"}
@@ -105,7 +132,7 @@ plot(pressure)
 plot(cars)
 ```
 
-## Cell options {expect-open="panzoom glightbox"}
+## Grouped cells {expect-open="panzoom glightbox"}
 
 Two R cells in the lightbox group `r-graph`. The first also has `panzoom: true`,
 so it opens in panzoom on its own, without the lightbox description. The second
@@ -159,7 +186,7 @@ plot(mtcars)
 plot(cars)
 ```
 
-## Opt out {expect-open="nothing"}
+## Opt out a cell {expect-open="nothing"}
 
 An R cell with `lightbox: false` and no `.panzoom`. Neither viewer takes it, so
 clicking it does nothing.
@@ -172,33 +199,6 @@ clicking it does nothing.
 #| fig-cap: "The mtcars data, each variable plotted against every other."
 
 plot(mtcars)
-```
-
-## Image in a link {expect-open="navigation"}
-
-An image with `.panzoom` inside a link. panzoom leaves linked images alone, so
-clicking the image follows the link.
-
-```markdown {.show-source}
-[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
-```
-
-## Margin image {expect-open="panzoom"}
-
-A markdown image with `.panzoom` in the margin. It opens in panzoom, as any
-other marked image does.
-
-```markdown {.show-source}
-![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
-```
-
-## Inline image {expect-open="panzoom" expect-caption="none"}
-
-An image with `.panzoom` inside a sentence. It opens in panzoom, with no
-caption, since an inline image isn't a figure and has none.
-
-```markdown {.show-source}
-Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){.panzoom width=60px} in the middle.
 ```
 
 ## Plain R figure {#sec-plain-r-figure expect-open="glightbox"}

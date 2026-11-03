@@ -152,9 +152,9 @@ try {
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
 
-  // A standard plot (page B, case 6): tap, pinch, drag, double-tap, tap outside.
+  // A standard plot (page B, case 9): tap, pinch, drag, double-tap, tap outside.
   await page.goto(base + "b-mixed-r.html", { waitUntil: "networkidle0" });
-  let s = await openImage(page, cdp, "section[data-number='6'] img.panzoom");
+  let s = await openImage(page, cdp, "section[data-number='9'] img.panzoom");
   check("tap opens the viewer", s.open, s.open ? `scale ${s.scale?.toFixed(3)}` : "viewer not open");
   const opening = s.scale;
   const cx = s.w / 2, cy = (s.top + s.bottom) / 2;
@@ -201,7 +201,7 @@ try {
 
   // The same, the resting finger down second: the viewer tracks the last
   // finger down, so this is the order that could read as a tap outside.
-  if (!s.open) s = await openImage(page, cdp, "section[data-number='6'] img.panzoom");
+  if (!s.open) s = await openImage(page, cdp, "section[data-number='9'] img.panzoom");
   s = await reset(page);
   await background(page, s);
   await touch(cdp, "touchStart", [a0]);
@@ -215,7 +215,7 @@ try {
   check("pinch with a resting finger (down second) keeps the viewer open", s.open,
     s.open ? `scale ${s.scale?.toFixed(3)}` : "the viewer closed");
 
-  if (!s.open) s = await openImage(page, cdp, "section[data-number='6'] img.panzoom");
+  if (!s.open) s = await openImage(page, cdp, "section[data-number='9'] img.panzoom");
   s = await reset(page);
   const bg = await background(page, s);
   await tap(cdp, bg.x, bg.y);

@@ -91,11 +91,11 @@ references:
         - [2007]
 ---
 
-The cell cases from the R pages on [cell options](f-cell-options-r.html),
-[captions and descriptions](g-captions-r.html), [image
-formats](e-image-formats-r.html), [wide and tall
-figures](h-wide-and-tall-r.html), and [wide figures in
-galleries](i-wide-galleries-r.html), on matplotlib figures. The YAML header sets
+The cell cases from the R pages on [cell options (R)](f-cell-options-r.html),
+[captions and descriptions (R)](g-captions-r.html), [image formats
+(R)](e-image-formats-r.html), [wide and tall figures
+(R)](h-wide-and-tall-r.html), and [wide figures in galleries
+(R)](i-wide-galleries-r.html), on matplotlib figures. The YAML header sets
 `loop`, so the gallery in @sec-looping-gallery wraps around.
 
 ```yaml
@@ -183,9 +183,9 @@ for k in range(1, 4):
 
 One cell with `group: printed` under the `panzoom` cell option, printing text
 between its two plots. Jupyter keeps the outputs in order, so the text sits
-between the plots on the page, unlike knitr's `fig-show: hold` ([cell
-options](f-cell-options-r.html#sec-plots-held-to-the-end-of-a-cell)). They open
-in panzoom as a two-image gallery, each with its own caption.
+between the plots on the page, unlike [`fig-show: hold` in
+knitr](f-cell-options-r.html#sec-plots-held-to-the-end-of-a-cell). They open in
+panzoom as a two-image gallery, each with its own caption.
 
 ```{python}
 #| panzoom:

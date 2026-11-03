@@ -21,8 +21,8 @@ panzoom takes every image lightbox would take on its own, so no image needs to
 be marked. The `lightbox:` option in the YAML header sets up lightbox too, but
 only cells that ask for it with the `#| lightbox: true` cell option, or with
 lightbox options such as `group`, open in it. The same cases open in lightbox
-alone on the [lightbox page](a-lightbox-r.html). The YAML header sets up both,
-and turns off the hint line:
+alone on the [`lightbox` comparison](a-lightbox-r.html). The YAML header sets up
+both, and turns off the hint line:
 
 ```yaml
 ---
@@ -65,7 +65,7 @@ in one three-image gallery.
 
 ## Math {expect-open="panzoom"}
 
-A markdown image with math in its caption and description. It opens in panzoom,
+A markdown image with math in its caption and description. It opens in panzoom
 with both typeset.
 
 ```markdown {.show-source}
@@ -88,6 +88,33 @@ Aquinnah and Edgartown Lighthouse, on Martha's Vineyard. For heights of Maunga W
 :::
 ```
 
+## Image in a link {expect-open="navigation"}
+
+An image inside a link. panzoom leaves linked images alone and keeps lightbox
+from dropping the link, so clicking the image follows the link.
+
+```markdown {.show-source}
+[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
+```
+
+## Margin image {expect-open="panzoom"}
+
+A markdown image in the margin. It opens in panzoom, as any other block image
+does.
+
+```markdown {.show-source}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+```
+
+## Inline image {expect-open="nothing"}
+
+An image inside a sentence. `match: auto` skips inline images, as lightbox does,
+so clicking it does nothing.
+
+```markdown {.show-source}
+Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){width=60px} in the middle.
+```
+
 ## R subfigures {expect-open="panzoom"}
 
 One R cell with two plots, made subfigures by `fig-subcap`. Either one opens in
@@ -107,7 +134,7 @@ plot(pressure)
 plot(cars)
 ```
 
-## Cell options {expect-open="glightbox"}
+## Grouped cells {expect-open="glightbox"}
 
 Two R cells, joined by `group: r-graph` under the `lightbox` cell option. Asking
 for lightbox keeps them out of panzoom, so either plot opens in lightbox, in a
@@ -160,7 +187,7 @@ plot(mtcars)
 plot(cars)
 ```
 
-## Opt out {expect-open="nothing"}
+## Opt out a cell {expect-open="nothing"}
 
 An R cell with `lightbox: false`. Neither lightbox nor panzoom takes it, so
 clicking it does nothing.
@@ -175,37 +202,10 @@ clicking it does nothing.
 plot(mtcars)
 ```
 
-## Image in a link {expect-open="navigation"}
-
-An image inside a link. panzoom leaves linked images alone and keeps lightbox
-from dropping the link, so clicking the image follows the link.
-
-```markdown {.show-source}
-[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
-```
-
-## Margin image {expect-open="panzoom"}
-
-A markdown image in the margin. It opens in panzoom, as any other block image
-does.
-
-```markdown {.show-source}
-![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
-```
-
-## Inline image {expect-open="nothing"}
-
-An image inside a sentence. `match: auto` skips inline images, as lightbox does,
-so clicking it does nothing.
-
-```markdown {.show-source}
-Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){width=60px} in the middle.
-```
-
 ## Plain R figure {#sec-plain-r-figure expect-open="panzoom"}
 
-Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red (high).
-The caption of @sec-markdown-subfigures links to it.
+A cross-referenced R figure with no options. It opens in panzoom, as every
+figure does on this page. The caption of @sec-markdown-subfigures links to it.
 
 ```{r}
 #| label: fig-plain

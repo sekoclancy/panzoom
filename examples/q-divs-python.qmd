@@ -10,8 +10,8 @@ filters:
 ---
 
 Python cells inside the divs Quarto provides: callouts, tabsets, and page
-columns, each on its own and inside a `.panzoom` div, as [Divs in
-R](p-divs-r.html) does for R cells and images. lightbox is off, so clicking a
+columns, each on its own and inside a `.panzoom` div, as [Divs
+(R)](p-divs-r.html) does for R cells and images. lightbox is off, so clicking a
 plot panzoom leaves alone does nothing.
 
 A plot on a tab not selected, or in a collapsed callout, opens once the reader

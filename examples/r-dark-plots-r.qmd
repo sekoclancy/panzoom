@@ -11,8 +11,8 @@ filters:
 
 Plots with dark backgrounds and plots with transparent backgrounds, in the
 viewer's default 70% black backdrop. Each one is worth opening in light and dark
-mode (the toggle in the navbar). [Renderings in R](s-renderings-r.html) draws a
-plot for each mode instead.
+mode (the toggle in the navbar). [Renderings](s-renderings-r.html) draws a plot
+for each mode instead.
 
 The site draws R plots on white (`dev.args: bg: white` in `_quarto.yml`), so the
 transparent plots set `bg = "transparent"` in their own cells. They use the

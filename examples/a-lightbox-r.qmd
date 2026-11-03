@@ -15,10 +15,10 @@ lightbox:
 
 panzoom is not listed under `filters:` in the YAML header, so every image opens
 in lightbox. Its cases are the same as on the panzoom examples, so each one can
-be compared with the case of the same number on [lightbox and panzoom
-together](b-mixed-r.html), [panzoom on every figure](c-global-r.html), and
-[panzoom on marked images only](d-selecting-r.html). These are the lightbox
-settings in the YAML header:
+be compared with the case of the same number on [selected images with
+`lightbox`](b-mixed-r.html), [`panzoom` on every figure](c-global-r.html), and
+[selecting images](d-selecting-r.html). These are the lightbox settings in the
+YAML header:
 
 ```yaml
 ---
@@ -33,10 +33,8 @@ lightbox:
 ## Single image {expect-open="glightbox" expect-desc-position="right"}
 
 A markdown image with a description and `desc-position="left"`. It opens in
-lightbox, with the caption and description on the right, as set by
-`desc-position: right` under the `lightbox:` option in the YAML header, because
-Quarto (1.10) drops the `desc-position` of an image. panzoom puts them on the
-left.
+lightbox, with the caption and description on the right, as set in the YAML
+header: Quarto drops the `desc-position` of an image.
 
 ```markdown {.show-source}
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
@@ -83,6 +81,33 @@ Aquinnah and Edgartown Lighthouse, on Martha's Vineyard. For heights of Maunga W
 :::
 ```
 
+## Image in a link {expect-open="nothing"}
+
+An image inside a link. lightbox drops the link, so clicking the image does
+nothing.
+
+```markdown {.show-source}
+[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
+```
+
+## Margin image {expect-open="glightbox"}
+
+A markdown image in the margin. It opens in lightbox, as any other block image
+does.
+
+```markdown {.show-source}
+![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+```
+
+## Inline image {expect-open="nothing"}
+
+An image inside a sentence. lightbox skips inline images, so clicking it does
+nothing.
+
+```markdown {.show-source}
+Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){width=60px} in the middle.
+```
+
 ## R subfigures {expect-open="glightbox"}
 
 One R cell with two plots, made subfigures by `fig-subcap`. Either one opens in
@@ -102,7 +127,7 @@ plot(pressure)
 plot(cars)
 ```
 
-## Cell options {expect-open="glightbox"}
+## Grouped cells {expect-open="glightbox"}
 
 Two R cells, joined by `group: r-graph` under the `lightbox` cell option. Either
 plot opens in lightbox, in a two-image gallery, with its own description on the
@@ -154,7 +179,7 @@ plot(mtcars)
 plot(cars)
 ```
 
-## Opt out {expect-open="nothing"}
+## Opt out a cell {expect-open="nothing"}
 
 An R cell with `lightbox: false`. lightbox skips it, so clicking it does
 nothing.
@@ -169,37 +194,10 @@ nothing.
 plot(mtcars)
 ```
 
-## Image in a link {expect-open="nothing"}
-
-An image inside a link. lightbox drops the link, so clicking the image does
-nothing.
-
-```markdown {.show-source}
-[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
-```
-
-## Margin image {expect-open="glightbox"}
-
-A markdown image in the margin. It opens in lightbox, as any other block image
-does.
-
-```markdown {.show-source}
-![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
-```
-
-## Inline image {expect-open="nothing"}
-
-An image inside a sentence. lightbox skips inline images, so clicking it does
-nothing.
-
-```markdown {.show-source}
-Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){width=60px} in the middle.
-```
-
 ## Plain R figure {#sec-plain-r-figure expect-open="glightbox"}
 
-Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red (high).
-The caption of @sec-markdown-subfigures links to it.
+A cross-referenced R figure with no options. It opens in lightbox. The caption
+of @sec-markdown-subfigures links to it.
 
 ```{r}
 #| label: fig-plain

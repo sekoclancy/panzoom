@@ -186,7 +186,7 @@ and its screenshot, `c01-1.png`:
 ![The viewer open on case 1 of page B: the beach photo over the dimmed page,
 with its caption and description below.](images/example-screenshot.jpg)
 
-A few cases open nothing on purpose: case 8 (`lightbox: false`), cases 9 and 11
+A few cases open nothing on purpose: case 11 (`lightbox: false`), cases 5 and 7
 on A and C (Quarto drops the link around a captioned image, and inline images
 aren't automatic), and every unmarked image on D.
 
@@ -339,8 +339,8 @@ pages B, G, and I:
   | Check                                                                            | Where                               | Expected                                                    |
   | -------------------------------------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
   | Tap                                                                              | any marked image                    | the viewer opens                                            |
-  | Pinch and drag                                                                   | page B, case 6                      | zooms toward the fingers, pans, stays on screen             |
-  | Pinch with a finger on the background                                            | page B, case 6                      | the viewer stays open                                       |
+  | Pinch and drag                                                                   | page B, case 9                      | zooms toward the fingers, pans, stays on screen             |
+  | Pinch with a finger on the background                                            | page B, case 9                      | the viewer stays open                                       |
   | Double-tap                                                                       | a zoomed image                      | back to the opening view                                    |
   | Swipe                                                                            | page B, case 4                      | the next image                                              |
   | Scroll a long description                                                        | page G, case 9                      | it scrolls; the image and page don't move                   |
@@ -361,7 +361,7 @@ pages B, G, and I:
 
 ## Credits
 
-Cases 1, 2, and 6–8 on A–D come from the example document of
+Cases 1, 2, and 9–11 on A–D come from the example document of
 [quarto-ext/lightbox](https://github.com/quarto-ext/lightbox) (MIT, © Posit
 Software) and Quarto's lightbox docs. The photos in [../images/](../images/) are
 quarto-ext/lightbox's, from Unsplash under the [Unsplash
