@@ -134,8 +134,9 @@
   // Back closes the viewer: opening adds a history entry (same URL), which
   // Back leaves, and closing any other way steps back over it (see
   // close()). `leaving` is a link's address to follow once that step is
-  // done.
-  var inHistory = false, leaving = null;
+  // done. `stepping`: that step hasn't landed yet (history.back() is
+  // asynchronous); a viewer opened meanwhile adds its entry once it has.
+  var inHistory = false, leaving = null, stepping = false;
   // The classes the shown image added to the viewer (see restyle()).
   var imageClasses = [];
   // The c and h keys hide the caption (with the description) and the hint,
@@ -761,7 +762,7 @@
         el.inert = true;
       });
     }
-    if (!inHistory) {
+    if (!inHistory && !stepping) {
       history.pushState({ panzoom: true }, "");
       inHistory = true;
     }
@@ -786,7 +787,10 @@
   function close(fromHistory) {
     if (inHistory) {
       inHistory = false;
-      if (fromHistory !== true) history.back();
+      if (fromHistory !== true) {
+        stepping = true;
+        history.back();
+      }
     }
     stopBounce();
     if (pz) { pz.destroy(); pz = null; }
@@ -1062,6 +1066,15 @@
 
   window.addEventListener("popstate", function (e) {
     var ours = e.state && e.state.panzoom;
+    if (stepping && !ours) {
+      stepping = false;
+      // Opened again before the step back landed: add its entry now.
+      if (overlay.classList.contains("open")) {
+        history.pushState({ panzoom: true }, "");
+        inHistory = true;
+        return;
+      }
+    }
     if (inHistory && !ours) close(true);
     else if (leaving && !ours) {
       var href = leaving;

@@ -896,6 +896,23 @@ async function checkBack(page, handle, galleryHandle, linkHandle) {
   const ahead = await where();
   r.forwardStaysClosed = !ahead.open && ahead.href === before.href;
 
+  // Closed and opened again in the same tick, before close() has stepped
+  // back over the entry: the viewer stays open, and Back closes it. (Only
+  // Back once it is open, or Back would leave the page.)
+  await openOn(handle);
+  await handle.evaluate((el) => {
+    document.querySelector(".panzoom-overlay.open .panzoom-close").click();
+    el.click();
+  });
+  await new Promise((f) => setTimeout(f, 300));
+  await settle(page);
+  r.quickReopenStays = (await where()).open;
+  if (r.quickReopenStays) {
+    await back();
+    const q = await where();
+    r.quickReopenBackCloses = !q.open && q.href === before.href;
+  }
+
   if (galleryHandle) {
     await openOn(galleryHandle);
     await page.keyboard.press("ArrowRight");
@@ -936,6 +953,8 @@ const BACK_CHECKS = [
   ["backStays", "Back stays on the page, scrolled where it was"],
   ["escLeavesNoEntry", "Esc leaves no history entry for the viewer"],
   ["forwardStaysClosed", "Forward after closing doesn't reopen the viewer"],
+  ["quickReopenStays", "Closed and opened again at once, the viewer stays open"],
+  ["quickReopenBackCloses", "Back closes the viewer opened again at once"],
   ["galleryBackCloses", "In a gallery, Back closes from the second image"],
   ["linkFollowed", "A link in the caption closes the viewer and is followed"],
   ["linkBackReturns", "Back from that link returns to the page"],
