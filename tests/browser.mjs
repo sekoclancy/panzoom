@@ -555,6 +555,26 @@ async function checkIsolation(page, box) {
   out.dragCleared = (await state(page)).opened !== "panzoom" && !(await overlayHas("dragging"));
   await page.mouse.up();
   await settle(page);
+
+  // A drag that pulls the image out of place springs back when released,
+  // unless the reader asks for reduced motion: then it snaps back.
+  const bounces = async () => {
+    await page.mouse.click(cx, cy);
+    await settle(page);
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+    await page.mouse.move(cx + 120, cy + 80, { steps: 5 });
+    await page.mouse.up();
+    const moving = await overlayHas("panzoom-moving");
+    await settle(page);
+    await page.keyboard.press("Escape");
+    await settle(page);
+    return moving;
+  };
+  out.bouncesByDefault = await bounces();
+  await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+  out.reducedMotionStill = !(await bounces());
+  await page.emulateMediaFeatures([]);
   return out;
 }
 
@@ -1529,7 +1549,7 @@ async function checkPage(browser, base, file) {
 function isolationOk(iso) {
   return iso.opened && iso.leaked.length === 0 && iso.stillOpen && iso.modifierPasses &&
     iso.functionKeysPass && iso.stillOpenAfterFKeys && iso.widgetBelow && iso.escCloses &&
-    iso.dragCleared;
+    iso.dragCleared && iso.bouncesByDefault && iso.reducedMotionStill;
 }
 
 function keyboardOk(iso) {
@@ -1671,6 +1691,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- A fixed widget at z-index 10000 stays below the viewer: ${yes(isolation.widgetBelow)}`,
       `- Esc closes: ${yes(isolation.escCloses)}`,
       `- Esc during a drag leaves no grabbing cursor: ${yes(isolation.dragCleared)}`,
+      `- A drag springs back, but not with reduced motion: ${yes(isolation.bouncesByDefault && isolation.reducedMotionStill)}`,
       "", "## Keyboard access", "",
       `On the same image.`, "",
       ...KEYBOARD_CHECKS.map(([k, label]) => `- ${label}: ${yes(isolation.keyboard?.[k])}`));

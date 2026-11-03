@@ -113,6 +113,10 @@
   // from a tap in every browser.
   var lastPointer = "";
   var bouncing = false, bounceTimer = null;
+  // With "reduce motion" set, a pan that runs into an end stops there and
+  // a drag past an end snaps back, instead of bouncing or sliding.
+  var motion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+  function reducedMotion() { return !!(motion && motion.matches); }
   // Where the image's center is held, on screen, along an axis where it is
   // smaller than the screen ({ x, y }; null: centered). Only zooming sets
   // it (see zoomAt()); opening, reset and zooming out to the whole image
@@ -529,6 +533,11 @@
   // Animated pan to (x, y), then `then`. Only a pan at a fixed scale is
   // animated, so the image slides straight (see resetView()).
   function slideTo(x, y, ms, easing, then) {
+    if (reducedMotion()) {
+      pz.pan(x, y, { animate: false, force: true });
+      if (then) then();
+      return;
+    }
     setBouncing(true);
     pz.pan(x, y, { animate: true, duration: ms, easing: easing, force: true });
     bounceTimer = setTimeout(function () {
@@ -609,7 +618,7 @@
     var s = pz.getScale(), p = pz.getPan(), o = overflow();
     var tx = p.x - dx / s, ty = p.y - dy / s, c = contained(tx, ty, s);
     var ex = o.x ? (tx - c.x) * s : 0, ey = o.y ? (ty - c.y) * s : 0;  // px past the end
-    if (Math.abs(ex) < 0.5 && Math.abs(ey) < 0.5) {
+    if (reducedMotion() || (Math.abs(ex) < 0.5 && Math.abs(ey) < 0.5)) {
       pz.pan(c.x, c.y, { animate: false, force: true });
       return;
     }
