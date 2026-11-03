@@ -16,9 +16,9 @@ panzoom:
 
 The YAML header sets the viewer's colors without CSS, giving a deep blue
 backdrop, a cream caption band, dark brown caption text, and rust links. They
-apply to every image on the page that opens in the viewer, except an
-[image](#sec-colors-for-one-image) or [code cell](#sec-colors-for-one-cell) that
-sets its own.
+apply to every image on the page that opens in the viewer, except [one
+image](#sec-colors-for-one-image) or [one code cell](#sec-colors-for-one-cell)
+that sets its own.
 
 ```yaml
 ---

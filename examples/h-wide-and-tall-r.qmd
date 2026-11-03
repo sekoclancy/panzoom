@@ -124,7 +124,7 @@ collage(n = 12)
 
 ## Whole figure {expect-fit="contain" shift-scroll="none"}
 
-The collage from @sec-wide-collage with `fit: contain`. It opens whole, as a
+The [wide collage](#sec-wide-collage) with `fit: contain`. It opens whole, as a
 thin strip.
 
 ```{r}
@@ -270,10 +270,10 @@ collage(n = 3)
 
 ## Long caption and description {expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
-The figure from @sec-fit-to-height-on-a-wide-figure with a long caption and
-description. `fit: height` fills the height left above them, so it opens smaller
-than case 10. The caption scrolls past a quarter of the screen and the
-description past a fifth, so the image keeps about half.
+The [wide figure fit to height](#sec-fit-to-height-on-a-wide-figure) with a long
+caption and description. `fit: height` fills the height left above them, so it
+opens smaller than there. The caption scrolls past a quarter of the screen and
+the description past a fifth, so the image keeps about half.
 
 ```{r}
 #| panzoom:

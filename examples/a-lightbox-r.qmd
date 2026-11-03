@@ -68,8 +68,8 @@ with both typeset.
 ## Markdown subfigures {#sec-markdown-subfigures expect-open="glightbox"}
 
 A figure with two markdown subfigures. Either one opens in lightbox, in a
-two-image gallery. The figure's caption links to the heat map in
-@sec-plain-r-figure.
+two-image gallery. The figure's caption links to the [heat map of Maunga
+Whau](#sec-plain-r-figure).
 
 ```markdown {.show-source}
 ::: {#fig-md-sub layout-ncol=2}
@@ -196,8 +196,7 @@ plot(mtcars)
 
 ## Plain R figure {#sec-plain-r-figure expect-open="glightbox"}
 
-A cross-referenced R figure with no options. It opens in lightbox. The caption
-of @sec-markdown-subfigures links to it.
+A cross-referenced R figure with no options. It opens in lightbox.
 
 ```{r}
 #| label: fig-plain

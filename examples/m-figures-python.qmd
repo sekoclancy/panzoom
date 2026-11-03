@@ -96,7 +96,7 @@ The cell cases from the R pages on [cell options (R)](f-cell-options-r.html),
 (R)](e-image-formats-r.html), [wide and tall figures
 (R)](h-wide-and-tall-r.html), and [wide figures in galleries
 (R)](i-wide-galleries-r.html), on matplotlib figures. The YAML header sets
-`loop`, so the gallery in @sec-looping-gallery wraps around.
+`loop`, so the [looping gallery](#sec-looping-gallery) wraps around.
 
 ```yaml
 ---

@@ -25,8 +25,8 @@ panzoom:
 ```
 
 The rules apply only to a viewer with that class, so other pages keep the
-default viewer even if they load the same rules. A single
-[image](#sec-class-for-one-image) or [code cell](#sec-class-for-one-cell) can
+default viewer even if they load the same rules. [One
+image](#sec-class-for-one-image) or [one code cell](#sec-class-for-one-cell) can
 add a class of its own, which applies while that image is open.
 
 The rules are in a raw HTML block on this page. The same block works in any

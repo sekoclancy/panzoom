@@ -74,8 +74,8 @@ plt.show()
 ## Labeled figure {expect-open="panzoom"}
 
 A labeled figure with math and a cross-reference in its caption, and a
-description with math, quotes, and a cross-reference to the figure in
-@sec-subfigures. It opens in panzoom with all of them rendered.
+description with math, quotes, and a cross-reference to the
+[subfigures](#sec-subfigures). It opens in panzoom with all of them rendered.
 
 ```{python}
 #| panzoom:
@@ -230,7 +230,7 @@ plt.show()
 A cell with `#| panzoom: true` and `lightbox:` options for a group and a
 description. panzoom takes it and drops the lightbox options. With Jupyter,
 lightbox would ignore those options anyway, unlike with knitr. Only
-`lightbox: true` works, as in @sec-lightbox-only.
+`lightbox: true` works, as in the [lightbox-only cell](#sec-lightbox-only).
 
 ```{python}
 #| panzoom: true

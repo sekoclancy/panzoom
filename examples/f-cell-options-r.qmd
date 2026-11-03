@@ -12,8 +12,8 @@ panzoom:
 ---
 
 Keeping an image or a cell out of panzoom, and setting options on one cell. The
-YAML header sets `loop`, so the gallery in @sec-looping-gallery wraps around.
-lightbox is off, so clicking an image panzoom leaves alone does nothing.
+YAML header sets `loop`, so the [looping gallery](#sec-looping-gallery) wraps
+around. lightbox is off, so clicking an image panzoom leaves alone does nothing.
 
 ```yaml
 ---

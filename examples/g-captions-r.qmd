@@ -56,10 +56,6 @@ numbers, and a work cited only in a description is still listed under
 [References](#references). In a caption, lightbox shows [a
 citation](#sec-citation-in-a-caption) as raw `[@key]`.
 
-@Sec-no-caption and @sec-description-option set the per-cell `caption` and
-`description` options. @Sec-long-description and @sec-long-caption are longer
-than their panels, so the panels scroll, from the keyboard too.
-
 The plots are drawn with this helper:
 
 ```{r}
@@ -106,9 +102,10 @@ panzoom with the citation resolved, and Tufte is listed under
 
 ## Cross-reference in a description {expect-references=""}
 
-An image with `.panzoom` whose description cross-references the figure in
-@sec-cell-description and links to @sec-citation-in-a-caption. It opens in
-panzoom with both links working.
+An image with `.panzoom` whose description cross-references the [figure with a
+cell description](#sec-cell-description) and links to the [citation in a
+caption](#sec-citation-in-a-caption). It opens in panzoom with both links
+working.
 
 ```markdown {.show-source}
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){.panzoom description="Compare with @fig-pressure, and see @sec-citation-in-a-caption." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
@@ -174,8 +171,8 @@ wave(k = 2)
 ## Labeled figures in a div {expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}
 
 A labeled plot and a labeled markdown image in a `.panzoom` div. Each opens in
-panzoom on its own, and both keep their numbers and anchors (see @fig-div-plot
-and @fig-div-image).
+panzoom on its own, and both keep their numbers and anchors, so @fig-div-plot
+and @fig-div-image link to them.
 
 ````markdown {.code-overflow-wrap .cell-code .markdown-example}
 ::: {.panzoom layout-ncol="2"}
