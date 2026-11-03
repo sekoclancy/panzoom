@@ -537,9 +537,14 @@ async function checkIsolation(page, box) {
     return !!(top && top.closest(".panzoom-overlay"));
   });
 
+  // The page behind is inert while the viewer is open, and not after.
+  out.pageInert = await page.evaluate(() => [...document.body.children]
+    .filter((el) => !el.classList.contains("panzoom-overlay")).every((el) => el.inert));
+
   await page.keyboard.press("Escape");
   await settle(page);
   out.escCloses = (await state(page)).opened !== "panzoom";
+  out.inertRestored = await page.evaluate(() => [...document.body.children].every((el) => !el.inert));
   await page.evaluate(() => document.getElementById("test-fixed-widget").remove());
 
   const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
@@ -1563,8 +1568,8 @@ async function checkPage(browser, base, file) {
 function isolationOk(iso) {
   return iso.opened && iso.leaked.length === 0 && iso.stillOpen && iso.modifierPasses &&
     iso.functionKeysPass && iso.stillOpenAfterFKeys && iso.widgetBelow && iso.escCloses &&
-    iso.dragCleared && iso.bouncesByDefault && iso.reducedMotionStill &&
-    iso.modifiedClick !== false;
+    iso.pageInert && iso.inertRestored && iso.dragCleared && iso.bouncesByDefault &&
+    iso.reducedMotionStill && iso.modifiedClick !== false;
 }
 
 function keyboardOk(iso) {
@@ -1705,6 +1710,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- F3 and F9 reach the page, viewer stays open: ${yes(isolation.functionKeysPass && isolation.stillOpenAfterFKeys)}`,
       `- A fixed widget at z-index 10000 stays below the viewer: ${yes(isolation.widgetBelow)}`,
       `- Esc closes: ${yes(isolation.escCloses)}`,
+      `- Page behind inert while open, and not after: ${yes(isolation.pageInert && isolation.inertRestored)}`,
       `- Esc during a drag leaves no grabbing cursor: ${yes(isolation.dragCleared)}`,
       `- A drag springs back, but not with reduced motion: ${yes(isolation.bouncesByDefault && isolation.reducedMotionStill)}`,
       `- Ctrl+click on the fallback link left to the browser: ${isolation.modifiedClick === null ? "n/a (no link)" : yes(isolation.modifiedClick)}`,

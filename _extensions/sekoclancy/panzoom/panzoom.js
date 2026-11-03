@@ -109,6 +109,10 @@
   var byPointer = false, byTouch = false;
   // The page's own inline overflow and scrollbar-gutter, put back on close.
   var pageStyle = null;
+  // The page behind the open viewer is inert, so focus, Tab, and screen
+  // readers stay in the viewer: each other child of <body>, with whether
+  // it was inert before, put back on close.
+  var inerted = [];
   // The kind of pointer last pressed: a click doesn't say whether it came
   // from a tap in every browser.
   var lastPointer = "";
@@ -750,6 +754,12 @@
     var html = document.documentElement;
     if (!overlay.classList.contains("open")) {
       pageStyle = { overflow: html.style.overflow, gutter: html.style.scrollbarGutter };
+      inerted = [];
+      Array.prototype.forEach.call(document.body.children, function (el) {
+        if (el === overlay) return;
+        inerted.push({ el: el, was: el.inert });
+        el.inert = true;
+      });
     }
     if (!inHistory) {
       history.pushState({ panzoom: true }, "");
@@ -790,6 +800,8 @@
     overlay.classList.remove("open", "panzoom-loading", "panzoom-error");
     restyle(null);
     status.textContent = "";
+    inerted.forEach(function (o) { o.el.inert = o.was; });
+    inerted = [];
     if (pageStyle) {
       document.documentElement.style.overflow = pageStyle.overflow;
       document.documentElement.style.scrollbarGutter = pageStyle.gutter;
