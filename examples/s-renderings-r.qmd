@@ -45,7 +45,8 @@ wave <- function(k = 1, ink = "black", paper = NULL, col = "#3B7DB8") {
 ## Light and dark renderings {expect-open="panzoom"}
 
 A cell with two plots: black ink on white for light mode, and light gray ink on
-near-black for dark mode.
+near-black for dark mode. It opens in panzoom with the plot for the current
+color mode.
 
 ```{r}
 #| panzoom: true
@@ -61,7 +62,8 @@ wave(k = 3, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
 ## Transparent renderings {expect-open="panzoom"}
 
 A cell with two plots on a transparent background: black ink for light mode and
-light gray ink for dark mode.
+light gray ink for dark mode. It opens in panzoom with the plot for the current
+color mode.
 
 ```{r}
 #| panzoom: true
@@ -112,7 +114,8 @@ wave(k = 6, ink = "gray85")
 ## Renderings in the other order {expect-open="panzoom"}
 
 A cell with `renderings: [dark, light]`: the first plot, with light gray ink, is
-for dark mode, and the second, with black ink, for light mode.
+for dark mode, and the second, with black ink, for light mode. It opens in
+panzoom with the plot for the current color mode, as with the default order.
 
 ```{r}
 #| panzoom: true
