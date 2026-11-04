@@ -64,6 +64,7 @@ wave(k = 2, ink = "gray85", paper = "#1E1E1E", col = "#7FB8E6")
 ## Dark background, light backdrop {expect-open="panzoom"}
 
 The [dark plot](#sec-dark-background) with a light gray `backdrop` of its own.
+It opens on a light gray backdrop, with the dark plot standing out against it.
 
 ```{r}
 #| panzoom:
@@ -112,7 +113,9 @@ wave(k = 3, ink = "gray85")
 ## Gallery of light and dark plots {expect-open="panzoom" expect-steps="true"}
 
 A plot on white, the [dark plot](#sec-dark-background), and the [transparent
-plot](#sec-transparent-background-dark-ink) with black ink, in a gallery.
+plot](#sec-transparent-background-dark-ink) with black ink, in a gallery. They
+open in panzoom as a three-image gallery, appearing as they do on the page prior
+to opening the viewer.
 
 ```{r}
 #| panzoom:
