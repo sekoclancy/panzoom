@@ -280,7 +280,7 @@ it.
 #|     to one over the first quarter of each period, falls back to zero at the
 #|     half period, reaches minus one at three quarters, and returns to zero at
 #|     the end of the period. The shaded area above the axis equals the shaded
-#|     area below it over each whole period, so the wave's mean is zero.
+#|     area below it over each whole period, so the mean of the wave is zero.
 #|     Doubling k halves the period and doubles the number of crossings, and the
 #|     shading follows the curve wherever it goes. The curve is drawn with 400
 #|     points, enough that it looks smooth at any zoom the viewer allows. Its
@@ -301,9 +301,9 @@ wave(1)
 
 ## png and pdf {expect-open="panzoom" expect-fit="contain"}
 
-A plot written as both png and pdf. Jupyter ignores a cell's `fig-format`, so
-the cell sets matplotlib's formats itself, and back to the default (retina png)
-after. The page shows the png, which opens in panzoom.
+A plot written as both png and pdf. Jupyter ignores `fig-format` on a cell, so
+the cell switches the matplotlib output to png and pdf itself, and back to the
+default (retina png) after. The page shows the png, which opens in panzoom.
 
 ```{python}
 #| panzoom: true
@@ -347,7 +347,8 @@ strip(seed=2)
 ## Fit to width {expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
 
 An ordinary plot with `fit: width`. Filling the width makes the plot taller than
-the screen, so it opens closer than the whole plot and zooms out to it.
+the screen, so it opens cut off at the top and bottom, and zooming out shows the
+whole plot.
 
 ```{python}
 #| panzoom:
@@ -379,9 +380,9 @@ collage(n=3, height=3)
 
 Two collages in a gallery, 6.4 × 0.8 inches (12 panels) and 8 × 0.8 inches (15
 panels), so their panels have the same shape. Each opens at screen height. The
-left and right arrow keys and dragging pan along the collage, and at its end the
-one more press moves to the other collage, as do the previous and next buttons.
-The viewer keeps the sides of the screen free for the buttons.
+left and right arrow keys and dragging pan along the collage, and at its end one
+more press moves to the other collage, as do the previous and next buttons. The
+viewer keeps the sides of the screen free for the buttons.
 
 ```{python}
 #| panzoom:
@@ -486,9 +487,9 @@ wave(6)
 
 ## Caption in the margin {expect-open="panzoom" expect-desc-position="right"}
 
-A Python cell with `#| panzoom: true` and `fig-cap-location: margin`. The page
-shows the caption in the margin, beside the plot. It opens in panzoom with the
-caption in a panel on the right, the margin side, with no `desc-position` set.
+A cell with `#| panzoom: true` and `fig-cap-location: margin`. The page shows
+the caption in the margin, beside the plot. It opens in panzoom with the caption
+in a panel on the right, the margin side, with no `desc-position` set.
 
 ```{python}
 #| panzoom: true
@@ -502,10 +503,10 @@ wave(2)
 
 ## Caption above the figure {expect-open="panzoom" expect-desc-position="top"}
 
-A Python cell with a figure label, `#| panzoom: true`, and
-`fig-cap-location: top`. The page shows the caption above the plot: Quarto moves
-a caption to the top only for a labeled figure. It opens in panzoom with the
-caption above the image, with no `desc-position` set.
+A cell with a figure label, `#| panzoom: true`, and `fig-cap-location: top`. The
+page shows the caption above the plot: Quarto moves a caption to the top only
+for a labeled figure. It opens in panzoom with the caption above the image, with
+no `desc-position` set.
 
 ```{python}
 #| panzoom: true
