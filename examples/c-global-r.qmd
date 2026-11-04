@@ -69,7 +69,7 @@ A markdown image with math in its caption and description. It opens in panzoom
 with both typeset.
 
 ```markdown {.show-source}
-![Caption with math $e^{i\pi}+1=0$](../images/mv-4.jpg){description="Description with math $\\int_0^1 x^2\\,dx = 1/3$" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown. Euler's identity: $e^{i\pi}+1=0$.](../images/mv-4.jpg){description="The area under $x^2$ from 0 to 1: $\\int_0^1 x^2\\,dx = 1/3$." fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## Markdown subfigures {#sec-markdown-subfigures expect-open="panzoom"}
@@ -94,7 +94,7 @@ An image inside a link. panzoom leaves linked images alone and keeps lightbox
 from dropping the link, so clicking the image follows the link.
 
 ```markdown {.show-source}
-[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
+[![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach; opens the Quarto website"}](https://quarto.org)
 ```
 
 ## Margin image {expect-open="panzoom"}

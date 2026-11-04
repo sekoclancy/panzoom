@@ -14,11 +14,11 @@ lightbox:
 ---
 
 panzoom is not listed under `filters:` in the YAML header, so every image opens
-in lightbox. Its cases are the same as on the panzoom examples, so each one can
-be compared with the case of the same number on [selected images with
-`lightbox`](b-mixed-r.html), [`panzoom` on every figure](c-global-r.html), and
-[selecting images](d-selecting-r.html). These are the lightbox settings in the
-YAML header:
+in lightbox. The cases are the same as the ones used in the panzoom examples, so
+each one can be compared with the case of the same number on [selected images
+with `lightbox`](b-mixed-r.html), [`panzoom` on every figure](c-global-r.html),
+and [selecting images](d-selecting-r.html). These are the lightbox settings in
+the YAML header:
 
 ```yaml
 ---
@@ -62,7 +62,7 @@ A markdown image with math in its caption and description. It opens in lightbox
 with both typeset.
 
 ```markdown {.show-source}
-![Caption with math $e^{i\pi}+1=0$](../images/mv-4.jpg){description="Description with math $\\int_0^1 x^2\\,dx = 1/3$" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+![A sailboat off Edgartown. Euler's identity: $e^{i\pi}+1=0$.](../images/mv-4.jpg){description="The area under $x^2$ from 0 to 1: $\\int_0^1 x^2\\,dx = 1/3$." fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
 ## Markdown subfigures {#sec-markdown-subfigures expect-open="glightbox"}
@@ -87,7 +87,7 @@ An image inside a link. lightbox drops the link, so clicking the image does
 nothing.
 
 ```markdown {.show-source}
-[![A sailboat off Edgartown, linked to quarto.org.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach, with an unrelated link to open the Quarto website"}](https://quarto.org)
+[![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach; opens the Quarto website"}](https://quarto.org)
 ```
 
 ## Margin image {expect-open="glightbox"}
