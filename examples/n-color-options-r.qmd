@@ -14,7 +14,7 @@ panzoom:
   link-color: "#a0361b"
 ---
 
-The YAML header sets the viewer's colors without CSS, giving a deep blue
+The YAML header sets the colors of the viewer without CSS, giving a deep blue
 backdrop, a cream caption band, dark brown caption text, and rust links. They
 apply to every image on the page that opens in the viewer, except [one
 image](#sec-colors-for-one-image) or [one code cell](#sec-colors-for-one-cell)
@@ -24,13 +24,13 @@ that sets its own.
 ---
 panzoom:
   backdrop: "rgba(18, 52, 86, 0.92)"  # deep blue
-  panel-background: "#f4e9d8"       # cream
-  panel-color: "#3b2a1a"            # dark brown
+  panel-background: "#f4e9d8"         # cream
+  panel-color: "#3b2a1a"              # dark brown
   link-color: "#a0361b"               # rust
 ---
 ```
 
-Each option sets one of the viewer's CSS variables. [Styling with
+Each option sets one of the CSS variables of the viewer. [Styling with
 CSS](o-css-r.html) sets the same variables from a stylesheet, for some pages
 only.
 
@@ -86,11 +86,11 @@ plot(cars, pch = 19)
 
 ## Gallery with mixed colors {expect-open="panzoom" expect-steps="true" expect-overlay="rgba(20, 60, 40, 0.92); rgba(18, 52, 86, 0.92); rgba(70, 25, 15, 0.92)" expect-band="rgb(232, 243, 234); rgb(244, 233, 216); rgb(251, 233, 220)"}
 
-A gallery of three images. The first has a deep green backdrop and a pale green
-caption band of its own, the second has no colors of its own and shows the blue
-and cream set under the `panzoom:` option in the YAML header, and the third has
-a dark red backdrop and a peach band of its own. Each image shows its colors
-while it is open, and stepping to the next or previous one doesn't keep them.
+A gallery of three images. The first sets a deep green backdrop and a pale green
+caption band, the second sets no colors, so the viewer shows the blue and cream
+set under the `panzoom:` option in the YAML header, and the third sets a dark
+red backdrop and a peach band. Stepping to another image switches the backdrop
+and caption band to the colors set for that image.
 
 ```markdown {.show-source}
 ![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" fig-alt="A white lighthouse against a blue sky"}
