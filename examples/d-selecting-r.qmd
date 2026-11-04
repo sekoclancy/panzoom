@@ -41,9 +41,9 @@ image.
 
 ## Gallery in a layout {expect-open="nothing panzoom nothing"}
 
-Three images in a layout, joined by `group="elsewhere"`. Only the middle one
-(Oak Bluffs) has `.panzoom`, so it opens in panzoom on its own. lightbox is not
-set in the YAML header, so clicking the other two does nothing.
+Three images in a layout, joined by `group="elsewhere"`. Only the Oak Bluffs
+cottage has the `.panzoom` class, so it opens in a panzoom viewer on its own.
+lightbox is not set in the YAML header, so clicking the other two does nothing.
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}

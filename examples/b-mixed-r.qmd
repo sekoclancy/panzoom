@@ -44,11 +44,11 @@ image.
 
 ## Gallery in a layout {expect-open="glightbox panzoom glightbox"}
 
-Three images in a layout, joined by `group="elsewhere"`. The middle one (Oak
-Bluffs) has `.panzoom`, so it opens in panzoom on its own, and panzoom takes it
-out of the group. The other two open in lightbox, in a two-image gallery. In
-lightbox, a click zooms an image larger than the screen to its full size, and
-the wheel doesn't zoom.
+Three images in a layout, joined by `group="elsewhere"`. The Oak Bluffs cottage
+has the `.panzoom` class, so it opens in a panzoom viewer on its own (and out of
+the group). The other two open in lightbox, in a two-image gallery. In lightbox,
+a click zooms an image larger than the screen to its full size, and the wheel
+doesn't zoom.
 
 ```markdown {.show-source}
 ::: {layout="[[1, 1], [1]]"}
@@ -188,8 +188,8 @@ plot(cars)
 
 ## Opt out a cell {expect-open="nothing"}
 
-An R cell with `lightbox: false` and no `.panzoom`. Neither viewer takes it, so
-clicking it does nothing.
+An R cell with `lightbox: false` and no `#| panzoom: true`. Neither viewer takes
+it, so clicking it does nothing.
 
 ```{r}
 #| lightbox: false
