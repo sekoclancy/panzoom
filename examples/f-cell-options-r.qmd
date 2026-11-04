@@ -126,6 +126,21 @@ bottom, except when opened by a tap.
 wave(k = 4)
 ```
 
+## Hint starts hidden {expect-open="panzoom" expect-hint="hidden" expect-hint-key="shows"}
+
+An R cell with `hint: hide` under the `panzoom` cell option. It opens in panzoom
+without the hint line, and the h key shows it.
+
+```{r}
+#| panzoom:
+#|   hint: hide
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
+
+wave(k = 4)
+```
+
 ## Zoom limit {expect-open="panzoom" expect-max-zoom="2"}
 
 An R cell with `max-zoom: 2` under the `panzoom` cell option. It opens in
@@ -144,9 +159,9 @@ wave(k = 1)
 ## Options on a cell in a `.panzoom` div {expect-open="panzoom" expect-hint="hidden" expect-max-zoom="2"}
 
 An R cell with `max-zoom: 2` and `hint: false` under the `panzoom` cell option,
-inside a `.panzoom` div. The cell's options apply as they do outside the div: it
-opens in panzoom without the hint line, and zooming in stops at 2 screen pixels
-per image pixel.
+inside a `.panzoom` div. The options on the cell apply as they do outside the
+div: it opens in panzoom without the hint line, and zooming in stops at 2 screen
+pixels per image pixel.
 
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.panzoom}
@@ -272,21 +287,6 @@ print("Printed between the two plots.")
 wave(k = 2)
 ```
 
-## Hint starts hidden {expect-open="panzoom" expect-hint="hidden" expect-hint-key="shows"}
-
-An R cell with `hint: hide` under the `panzoom` cell option. It opens in panzoom
-without the hint line, and the h key shows it.
-
-```{r}
-#| panzoom:
-#|   hint: hide
-#| fig-alt: "A sine curve, shaded between the curve and y = 0"
-#| fig-cap: >-
-#|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.
-
-wave(k = 4)
-```
-
 ## Gallery with the caption on the right {expect-open="panzoom" expect-desc-position="right" expect-steps="true"}
 
 One R cell with three plots, joined by `group: right-waves` and set to
@@ -359,7 +359,7 @@ wave(k = 6)
 ## Markdown image from code {expect-open="panzoom"}
 
 A cell with `#| panzoom: true` and `output: asis` that prints a markdown image,
-which Quarto then reads as markdown on the page.
+which Quarto then reads as markdown on the page. It opens in panzoom.
 
 ```{r}
 #| panzoom: true
