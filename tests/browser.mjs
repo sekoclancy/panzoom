@@ -70,6 +70,8 @@ const KNOWN_ERRORS = [
     why: "MathJax 4's speech worker, which self-contained-math (Quarto 1.10) doesn't embed" },
 ];
 const KNOWN_FAILED_REQUESTS = [
+  { url: /\/images\/demo\.mp4 \(net::ERR_ABORTED\)$/, page: /^index$/,
+    why: "the demo video plays only while on screen, so Chrome cancels its download when the page closes" },
   { url: /^file:\/\/\/output\/chtml\/fonts\/woff-v2\//, page: /^self-contained-math$/,
     why: "MathJax's web fonts, which self-contained-math doesn't embed" },
   { url: /^file:\/\/\/sre\/speech-worker\.js/, page: /^self-contained-math$/,
