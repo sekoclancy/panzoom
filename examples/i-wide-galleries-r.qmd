@@ -131,7 +131,7 @@ form a gallery.
 #|   - >-
 #|     A row of 12 small line plots of random walks, each in its own color
 #|   - >-
-#|     A row of 12 small line plots of random walks, each in its own color
+#|     A row of 15 small line plots of random walks, each in its own color
 #| fig-cap: "Collages of 12 and 15 random walks, stacked."
 #| fig-subcap: ["First collage", "Second collage"]
 
