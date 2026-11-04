@@ -16,9 +16,11 @@ tall figures](h-wide-and-tall-r.html).
 Wide figures open at screen height, and tall ones at screen width. The one you
 click opens at the spot you clicked, and stepping to another in a gallery starts
 it at its left end or top. In a gallery, the left and right arrow keys pan a
-wide figure, and at its end the next press changes the image; holding the key
-down stops at the end. On a tall strip they do nothing. The previous and next
-buttons change the image, and the figures stop clear of them.
+wide figure, and at its end one more press moves to the next image; holding the
+key down stops at the end. On a tall strip they do nothing. The previous and
+next buttons step through the gallery. The viewer keeps the sides of the screen
+free for them, so a figure shown whole, or panned to its end, is never under a
+button.
 
 The plots are drawn with these helpers:
 
@@ -73,8 +75,8 @@ strip <- function(seed = 2, n = 8) {
 ## Gallery of two collages {expect-fit="height"}
 
 Two 25 × 2 inch collages in a gallery. Each opens at screen height. The left and
-right arrow keys and dragging pan along the collage, and at its end the next
-press changes collages, as do the previous and next buttons.
+right arrow keys and dragging pan along the collage, and at its end one more
+press moves to the other collage, as do the previous and next buttons.
 
 ```{r}
 #| panzoom:
@@ -98,7 +100,7 @@ collage(n = 15)
 
 Two tall strips in a gallery. Each opens at screen width and extends downwards.
 The left and right arrow keys do nothing, since there is nowhere to go sideways,
-and the previous and next buttons change strips.
+and the previous and next buttons move between the strips.
 
 ```{r}
 #| panzoom:
@@ -266,7 +268,7 @@ strip(seed = 6, n = 10)
 #| fig-height: 12
 #| fig-alt: "A column of 6 small line plots of random walks"
 #| fig-cap: >-
-#|   A 3 × 12 inch strip of six random walks of 100 steps each, stacked in one
+#|   A 3 × 12 inch strip of 6 random walks of 100 steps each, stacked in one
 #|   column, each row in its own color.
 
 strip(seed = 7, n = 6)
@@ -291,7 +293,7 @@ strip(seed = 6, n = 10)
 #| fig-height: 12
 #| fig-alt: "A column of 6 small line plots of random walks"
 #| fig-cap: >-
-#|   A 3 × 12 inch strip of six random walks of 100 steps each, stacked in one
+#|   A 3 × 12 inch strip of 6 random walks of 100 steps each, stacked in one
 #|   column, each row in its own color.
 
 strip(seed = 7, n = 6)
