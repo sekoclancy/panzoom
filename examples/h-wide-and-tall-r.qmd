@@ -27,9 +27,9 @@ With `fit: auto`, the default, a figure opens by its shape:
 `fit: contain`, `height`, or `width` sets this for one figure. A small image
 opens at its own size, and scrolling still zooms it in, up to `max-zoom`.
 
-Where you click a strip on the page is its focal point. Click panel 12 of a
-20-panel collage, and the viewer opens with panel 12 in the middle of the
-screen, or flush with the end near either end. The 0 key and double-click return
+Where you click a strip on the page is its focal point: the viewer opens with
+that spot in the middle of the screen. Near either end of the strip, that end
+lines up with the edge of the screen instead. The 0 key and double-click return
 to it. Opened from the keyboard, a strip starts at its left end or top. Zooming
 out still shows the whole figure.
 
@@ -222,8 +222,9 @@ plot(pressure)
 
 An ordinary plot with `fit: height`. On a screen wider than the plot (1.4:1),
 filling the height already shows the whole plot, so it opens like `fit: contain`
-and can't zoom out. @Sec-fit-to-height-on-a-wide-figure shows `fit: height`
-where it makes a difference.
+and can't zoom out. The [wide figure fit to
+height](#sec-fit-to-height-on-a-wide-figure) shows `fit: height` where it makes
+a difference.
 
 ```{r}
 #| panzoom:
@@ -238,7 +239,8 @@ wave(k = 3)
 ## Fit to width {expect-open="panzoom" expect-fit="width" expect-zoom-out="yes"}
 
 An ordinary plot with `fit: width`. Filling the width makes the plot taller than
-the screen, so it opens closer than the whole plot and zooms out to it.
+the screen, so it opens cut off at the top and bottom, and zooming out shows the
+whole plot.
 
 ```{r}
 #| panzoom:
@@ -268,12 +270,13 @@ the spot you clicked, and zooms out to the whole figure.
 collage(n = 3)
 ```
 
-## Long caption and description {expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
+## Long description {expect-open="panzoom" expect-fit="height" expect-zoom-out="yes"}
 
-The [wide figure fit to height](#sec-fit-to-height-on-a-wide-figure) with a long
-caption and description. `fit: height` fills the height left above them, so it
-opens smaller than there. The caption scrolls past a quarter of the screen and
-the description past a fifth, so the image keeps about half.
+The [wide figure fit to height](#sec-fit-to-height-on-a-wide-figure) with a
+caption and a long description. `fit: height` fills the height left above them,
+so it opens smaller than there. The caption gets at most a quarter of the screen
+and the description a fifth, each scrolling past that, so the image keeps about
+half.
 
 ```{r}
 #| panzoom:
@@ -291,9 +294,7 @@ the description past a fifth, so the image keeps about half.
 #| fig-height: 4.5
 #| fig-alt: >-
 #|   A row of 3 small line plots of random walks, each in its own color
-#| fig-cap: >-
-#|   Three random walks side by side, opened with `fit: height` under a long
-#|   description.
+#| fig-cap: "Three random walks side by side."
 
 collage(n = 3)
 ```
