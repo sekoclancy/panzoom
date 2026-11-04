@@ -136,9 +136,9 @@ plot(cars)
 
 ## Grouped cells {expect-open="glightbox"}
 
-Two R cells, joined by `group: r-graph` under the `lightbox` cell option. Asking
-for lightbox keeps them out of panzoom, so either plot opens in lightbox, in a
-two-image gallery, with its own description on the right.
+Two R cells, joined by `group: r-graph` under the `lightbox` cell option.
+Requesting lightbox prevents panzoom from working, so the plots open in lightbox
+as a two-image gallery, each with its own description on the right.
 
 ```{r}
 #| lightbox:
@@ -165,8 +165,8 @@ plot(cars)
 ## Two plots in one cell {expect-open="glightbox"}
 
 One R cell with two plots, each with its own caption and description, joined by
-`group: cars` under the `lightbox` cell option. Either one opens in lightbox, in
-a two-image gallery.
+`group: cars` under the `lightbox` cell option. Requesting lightbox prevents
+panzoom from working, so the plots open in lightbox as a two-image gallery.
 
 ```{r}
 #| lightbox:
@@ -189,8 +189,8 @@ plot(cars)
 
 ## Opt out a cell {expect-open="nothing"}
 
-An R cell with `lightbox: false`. Neither lightbox nor panzoom takes it, so
-clicking it does nothing.
+An R cell with `lightbox: false`. Neither viewer takes it, so clicking it does
+nothing.
 
 ```{r}
 #| lightbox: false
@@ -204,8 +204,8 @@ plot(mtcars)
 
 ## Plain R figure {#sec-plain-r-figure expect-open="panzoom"}
 
-A cross-referenced R figure with no options. It opens in panzoom, as every
-figure does on this page.
+A cross-referenced R figure with no options. It opens in panzoom, because
+lightbox isn't specified.
 
 ```{r}
 #| label: fig-plain
