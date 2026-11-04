@@ -87,15 +87,15 @@ format:
 ---
 ```
 
-A theme's `.scss` file works too. Rules on the viewer's parts start with the
-viewer's class, as above, so they win over the defaults. The parts are
+The `.scss` file of a theme works too. Rules on parts of the viewer start with
+its class, as above, so they win over the defaults. The parts are
 `.panzoom-panel` (the band or side panel around the caption, description, and
 hint), `.panzoom-caption`, `.panzoom-description`, `.panzoom-hint`,
 `.panzoom-close`, `.panzoom-prev`, `.panzoom-next`, and `.panzoom-counter`.
 
 For a whole site, put `css-class` (or any option) under `format: html:` in
-`_quarto.yml`. A top-level `panzoom:` there is replaced, not merged, by a page's
-own `panzoom:` options.
+`_quarto.yml`. A top-level `panzoom:` there is replaced, not merged, by the
+`panzoom:` options on a page.
 
 ## Markdown image {expect-open="panzoom" expect-class="plum-viewer" expect-overlay="rgba(60, 20, 70, 0.9)" expect-band="rgb(45, 18, 54)"}
 
@@ -149,9 +149,10 @@ plot(cars, pch = 19)
 
 ## Gallery with mixed classes {expect-open="panzoom" expect-steps="true" expect-class="sea-viewer; plum-viewer; sea-viewer" expect-no-class="; sea-viewer;" expect-overlay="rgba(10, 50, 60, 0.9); rgba(60, 20, 70, 0.9); rgba(10, 50, 60, 0.9)"}
 
-A gallery of three images, the first and last with `css-class="sea-viewer"`.
-Each image has its class only while it is open, so the first and last show the
-teal viewer and the middle one the plum viewer, whichever way it is reached.
+A gallery of three images, the first and last with `css-class="sea-viewer"`. The
+viewer has the class of an image only while that image is open, so the first and
+last show the teal viewer and the middle one the plum viewer, whichever way it
+is reached.
 
 ```markdown {.show-source}
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
@@ -187,8 +188,8 @@ format:
 ```
 
 The file holds a `<style>` block. Included in the header, its rules come before
-the page's own, so each starts with `.panzoom-overlay` too, to win over the
-`.plum-viewer` rules above:
+the ones on the page, so each starts with `.panzoom-overlay` too, to win over
+the `.plum-viewer` rules above:
 
 ```css
 .panzoom-overlay.amber-viewer {
