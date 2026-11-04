@@ -9,7 +9,7 @@ filters:
   - panzoom
 ---
 
-Python cells inside the divs Quarto provides: callouts, tabsets, and page
+Python cells inside the divs built into Quarto: callouts, tabsets, and page
 columns, each on its own and inside a `.panzoom` div, as [Divs
 (R)](p-divs-r.html) does for R cells and images. lightbox is off, so clicking a
 plot panzoom leaves alone does nothing.
@@ -199,8 +199,8 @@ wave(4)
 ## Gallery across tabs {expect-open="panzoom" expect-steps="true"}
 
 Two cells joined by `group: tabs` under the `panzoom` cell option, on different
-tabs. They open in panzoom as a two-image gallery, each with its own caption:
-the next button shows the plot on the other tab without selecting it.
+tabs. They open in panzoom as a two-image gallery, each with its own caption.
+The next button shows the plot on the other tab without selecting that tab.
 
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.panel-tabset}
@@ -374,7 +374,8 @@ wave(2)
 
 ## Plot in the margin {expect-open="panzoom"}
 
-A plot in a `.column-margin` div. It opens in panzoom, at full size.
+A plot in a `.column-margin` div. It opens in panzoom whole, at the size of the
+screen, not the size it has in the margin.
 
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.column-margin}
