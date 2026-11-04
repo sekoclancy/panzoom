@@ -109,8 +109,8 @@ Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){.panzoo
 
 ## R subfigures {expect-open="panzoom"}
 
-One R cell with `panzoom: true` and two plots, made subfigures by `fig-subcap`.
-Either one opens in panzoom, in a two-image gallery.
+One R cell with `#| panzoom: true` and two plots, made subfigures by
+`fig-subcap`. Either one opens in panzoom, in a two-image gallery.
 
 ```{r}
 #| panzoom: true
@@ -132,7 +132,7 @@ plot(cars)
 Two R cells in the lightbox group `r-graph`. The first also has
 `#| panzoom: true`, so it opens in panzoom on its own, without the lightbox
 description. The second has only lightbox options, which turn lightbox on for
-that cell, so it opens in lightbox, alone in its group.
+that cell, so it opens in lightbox as the only image in its group.
 
 ```{r}
 #| panzoom: true
@@ -216,7 +216,7 @@ image(volcano)
 
 ## Cell with a link {expect-open="navigation"}
 
-An R cell with `panzoom: true` and `fig-link`, which puts its plot inside a
+An R cell with `#| panzoom: true` and `fig-link`, which puts its plot inside a
 link. As for the [image in a link](#sec-image-in-a-link), clicking the plot
 follows the link.
 

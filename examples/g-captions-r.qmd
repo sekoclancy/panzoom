@@ -270,7 +270,7 @@ view at the foot of the panel.
 
 ## Caption in the margin {expect-open="panzoom" expect-desc-position="right"}
 
-An R cell with `panzoom: true` and `fig-cap-location: margin`. The page shows
+An R cell with `#| panzoom: true` and `fig-cap-location: margin`. The page shows
 the caption in the margin, beside the plot. It opens in panzoom with the caption
 in a panel on the right, the margin side, with no `desc-position` set.
 
@@ -286,10 +286,10 @@ wave(k = 2)
 
 ## Caption above the figure {expect-open="panzoom" expect-desc-position="top"}
 
-An R cell with a figure label, `panzoom: true`, and `fig-cap-location: top`. The
-page shows the caption above the plot: Quarto moves a caption to the top only
-for a labeled figure. It opens in panzoom with the caption above the image, with
-no `desc-position` set.
+An R cell with a figure label, `#| panzoom: true`, and `fig-cap-location: top`.
+The page shows the caption above the plot: Quarto moves a caption to the top
+only for a labeled figure. It opens in panzoom with the caption above the image,
+with no `desc-position` set.
 
 ```{r}
 #| panzoom: true

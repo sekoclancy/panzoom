@@ -50,7 +50,7 @@ def collage(n=12, height=0.8, width=8):
 
 ## Plot in a callout {expect-open="panzoom"}
 
-A cell with `panzoom: true` in a callout. It opens in panzoom.
+A cell with `#| panzoom: true` in a callout. It opens in panzoom.
 
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.callout-note title="A note with a plot"}
@@ -111,7 +111,7 @@ wave(2)
 
 ## Collapsed callout {expect-open="panzoom"}
 
-A cell with `panzoom: true` in a callout that starts collapsed. Expand the
+A cell with `#| panzoom: true` in a callout that starts collapsed. Expand the
 callout, and the plot opens in panzoom.
 
 ````markdown {.code-overflow-wrap .cell-code}
@@ -141,8 +141,8 @@ wave(3)
 
 ## Tabset {expect-open="panzoom"}
 
-Two cells with `panzoom: true`, one on each tab of a tabset. Each plot opens in
-panzoom on its own, the second once its tab is selected.
+Two cells with `#| panzoom: true`, one on each tab of a tabset. Each plot opens
+in panzoom on its own, the second once its tab is selected.
 
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.panel-tabset}

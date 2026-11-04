@@ -370,8 +370,8 @@ plt.show()
 
 ## Cell with a link {expect-open="navigation"}
 
-A cell with `panzoom: true` and `fig-link`, which puts its plot inside a link.
-Clicking the plot follows the link.
+A cell with `#| panzoom: true` and `fig-link`, which puts its plot inside a
+link. Clicking the plot follows the link.
 
 ```{python}
 #| panzoom: true
@@ -385,7 +385,7 @@ plt.show()
 
 ## Markdown image from code {expect-open="panzoom"}
 
-A cell with `panzoom: true` and `output: asis` that prints a markdown image,
+A cell with `#| panzoom: true` and `output: asis` that prints a markdown image,
 which Quarto then reads as markdown on the page.
 
 ```{python}

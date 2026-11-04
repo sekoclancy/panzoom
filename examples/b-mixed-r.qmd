@@ -114,8 +114,8 @@ Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){.panzoo
 
 ## R subfigures {expect-open="panzoom"}
 
-One R cell with `panzoom: true` and two plots, made subfigures by `fig-subcap`.
-Either one opens in panzoom, in a two-image gallery.
+One R cell with `#| panzoom: true` and two plots, made subfigures by
+`fig-subcap`. Either one opens in panzoom, in a two-image gallery.
 
 ```{r}
 #| panzoom: true
@@ -134,9 +134,9 @@ plot(cars)
 
 ## Grouped cells {expect-open="panzoom glightbox"}
 
-Two R cells in the lightbox group `r-graph`. The first also has `panzoom: true`,
-so it opens in panzoom on its own, without the lightbox description. The second
-opens in lightbox, alone in its group.
+Two R cells in the lightbox group `r-graph`. The first also has
+`#| panzoom: true`, so it opens in panzoom on its own, without the lightbox
+description. The second opens in lightbox as the only image in its group.
 
 ```{r}
 #| panzoom: true
@@ -162,7 +162,7 @@ plot(cars)
 
 ## Two plots in one cell {expect-open="panzoom"}
 
-One R cell with `panzoom: true`, two plots, and the lightbox options
+One R cell with `#| panzoom: true`, two plots, and the lightbox options
 `group: cars` and a description for each plot. panzoom drops the lightbox
 options, so each plot opens in panzoom on its own, without a description.
 

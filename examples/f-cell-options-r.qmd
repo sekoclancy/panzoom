@@ -358,7 +358,7 @@ wave(k = 6)
 
 ## Markdown image from code {expect-open="panzoom"}
 
-A cell with `panzoom: true` and `output: asis` that prints a markdown image,
+A cell with `#| panzoom: true` and `output: asis` that prints a markdown image,
 which Quarto then reads as markdown on the page.
 
 ```{r}
@@ -377,7 +377,7 @@ cat(
 
 ## Cached cell {expect-open="panzoom"}
 
-A cell with `panzoom: true` and `cache: true`. After the first render, knitr
+A cell with `#| panzoom: true` and `cache: true`. After the first render, knitr
 takes its plot from the cache instead of running the cell, and it still opens in
 panzoom.
 
