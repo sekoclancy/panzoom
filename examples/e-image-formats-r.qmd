@@ -10,7 +10,7 @@ panzoom:
 ---
 
 Two figures, a wide collage and a standard plot, written by different knitr
-graphics devices: webp, svg, png, and pdf. Every figure has the
+graphics devices: webp, svg, png, pdf, and an animated gif. Every figure has the
 `#| panzoom: true` cell option and opens in panzoom unless its case says
 otherwise. How figures of other shapes open is on [wide and tall
 figures](h-wide-and-tall-r.html).
@@ -25,7 +25,7 @@ draws at 72 dpi, so each webp case sets both under `dev.args`:
 #|   res: 96
 ```
 
-`res: 96` gives the webp the same size as the page's other figures.
+`res: 96` gives the webp the same size as the other figures on the page.
 
 The collage cases draw with this helper:
 
@@ -120,7 +120,7 @@ The same plot written as svg. It opens in panzoom at its real size.
 filled.contour(volcano, color.palette = terrain.colors)
 ```
 
-## png and pdf {expect-fit="contain"}
+## png and pdf {#sec-png-and-pdf expect-fit="contain"}
 
 A plot written as both png and pdf. The page shows the png, which opens in
 panzoom.
@@ -138,26 +138,25 @@ filled.contour(volcano, color.palette = terrain.colors)
 
 ## png and cairo_pdf {expect-fit="contain"}
 
-Case 5 with the cairo PDF device, which embeds fonts and handles Unicode (µ,
-Greek letters) and transparency better than `pdf`. The page shows the png, which
-opens in panzoom. With a PDF device alone, there is no image to open. Quarto
-embeds the PDF in a small box with the browser's PDF viewer, which panzoom
-leaves alone.
+The [png and pdf plot](#sec-png-and-pdf) with the cairo PDF device, which embeds
+fonts and handles Unicode (µ, Greek letters) and transparency better than `pdf`.
+The page shows the png, which opens in panzoom. With a PDF device alone, there
+is no image to open. Quarto embeds the PDF in a small box with the PDF viewer
+built into the browser, which panzoom leaves alone.
 
 ```{r}
 #| panzoom: true
 #| dev: [png, cairo_pdf]
 #| fig-alt: >-
 #|   Filled contour map of Maunga Whau's heights in terrain colors, with a color
-#|   key, titled mu = 5, alpha = 0.05
+#|   key, titled μ = 5, α = 0.05
 #| fig-cap: >-
-#|   Maunga Whau's heights as filled contours, titled mu = 5, alpha = 0.05, as
-#|   png (and cairo_pdf).
+#|   Maunga Whau's heights as filled contours, titled μ = 5, α = 0.05.
 
 filled.contour(
   volcano,
   color.palette = terrain.colors,
-  plot.title = title(main = "mu = 5, alpha = 0.05")
+  plot.title = title(main = "\u03bc = 5, \u03b1 = 0.05")
 )
 ```
 
