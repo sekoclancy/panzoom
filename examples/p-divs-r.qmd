@@ -9,7 +9,7 @@ filters:
   - panzoom
 ---
 
-Figures inside Quarto's own divs: callouts, tabsets, page columns, and
+Figures inside the divs built into Quarto: callouts, tabsets, page columns, and
 conditional content, each on its own and inside a `.panzoom` div. lightbox is
 off, so clicking an image panzoom leaves alone does nothing.
 
@@ -114,8 +114,8 @@ on its own, the second once its tab is selected.
 ## Gallery across tabs {expect-open="panzoom" expect-steps="true"}
 
 Two images with `.panzoom`, joined by `group="tabs"`, on different tabs. They
-open in panzoom as a two-image gallery, each with its own caption: the next
-button shows the image on the other tab without selecting it.
+open in panzoom as a two-image gallery, each with its own caption. The next
+button shows the image on the other tab without selecting that tab.
 
 ```markdown {.show-source}
 ::: {.panel-tabset}
@@ -200,7 +200,8 @@ wave(k = 2)
 
 ## Plot in the margin {expect-open="panzoom"}
 
-A plot in a `.column-margin` div. It opens in panzoom, at full size.
+A plot in a `.column-margin` div. It opens in panzoom whole, at the size of the
+screen, not the size it has in the margin.
 
 ````markdown {.code-overflow-wrap .cell-code}
 ::: {.column-margin}
@@ -244,8 +245,8 @@ panzoom. The `.content-hidden` div next to it leaves nothing on the page.
 
 ## Gallery from a div {expect-open="panzoom" expect-steps="true"}
 
-Two images in a `.panzoom` div with `group="div-gallery"`. The div's group joins
-them, so either opens in panzoom in a two-image gallery.
+Two images in a `.panzoom` div with `group="div-gallery"`. The group on the div
+joins them, so either opens in panzoom in a two-image gallery.
 
 ```markdown {.show-source}
 ::: {.panzoom group="div-gallery" layout-ncol="2"}
