@@ -41,7 +41,7 @@ import numpy as np
 x = np.linspace(0, 4 * np.pi, 400)
 ```
 
-## Figure with a caption {expect-open="panzoom"}
+## Plot with a caption {expect-open="panzoom"}
 
 A Python figure with a caption. It opens in panzoom.
 
@@ -145,7 +145,7 @@ A markdown image alone in a paragraph. It opens in panzoom.
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
-## Opt out of lightbox {expect-open="nothing"}
+## Opt out an image {expect-open="nothing"}
 
 A markdown image with `.nolightbox`. panzoom only takes images lightbox would,
 so clicking it does nothing.
