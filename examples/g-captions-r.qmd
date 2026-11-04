@@ -128,9 +128,9 @@ plot(pressure)
 
 ## Gallery descriptions {expect-references=""}
 
-Two images with `.panzoom` in a gallery, each with a reference in its
-description. They open in panzoom as a two-image gallery, each description with
-its reference resolved.
+Two images with `.panzoom` in a gallery, one with a cross-reference and one with
+a citation in its description. They open in panzoom as a two-image gallery with
+the figure number and the citation filled in.
 
 ```markdown {.show-source}
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom group="refs" description="Painted trim on a shingled cottage. For a plot rather than a photo, see @fig-pressure." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
@@ -155,8 +155,8 @@ wave(k = 2)
 
 ## Description option {#sec-description-option expect-open="panzoom"}
 
-An R cell with the `description` option, written in markdown with math. It opens
-in panzoom with the description under the caption.
+An R cell with a panzoom description, written in markdown with math. It opens in
+panzoom with the description under the caption.
 
 ```{r}
 #| panzoom:
@@ -246,8 +246,8 @@ below it.
 
 An image with `.panzoom`, `desc-position="left"`, `hint="true"`, and a caption
 of placeholder text longer than its panel. It opens in panzoom with the caption
-in a panel on the left of the image. The caption scrolls, and the hint stays in
-view at the foot of the panel.
+in a panel on the left of the image. The caption scrolls, and the hint line
+stays in view at the foot of the panel.
 
 ```markdown {.markdown-example}
 ![{{{< lipsum 4 >}}}](../images/mv-2.jpg){.panzoom desc-position="left" hint="true" fig-alt="A white lighthouse against a blue sky"}
@@ -259,8 +259,8 @@ view at the foot of the panel.
 
 An image with `.panzoom`, `desc-position="right"`, `hint="true"`, and a caption
 of placeholder text longer than its panel. It opens in panzoom with the caption
-in a panel on the right of the image. The caption scrolls, and the hint stays in
-view at the foot of the panel.
+in a panel on the right of the image. The caption scrolls, and the hint line
+stays in view at the foot of the panel.
 
 ```markdown {.markdown-example}
 ![{{{< lipsum 4 >}}}](../images/mv-3.jpg){.panzoom desc-position="right" hint="true" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
