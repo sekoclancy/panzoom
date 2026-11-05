@@ -51,6 +51,45 @@ local COLORS = {
   { "panel-color", "--panzoom-panel-fg" },
   { "link-color", "--panzoom-link" },
 }
+local IS_COLOR = {}
+for _, pair in ipairs(COLORS) do IS_COLOR[pair[1]] = true end
+
+-- British spellings, read as the option they name.
+local ALIASES = {
+  ["panel-colour"] = "panel-color",
+  ["link-colour"] = "link-color",
+}
+
+-- `_brand.yml` color roles and the Bootstrap variables Quarto sets from
+-- them.
+local BRAND_ROLES = {
+  ["foreground"] = "--bs-body-color",
+  ["background"] = "--bs-body-bg",
+  ["link"] = "--bs-link-color",
+}
+for _, role in ipairs({ "primary", "secondary", "success", "info", "warning", "danger", "light", "dark" }) do
+  BRAND_ROLES[role] = "--bs-" .. role
+end
+
+-- A color named in the document `_brand.yml` (a palette name or a
+-- role) as a CSS variable, so it follows a light and a dark brand: a
+-- palette name through the `--brand-<name>` variable Quarto writes for
+-- it, a role through the Bootstrap variable. The light value (else the
+-- dark one) is the fallback, for a theme without the variable (revealjs,
+-- or a brand for one mode only). Anything else is a CSS color, kept as
+-- written.
+local function brand_color(text)
+  if quarto.brand == nil or quarto.brand.get_color_css == nil then return text end
+  local found
+  for _, mode in ipairs({ "light", "dark" }) do
+    if found == nil and quarto.brand.has_mode(mode) then
+      found = quarto.brand.get_color_css(mode, text)
+    end
+  end
+  if found == nil then return text end
+  local var = BRAND_ROLES[text] or "--brand-" .. text:gsub("[^%w_%-]+", "-")
+  return "var(" .. var .. ", " .. found .. ")"
+end
 
 -- The color options as CSS declarations (validate_document has already
 -- removed values that could end the rule).
@@ -59,7 +98,7 @@ local function color_rules(cfg)
   for _, pair in ipairs(COLORS) do
     local key, var = pair[1], pair[2]
     if cfg[key] ~= nil then
-      table.insert(decls, var .. ": " .. pandoc.utils.stringify(cfg[key]) .. ";")
+      table.insert(decls, var .. ": " .. brand_color(pandoc.utils.stringify(cfg[key])) .. ";")
     end
   end
   return decls
@@ -119,6 +158,31 @@ local function bad_value(key, shown, expected, where, text)
     table.insert(lines, "\u{2139} Try using " .. b .. " instead.")
   end
   problem(lines)
+end
+
+-- Renames the British spellings among `keys` to the options they name,
+-- in each of `maps` (key -> value) and in `keys` itself. An option given
+-- both ways is a problem, and keeps its `-color` value. `where(key)` says
+-- where the key is.
+local function rename_aliases(maps, keys, where)
+  for i = #keys, 1, -1 do
+    local key = keys[i]
+    local name = ALIASES[key]
+    if name ~= nil then
+      local both = maps[1][name] ~= nil
+      if both then
+        problem({ 'Field "' .. key .. '" is the same option as "' .. name .. '", which is also given',
+          "\u{2139} The error happened in location " .. where(key) .. "." })
+        table.remove(keys, i)
+      else
+        keys[i] = name
+      end
+      for _, map in ipairs(maps) do
+        if not both then map[name] = map[key] end
+        map[key] = nil
+      end
+    end
+  end
 end
 
 local function one_of(values)
@@ -331,7 +395,10 @@ local function validate_document(cfg)
   end
   local known = names(DOCUMENT_OPTIONS)
   -- Pandoc keeps no order for the map's keys: report them sorted.
-  for _, key in ipairs(names(cfg)) do
+  local keys = names(cfg)
+  rename_aliases({ cfg }, keys, function(key) return "panzoom:" .. key end)
+  table.sort(keys)
+  for _, key in ipairs(keys) do
     local v = cfg[key]
     local spec = DOCUMENT_OPTIONS[key]
     if spec == nil then
@@ -366,6 +433,7 @@ end
 -- quoted strings, or the raw text of anything else.
 local function validate_cell(cfg, raw, el)
   local known = names(CELL_OPTIONS)
+  rename_aliases({ cfg, raw }, raw.order, function(key) return "panzoom:" .. key .. ", in " .. place(el) end)
   for _, key in ipairs(raw.order) do
     local v = cfg[key]
     local where = "panzoom:" .. key .. ", in " .. place(el)
@@ -446,13 +514,18 @@ local function mark(img)
     end
   end
   -- Styling options written on the image itself.
+  local given = {}
+  for key in pairs(ALIASES) do
+    if img.attributes[key] ~= nil then table.insert(given, key) end
+  end
+  rename_aliases({ img.attributes }, given, function(key) return key .. ", on the image " .. img.src end)
   for _, key in ipairs(STYLE_NAMES) do
     local v = img.attributes[key]
     if v ~= nil then
       img.attributes[key] = nil
       local where = key .. ", on the image " .. img.src
       if check(key, STYLE_OPTIONS[key], v, v, v, where) then
-        img.attributes["data-panzoom-" .. key] = v
+        img.attributes["data-panzoom-" .. key] = IS_COLOR[key] and brand_color(v) or v
       end
     end
   end
@@ -645,7 +718,8 @@ local function cell_option(el)
     for _, key in ipairs(STYLE_NAMES) do table.insert(keys, key) end
     for _, key in ipairs(keys) do
       if cfg[key] ~= nil then
-        attrs["data-panzoom-" .. key] = tostring(cfg[key])
+        local v = tostring(cfg[key])
+        attrs["data-panzoom-" .. key] = IS_COLOR[key] and brand_color(v) or v
       end
     end
     if type(cfg.description) == "string" and cfg.description ~= "" then

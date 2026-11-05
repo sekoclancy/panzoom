@@ -1,0 +1,37 @@
+---
+title: "British spellings and brand colors"
+filters:
+  - panzoom
+brand:
+  light:
+    color:
+      palette:
+        sea: "#1f4e5f"
+        sand: "#f4e9d8"
+      primary: sea
+  dark:
+    color:
+      palette:
+        sea: "#9fd3e0"
+        sand: "#2b2118"
+      primary: sea
+panzoom:
+  backdrop: primary
+  panel-background: sand
+  panel-colour: sea
+  link-colour: "#9cf"
+expect-errors: []
+---
+
+The `-colour` spellings and `_brand.yml` names: the page must render, with no
+errors.
+
+```{r}
+#| panzoom:
+#|   panel-colour: sand
+#|   link-colour: navy
+
+plot(1)
+```
+
+![A marked image.](../../images/mv-1.jpg){.panzoom panel-colour="sea" link-colour="red"}

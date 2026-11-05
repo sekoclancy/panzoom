@@ -404,6 +404,11 @@ panzoom:
 ---
 ```
 
+A color can also be a [`_brand.yml`](https://quarto.org/docs/authoring/brand.html)
+color: a `palette` name, or a role such as `primary` or `background`. With a
+light and a dark brand, it follows the theme. `panel-colour` and `link-colour`
+work too.
+
 In CSS, for every viewer on the site:
 
 ```css
