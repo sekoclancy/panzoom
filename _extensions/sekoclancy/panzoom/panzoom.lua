@@ -457,15 +457,19 @@ local function validate_cell(cfg, raw, el)
 end
 
 -- Prints every problem, as Quarto prints YAML errors, and stops the render.
+-- Quarto 1.11 prints a failed render's stderr a second time, so from 1.11
+-- the report goes to stdout, which Quarto shows once.
 local function report()
   if #problems == 0 then return nil end
+  local out = quarto.version >= pandoc.types.Version("1.11") and io.stdout or io.stderr
   local file = quarto.doc.input_file and pandoc.path.filename(quarto.doc.input_file) or "the document"
-  io.stderr:write("ERROR: Validation of panzoom options failed.\n")
+  out:write("ERROR: Validation of panzoom options failed.\n")
   for _, lines in ipairs(problems) do
-    io.stderr:write("ERROR: In file " .. file .. "\n")
-    for _, line in ipairs(lines) do io.stderr:write(line .. "\n") end
+    out:write("ERROR: In file " .. file .. "\n")
+    for _, line in ipairs(lines) do out:write(line .. "\n") end
   end
-  io.stderr:write("ERROR: Render failed due to invalid panzoom options.\n")
+  out:write("ERROR: Render failed due to invalid panzoom options.\n")
+  out:flush()
   os.exit(1)
 end
 -- `panzoom: false`: the filter does nothing at all.
