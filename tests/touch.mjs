@@ -236,28 +236,29 @@ try {
   check("swipe shows the next image", s.open && /^1 \//.test(first) && /^2 \//.test(s.counter),
     `${first} -> ${s.counter}`);
 
-  // The hint line (page F, case 4, which has it): not after a tap, but
-  // after a mouse click.
+  // The hint line (page F, "Default hint", which has it): not after a tap,
+  // but after a mouse click.
   const hintShown = () => page.evaluate(() => {
     const h = document.querySelector(".panzoom-overlay.open .panzoom-hint");
     return !!h && !h.hidden;
   });
   await page.goto(base + "f-cell-options-r.html", { waitUntil: "networkidle0" });
-  s = await openImage(page, cdp, "section[data-number='4'] img.panzoom");
+  s = await openImage(page, cdp, "section#default-hint img.panzoom");
   const tapped = await hintShown();
   check("no hint line after a tap", s.open && !tapped, s.open ? (tapped ? "shown" : "hidden") : "viewer not open");
   await page.keyboard.press("Escape");
   await settle(page);
-  await page.click("section[data-number='4'] img.panzoom");
+  await page.click("section#default-hint img.panzoom");
   await settle(page);
   const clicked = await hintShown();
   check("hint line after a mouse click", clicked, clicked ? "shown" : "hidden");
   await page.keyboard.press("Escape");
   await settle(page);
 
-  // A caption set beside the image (page F, case 9: `desc-position:
-  // right`) shows below it on a phone, as lightbox does on narrow screens.
-  s = await openImage(page, cdp, "section[data-number='9'] img.panzoom");
+  // A caption set beside the image (page F, "Caption beside the image":
+  // `desc-position: right`) shows below it on a phone, as lightbox does on
+  // narrow screens.
+  s = await openImage(page, cdp, "section#caption-beside-the-image img.panzoom");
   const side = await page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay.open");
     const f = o && o.querySelector(".panzoom-panel").getBoundingClientRect();
