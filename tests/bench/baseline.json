@@ -1,63 +1,63 @@
 {
-  "date": "2026-10-21 20:48",
-  "quarto": "1.10.19",
+  "date": "2026-11-06 21:25",
+  "quarto": "1.11.9",
   "machine": "Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz (40 threads)",
   "rounds": 5,
   "render": {
-    "median": 8149.723429,
-    "fastest": 7741.49333
+    "median": 7799.160036,
+    "fastest": 7470.144211
   },
   "metrics": {
     "Viewer JS + CSS": {
-      "value": 61619,
+      "value": 72277,
       "kind": "bytes"
     },
     "Viewer JS + CSS, gzipped": {
-      "value": 20729,
+      "value": 23983,
       "kind": "bytes"
     },
     "Page HTML": {
-      "value": 30351,
+      "value": 34279,
       "kind": "bytes"
     },
     "Page load: DOMContentLoaded": {
-      "value": 128.9000015258789,
+      "value": 187.39999771118164,
       "kind": "slowTime"
     },
     "Page load: load": {
-      "value": 267.5,
+      "value": 233.70000076293945,
       "kind": "slowTime"
     },
     "First open, settled (full speed)": {
-      "value": 20.900001525878906,
+      "value": 28.900001525878906,
       "kind": "time"
     },
     "Open, visible (full speed)": {
-      "value": 6.900001525878906,
+      "value": 12.400001525878906,
       "kind": "time"
     },
     "Open, settled (full speed)": {
-      "value": 6.900001525878906,
+      "value": 12.400001525878906,
       "kind": "time"
     },
     "Close (full speed)": {
-      "value": 14.5,
+      "value": 14.599998474121094,
       "kind": "time"
     },
     "First open, settled (CPU 4x slower)": {
-      "value": 48.80000114440918,
+      "value": 62.80000305175781,
       "kind": "slowTime"
     },
     "Open, visible (CPU 4x slower)": {
-      "value": 16,
+      "value": 24.400001525878906,
       "kind": "slowTime"
     },
     "Open, settled (CPU 4x slower)": {
-      "value": 16,
+      "value": 24.400001525878906,
       "kind": "slowTime"
     },
     "Close (CPU 4x slower)": {
-      "value": 14.5,
+      "value": 14.599998474121094,
       "kind": "slowTime"
     }
   }
