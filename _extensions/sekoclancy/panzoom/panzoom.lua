@@ -878,33 +878,38 @@ local function container(el)
   end
 end
 
+-- Marks the images to open in panzoom.
+local mark_pass = {
+  traverse = "topdown",
+  Div = container,
+  Link = keep_link,
+  Para = block_image,
+  Plain = block_image,
+  Figure = function(fig)
+    if match_auto then
+      return fig:walk({
+        traverse = "topdown",
+        Link = keep_link,
+        Image = function(img)
+          if not wants_lightbox(img) then return mark(img) end
+        end,
+      }), false
+    end
+  end,
+  -- Inline images, and block images outside auto mode: explicit class only.
+  Image = function(img)
+    if has(img.classes, "panzoom") and not off then
+      return mark(img)
+    end
+  end,
+}
+-- quarto turns labeled figures into FloatRefTarget nodes; q2 keeps them as
+-- plain Divs and Figures, which the handlers above already cover.
+if quarto.FloatRefTarget then mark_pass.FloatRefTarget = container end
+
 return {
   { Meta = setup },
-  {
-    traverse = "topdown",
-    Div = container,
-    FloatRefTarget = container,
-    Link = keep_link,
-    Para = block_image,
-    Plain = block_image,
-    Figure = function(fig)
-      if match_auto then
-        return fig:walk({
-          traverse = "topdown",
-          Link = keep_link,
-          Image = function(img)
-            if not wants_lightbox(img) then return mark(img) end
-          end,
-        }), false
-      end
-    end,
-    -- Inline images, and block images outside auto mode: explicit class only.
-    Image = function(img)
-      if has(img.classes, "panzoom") and not off then
-        return mark(img)
-      end
-    end,
-  },
+  mark_pass,
   -- Without JavaScript, a marked image is a link to its own file, as with
   -- Quarto's lightbox; panzoom.js stops the link and opens the viewer.
   -- Images already inside a link keep that link.
