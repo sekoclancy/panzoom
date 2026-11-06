@@ -32,7 +32,7 @@ add a class of its own, which applies while that image is open.
 The rules are in a raw HTML block on this page. The same block works in any
 Quarto document:
 
-````{.markdown .show-source}
+````show-source
 ```{=html}
 <style>
 .plum-viewer {
@@ -103,7 +103,7 @@ A markdown image with `.panzoom`. It opens with the plum viewer from the rules
 above, with a line along the top of the caption band and a larger, italic
 caption, and the link in its caption is pink.
 
-```{.markdown .show-source}
+```show-source
 ![Edgartown Lighthouse, Martha's Vineyard ([photo](https://unsplash.com/photos/f59MyOfLpi8)).](../images/mv-2.jpg){.panzoom fig-alt="A white lighthouse against a blue sky"}
 ```
 
@@ -116,7 +116,7 @@ link in its caption is teal. The `plum-viewer` class set under the `panzoom:`
 option in the YAML header stays on the viewer too, so the `.sea-viewer` rules
 come after the `.plum-viewer` ones to win over them.
 
-```{.markdown .show-source}
+```show-source
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard ([photo](https://unsplash.com/photos/HQEtvlNzUyA)).](../images/mv-3.jpg){.panzoom css-class="sea-viewer" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
@@ -154,7 +154,7 @@ viewer has the class of an image only while that image is open, so the first and
 last show the teal viewer and the middle one the plum viewer, whichever way it
 is reached.
 
-```{.markdown .show-source}
+```show-source
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){.panzoom group="mixed" css-class="sea-viewer" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){.panzoom group="mixed" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
@@ -167,7 +167,7 @@ is reached.
 A markdown image with `.panzoom` in the margin. It opens with the plum viewer
 set under the `panzoom:` option in the YAML header.
 
-```{.markdown .show-source}
+```show-source
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
@@ -200,6 +200,6 @@ the `.plum-viewer` rules above:
 }
 ```
 
-```{.markdown .show-source}
+```show-source
 ![A sailboat off Edgartown, Martha's Vineyard ([photo](https://unsplash.com/photos/IiLiz7XpQpI)).](../images/mv-4.jpg){.panzoom css-class="amber-viewer" fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```

@@ -287,10 +287,10 @@ below it carries the details.
 ### Markdown cases
 
 Code cells show their own code, but Quarto has no way to show markdown source.
-Write a markdown case once, as a code block marked `.show-source`:
+Write a markdown case once, as a `show-source` code block:
 
 ````markdown
-```{.markdown .show-source}
+```show-source
 ![Aquinnah](../../images/mv-1.jpg){#fig-md-a .panzoom}
 ```
 ````
@@ -319,7 +319,7 @@ linked image keeps a link Quarto would otherwise drop.
 
 Markdown around a code cell, such as a `.panzoom` div holding an R cell, can't
 use it, because the cell runs before the filter does. Those examples show their
-source in a plain `markdown` block next to a copy.
+source in a `source` block next to a copy.
 
 ## Checking by hand
 

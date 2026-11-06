@@ -40,7 +40,7 @@ A markdown image with `.panzoom`. It opens with the colors set under the
 `panzoom:` option in the YAML header, a deep blue backdrop and a cream caption
 band, and the link in its caption is rust.
 
-```{.markdown .show-source}
+```show-source
 ![Sunset at Chilmark Beach, Martha's Vineyard ([photo](https://unsplash.com/photos/VBDJGOMCwps)).](../images/mv-0.jpg){.panzoom fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
@@ -51,7 +51,7 @@ opens with a deep green backdrop and a pale green caption band instead of the
 colors set under the `panzoom:` option in the YAML header, and the link in its
 caption is dark green.
 
-```{.markdown .show-source}
+```show-source
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard ([photo](https://unsplash.com/photos/2iQnDPLIXwU)).](../images/mv-1.jpg){.panzoom backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" link-color="#0b6b3a" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```
 
@@ -92,7 +92,7 @@ set under the `panzoom:` option in the YAML header, and the third sets a dark
 red backdrop and a peach band. Stepping to another image switches the backdrop
 and caption band to the colors set for that image.
 
-```{.markdown .show-source}
+```show-source
 ![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg){.panzoom group="mixed" backdrop="rgba(20, 60, 40, 0.92)" panel-background="#e8f3ea" panel-color="#173d24" fig-alt="A white lighthouse against a blue sky"}
 
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom group="mixed" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}

@@ -6,6 +6,8 @@ format:
   html:
     code-tools: true
 filters:
+  - path: ../_filters/show-source.lua
+    at: pre-ast
   - panzoom
 ---
 
@@ -52,7 +54,7 @@ def collage(n=12, height=0.8, width=8):
 
 A cell with `#| panzoom: true` in a callout. It opens in panzoom.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.callout-note title="A note with a plot"}
 ```{{python}}
 #| panzoom: true
@@ -82,7 +84,7 @@ wave(1)
 A callout with a cell that has no `panzoom` option, inside a `.panzoom` div. The
 div marks every figure in it, so the plot opens in panzoom.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.panzoom}
 ::: {.callout-tip title="A tip with a plot"}
 ```{{python}}
@@ -114,7 +116,7 @@ wave(2)
 A cell with `#| panzoom: true` in a callout that starts collapsed. Expand the
 callout, and the plot opens in panzoom.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.callout-note collapse="true" title="Expand for a plot"}
 ```{{python}}
 #| panzoom: true
@@ -144,7 +146,7 @@ wave(3)
 Two cells with `#| panzoom: true`, one on each tab of a tabset. Each plot opens
 in panzoom on its own, the second once its tab is selected.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.panel-tabset}
 ### Wave 1
 
@@ -202,7 +204,7 @@ Two cells joined by `group: tabs` under the `panzoom` cell option, on different
 tabs. They open in panzoom as a two-image gallery, each with its own caption.
 The next button shows the plot on the other tab without selecting that tab.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.panel-tabset}
 ### Wave 2
 
@@ -263,7 +265,7 @@ wave(5)
 A tabset with a cell that has no `panzoom` option on each tab, inside a
 `.panzoom` div. Each plot opens in panzoom on its own.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.panzoom}
 ::: {.panel-tabset}
 ### Wave 3
@@ -320,7 +322,7 @@ wave(6)
 An 8 × 0.8 inch collage in a `.column-screen` div, so it spans the window. It is
 a strip, so it opens in panzoom at screen height.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.column-screen}
 ```{{python}}
 #| panzoom: true
@@ -349,7 +351,7 @@ collage(n=12)
 
 A plot with `column: page`, wider than the text. It opens in panzoom whole.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ```{{python}}
 #| panzoom: true
 #| column: page
@@ -377,7 +379,7 @@ wave(2)
 A plot in a `.column-margin` div. It opens in panzoom whole, at the size of the
 screen, not the size it has in the margin.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.column-margin}
 ```{{python}}
 #| panzoom: true
@@ -407,7 +409,7 @@ wave(3)
 Two cells in a `.panzoom` div with `group="div-gallery"`. The group on the div
 joins their plots, so either opens in panzoom in a two-image gallery.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.panzoom group="div-gallery" layout-ncol="2"}
 ```{{python}}
 #| fig-alt: "A sine curve, shaded between the curve and y = 0"

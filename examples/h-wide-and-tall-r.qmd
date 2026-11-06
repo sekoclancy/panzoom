@@ -198,7 +198,7 @@ for (i in 1:48) {
 
 A 9:16 portrait photo. It isn't a strip, so it opens whole on any screen width.
 
-```{.markdown .show-source}
+```show-source
 ![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 

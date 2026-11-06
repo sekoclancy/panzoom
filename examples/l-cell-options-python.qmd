@@ -6,6 +6,8 @@ format:
   html:
     code-tools: true
 filters:
+  - path: ../_filters/show-source.lua
+    at: pre-ast
   - panzoom
 ---
 
@@ -159,7 +161,7 @@ plt.show()
 A cell with `#| panzoom: false` inside a `.panzoom` div. The cell option wins
 over the div, so clicking the plot does nothing.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.panzoom}
 ```{{python}}
 #| panzoom: false
@@ -304,7 +306,7 @@ inside a `.panzoom` div. The options on the cell apply as they do outside the
 div: it opens in panzoom without the hint line, and zooming in stops at 2 screen
 pixels per image pixel.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.panzoom}
 ```{{python}}
 #| panzoom:

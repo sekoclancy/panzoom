@@ -38,7 +38,7 @@ A markdown image with `.panzoom`, a description, and `desc-position="left"`. It
 opens in panzoom, with the caption and description in a panel on the left of the
 image.
 
-```{.markdown .show-source}
+```show-source
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){.panzoom description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
@@ -50,7 +50,7 @@ the group). The other two open in lightbox, in a two-image gallery. In lightbox,
 a click zooms an image larger than the screen to its full size, and the wheel
 doesn't zoom.
 
-```{.markdown .show-source}
+```show-source
 ::: {layout="[[1, 1], [1]]"}
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){group="elsewhere" description="The waves break off Aquinnah." fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
@@ -65,7 +65,7 @@ doesn't zoom.
 A markdown image with `.panzoom` and math in its caption and description. It
 opens in panzoom with both typeset.
 
-```{.markdown .show-source}
+```show-source
 ![A sailboat off Edgartown. Euler's identity: $e^{i\pi}+1=0$.](../images/mv-4.jpg){.panzoom description="The area under $x^2$ from 0 to 1: $\\int_0^1 x^2\\,dx = 1/3$." fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 ```
 
@@ -75,7 +75,7 @@ A figure with two markdown subfigures, both with `.panzoom`. Either one opens in
 panzoom, in a two-image gallery. The figure's caption links to the [heat map of
 Maunga Whau](#sec-plain-r-figure).
 
-```{.markdown .show-source}
+```show-source
 ::: {#fig-md-sub layout-ncol=2}
 ![Aquinnah](../images/mv-1.jpg){#fig-md-a .panzoom fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
@@ -90,7 +90,7 @@ Aquinnah and Edgartown Lighthouse, on Martha's Vineyard. For heights of Maunga W
 An image with `.panzoom` inside a link. panzoom leaves linked images alone, so
 clicking the image follows the link.
 
-```{.markdown .show-source}
+```show-source
 [![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach; opens the Quarto website"}](https://quarto.org)
 ```
 
@@ -99,7 +99,7 @@ clicking the image follows the link.
 A markdown image with `.panzoom` in the margin. It opens in panzoom, as any
 other marked image does.
 
-```{.markdown .show-source}
+```show-source
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom .column-margin fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
 ```
 
@@ -108,7 +108,7 @@ other marked image does.
 An image with `.panzoom` inside a sentence. It opens in panzoom, with no
 caption, since an inline image isn't a figure and has none.
 
-```{.markdown .show-source}
+```show-source
 Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){.panzoom width=60px} in the middle.
 ```
 

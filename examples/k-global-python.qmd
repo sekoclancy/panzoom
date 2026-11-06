@@ -140,7 +140,7 @@ plt.show()
 
 A markdown image alone in a paragraph. It opens in panzoom.
 
-```{.markdown .show-source}
+```show-source
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
 ```
 
@@ -149,6 +149,6 @@ A markdown image alone in a paragraph. It opens in panzoom.
 A markdown image with `.nolightbox`. panzoom only takes images lightbox would,
 so clicking it does nothing.
 
-```{.markdown .show-source}
+```show-source
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){.nolightbox fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 ```

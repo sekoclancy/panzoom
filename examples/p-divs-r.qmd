@@ -61,7 +61,7 @@ wave <- function(k = 1) {
 
 An image with `.panzoom` in a callout. It opens in panzoom.
 
-```{.markdown .show-source}
+```show-source
 ::: {.callout-note title="A note with a photo"}
 
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){.panzoom width=50% fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
@@ -73,7 +73,7 @@ An image with `.panzoom` in a callout. It opens in panzoom.
 A callout with a plain image, inside a `.panzoom` div. The div marks every image
 in it, so the image opens in panzoom.
 
-```{.markdown .show-source}
+```show-source
 ::: {.panzoom}
 ::: {.callout-tip title="A tip with a photo"}
 
@@ -87,7 +87,7 @@ in it, so the image opens in panzoom.
 An image with `.panzoom` in a callout that starts collapsed. Expand the callout,
 and the image opens in panzoom.
 
-```{.markdown .show-source}
+```show-source
 ::: {.callout-note collapse="true" title="Expand for a photo"}
 
 ![A gingerbread cottage in Oak Bluffs, Martha's Vineyard.](../images/mv-3.jpg){.panzoom width=50% fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
@@ -99,7 +99,7 @@ and the image opens in panzoom.
 Two images with `.panzoom`, one on each tab of a tabset. Each opens in panzoom
 on its own, the second once its tab is selected.
 
-```{.markdown .show-source}
+```show-source
 ::: {.panel-tabset}
 ### Sunset
 
@@ -117,7 +117,7 @@ Two images with `.panzoom`, joined by `group="tabs"`, on different tabs. They
 open in panzoom as a two-image gallery, each with its own caption. The next
 button shows the image on the other tab without selecting that tab.
 
-```{.markdown .show-source}
+```show-source
 ::: {.panel-tabset}
 ### Cliffs
 
@@ -134,7 +134,7 @@ button shows the image on the other tab without selecting that tab.
 A tabset with a plain image on each tab, inside a `.panzoom` div. Each opens in
 panzoom on its own.
 
-```{.markdown .show-source}
+```show-source
 ::: {.panzoom}
 ::: {.panel-tabset}
 ### Cottage
@@ -153,7 +153,7 @@ panzoom on its own.
 A 25 × 2 inch collage in a `.column-screen` div, so it spans the window. It is
 still a strip, so it opens in panzoom at screen height.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.column-screen}
 ```{{r}}
 #| panzoom: true
@@ -203,7 +203,7 @@ wave(k = 2)
 A plot in a `.column-margin` div. It opens in panzoom whole, at the size of the
 screen, not the size it has in the margin.
 
-````{.markdown .code-overflow-wrap .cell-code}
+````source
 ::: {.column-margin}
 ```{{r}}
 #| panzoom: true
@@ -233,7 +233,7 @@ wave(k = 3)
 An image with `.panzoom` in a `.content-visible` div for HTML. It opens in
 panzoom. The `.content-hidden` div next to it leaves nothing on the page.
 
-```{.markdown .show-source}
+```show-source
 ::: {.content-visible when-format="html"}
 ![A sailboat off Edgartown, Martha's Vineyard.](../images/mv-4.jpg){.panzoom width=30% fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
 :::
@@ -248,7 +248,7 @@ panzoom. The `.content-hidden` div next to it leaves nothing on the page.
 Two images in a `.panzoom` div with `group="div-gallery"`. The group on the div
 joins them, so either opens in panzoom in a two-image gallery.
 
-```{.markdown .show-source}
+```show-source
 ::: {.panzoom group="div-gallery" layout-ncol="2"}
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 

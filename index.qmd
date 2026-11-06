@@ -169,7 +169,7 @@ invisible(dev.off())
 Give a markdown image the `.panzoom` class. The text in brackets is the caption,
 and `fig-alt` is the alt text:
 
-```{.markdown .show-source}
+```show-source
 ![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){.panzoom fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
 ```
 
@@ -178,7 +178,7 @@ and `fig-alt` is the alt text:
 Wrap any block in a `.panzoom` div to select every image in it, code cell output
 included:
 
-````{.markdown .markdown-example}
+````source
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
 #| fig-width: 8
@@ -333,7 +333,7 @@ contour(volcano)
 Inside a `.panzoom` div, every image gets the viewer except one with the
 `.nopanzoom` class, so clicking the image below does nothing.
 
-```{.markdown .show-source}
+```show-source
 ::: {.panzoom}
 ![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){.nopanzoom width=40% fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
 :::
@@ -342,7 +342,7 @@ Inside a `.panzoom` div, every image gets the viewer except one with the
 For a whole code cell, use `#| panzoom: false`. Clicking the plot below does
 nothing either:
 
-````{.markdown .markdown-example}
+````source
 ::: {.panzoom}
 ```{{r}}
 #| panzoom: false
