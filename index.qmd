@@ -291,16 +291,16 @@ for (i in 1:8) {
 }
 ```
 
-## Math in captions and descriptions
+## Math and code in captions
 
-Captions and descriptions keep their math, typeset as on the page, along with
-citations, cross-references, and links.
+Captions and descriptions keep their math and inline code, typeset as on the
+page, along with citations, cross-references, and links.
 
 ```{r}
 #| panzoom:
 #|   description: >-
-#|     $\varphi(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}$. The shaded area is
-#|     $P(|X| < 1) \approx 0.683$.
+#|     $\varphi(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}$, drawn with `dnorm(x)`.
+#|     The shaded area is $P(|X| < 1) \approx 0.683$.
 #| fig-alt: >-
 #|   The bell curve of the standard normal density, with the area between -1 and
 #|   1 shaded grey
