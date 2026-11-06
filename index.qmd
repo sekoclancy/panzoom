@@ -23,7 +23,7 @@ change without notice.
 
 A [Quarto](https://quarto.org) extension that opens figures in a full-screen
 viewer, built on [Panzoom](https://github.com/timmywil/panzoom) and inspired by
-the native Quarto
+the built-in Quarto
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 It works with markdown images and with R (knitr) and Python (Jupyter) code
 cells.
@@ -72,31 +72,15 @@ using version control, you will want to check in this directory.
 
 Click a figure to open it, or reach it with Tab and press Enter.
 
-  | Action                                   | Mouse or touch                                                              | Keyboard             |
-  | ---------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
-  | Zoom                                     | scroll or pinch, toward the cursor                                          | + and -              |
-  | Pan                                      | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | arrow keys           |
-  | Go back to the opening view              | double-click                                                                | 0                    |
-  | Change image in a gallery                | the previous and next buttons, or swipe                                     | left and right arrow |
-  | Hide or show the caption and description |                                                                             | c                    |
-  | Hide or show the hint line               |                                                                             | h                    |
-  | Close                                    | the × button, click the background, or Back                                 | Esc                  |
-
-## Keys
-
-The `keys` option in the YAML header changes the keys for zooming, resetting,
-hiding the caption or the hint line, and closing. Actions left out keep their
-defaults:
-
-```yaml
----
-panzoom:
-  keys:
-    caption: k          # one key
-    hint: false         # no key
-    close: [Escape, q]  # several keys
----
-```
+  | Action                                   | Mouse or touch                                                              | Keyboard                                                           |
+  | ---------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+  | Zoom                                     | scroll or pinch, toward the cursor                                          | + and -                                                            |
+  | Pan                                      | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | arrow keys                                                         |
+  | Go back to the opening view              | double-click                                                                | 0                                                                  |
+  | Change image in a gallery                | the previous and next buttons, or swipe                                     | left and right arrow (on a zoomed image, once it reaches its edge) |
+  | Hide or show the caption and description |                                                                             | c                                                                  |
+  | Hide or show the hint line               |                                                                             | h                                                                  |
+  | Close                                    | the × button, a click on the background, or the browser Back button         | Esc                                                                |
 
 ## Code cell
 
@@ -141,7 +125,7 @@ filled.contour(volcano, color.palette = terrain.colors)
 
 Options under `#| panzoom:` override the document's settings for one cell. This
 figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set
-under the `panzoom:` option in the YAML header) and hides the hint.
+under the `panzoom:` option in the YAML header) and hides the hint line.
 
 ```{r}
 #| panzoom:
@@ -154,6 +138,22 @@ under the `panzoom:` option in the YAML header) and hides the hint.
 
 image(volcano, col = hcl.colors(100, "Terrain 2"))
 contour(volcano, add = TRUE)
+```
+
+## Keys
+
+The `keys` option in the YAML header changes the keys for zooming, resetting,
+hiding the caption or the hint line, and closing. Actions left out keep their
+defaults:
+
+```yaml
+---
+panzoom:
+  keys:
+    caption: k          # one key
+    hint: false         # no key
+    close: [Escape, q]  # several keys
+---
 ```
 
 ## Markdown image
@@ -214,9 +214,7 @@ image(volcano, col = terrain.colors(100))
 ## Captions and galleries
 
 The viewer shows the figure's caption. Plots with the same `group` form a
-gallery. Use the previous and next buttons, the left and right arrow keys, or a
-swipe to step through them. Subfigures of one figure are a gallery
-automatically.
+gallery. Subfigures of one figure are a gallery automatically.
 
 ```{r}
 #| panzoom:
@@ -320,7 +318,8 @@ lines(x, dnorm(x), lwd = 2)
 
 ## Untouched figure
 
-Without the option, a figure is left as it is, and clicking it does nothing.
+Without the `#| panzoom:` option, a figure is left as it is, and clicking it
+does nothing.
 
 ```{r}
 #| fig-alt: "Contour lines of Maunga Whau's heights"
