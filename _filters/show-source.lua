@@ -13,7 +13,7 @@
 -- shortcode shown escaped next to its use.
 --
 -- The marker is the one word after the fence, not a class next to
--- `markdown`: Quarto 2 rejects ```markdown {.show-source}, and panache
+-- `markdown`: q2 rejects ```markdown {.show-source}, and panache
 -- rewrites ```{.markdown .show-source} back to it.
 --
 -- Run it before Quarto reads the page's structure, so the parsed blocks

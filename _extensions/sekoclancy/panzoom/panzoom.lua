@@ -270,7 +270,7 @@ end
 local function meta_value(v)
   local t = pandoc.utils.type(v)
   if t == "boolean" then return v, tostring(v), tostring(v) end
-  -- Quarto 2 passes a YAML number as a number; Pandoc passes its text.
+  -- q2 passes a YAML number as a number; quarto passes its text.
   if t == "number" then return v, tostring(v), tostring(v) end
   if t == "Inlines" or t == "Blocks" or t == "string" then
     local s = pandoc.utils.stringify(v)

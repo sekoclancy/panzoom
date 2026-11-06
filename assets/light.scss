@@ -16,7 +16,7 @@ $body-secondary: #4f5963;
 figcaption :is(a, .citation a) { text-decoration: underline; }
 
 /* Wrapped source lines hang under their code. Only line spans have an id,
-   not Quarto 2 tokens. */
+   not q2 tokens. */
 pre.sourceCode > code.sourceCode > span[id] {
   padding-left: 3ch;
   text-indent: -3ch;
