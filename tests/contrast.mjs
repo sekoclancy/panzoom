@@ -117,7 +117,7 @@ async function checkPage(browser, base, file, dark) {
   // The viewer, on the first image that opens it: not the rendering Quarto
   // hides in this color mode (`renderings: [light, dark]`).
   const hidden = scheme === "dark" ? ".light-content" : ".dark-content";
-  const img = await page.$(`:is(.panzoom img, img.panzoom):not(.nopanzoom, ${hidden} img)`);
+  const img = await page.$(`img.panzoom:not(.nopanzoom, ${hidden} img)`);
   if (img) {
     await img.evaluate((el) => el.scrollIntoView({ block: "center" }));
     await img.click();

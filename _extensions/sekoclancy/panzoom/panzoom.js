@@ -73,7 +73,7 @@
   that image is shown, on top of the document's.
 */
 (function () {
-  var SELECTOR = ".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)";
+  var SELECTOR = "img.panzoom:not(.nopanzoom)";
   var SWIPE = 50;  // px of horizontal drag that switches images
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
   var STRIP = 3;    // ...but only for images at least this many times wider than tall (or vice versa)

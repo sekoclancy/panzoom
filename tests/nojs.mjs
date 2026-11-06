@@ -7,8 +7,8 @@
   that the viewer intercepts when JavaScript runs.
 
   Opens each rendered page in headless Chrome with JavaScript disabled and
-  checks every image the viewer would open (`.panzoom img`, `img.panzoom`,
-  not `.nopanzoom`):
+  checks every image the viewer would open (`img.panzoom`, not
+  `.nopanzoom`):
     - it sits in an `a.panzoom-link` whose href is the image's own file,
       or in an author's link, which is left alone;
     - panzoom's link has a name for screen readers (the image's alt text,
@@ -86,7 +86,7 @@ async function checkPage(browser, base, file) {
 
   // Runs through DevTools, so it works with the page's scripts disabled.
   const images = await page.evaluate(() => {
-    const marked = [...document.querySelectorAll(".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)")];
+    const marked = [...document.querySelectorAll("img.panzoom:not(.nopanzoom)")];
     marked.forEach((img, i) => { img.dataset.nojsIdx = i; });
     return {
       // `panzoom: false`: the filter is off, so marked images get no link
@@ -134,7 +134,7 @@ async function checkPage(browser, base, file) {
       const handle = await page.$(`img[data-nojs-idx="${img.idx}"]`);
       if (!handle) {
         // The index is set by evaluate() above, and lost on reload: set it again.
-        await page.evaluate(() => document.querySelectorAll(".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)")
+        await page.evaluate(() => document.querySelectorAll("img.panzoom:not(.nopanzoom)")
           .forEach((el, i) => { el.dataset.nojsIdx = i; }));
       }
       const h = await page.$(`img[data-nojs-idx="${img.idx}"]`);

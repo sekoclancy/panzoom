@@ -130,7 +130,7 @@ try {
     const seen = new Set(taken), out = [];
     for (const el of imgs) {
       const link = el.closest("a[href]");
-      if (!el.matches(".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)") ||
+      if (!el.matches("img.panzoom:not(.nopanzoom)") ||
         (link && !link.classList.contains("panzoom-link"))) continue;
       const p = new URL(el.currentSrc || el.src).pathname;
       if (seen.has(p)) continue;

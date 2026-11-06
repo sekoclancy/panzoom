@@ -1,13 +1,10 @@
-.panzoom img:not(.nopanzoom),
 img.panzoom:not(.nopanzoom) {
   cursor: zoom-in;
 }
 /* An image in an author's link follows the link instead. */
-a:not(.panzoom-link) img.panzoom,
-.panzoom a:not(.panzoom-link) img {
+a:not(.panzoom-link) img.panzoom {
   cursor: pointer;
 }
-.panzoom img:not(.nopanzoom):focus-visible,
 img.panzoom:not(.nopanzoom):focus-visible,
 a.panzoom-link:focus-visible img {
   outline: 3px solid var(--bs-link-color, #0d6efd); outline-offset: 2px;
@@ -15,7 +12,6 @@ a.panzoom-link:focus-visible img {
 a.panzoom-link:focus-visible { outline: none; }
 /* No ring on the image focus returns to after a viewer opened with the
    mouse or a tap (panzoom.js), until the next key press. */
-.panzoom-no-ring .panzoom img:not(.nopanzoom):focus-visible,
 .panzoom-no-ring img.panzoom:not(.nopanzoom):focus-visible,
 .panzoom-no-ring a.panzoom-link:focus-visible img {
   outline: none;

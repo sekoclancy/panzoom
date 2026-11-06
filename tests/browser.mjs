@@ -1110,7 +1110,7 @@ async function checkPage(browser, base, file) {
               id,
               exists: !!fig,
               numbered: !!cap && /^Figure\s+\d+/.test(cap.textContent.trim()),
-              marked: !!fig && !!fig.querySelector("img.panzoom:not(.nopanzoom), .panzoom img:not(.nopanzoom)"),
+              marked: !!fig && !!fig.querySelector("img.panzoom:not(.nopanzoom)"),
               // Quarto's script turns cross-reference links into full URLs.
               linked: [...document.querySelectorAll("a[href]")].some((a) => a.hash === `#${id}` &&
                 a.pathname === location.pathname && (!fig || !fig.contains(a))),
