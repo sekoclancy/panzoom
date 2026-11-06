@@ -4,7 +4,7 @@
 
 A [Quarto](https://quarto.org) extension that opens figures in a full-screen
 viewer, built on [Panzoom](https://github.com/timmywil/panzoom) and inspired by
-the native Quarto
+the built-in Quarto
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
 
 > [!WARNING]
@@ -52,7 +52,7 @@ arrow keys.](images/demo.gif)
   | Change image in a gallery                | the previous and next buttons, or swipe                                     | left and right arrow |
   | Hide or show the caption and description |                                                                             | c                    |
   | Hide or show the hint line               |                                                                             | h                    |
-  | Close                                    | the × button, click the background, or Back                                 | Esc                  |
+  | Close                                    | the × button, a click on the background, or the browser Back button         | Esc                  |
 
 The [`keys`](#keys) option changes the keys for zooming, resetting, hiding the
 caption or the hint line, and closing. Zoom goes up to `max-zoom`. While an
@@ -67,12 +67,12 @@ focus to the image.
 
 ## Features
 
-- Zoom toward the cursor with scroll or pinch, in steps up to `max-zoom` (the
-  lightbox only toggles between fit and real size, and not at all on screens 768
-  px wide or less)
+- Zoom toward the cursor with scroll or pinch, in steps up to `max-zoom`
+  (lightbox only toggles between fit and real size, and not at all on screens
+  768 px wide or less)
 - Pan by dragging, using the arrow keys, Shift+scroll, or Alt+scroll
 - [Captions](#captions) and [descriptions](#descriptions) with math, citations,
-  and cross-references (the lightbox shows raw TeX and `[@key]`)
+  and cross-references (lightbox shows raw TeX and `[@key]` in the viewer)
 - [Galleries](#galleries) from groups and subfigures, and figure
   [layouts](#layouts)
 - [Wide and tall figures](#wide-and-tall-figures) open readable, at the spot you
@@ -124,7 +124,7 @@ Without the setting, only the images you select open in the viewer.
 
 ### Selecting images
 
-**Code cells**: use the `panzoom` cell option.
+In a code cell, use the `panzoom` cell option:
 
 ````markdown
 ```{r}
@@ -134,7 +134,7 @@ plot(pressure)
 ```
 ````
 
-**Markdown images:** use the class directly.
+On a markdown image, use the `.panzoom` class:
 
 ```markdown
 ![Caption](figure.png){.panzoom}
@@ -146,7 +146,7 @@ This also works for an image inside a line of text, which `panzoom: true` skips:
 Some text with an inline image ![](image.jpg){.panzoom width=60px} in the middle.
 ```
 
-**Any block:** wrap it in a div.
+To select every image in a block, wrap it in a `.panzoom` div:
 
 ```markdown
 ::: {.panzoom}
@@ -238,9 +238,9 @@ only do one action. The hint line names the keys in use.
 
 ### Captions
 
-The viewer shows the figure's caption, with its number, math, citations, and
-cross-references, where the page has it: under the image, above it with
-`fig-cap-location: top`, or beside it on the margin side with
+The viewer shows the figure's caption, with its number, math, inline code,
+citations, and cross-references, where the page has it: under the image, above
+it with `fig-cap-location: top`, or beside it on the margin side with
 `fig-cap-location: margin`. Turn it off with `caption: false`.
 
 `desc-position` puts the caption and description under the image (`bottom`),
@@ -258,7 +258,7 @@ the rest of the screen to zoom and pan in.
 
 ### Descriptions
 
-A Markdown description is shown under the caption:
+A markdown description is shown under the caption:
 
 ```markdown
 ![Beach](beach.jpg){.panzoom description="The best beaches. **Credit:** [Unsplash](https://unsplash.com)"}
@@ -314,7 +314,7 @@ image in a layout opens on its own, and subfigures form a gallery.
 
 ### Wide and tall figures
 
-Heuristic:
+panzoom guesses how each figure opens best from its shape:
 
   | Figure                                | Opens                                     | Same as        |
   | ------------------------------------- | ----------------------------------------- | -------------- |
@@ -404,10 +404,10 @@ panzoom:
 ---
 ```
 
-A color can also be a [`_brand.yml`](https://quarto.org/docs/authoring/brand.html)
-color: a `palette` name, or a role such as `primary` or `background`. With a
-light and a dark brand, it follows the theme. `panel-colour` and `link-colour`
-work too.
+A color can also be a
+[`_brand.yml`](https://quarto.org/docs/authoring/brand.html) color: a `palette`
+name, or a role such as `primary` or `background`. With a light and a dark
+brand, it follows the theme. `panel-colour` and `link-colour` work too.
 
 In CSS, for every viewer on the site:
 
