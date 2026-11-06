@@ -48,7 +48,7 @@ A cell with two plots: black ink on white for light mode, and light gray ink on
 near-black for dark mode. It opens in panzoom with the plot for the current
 color mode.
 
-````markdown {.code-overflow-wrap .cell-code}
+````{.markdown .code-overflow-wrap .cell-code}
 ```{{python}}
 #| panzoom: true
 #| renderings: [light, dark]
@@ -79,7 +79,7 @@ A cell with two plots on a transparent background: black ink for light mode and
 light gray ink for dark mode. It opens in panzoom with the plot for the current
 color mode.
 
-````markdown {.code-overflow-wrap .cell-code}
+````{.markdown .code-overflow-wrap .cell-code}
 ```{{python}}
 #| panzoom: true
 #| renderings: [light, dark]
@@ -109,7 +109,7 @@ wave(4, ink="#D9D9D9", paper="none")
 Two cells with `renderings: [light, dark]`, joined by `group: renderings`. The
 gallery steps through the two plots for the current mode.
 
-````markdown {.code-overflow-wrap .cell-code}
+````{.markdown .code-overflow-wrap .cell-code}
 ```{{python}}
 #| panzoom:
 #|   group: renderings
@@ -167,7 +167,7 @@ A cell with `renderings: [dark, light]`: the first plot, with light gray ink, is
 for dark mode, and the second, with black ink, for light mode. It opens in
 panzoom with the plot for the current color mode, as with the default order.
 
-````markdown {.code-overflow-wrap .cell-code}
+````{.markdown .code-overflow-wrap .cell-code}
 ```{{python}}
 #| panzoom: true
 #| renderings: [dark, light]

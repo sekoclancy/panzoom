@@ -58,7 +58,7 @@ Two images in a `.panzoom` div, which marks every image inside it. The first has
 `.nopanzoom`, which keeps it out, so clicking it does nothing. The second opens
 in panzoom.
 
-```markdown {.show-source}
+```{.markdown .show-source}
 ::: {.panzoom layout-ncol="2"}
 ![Waves breaking below the clay cliffs at Aquinnah, Martha's Vineyard.](../images/mv-1.jpg){.nopanzoom fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
 
@@ -71,7 +71,7 @@ in panzoom.
 An R cell with `#| panzoom: false` inside a `.panzoom` div. The cell option wins
 over the div, so clicking the plot does nothing.
 
-````markdown {.code-overflow-wrap .cell-code}
+````{.markdown .code-overflow-wrap .cell-code}
 ::: {.panzoom}
 ```{{r}}
 #| panzoom: false
@@ -163,7 +163,7 @@ inside a `.panzoom` div. The options on the cell apply as they do outside the
 div: it opens in panzoom without the hint line, and zooming in stops at 2 screen
 pixels per image pixel.
 
-````markdown {.code-overflow-wrap .cell-code}
+````{.markdown .code-overflow-wrap .cell-code}
 ::: {.panzoom}
 ```{{r}}
 #| panzoom:
@@ -226,7 +226,7 @@ An image with `.panzoom` and no alt text. It opens in panzoom with no caption,
 and the link around it is labeled "Open image" for screen readers. With no
 caption it isn't a figure, so it sits at the left like any image in a paragraph.
 
-```markdown {.show-source}
+```{.markdown .show-source}
 ![](../images/mv-4.jpg){.panzoom width=40%}
 ```
 

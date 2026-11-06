@@ -167,7 +167,7 @@ strip(seed = 3, n = 8)
 Two code cells in a `.panzoom` div with a layout. Each strip opens at screen
 width on its own, with no gallery, since they aren't subfigures.
 
-````markdown {.code-overflow-wrap .cell-code}
+````{.markdown .code-overflow-wrap .cell-code}
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
 #| fig-width: 4
@@ -252,7 +252,7 @@ Strips of different sizes, 4 × 20 in (10 rows) and 3 × 12 in (6 rows), in a
 layout div with captions of different lengths. Each opens at screen width from
 its top, on its own, and the layout shows them at different heights on the page.
 
-````markdown {.code-overflow-wrap .cell-code}
+````{.markdown .code-overflow-wrap .cell-code}
 ::: {.panzoom layout-ncol="2"}
 ```{{r}}
 #| fig-width: 4
