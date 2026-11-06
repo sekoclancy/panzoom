@@ -6,7 +6,10 @@
   Panzoom does the panning and zooming: drag (or one-finger drag) pans,
   two-finger pinch zooms. This file adds the viewer around it: click image ->
   overlay, wheel / trackpad pinch zooms toward the cursor, double-click or 0
-  resets to fit, +/- zoom, arrow keys pan, Esc / x / background click closes.
+  resets to fit, +/- zoom, arrow keys pan, Esc / x / background click closes,
+  c hides or shows the caption and description, h the hint line. The
+  document's `keys:` option changes these keys (see KEYS). The hint line
+  names mouse and keyboard controls, so a viewer opened by a tap has none.
 
   Captions: the viewer shows the image's figure caption, taken from the
   rendered page (the nearest <figcaption>), so "Figure N:" prefixes and
@@ -15,22 +18,33 @@
   panzoom.lua made from the `description` attribute or cell option and
   Quarto rendered with the page (citations, cross-references, math).
 
+  Caption position: `desc-position` (top, bottom, left or right; as for
+  Quarto's lightbox) puts the caption band above or below the image, or
+  beside it as a panel, and the image fits the rest of the screen. On a
+  screen narrower than NARROW, left and right show below, as lightbox
+  does.
+
   Galleries: images with the same group are stepped through with the
   prev/next buttons, Left/Right or a horizontal swipe (the last two only
   while the image fits the screen; when it is larger in either direction,
   they pan).
 
   Panning: drag, arrow keys, Shift+wheel or sideways trackpad scrolling
-  (along the direction the image extends past the screen; sideways if
-  both). The image is kept on screen: centered in a direction where it
-  fits, and stopping at its ends where it doesn't. The group
+  (sideways), and Alt+wheel (up and down). The image is kept on screen:
+  centered in a direction where it fits, and stopping at its ends where it
+  doesn't. The group
   is `data-panzoom-group` (cell option), else `data-group` (`group="..."` on
   a markdown image, as for Quarto's lightbox), else `data-ref-parent`
   (subfigures of one figure, as Quarto's lightbox groups them).
 
   Keyboard: marked images are focusable buttons that open on Enter or Space.
   The open viewer takes focus, keeps Tab inside it, and gives focus back to
-  what had it before when it closes.
+  what had it before when it closes. That image shows its focus ring only
+  if the viewer was opened from the keyboard: opened with the mouse or a
+  tap, the ring stays hidden until the next key press, even when Esc
+  closed it. A caption or description too long for
+  its panel is a Tab stop too, and the arrows, Page Up/Down, Home, End and
+  Space scroll it while it has focus.
 
   Fit: by default (`fit: auto`) the viewer opens on the whole image, unless
   it is a strip (at least 3 times wider than tall, or 3 times taller than
@@ -46,13 +60,20 @@
 
   Options come from `window.PANZOOM_OPTIONS` (written by panzoom.lua from
   the document's `panzoom:` metadata): { maxZoom: 4, hint: true,
-  caption: true, loop: false, fit: "auto" }. A cell's `#| panzoom:` options
-  override maxZoom, hint, caption and fit per image, via
-  `data-panzoom-max-zoom`, `data-panzoom-hint`, `data-panzoom-caption` and
-  `data-panzoom-fit` on the <img>.
+  caption: true, loop: false, fit: "auto", descPosition (default: where
+  the page puts the caption, see pagePosition()), cssClass: "", keys: {} };
+  cssClass
+  is added to the viewer's classes, for styling it, and keys rebinds the
+  viewer's keys (see KEYS). A cell's `#| panzoom:` options
+  override maxZoom, hint, caption, fit and descPosition per image, via
+  `data-panzoom-max-zoom`, `data-panzoom-hint`, `data-panzoom-caption`,
+  `data-panzoom-fit` and `data-panzoom-desc-position` on the <img> (the
+  last also from `desc-position="..."` on a markdown image). The styling options of a cell or an
+  image (`data-panzoom-css-class` and the colors, see STYLES) apply while
+  that image is shown, on top of the document's.
 */
 (function () {
-  var SELECTOR = ".panzoom img:not(.nopanzoom), img.panzoom:not(.nopanzoom)";
+  var SELECTOR = "img.panzoom:not(.nopanzoom)";
   var SWIPE = 50;  // px of horizontal drag that switches images
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
   var STRIP = 3;    // ...but only for images at least this many times wider than tall (or vice versa)
@@ -60,10 +81,46 @@
   var STRETCH = 80; // px a drag can pull an image past its end, at most
   var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
+  var POSITIONS = ["bottom", "top", "left", "right"];
+  var NARROW = 769; // px: below this width, left and right show below (as lightbox)
+  // Per-image color options: data attribute (as in `dataset`) -> CSS variable.
+  var STYLES = {
+    panzoomBackdrop: "--panzoom-backdrop",
+    panzoomPanelBackground: "--panzoom-panel-bg",
+    panzoomPanelColor: "--panzoom-panel-fg",
+    panzoomLinkColor: "--panzoom-link"
+  };
+  // The default keys of the actions `keys:` can rebind (KeyboardEvent.key
+  // values; as in panzoom.lua). Tab, Enter, Space, the arrows, Page Up/Down,
+  // Home and End stay fixed.
+  var KEYS = {
+    caption: ["c"], hint: ["h"], close: ["Escape"], reset: ["0"],
+    "zoom-in": ["+", "="], "zoom-out": ["-"]
+  };
 
-  var overlay, img, closeBtn, prevBtn, nextBtn, counter, footer, caption, desc;
-  var pz = null, opts, press = null, returnFocus = null, margin = 0;
+  var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
+  var loadId = 0, loadTimer = null;
+  var pz = null, opts, press = null, returnFocus = null, margin = 0, marginX = 0;
+  // Where the caption band is now (see place()): opts.descPosition, or
+  // bottom instead of left or right on a narrow screen.
+  var side = "bottom";
+  // Whether the viewer was opened with the mouse or a tap (see close()),
+  // and whether by a tap (no hint line; see showFooter()).
+  var byPointer = false, byTouch = false;
+  // The page's own inline overflow and scrollbar-gutter, put back on close.
+  var pageStyle = null;
+  // The page behind the open viewer is inert, so focus, Tab, and screen
+  // readers stay in the viewer: each other child of <body>, with whether
+  // it was inert before, put back on close.
+  var inerted = [];
+  // The kind of pointer last pressed: a click doesn't say whether it came
+  // from a tap in every browser.
+  var lastPointer = "";
   var bouncing = false, bounceTimer = null;
+  // With "reduce motion" set, a pan that runs into an end stops there and
+  // a drag past an end snaps back, instead of bouncing or sliding.
+  var motion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+  function reducedMotion() { return !!(motion && motion.matches); }
   // Where the image's center is held, on screen, along an axis where it is
   // smaller than the screen ({ x, y }; null: centered). Only zooming sets
   // it (see zoomAt()); opening, reset and zooming out to the whole image
@@ -74,23 +131,121 @@
   // keyboard).
   var clicked = null;
   var gallery = [], index = 0;
+  // Back closes the viewer: opening adds a history entry (same URL), which
+  // Back leaves, and closing any other way steps back over it (see
+  // close()). `leaving` is a link's address to follow once that step is
+  // done. `stepping`: that step hasn't landed yet (history.back() is
+  // asynchronous); a viewer opened meanwhile adds its entry once it has.
+  var inHistory = false, leaving = null, stepping = false;
+  // The classes the shown image added to the viewer (see restyle()).
+  var imageClasses = [];
+  // The c and h keys hide the caption (with the description) and the hint,
+  // for as long as the page is open, so a gallery stays that way. For the
+  // hint, h flips each image's own start (shown, or hidden with `hint:
+  // hide`); an image with no hint ignores it.
+  var hideCaption = false, flipHint = false;
+  // The document's keys (see keys()): action -> list of keys.
+  var bindings = null;
+  // The opening view fit() set ({ s, x, y }), to tell whether the reader
+  // has zoomed or panned since.
+  var opening = null;
 
   // Document-wide options, overridden by the image's data attributes.
   function options(el) {
     var o = window.PANZOOM_OPTIONS || {};
     var d = (el && el.dataset) || {};
+    // `hint`: true or "show" (the default), "hide" (starts hidden), or
+    // false (none: the hint key does nothing).
+    var hintMode = function (v) {
+      if (v === false || v === "false") return "none";
+      return v === "hide" ? "hide" : "show";
+    };
     var flag = function (v, dflt) {
       return v !== undefined ? v !== "false" && v !== false : dflt;
     };
     var maxZoom = d.panzoomMaxZoom !== undefined ? Number(d.panzoomMaxZoom) : o.maxZoom;
     var fit = d.panzoomFit !== undefined ? d.panzoomFit : o.fit;
+    var pos = d.panzoomDescPosition !== undefined ? d.panzoomDescPosition :
+      o.descPosition !== undefined ? o.descPosition : pagePosition(el);
     return {
       fit: FITS.indexOf(fit) >= 0 ? fit : "auto",
+      descPosition: POSITIONS.indexOf(pos) >= 0 ? pos : "bottom",
       maxZoom: typeof maxZoom === "number" && maxZoom > 0 ? maxZoom : 4,
-      hint: flag(d.panzoomHint, flag(o.hint, true)),
+      hint: hintMode(d.panzoomHint !== undefined ? d.panzoomHint : o.hint),
       caption: flag(d.panzoomCaption, flag(o.caption, true)),
       loop: flag(o.loop, false)
     };
+  }
+
+  // Where the page puts the image's caption (`fig-cap-location`), as a
+  // `desc-position`: the default when neither the image nor the document
+  // sets one. A margin caption is beside the image on the margin side,
+  // which a right-to-left page puts on the left. A subfigure looks at its
+  // own caption, then its parent figure's.
+  function pagePosition(el) {
+    var fig = el && el.closest("figure");
+    for (var i = 0; fig && i < 2; i++) {
+      var cap = fig.querySelector(":scope > figcaption");
+      if (cap && cap.classList.contains("quarto-float-caption-top")) return "top";
+      if (cap && cap.classList.contains("margin-caption")) {
+        return getComputedStyle(fig).direction === "rtl" ? "left" : "right";
+      }
+      fig = fig.parentElement && fig.parentElement.closest("figure");
+    }
+    return "bottom";
+  }
+
+  // Each action's keys: the document's `keys:` (a list, or false for
+  // none; panzoom.lua has checked them), else the defaults.
+  function keys() {
+    if (bindings) return bindings;
+    var o = (window.PANZOOM_OPTIONS || {}).keys || {};
+    bindings = {};
+    Object.keys(KEYS).forEach(function (a) {
+      bindings[a] = o[a] === false ? [] : Array.isArray(o[a]) ? o[a] : KEYS[a];
+    });
+    return bindings;
+  }
+
+  // The action a key does, or null.
+  function actionOf(key) {
+    var k = keys();
+    for (var a in k) if (k[a].indexOf(key) >= 0) return a;
+    return null;
+  }
+
+  // The hint line's parts, naming the keys bound: the caption key only when
+  // the image has a caption or description, to hide it or, once hidden, to
+  // show it.
+  function hintParts(captioned) {
+    var named = function (a) {
+      return keys()[a].map(function (k) { return k === "Escape" ? "Esc" : k; }).join(" or ");
+    };
+    var cap = captioned ? named("caption") : "", hin = named("hint"), shut = named("close");
+    var parts = ["scroll to zoom", "drag to pan", "double-click to reset"];
+    if (cap) parts.push(cap + (hideCaption ? " to show" : " to hide") + " the caption");
+    if (hin) parts.push(hin + " to hide the hint");
+    if (shut) parts.push(shut + " to close");
+    return parts;
+  }
+
+  // Fills `el` with the parts, each kept whole on one line, between dots
+  // that stay with the part before them (see panzoom.css: in a panel beside
+  // the image, one part per line).
+  function fillHint(el, parts) {
+    el.textContent = "";
+    parts.forEach(function (p, i) {
+      if (i) {
+        var sep = document.createElement("span");
+        sep.className = "panzoom-hint-sep";
+        sep.textContent = "\u00a0\u00b7 ";
+        el.appendChild(sep);
+      }
+      var part = document.createElement("span");
+      part.className = "panzoom-hint-part";
+      part.textContent = p;
+      el.appendChild(part);
+    });
   }
 
   // The <figcaption> of `fig` itself (not of a nested subfigure), as HTML.
@@ -117,14 +272,14 @@
     return html;
   }
 
-  // The colour behind `el` on the page: the first non-transparent background
+  // The color behind `el` on the page: the first non-transparent background
   // among it and its ancestors (the page, a callout, a dark theme), else
   // white. The viewer shows the image on it, so a transparent plot (e.g.
   // knitr's `dev: [png, pdf]`) keeps its dark labels readable on the dark
   // overlay, and looks as it does on the page.
   function backdropOf(el) {
     for (var n = el; n && n.nodeType === 1; n = n.parentElement) {
-      // Only an opaque colour counts: a translucent tint shows what's behind.
+      // Only an opaque color counts: a translucent tint shows what's behind.
       var bg = getComputedStyle(n).backgroundColor;
       var m = /^rgba\(.*,\s*([\d.]+)\)$/.exec(bg);
       if (/^rgb\(/.test(bg) || (m && +m[1] >= 1)) return bg;
@@ -132,9 +287,40 @@
     return "#fff";
   }
 
+  // A class list as written in an option: names separated by spaces.
+  function classList(s) {
+    return (s || "").split(/\s+/).filter(Boolean);
+  }
+
+  // Styles the viewer for `el` (or for no image): its `css-class` and
+  // colors, replacing the previous image's. Inline variables beat the
+  // document's, which are set on `.panzoom-overlay` and its classes.
+  function restyle(el) {
+    var d = (el && el.dataset) || {};
+    imageClasses.forEach(function (c) { overlay.classList.remove(c); });
+    // Classes the viewer already has from the document stay as they are.
+    var page = classList((window.PANZOOM_OPTIONS || {}).cssClass).concat("panzoom-overlay");
+    imageClasses = classList(d.panzoomCssClass).filter(function (c) {
+      return page.indexOf(c) < 0;
+    });
+    imageClasses.forEach(function (c) { overlay.classList.add(c); });
+    for (var key in STYLES) {
+      if (d[key]) overlay.style.setProperty(STYLES[key], d[key]);
+      else overlay.style.removeProperty(STYLES[key]);
+    }
+  }
+
   function groupOf(el) {
     var d = el.dataset;
     return d.panzoomGroup || d.group || d.refParent || null;
+  }
+
+  // Whether `el` is the rendering Quarto hides in the current color mode
+  // (a cell with `renderings: [light, dark]` writes both).
+  function otherRendering(el) {
+    var body = document.body.classList;
+    return (body.contains("quarto-light") && !!el.closest(".dark-content")) ||
+      (body.contains("quarto-dark") && !!el.closest(".light-content"));
   }
 
   // The images the viewer can step through from `el`, in page order.
@@ -142,7 +328,7 @@
     var g = groupOf(el);
     if (!g) return [el];
     return Array.prototype.filter.call(document.querySelectorAll(SELECTOR), function (x) {
-      return groupOf(x) === g && opens(x);
+      return groupOf(x) === g && opens(x) && !otherRendering(x);
     });
   }
 
@@ -171,23 +357,27 @@
     var a = area(), vw = a.w, vh = a.h;
     var w = img.naturalWidth, h = img.naturalHeight;
     if (!w || !h) return;
+    // Screen points below are in the overlay; the space starts at (a.x, a.y).
     // No opening view enlarges an image past its real size (1 image px per
     // CSS px), as with Quarto's lightbox: a small image opens at its own size
     // and can still be zoomed in up to max-zoom.
-    var whole = Math.min(vw / w, vh / h, 1 / 0.95) * 0.95;
-    var mode = fitMode(w, h, vw, vh, whole);
+    // In a gallery the sides leave room for the previous and next buttons,
+    // so an image shown whole, or panned to an end, stays clear of them.
     margin = 0.025 * Math.min(vw, vh);
-    var s = whole, cx = vw / 2, cy = vh / 2;
+    marginX = gallery.length > 1 ? Math.max(margin, prevBtn.offsetWidth + 16) : margin;
+    var whole = Math.min((vw - 2 * Math.max(marginX, 0.025 * vw)) / w, 0.95 * vh / h, 1);
+    var mode = fitMode(w, h, vw, vh, whole);
+    var s = whole, cx = a.x + vw / 2, cy = a.y + vh / 2;
     // A strip starts at its left end (or top), or, if it was clicked on the
     // page, with the clicked spot in the middle of the screen (as far as
     // its ends allow).
     var at = clicked && clicked.el === gallery[index] ? clicked : null;
     if (mode === "height") {
       s = Math.min((vh - 2 * margin) / h, 1);
-      if (w * s > vw) cx = at ? vw / 2 + (0.5 - at.fx) * w * s : margin + w * s / 2;
+      if (w * s > vw) cx = a.x + (at ? vw / 2 + (0.5 - at.fx) * w * s : marginX + w * s / 2);
     } else if (mode === "width") {
-      s = Math.min((vw - 2 * margin) / w, 1);
-      if (h * s > vh) cy = at ? vh / 2 + (0.5 - at.fy) * h * s : margin + h * s / 2;
+      s = Math.min((vw - 2 * marginX) / w, 1);
+      if (h * s > vh) cy = a.y + (at ? vh / 2 + (0.5 - at.fy) * h * s : margin + h * s / 2);
     }
     img.dataset.fit = mode;
     // Clear `pz` first: Panzoom fires change events while it starts up, and
@@ -198,8 +388,8 @@
       cursor: "grab",
       startScale: s,
       // The opening view is also where reset (0, double-click) returns.
-      startX: containAxis((cx - w / 2) / s, s, w, vw),
-      startY: containAxis((cy - h / 2) / s, s, h, vh),
+      startX: containAxis((cx - w / 2) / s, s, w, vw, null, a.x, marginX),
+      startY: containAxis((cy - h / 2) / s, s, h, vh, null, a.y, margin),
       minScale: Math.min(whole, s),
       maxScale: Math.max(opts.maxZoom, s)
     });
@@ -207,11 +397,67 @@
     // now, so the image doesn't show at (0, 0) for a frame and an
     // immediate zoom or pan starts from the opening view.
     pz.pan((cx - w / 2) / s, (cy - h / 2) / s, { animate: false, force: true });
+    var p = pz.getPan();
+    opening = { s: pz.getScale(), x: p.x, y: p.y };
   }
 
-  // The space the image is shown in: the overlay above the caption.
+  // Whether the view is still the opening one: not zoomed or panned.
+  function atOpening() {
+    if (!pz || !opening) return false;
+    var p = pz.getPan();
+    return Math.abs(pz.getScale() - opening.s) < 1e-6 &&
+      Math.abs(p.x - opening.x) < 0.5 && Math.abs(p.y - opening.y) < 0.5;
+  }
+
+  // Shows or hides the caption band's parts (see hideCaption), and the band
+  // itself when all of them are hidden.
+  function showFooter() {
+    caption.hidden = hideCaption || !caption.innerHTML;
+    desc.hidden = hideCaption || !desc.innerHTML.trim();
+    hint.hidden = opts.hint === "none" || byTouch || (opts.hint === "hide") !== flipHint;
+    fillHint(hint.querySelector(".panzoom-hint-keys"),
+      hintParts(!!caption.innerHTML || !!desc.innerHTML.trim()));
+    footer.hidden = caption.hidden && desc.hidden && hint.hidden;
+    // The band's size, for the buttons it would cover (see panzoom.css).
+    overlay.style.setProperty("--panzoom-band-height", footer.offsetHeight + "px");
+    overlay.style.setProperty("--panzoom-band-width", footer.offsetWidth + "px");
+    markScrollable();
+  }
+
+  // Puts the caption band where the image's desc-position says (a class on
+  // the viewer: panzoom-desc-top and so on), below instead of beside the
+  // image on a narrow screen.
+  function place() {
+    var p = opts.descPosition;
+    if ((p === "left" || p === "right") && window.innerWidth < NARROW) p = "bottom";
+    overlay.classList.remove("panzoom-desc-" + side);
+    side = p;
+    overlay.classList.add("panzoom-desc-" + side);
+  }
+
+  // c and h ("caption" and "hint"): hide or show the caption or the hint.
+  // The image gets the room the band gave up (or gives it back): an
+  // untouched view fits afresh, and a zoomed or panned one keeps its place,
+  // held within the new space.
+  function toggleFooter(which) {
+    if (which === "caption") hideCaption = !hideCaption;
+    else if (opts.hint === "none") return;
+    else flipHint = !flipHint;
+    var refit = atOpening();
+    showFooter();
+    if (refit) fit(); else contain();
+  }
+
+  // The space the image is shown in: the overlay less the caption band,
+  // starting at (x, y) in the overlay.
   function area() {
-    return { w: overlay.clientWidth, h: overlay.clientHeight - footer.offsetHeight };
+    var w = overlay.clientWidth, h = overlay.clientHeight;
+    if (side === "left" || side === "right") {
+      var bw = footer.offsetWidth;
+      return { x: side === "left" ? bw : 0, y: 0, w: w - bw, h: h };
+    }
+    var bh = footer.offsetHeight;
+    return { x: 0, y: side === "top" ? bh : 0, w: w, h: h - bh };
   }
 
   // Which ways the image is larger than that space (zoomed in, or a wide or
@@ -229,26 +475,29 @@
   // fits); drags and arrow keys don't move it. Where it is larger, its
   // edges stop at the screen edges (less the margin), so panning ends at
   // the image's ends. `t` is Panzoom's pan along the axis (unscaled px, see
-  // fit()), `n` the image size and `avail` the space, both along the axis.
-  function containAxis(t, s, n, avail, hold) {
+  // fit()), `n` the image size and `avail` the space, both along the axis,
+  // and `off` where the space starts on screen (the caption band above or
+  // to the left); `mg` the margin along the axis (see fit()).
+  function containAxis(t, s, n, avail, hold, off, mg) {
     var size = n * s;
+    off = off || 0;
     if (size <= avail) {
-      var m = Math.min(margin, (avail - size) / 2);
-      var h = hold === null || hold === undefined ? avail / 2 : hold;
+      var m = Math.min(mg, (avail - size) / 2);
+      var h = hold === null || hold === undefined ? avail / 2 : hold - off;
       h = Math.min(avail - m - size / 2, Math.max(m + size / 2, h));
-      return (h - n / 2) / s;
+      return (off + h - n / 2) / s;
     }
-    var c = n / 2 + s * t;                             // image center on screen
-    c = Math.min(margin + size / 2, Math.max(avail - margin - size / 2, c));
-    return (c - n / 2) / s;
+    var c = n / 2 + s * t - off;                       // image center in the space
+    c = Math.min(mg + size / 2, Math.max(avail - mg - size / 2, c));
+    return (off + c - n / 2) / s;
   }
 
   // The contained pan for (x, y) at scale s.
   function contained(x, y, s) {
     var a = area();
     return {
-      x: containAxis(x, s, img.naturalWidth, a.w, held.x),
-      y: containAxis(y, s, img.naturalHeight, a.h, held.y)
+      x: containAxis(x, s, img.naturalWidth, a.w, held.x, a.x, marginX),
+      y: containAxis(y, s, img.naturalHeight, a.h, held.y, a.y, margin)
     };
   }
 
@@ -289,6 +538,11 @@
   // Animated pan to (x, y), then `then`. Only a pan at a fixed scale is
   // animated, so the image slides straight (see resetView()).
   function slideTo(x, y, ms, easing, then) {
+    if (reducedMotion()) {
+      pz.pan(x, y, { animate: false, force: true });
+      if (then) then();
+      return;
+    }
     setBouncing(true);
     pz.pan(x, y, { animate: true, duration: ms, easing: easing, force: true });
     bounceTimer = setTimeout(function () {
@@ -369,7 +623,7 @@
     var s = pz.getScale(), p = pz.getPan(), o = overflow();
     var tx = p.x - dx / s, ty = p.y - dy / s, c = contained(tx, ty, s);
     var ex = o.x ? (tx - c.x) * s : 0, ey = o.y ? (ty - c.y) * s : 0;  // px past the end
-    if (Math.abs(ex) < 0.5 && Math.abs(ey) < 0.5) {
+    if (reducedMotion() || (Math.abs(ex) < 0.5 && Math.abs(ey) < 0.5)) {
       pz.pan(c.x, c.y, { animate: false, force: true });
       return;
     }
@@ -385,35 +639,98 @@
     panPx(fx * overlay.clientWidth, fy * overlay.clientHeight);
   }
 
+  // Whether the image, wider than the screen, rests at its end toward
+  // `dir` (1: its right end, -1: its left end).
+  function atEndX(dir) {
+    if (!pz) return false;
+    var a = area(), s = pz.getScale(), x = pz.getPan().x;
+    var end = containAxis(dir > 0 ? -1e9 : 1e9, s, img.naturalWidth, a.w, null, a.x, marginX);
+    return Math.abs(x - end) < 0.5;
+  }
+
+  // Left/Right (`dir` -1 or 1). While the image is larger than the screen
+  // they pan, doing nothing sideways if it fits that way, and a press that
+  // reaches an end bounces; one made while an image wider than the screen
+  // already rests at that end switches gallery images, but a held key
+  // (`repeat`) never does. An image that fits switches at once. Without
+  // `loop`, nothing happens past either end of the gallery.
+  function arrow(dir, repeat) {
+    var o = overflow();
+    if (!o.any) { step(dir); return; }
+    if (o.x && !repeat && atEndX(dir) && step(dir)) return;
+    panBy(0.1 * dir, 0);
+  }
+
   // Shows gallery image `i`, fitted to the screen.
   function show(i) {
     stopBounce();
     var el = gallery[i];
     index = i;
     opts = options(el);
+    restyle(el);
     var n = gallery.length, many = n > 1;
     prevBtn.hidden = nextBtn.hidden = counter.hidden = !many;
     prevBtn.disabled = !opts.loop && i === 0;
     nextBtn.disabled = !opts.loop && i === n - 1;
+    // A disabled button loses focus to the page behind; keep it in the viewer.
+    var focused = document.activeElement;
+    if ((focused === prevBtn || focused === nextBtn) && focused.disabled) {
+      var other = focused === nextBtn ? prevBtn : nextBtn;
+      (other.disabled ? overlay : other).focus();
+    }
     counter.textContent = (i + 1) + " / " + n;
     caption.innerHTML = opts.caption ? captionOf(el) : "";
-    caption.hidden = !caption.innerHTML;
     desc.innerHTML = opts.caption ? descriptionOf(el) : "";
-    desc.hidden = !desc.innerHTML.trim();
-    overlay.querySelector(".panzoom-hint").hidden = !opts.hint;
     overlay.querySelector(".panzoom-hint-gallery").hidden = !many;
+    caption.scrollTop = desc.scrollTop = 0;
+    place();
+    showFooter();
     overlay.setAttribute("aria-label", "Image viewer" + (many ? ", image " + (i + 1) + " of " + n : ""));
     if (pz) { pz.destroy(); pz = null; }
     img.style.transform = "";
     delete img.dataset.fit;
     img.alt = el.alt || "";
     img.style.backgroundColor = backdropOf(el);
-    img.onload = fit;
-    img.src = el.currentSrc || el.src;
+    load(el.currentSrc || el.src);
     // Vector images stay sharp when zoomed only if the browser may redraw
     // them at the new scale (see panzoom.css).
     img.classList.toggle("panzoom-vector", /\.svg([?#]|$)/i.test(img.src) || /^data:image\/svg/i.test(img.src));
-    if (img.complete && img.naturalWidth) fit();
+  }
+
+  // Loads `src` into the viewer and fits it once it has loaded. Each load
+  // gets a number, and only the latest one's events count: a slow image
+  // that finishes after the viewer closed, or after another image was
+  // shown, does nothing. While loading, the image is hidden, and after a
+  // moment "Loading image" shows; if it fails, a message says so.
+  function load(src) {
+    var id = ++loadId;
+    clearTimeout(loadTimer);
+    overlay.classList.remove("panzoom-error");
+    overlay.classList.add("panzoom-loading");
+    status.textContent = "";
+    loadTimer = setTimeout(function () {
+      if (id === loadId) status.textContent = "Loading image\u2026";
+    }, 300);
+    img.onload = function () { if (id === loadId) loaded(); };
+    img.onerror = function () { if (id === loadId) failed(); };
+    img.src = src;
+    if (img.complete && img.naturalWidth) loaded();
+  }
+
+  function loaded() {
+    // Once per load (a cached image is complete at once, and fires load too).
+    if (!overlay.classList.contains("panzoom-loading")) return;
+    clearTimeout(loadTimer);
+    overlay.classList.remove("panzoom-loading");
+    status.textContent = "";
+    fit();
+  }
+
+  function failed() {
+    clearTimeout(loadTimer);
+    overlay.classList.remove("panzoom-loading");
+    overlay.classList.add("panzoom-error");
+    status.textContent = "The image could not be loaded.";
   }
 
   // Steps through the gallery; returns false at either end without `loop`.
@@ -428,44 +745,135 @@
     return true;
   }
 
-  function open(el, point) {
+  function open(el, point, pointer) {
     if (!overlay) build();
     clicked = point ? { el: el, fx: point.fx, fy: point.fy } : null;
     returnFocus = document.activeElement;
+    byPointer = !!pointer;
+    byTouch = byPointer && lastPointer === "touch";
     gallery = galleryOf(el);
+    var html = document.documentElement;
+    if (!overlay.classList.contains("open")) {
+      pageStyle = { overflow: html.style.overflow, gutter: html.style.scrollbarGutter };
+      inerted = [];
+      Array.prototype.forEach.call(document.body.children, function (el) {
+        if (el === overlay) return;
+        inerted.push({ el: el, was: el.inert });
+        el.inert = true;
+      });
+    }
+    if (!inHistory && !stepping) {
+      history.pushState({ panzoom: true }, "");
+      inHistory = true;
+    }
     overlay.classList.add("open");
     // Stop the page scrolling; keep the scrollbar's space, if it has one,
     // so the page behind doesn't shift sideways, and cover that space too.
-    var html = document.documentElement, bar = window.innerWidth - html.clientWidth;
+    var bar = window.innerWidth - html.clientWidth;
     if (bar > 0) html.style.scrollbarGutter = "stable";
     overlay.style.right = -bar + "px";
     html.style.overflow = "hidden";
+    // Firefox paints the page in the kept space, over the viewer (a point
+    // there hits the page, where Chrome finds nothing): stop the viewer at
+    // it, so the image is centered on the part that shows.
+    if (bar > 0 && document.elementFromPoint(window.innerWidth - Math.ceil(bar / 2), window.innerHeight / 2) === html) {
+      overlay.style.right = "0px";
+    }
     show(Math.max(0, gallery.indexOf(el)));
     overlay.focus({ preventScroll: true });
   }
 
-  function close() {
+  // `fromHistory`: Back closed the viewer, so its history entry is gone.
+  function close(fromHistory) {
+    if (inHistory) {
+      inHistory = false;
+      if (fromHistory !== true) {
+        stepping = true;
+        history.back();
+      }
+    }
     stopBounce();
-    overlay.classList.remove("open");
-    document.documentElement.style.overflow = "";
-    document.documentElement.style.scrollbarGutter = "";
     if (pz) { pz.destroy(); pz = null; }
+    // Forget the image being loaded (see load()), and stop downloading it.
+    loadId++;
+    clearTimeout(loadTimer);
+    img.onload = img.onerror = null;
+    img.removeAttribute("src");
+    img.style.transform = "";
+    delete img.dataset.fit;
+    overlay.classList.remove("open", "panzoom-loading", "panzoom-error");
+    restyle(null);
+    status.textContent = "";
+    inerted.forEach(function (o) { o.el.inert = o.was; });
+    inerted = [];
+    if (pageStyle) {
+      document.documentElement.style.overflow = pageStyle.overflow;
+      document.documentElement.style.scrollbarGutter = pageStyle.gutter;
+      pageStyle = null;
+    }
     press = null;
+    overlay.classList.remove("dragging");
     gallery = [];
+    // Opened with the mouse or a tap: no focus ring on the image focus
+    // returns to, though a key (Esc) may have closed the viewer, until the
+    // next key press.
+    if (byPointer) document.documentElement.classList.add("panzoom-no-ring");
     if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
     returnFocus = null;
   }
+  // Capture phase, before the key moves focus (Tab).
+  document.addEventListener("keydown", function () {
+    document.documentElement.classList.remove("panzoom-no-ring");
+  }, true);
 
-  // The controls Tab moves between: visible, enabled buttons and caption links.
+  // The controls Tab moves between: visible, enabled buttons, caption links,
+  // and a caption or description panel that scrolls (see markScrollable()).
   function focusables() {
     return Array.prototype.filter.call(
-      overlay.querySelectorAll("button, a[href]"),
+      overlay.querySelectorAll("button, a[href], .panzoom-scrollable"),
       function (x) { return !x.disabled && x.offsetParent !== null; });
+  }
+
+  // A caption or description longer than its panel scrolls; make it a Tab
+  // stop, so it can be scrolled from the keyboard (see scrollPanel()).
+  // Checked again on resize, which changes what fits.
+  function markScrollable() {
+    [caption, desc].forEach(function (p) {
+      var on = !p.hidden && p.scrollHeight > p.clientHeight + 1;
+      p.classList.toggle("panzoom-scrollable", on);
+      if (on) {
+        p.tabIndex = 0;
+        p.setAttribute("role", "region");
+        p.setAttribute("aria-label", p === caption ? "Caption" : "Description");
+      } else {
+        p.removeAttribute("tabindex");
+        p.removeAttribute("role");
+        p.removeAttribute("aria-label");
+        if (document.activeElement === p) overlay.focus({ preventScroll: true });
+      }
+    });
+  }
+
+  // Scrolls a focused caption or description panel for a scrolling key, as
+  // the browser would (its own scrolling is prevented, see onKey()).
+  // Returns false for other keys.
+  function scrollPanel(p, e) {
+    var line = 40, page = Math.max(line, p.clientHeight - line);
+    var by = { ArrowDown: line, ArrowUp: -line, PageDown: page, PageUp: -page,
+      " ": e.shiftKey ? -page : page }[e.key];
+    if (e.key === "Home") p.scrollTop = 0;
+    else if (e.key === "End") p.scrollTop = p.scrollHeight;
+    else if (by !== undefined) p.scrollTop += by;
+    else return false;
+    return true;
   }
 
   function build() {
     overlay = document.createElement("div");
     overlay.className = "panzoom-overlay";
+    classList((window.PANZOOM_OPTIONS || {}).cssClass).forEach(function (c) {
+      overlay.classList.add(c);
+    });
     overlay.setAttribute("role", "dialog");
     overlay.setAttribute("aria-modal", "true");
     overlay.setAttribute("aria-label", "Image viewer");
@@ -474,15 +882,16 @@
     overlay.innerHTML =
       '<img alt="" draggable="false">' +
       '<div class="panzoom-counter panzoom-exclude" aria-live="polite"></div>' +
-      '<button class="panzoom-close panzoom-exclude" aria-label="Close">&times;</button>' +
-      '<button class="panzoom-prev panzoom-exclude" aria-label="Previous image">&lsaquo;</button>' +
-      '<button class="panzoom-next panzoom-exclude" aria-label="Next image">&rsaquo;</button>' +
-      '<div class="panzoom-footer panzoom-exclude">' +
+      '<div class="panzoom-status panzoom-exclude" role="status"></div>' +
+      '<button class="panzoom-close panzoom-exclude" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+      '<button class="panzoom-prev panzoom-exclude" aria-label="Previous image"><span aria-hidden="true">&lsaquo;</span></button>' +
+      '<button class="panzoom-next panzoom-exclude" aria-label="Next image"><span aria-hidden="true">&rsaquo;</span></button>' +
+      '<div class="panzoom-panel panzoom-exclude">' +
       '<div class="panzoom-caption"></div>' +
       '<div class="panzoom-description"></div>' +
-      '<div class="panzoom-hint">scroll to zoom &middot; drag to pan &middot; ' +
-      'double-click to reset &middot; Esc to close' +
-      '<span class="panzoom-hint-gallery"> &middot; previous/next buttons for other images</span></div>' +
+      '<div class="panzoom-hint"><span class="panzoom-hint-keys"></span>' +
+      '<span class="panzoom-hint-gallery"><span class="panzoom-hint-sep">&nbsp;&middot; </span>' +
+      '<span class="panzoom-hint-part">previous/next buttons for other images</span></span></div>' +
       '</div>';
     document.body.appendChild(overlay);
     img = overlay.querySelector("img");
@@ -490,33 +899,47 @@
     prevBtn = overlay.querySelector(".panzoom-prev");
     nextBtn = overlay.querySelector(".panzoom-next");
     counter = overlay.querySelector(".panzoom-counter");
-    footer = overlay.querySelector(".panzoom-footer");
+    status = overlay.querySelector(".panzoom-status");
+    footer = overlay.querySelector(".panzoom-panel");
     caption = overlay.querySelector(".panzoom-caption");
     desc = overlay.querySelector(".panzoom-description");
-    closeBtn.addEventListener("click", close);
+    hint = overlay.querySelector(".panzoom-hint");
+    closeBtn.addEventListener("click", function () { close(); });
     img.addEventListener("panzoomchange", contain);
     prevBtn.addEventListener("click", function () { step(-1); });
     nextBtn.addEventListener("click", function () { step(1); });
     // A link in the caption or description (e.g. a cross-reference) leaves
-    // the viewer.
+    // the viewer. A plain click follows it once the viewer's history entry
+    // is gone, so Back from there returns to the page, not the viewer.
     footer.addEventListener("click", function (e) {
-      if (e.target.closest("a[href]")) close();
+      var a = e.target.closest("a[href]");
+      if (!a) return;
+      var plain = e.button === 0 && !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) &&
+        (!a.target || a.target === "_self") && !a.hasAttribute("download");
+      if (plain && inHistory) {
+        e.preventDefault();
+        leaving = a.href;
+      }
+      close();
     });
 
     // Panzoom's own zoomWithWheel takes a fixed step per event, which makes
     // trackpad pinch (many small events) far too fast; scale by the delta.
     // Over the caption, the wheel scrolls a long caption instead.
-    // Shift+wheel, and sideways trackpad scrolling, pan instead: along the
-    // one direction the image extends past the screen, or sideways when it
-    // extends both ways (or neither, when containment keeps it still).
+    // Shift+wheel, and sideways trackpad scrolling, pan sideways instead;
+    // Alt+wheel (Option on a Mac) pans up and down.
     overlay.addEventListener("wheel", function (e) {
       if (footer.contains(e.target)) return;
       e.preventDefault();
+      if (e.ctrlKey && gesture) return;
       var unit = e.deltaMode === 1 ? 16 : 1;
+      if (e.altKey && !e.ctrlKey) {
+        panPx(0, (e.deltaY || e.deltaX) * unit);
+        return;
+      }
       if (!e.ctrlKey && (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))) {
         // Some browsers turn Shift+wheel into deltaX, others keep deltaY.
-        var d = (e.deltaX || e.deltaY) * unit, o = overflow();
-        if (o.y && !o.x) panPx(0, d); else panPx(d, 0);
+        panPx((e.deltaX || e.deltaY) * unit, 0);
         return;
       }
       var dy = e.deltaY * unit;
@@ -524,32 +947,77 @@
       zoomAt(Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015)), e.clientX, e.clientY);
     }, { passive: false });
 
+    // Desktop Safari reports a trackpad pinch as gesture events (scale since
+    // the pinch began), not as ctrlKey wheel events; while one runs, any
+    // ctrlKey wheel events are skipped so the pinch never counts twice. A
+    // touch pinch (iOS) also sends them, but Panzoom already follows the
+    // pointers, so they are ignored while a finger is down.
+    var gesture = null;
+    overlay.addEventListener("gesturestart", function (e) {
+      e.preventDefault();
+      gesture = press ? null : { scale: 1 };
+    });
+    overlay.addEventListener("gesturechange", function (e) {
+      e.preventDefault();
+      if (!gesture || press || !e.scale) return;
+      zoomAt(e.scale / gesture.scale, e.clientX, e.clientY);
+      gesture.scale = e.scale;
+    });
+    overlay.addEventListener("gestureend", function (e) {
+      e.preventDefault();
+      gesture = null;
+    });
+
     // Panzoom handles the drag itself. A press and release on the background
     // without moving closes the viewer; a horizontal swipe switches images
     // unless the image is larger than the screen (then the drag pans it).
+    // Only a single finger (or the mouse) taps or swipes: once a second
+    // finger is down (a pinch), lifting the fingers just ends the gesture,
+    // whichever finger touched down last or rests on the background.
     overlay.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest(".panzoom-exclude")) return;
       stopBounce();
-      press = { id: e.pointerId, sx: e.clientX, sy: e.clientY, onImg: e.target === img, pans: overflow().any };
+      if (press) {
+        press.ids.push(e.pointerId);
+        press.multi = true;
+        return;
+      }
+      press = { id: e.pointerId, ids: [e.pointerId], multi: false, sx: e.clientX, sy: e.clientY,
+        onImg: e.target === img, pans: overflow().any };
       overlay.classList.add("dragging");
     });
-    document.addEventListener("pointerup", function (e) {
-      if (!press || e.pointerId !== press.id) return;
+    function release(e) {
+      var i = press ? press.ids.indexOf(e.pointerId) : -1;
+      if (i < 0) return;
+      press.ids.splice(i, 1);
+      if (press.ids.length) return;
+      var single = !press.multi && e.type === "pointerup";
       var dx = e.clientX - press.sx, dy = e.clientY - press.sy;
       var moved = Math.abs(dx) + Math.abs(dy) > 3;
-      var clickedBackground = !moved && !press.onImg;
-      var swipe = !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
+      var clickedBackground = single && !moved && !press.onImg;
+      var swipe = single && !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
       press = null;
       overlay.classList.remove("dragging");
       if (clickedBackground) close();
       else if (!(swipe && step(dx < 0 ? 1 : -1))) settle();
-    });
+    }
+    document.addEventListener("pointerup", release);
+    document.addEventListener("pointercancel", release);
 
     overlay.addEventListener("dblclick", function (e) {
       if (!e.target.closest(".panzoom-exclude")) resetView();
     });
+    // Resize events can fire many times a frame; lay out once per frame.
+    var resizeFrame = 0;
     window.addEventListener("resize", function () {
-      if (overlay.classList.contains("open")) fit();
+      if (resizeFrame) return;
+      resizeFrame = requestAnimationFrame(function () {
+        resizeFrame = 0;
+        if (!overlay.classList.contains("open")) return;
+        place();
+        showFooter();
+        if (!overlay.classList.contains("panzoom-loading")) fit();
+      });
     });
   }
 
@@ -571,26 +1039,55 @@
     var cx = overlay.clientWidth / 2, cy = overlay.clientHeight / 2;
     var active = document.activeElement;
     var onControl = active !== overlay && overlay.contains(active);
+    var action = actionOf(e.key);
     if (e.key === "Tab") {
       // Focus trap: cycle through the viewer's own controls.
       var list = focusables(), i = list.indexOf(active), n = list.length;
       if (n) list[e.shiftKey ? (i <= 0 ? n - 1 : i - 1) : (i + 1) % n].focus();
     }
-    else if (e.key === "Escape") close();
+    else if (action === "close") close();
+    // A focused caption or description panel takes the scrolling keys.
+    else if (active.classList.contains("panzoom-scrollable") && scrollPanel(active, e)) return;
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
     // Left/Right pan while the image is larger than the screen (doing
     // nothing if it fits sideways); otherwise they switch gallery images
     // (doing nothing at either end without `loop`).
-    else if (e.key === "ArrowLeft") { if (overflow().any) panBy(-0.1, 0); else step(-1); }
-    else if (e.key === "ArrowRight") { if (overflow().any) panBy(0.1, 0); else step(1); }
+    else if (e.key === "ArrowLeft") arrow(-1, e.repeat);
+    else if (e.key === "ArrowRight") arrow(1, e.repeat);
     else if (e.key === "ArrowUp") panBy(0, -0.1);
     else if (e.key === "ArrowDown") panBy(0, 0.1);
-    else if (e.key === "0") resetView();
-    else if (e.key === "+" || e.key === "=") zoomAt(1.25, cx, cy);
-    else if (e.key === "-") zoomAt(0.8, cx, cy);
+    else if (action === "reset") resetView();
+    else if (action === "zoom-in") zoomAt(1.25, cx, cy);
+    else if (action === "zoom-out") zoomAt(0.8, cx, cy);
+    else if (action === "caption" || action === "hint") toggleFooter(action);
   }
   window.addEventListener("keydown", onKey, true);
   window.addEventListener("keyup", onKey, true);
+
+  window.addEventListener("popstate", function (e) {
+    var ours = e.state && e.state.panzoom;
+    if (stepping && !ours) {
+      stepping = false;
+      // Opened again before the step back landed: add its entry now.
+      if (overlay.classList.contains("open")) {
+        history.pushState({ panzoom: true }, "");
+        inHistory = true;
+        return;
+      }
+    }
+    if (inHistory && !ours) close(true);
+    else if (leaving && !ours) {
+      var href = leaving;
+      leaving = null;
+      // After the browser puts back the scroll position for this entry,
+      // which would undo a jump to an anchor on the page.
+      setTimeout(function () { location.assign(href); }, 0);
+    }
+    // Forward into the entry of a viewer since closed: step back over it.
+    else if (ours && !inHistory) history.back();
+  });
+  // Reloaded with the viewer open: its entry stays, but the viewer doesn't.
+  if (history.state && history.state.panzoom) history.replaceState(null, "");
 
   // Whether a marked image opens the viewer: not one inside the viewer, and
   // not one inside an author's link, which keeps its link. panzoom.lua's
@@ -610,19 +1107,29 @@
     return t && opens(t) ? t : null;
   }
 
+  document.addEventListener("pointerdown", function (e) {
+    lastPointer = e.pointerType;
+  }, true);
+
   // Capture phase, so this runs before other click handlers on the page;
   // preventDefault stops the `a.panzoom-link` around the image.
   document.addEventListener("click", function (e) {
     var t = target(e);
     if (!t) return;
+    // A modified click on the fallback link does what it does on any link
+    // (a new tab or window, a download).
+    if ((e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) && t.closest("a.panzoom-link[href]")) return;
     e.preventDefault();
     e.stopPropagation();
     var r = t.getBoundingClientRect();
     var frac = function (v) { return Math.min(1, Math.max(0, v)); };
-    open(t, r.width && r.height ? {
+    // A click from the mouse or a tap counts one or more clicks in
+    // `detail`; one made from the keyboard or a script, none, and has no
+    // clicked spot: a strip opens at its start, as with Enter or Space.
+    open(t, e.detail > 0 && r.width && r.height ? {
       fx: frac((e.clientX - r.left) / r.width),
       fy: frac((e.clientY - r.top) / r.height)
-    } : null);
+    } : null, e.detail > 0);
   }, true);
 
   // Enter or Space on a focused marked image opens it, like a button.
