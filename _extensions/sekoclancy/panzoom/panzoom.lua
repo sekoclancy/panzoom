@@ -265,11 +265,13 @@ local function check(key, spec, value, text, shown, where)
   return ok
 end
 
--- A metadata value as Lua: a boolean, the text of a string, or nil (a list
--- or a map), and how Quarto would print it.
+-- A metadata value as Lua: a boolean, a number, the text of a string, or nil
+-- (a list or a map), and how Quarto would print it.
 local function meta_value(v)
   local t = pandoc.utils.type(v)
   if t == "boolean" then return v, tostring(v), tostring(v) end
+  -- Quarto 2 passes a YAML number as a number; Pandoc passes its text.
+  if t == "number" then return v, tostring(v), tostring(v) end
   if t == "Inlines" or t == "Blocks" or t == "string" then
     local s = pandoc.utils.stringify(v)
     -- A boolean written without quotes arrives as a boolean, so this one was
