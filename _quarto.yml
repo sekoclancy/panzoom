@@ -25,6 +25,10 @@ format:
     # Long code lines wrap: a block that scrolls sideways can't be scrolled
     # from the keyboard (axe: scrollable-region-focusable).
     code-overflow: wrap
+    # The table of contents is named by its title (see the file), as Quarto
+    # 1.11 does on its own. The leading / is the project root.
+    template-partials:
+      - /_partials/toc.html
 
 knitr:
   opts_chunk:
