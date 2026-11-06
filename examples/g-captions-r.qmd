@@ -126,6 +126,21 @@ and a citation. It opens in panzoom with all of them rendered.
 plot(pressure)
 ```
 
+## Code in a caption {expect-open="panzoom"}
+
+An R cell with code in its caption and description. It opens in panzoom with
+both shown as code.
+
+```{r}
+#| panzoom:
+#|   description: "The plot comes from `wave(k = 3)`."
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 3: `y = sin(3 * x)`; the area between the curve and y = 0 is shaded.
+
+wave(k = 3)
+```
+
 ## Gallery descriptions {expect-references=""}
 
 Two images with `.panzoom` in a gallery, one with a cross-reference and one with

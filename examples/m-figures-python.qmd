@@ -250,6 +250,22 @@ listed under [References](#references).
 wave(4)
 ```
 
+## Code in a caption {expect-open="panzoom"}
+
+A cell with code in its caption and description. It opens in panzoom with both
+shown as code.
+
+```{python}
+#| panzoom:
+#|   description: "The plot comes from `wave(3)`."
+#| fig-alt: "A sine curve, shaded between the curve and y = 0"
+#| fig-cap: >-
+#|   Wave 3: `y = np.sin(3 * x)`; the area between the curve and y = 0 is
+#|   shaded.
+
+wave(3)
+```
+
 ## Long description {expect-open="panzoom" expect-scroll="description"}
 
 A cell with a description longer than its panel, under the `panzoom` cell
