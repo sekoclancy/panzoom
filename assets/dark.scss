@@ -36,12 +36,12 @@ $navbar-fg: #ffffff;
 .quarto-dark figcaption :is(a, .citation a) { text-decoration: underline; }
 
 /* Match the hanging indent used for echoed source in the light theme. */
-.quarto-dark pre.sourceCode > code.sourceCode > span {
+.quarto-dark pre.sourceCode > code.sourceCode > span[id] {
   padding-left: 3ch;
   text-indent: -3ch;
   line-height: inherit;
 }
-.quarto-dark pre.sourceCode.markdown-example > code.sourceCode > span {
+.quarto-dark pre.sourceCode.markdown-example > code.sourceCode > span[id] {
   padding-left: 0;
   text-indent: 0;
 }
