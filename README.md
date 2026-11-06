@@ -269,7 +269,7 @@ or for a code cell's plots:
 ````markdown
 ```{r}
 #| panzoom:
-#|   description: "Pressure rises with temperature, $p \propto e^{-1/T}$."
+#|   description: "Pressure rises with temperature, $p \\propto e^{-1/T}$."
 
 plot(pressure)
 ```
