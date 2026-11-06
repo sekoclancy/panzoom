@@ -4,6 +4,7 @@
   "description": "Browser checks for the panzoom Quarto extension",
   "scripts": {
     "test": "node browser.mjs",
+    "all": "node all.mjs",
     "standalone": "node standalone.mjs && node browser.mjs standalone/*.html",
     "nojs": "node nojs.mjs",
     "contrast": "node contrast.mjs",
