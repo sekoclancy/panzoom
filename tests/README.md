@@ -18,12 +18,12 @@ Render, then run the tests from `tests/`:
 
 ```bash
 quarto render
-cd tests && npm test
+cd tests && npm run all
 ```
 
   | Command              | Checks                                                                                                                                                                                                                         | Time   |
   | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ |
-  | `npm test`           | The demo and the example pages (A–N): the viewer per image, zoom, pan, keys, galleries, captions                                                                                                                               | ~1 min |
+  | `npm test`           | The front page and the example pages (A–T): the viewer per image, zoom, pan, keys, galleries, captions                                                                                                                         | ~2 min |
   | `npm run touch`      | The viewer on an emulated phone: tap, pinch, drag, swipe                                                                                                                                                                       | ~10 s  |
   | `npm run loading`    | Slow and failed images: loading message, late arrivals, error message                                                                                                                                                          | ~5 s   |
   | `npm run nojs`       | Every page with JavaScript off: each marked image links to its file                                                                                                                                                            | ~10 s  |
@@ -60,7 +60,7 @@ quarto render --profile axe    # then, with caddy run, open /axe/
   | ------------------------------------------------------------------------------ | --------------------------- | -------------------------------------------------- |
   | [Quarto](https://quarto.org) 1.8.27 or later                                   | Rendering                   |                                                    |
   | R 4.6 and [rv](https://github.com/A2-ai/rv)                                    | The R pages                 | `rv sync` ([Setup](../README.md#setup))            |
-  | Python 3.14 venv                                                               | Pages J–L                   | `uv sync` ([Setup](../README.md#setup))            |
+  | Python 3.14 venv                                                               | Pages J–M, Q, and T         | `uv sync` ([Setup](../README.md#setup))            |
   | [Node.js](https://nodejs.org) 22.12 or later                                   | The scripts                 |                                                    |
   | Chrome Headless Shell (about 115 MB)                                           | The browser the tests drive | `quarto install chrome-headless-shell --no-prompt` |
   | Puppeteer (`puppeteer-core`, pinned in [package-lock.json](package-lock.json)) | Controlling Chrome          | `cd tests && npm install`                          |
@@ -75,27 +75,27 @@ describing the expected result.
 
 **R (knitr).** A–D render the same 12 cases four ways:
 
-  | Page                                                     | Description                                                             | panzoom | Lightbox      |
-  | -------------------------------------------------------- | ----------------------------------------------------------------------- | ------- | ------------- |
-  | [a-lightbox-r](../examples/a-lightbox-r.qmd)             | **Reference:** Quarto's lightbox on each case                           | off     | `match: auto` |
-  | [b-mixed-r](../examples/b-mixed-r.qmd)                   | **The usual setup:** marked images; the lightbox for the rest           | on      | `true`        |
-  | [c-global-r](../examples/c-global-r.qmd)                 | **Every figure:** A's markup, panzoom with `match: auto`                | auto    | `match: auto` |
-  | [d-selecting-r](../examples/d-selecting-r.qmd)           | **Marked images only**, no lightbox                                     | on      | none          |
-  | [e-image-formats-r](../examples/e-image-formats-r.qmd)   | webp, svg, png + pdf, and webp past its 16,383 px limit                 | on      | none          |
-  | [f-cell-options-r](../examples/f-cell-options-r.qmd)     | Opting out, the `hint`, `max-zoom`, `loop`, and `desc-position` options | on      | none          |
-  | [g-captions-r](../examples/g-captions-r.qmd)             | Citations and cross-references in captions and descriptions             | on      | none          |
-  | [h-wide-and-tall-r](../examples/h-wide-and-tall-r.qmd)   | Wide collages, tall strips, and other shapes, each on its own; `fit`    | on      | none          |
-  | [i-wide-galleries-r](../examples/i-wide-galleries-r.qmd) | The same shapes in galleries and layouts, of different lengths          | on      | none          |
+  | Page                                                     | Description                                                               | panzoom | Lightbox      |
+  | -------------------------------------------------------- | ------------------------------------------------------------------------- | ------- | ------------- |
+  | [a-lightbox-r](../examples/a-lightbox-r.qmd)             | **Reference:** Quarto's lightbox on each case                             | off     | `match: auto` |
+  | [b-mixed-r](../examples/b-mixed-r.qmd)                   | **The usual setup:** marked images; the lightbox for the rest             | on      | `true`        |
+  | [c-global-r](../examples/c-global-r.qmd)                 | **Every figure:** A's markup, panzoom with `match: auto`                  | auto    | `match: auto` |
+  | [d-selecting-r](../examples/d-selecting-r.qmd)           | **Marked images only**, no lightbox                                       | on      | none          |
+  | [e-image-formats-r](../examples/e-image-formats-r.qmd)   | webp, svg, png + pdf, and webp past its 16,383 px limit                   | on      | none          |
+  | [f-cell-options-r](../examples/f-cell-options-r.qmd)     | Opting out, the `hint`, `max-zoom`, `loop`, and `desc-position` options   | on      | none          |
+  | [g-captions-r](../examples/g-captions-r.qmd)             | Citations, cross-references, and inline code in captions and descriptions | on      | none          |
+  | [h-wide-and-tall-r](../examples/h-wide-and-tall-r.qmd)   | Wide collages, tall strips, and other shapes, each on its own; `fit`      | on      | none          |
+  | [i-wide-galleries-r](../examples/i-wide-galleries-r.qmd) | The same shapes in galleries and layouts, of different lengths            | on      | none          |
 
 **Python (Jupyter).** J and K are the Jupyter counterparts of A and C, on eight
 cases. L and M carry the R pages' cell cases:
 
-  | Page                                                           | Description                                                                                                             | panzoom | Lightbox |
-  | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------- | -------- |
-  | [j-lightbox-python](../examples/j-lightbox-python.qmd)         | **Reference:** the lightbox alone (it ignores nested `#\| lightbox:` options with Jupyter)                              | off     | `true`   |
-  | [k-global-python](../examples/k-global-python.qmd)             | **`panzoom: true`:** J's cases; keep the two in step                                                                    | `true`  | `true`   |
-  | [l-cell-options-python](../examples/l-cell-options-python.qmd) | The R pages' cell options on matplotlib figures, and svg output                                                         | on      | none     |
-  | [m-figures-python](../examples/m-figures-python.qmd)           | The cell cases from E to I: `loop`, captions and citations, png + pdf and jpeg, `fit`, strips and collages in galleries | on      | none     |
+  | Page                                                           | Description                                                                                                                           | panzoom | Lightbox |
+  | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------- | -------- |
+  | [j-lightbox-python](../examples/j-lightbox-python.qmd)         | **Reference:** the lightbox alone (it ignores nested `#\| lightbox:` options with Jupyter)                                            | off     | `true`   |
+  | [k-global-python](../examples/k-global-python.qmd)             | **`panzoom: true`:** J's cases; keep the two in step                                                                                  | `true`  | `true`   |
+  | [l-cell-options-python](../examples/l-cell-options-python.qmd) | The R pages' cell options on matplotlib figures, and svg output                                                                       | on      | none     |
+  | [m-figures-python](../examples/m-figures-python.qmd)           | The cell cases from E to I: `loop`, captions, citations, and inline code, png + pdf and jpeg, `fit`, strips and collages in galleries | on      | none     |
 
 **Styling**, checked with `expect-overlay` and `expect-band`:
 
@@ -170,26 +170,26 @@ reason). Requests to other sites are counted, and their failures reported, but
 don't fail the run. Each page gets a folder in `results/` with `report.md`, a
 screenshot per click (`cNN-M.png`: image M of case NN), and `results.json`.
 
-For example, page B's summary line:
+For example, the summary line for page B:
 
 ```
-b-mixed-r: 18 images, {"panzoom":12,"glightbox":4,"nothing":1,"navigation":1}, 0 console errors, isolation ok, keyboard ok, gallery ok, fit n/a, backdrop ok, caption clear ok, fast zoom ok, zoom anchor ok, options ok, descriptions ok, references ok, math ok (page: typeset), 10 external requests, containment ok, page still ok -> results/b-mixed-r/report.md
+b-mixed-r: 18 images, {"panzoom":12,"glightbox":4,"navigation":1,"nothing":1}, 0 console errors, isolation ok, keyboard ok, gallery ok, back ok, fit n/a, links ok, backdrop ok, caption clear ok, hint keys ok, fast zoom ok, zoom anchor ok, options ok, descriptions ok, references ok, math ok (page: typeset), 13 external requests, containment ok, short panels ok, page still ok -> results/b-mixed-r/report.md
 ```
 
 the first row of its `report.md` (the Classes and Wrapper columns left out):
 
-  | Case                                                      | Img | Opened      | Details                                                                                                                                                                                         | Zoom× | Anchor px | Drag px | Reset | Esc | Bg click |
-  | --------------------------------------------------------- | --- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | --------- | ------- | ----- | --- | -------- |
-  | 1. Single image, markdown description, desc-position left | 1   | **panzoom** | caption: Beach in Chilmark; 1 / 1; 2400×1364 px, shown 1216×691, on rgb(255, 255, 255); opens: contain; description: Chilmark has some of the best beaches. credit: Chilmark Beach; hint hidden | 4.48  | 3         | 170     | yes   | yes | yes      |
+  | Case            | Img | Opened      | Details                                                                                                                                                                                                                   | Zoom× | Anchor px | Drag px | Reset | Esc | Bg click |
+  | --------------- | --- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | --------- | ------- | ----- | --- | -------- |
+  | 1. Single image | 1   | **panzoom** | caption: Sunset at Chilmark Beach, Martha’s Vineyard.; 1 / 1; 2400×1364 px, shown 861×489, on rgb(255, 255, 255); opens: contain; description: Chilmark has some of the best beaches. credit: Chilmark Beach; hint hidden | 4.48  | 100       | 170     | yes   | yes | yes      |
 
 and its screenshot, `c01-1.png`:
 
 ![The viewer open on case 1 of page B: the beach photo over the dimmed page,
 with its caption and description below.](images/example-screenshot.jpg)
 
-A few cases open nothing on purpose: case 11 (`lightbox: false`), cases 5 and 7
-on A and C (Quarto drops the link around a captioned image, and inline images
-aren't automatic), and every unmarked image on D.
+A few cases open nothing on purpose: Opt out a cell on A–D (`lightbox: false`),
+Image in a link on A (Quarto drops the link around a captioned image), Inline
+image on A and C (inline images aren't automatic), and every unmarked image on D.
 
 ## Other suites
 
@@ -270,20 +270,21 @@ the refusal but exit 0, so check that `docs/examples/` has pages.
   | 1.7.34                  | All pass except `options`: the errors are reported and the render stops, but Quarto exits 0                                                                                                                                                                                                                                       |
   | 1.4.556 to 1.6.42       | `options` as for 1.7; standalone `switch-*` pages log a `SyntaxError` from Quarto's own `quarto.js`; on 1.4, page G case 10's caption stays short (no `lipsum` shortcode before 1.5), so its panel scroll check fails. Jupyter plots come out at half the pixels (588 × 411), which the keyboard and gallery checks now zoom past |
 
-## Demo GIF
+## Demo
 
-`npm run demo` ([demo.mjs](demo.mjs)) records the README's
-[images/demo.gif](../images/demo.gif) from the rendered demo page. Run it again
-after changing `index.qmd` or the viewer, then commit the GIF. It needs ffmpeg,
-from `uv sync --group demo` or `FFMPEG=/path/to/ffmpeg`. A later plain `uv sync`
-removes it again.
+`npm run demo` ([demo.mjs](demo.mjs)) records
+[images/demo.gif](../images/demo.gif) for the README, and demo.mp4 with its
+poster for the front page, from the rendered front page. Run it again after
+changing `index.qmd` or the viewer, then commit the three files. It needs
+ffmpeg, from `uv sync --group demo` or `FFMPEG=/path/to/ffmpeg`. A later plain
+`uv sync` removes it again.
 
 ## Adding a case
 
-Add a `## N. Title {#cN}` section with any `expect-*` attributes, then render
-and run the tests. On A–D, add it to all four pages: A without panzoom markers,
-B and D with them, C with A's markup. Keep the title short, since the code shown
-below it carries the details.
+Add a `## Title` section with any `expect-*` attributes, and an id (`{#sec-…}`)
+if another page links to it, then render and run the tests. On A–D, add it to
+all four pages: A without panzoom markers, B and D with them, C with A's markup.
+Keep the title short, since the code shown below it carries the details.
 
 ### Markdown cases
 
@@ -341,14 +342,14 @@ pages B, G, and I:
   | Check                                                                            | Where                               | Expected                                                    |
   | -------------------------------------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------- |
   | Tap                                                                              | any marked image                    | the viewer opens                                            |
-  | Pinch and drag                                                                   | page B, case 9                      | zooms toward the fingers, pans, stays on screen             |
-  | Pinch with a finger on the background                                            | page B, case 9                      | the viewer stays open                                       |
+  | Pinch and drag                                                                   | page B, Grouped cells               | zooms toward the fingers, pans, stays on screen             |
+  | Pinch with a finger on the background                                            | page B, Grouped cells               | the viewer stays open                                       |
   | Double-tap                                                                       | a zoomed image                      | back to the opening view                                    |
-  | Swipe                                                                            | page B, case 4                      | the next image                                              |
-  | Scroll a long description                                                        | page G, case 9                      | it scrolls; the image and page don't move                   |
+  | Swipe                                                                            | page B, Markdown subfigures         | the next image                                              |
+  | Scroll a long description                                                        | page G, Long description            | it scrolls; the image and page don't move                   |
   | Rotate the phone, or resize the window                                           | any open image                      | refits; a long caption still scrolls                        |
   | Close                                                                            | the × button, or tap the background | closes; the page is where it was                            |
-  | Tab, Enter, and Esc (desktop Safari, with "Press Tab to highlight each item" on) | page G, case 9                      | Tab reaches the description; Esc returns focus to the image |
+  | Tab, Enter, and Esc (desktop Safari, with "Press Tab to highlight each item" on) | page G, Long description            | Tab reaches the description; Esc returns focus to the image |
   | Wide figure                                                                      | page H                              | opens at screen height and pans sideways                    |
 
 ## Troubleshooting
