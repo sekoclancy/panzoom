@@ -22,20 +22,6 @@ quarto add sekoclancy/panzoom
 This will install the extension under the `_extensions` subdirectory. If you're
 using version control, you will want to check in this directory.
 
-### From source
-
-To build the demo site and examples from a clone, with
-[uv](https://docs.astral.sh/uv/) and [rv](https://github.com/A2-ai/rv):
-
-```bash
-git clone https://github.com/sekoclancy/panzoom && cd panzoom
-uv sync          # creates .venv with Python 3.14 and the locked packages
-rv sync          # installs the locked R packages into rv/library
-quarto render    # build into docs/
-```
-
-See [Development](#development) to preview and publish.
-
 ## Demo
 
 ![Opening a gallery image, zooming with the wheel, dragging, resetting with a
@@ -455,26 +441,48 @@ each way, and the classes of the viewer's parts.
 
 ## Development
 
-Set up a clone as in [From source](#from-source). The venv is only for the
-Python (Jupyter) examples, with its packages listed in
-[pyproject.toml](pyproject.toml) and pinned in [uv.lock](uv.lock). The R
-examples use the rv library, with its packages listed in
-[rproject.toml](rproject.toml) and pinned in [rv.lock](rv.lock); rv keeps out
-packages installed with R itself. Then:
+### Setup
+
+Building the site needs [uv](https://docs.astral.sh/uv/) for the Python examples
+and [rv](https://github.com/A2-ai/rv) for the R examples:
 
 ```bash
-quarto render              # build the site into docs/
-caddy run                  # serve docs/ on port 4242 (or $CADDYPORT)
-quarto publish gh-pages --no-prompt --no-browser   # build and publish to GitHub Pages
-uv lock --upgrade && uv sync   # update the Python packages, then commit uv.lock
+git clone https://github.com/sekoclancy/panzoom && cd panzoom
+uv sync          # Python packages, from uv.lock
+rv sync          # R packages, from rv.lock
 ```
 
-Before the first publish, create an empty `gh-pages` branch once (`--no-prompt`
-can't create it):
+### Build and preview
+
+```bash
+quarto render    # build the site into docs/
+caddy run        # serve docs/ on port 4242 (or $CADDYPORT)
+```
+
+### Tests
+
+See [tests/README.md](tests/README.md) for the suites and their setup.
+
+### Publish
+
+```bash
+quarto publish gh-pages --no-prompt --no-browser
+```
+
+The first publish needs a `gh-pages` branch. Create it once, without touching
+the working tree:
 
 ```bash
 git branch gh-pages $(git commit-tree $(git hash-object -t tree /dev/null) -m "Initializing gh-pages branch")
 git push origin gh-pages
 ```
 
-See [tests/README.md](tests/README.md) for the tests and their setup.
+### Update packages
+
+```bash
+uv lock --upgrade && uv sync    # Python, then commit uv.lock
+rv upgrade                      # R, then commit rv.lock
+```
+
+R packages come from a dated snapshot, the `p3m.dev/cran/<date>` URL in
+`rproject.toml`. Move its date forward first to get newer versions.
