@@ -5,7 +5,7 @@
   Opens docs/index.html in headless Chrome, plays a short scripted session
   (from the gallery: open its first image, wheel-zoom, drag,
   double-click to reset, next image, Esc; open the wide figure on its
-  highlighted panel and pan with the right and left arrow keys), with
+  highlighted panel and pan with Ctrl plus the right and left arrow keys), with
   a drawn mouse pointer, since headless Chrome draws none, and a label
   naming each click, key, scroll, drag, and double-click, shown before
   the action so it never trails what it names. Frames come from Chrome's screencast, each with its own timestamp,
@@ -206,11 +206,15 @@ async function session(page) {
   await page.mouse.click(p.x, p.y);
   await wait(700);
   if (!(await isOpen(page))) throw new Error("viewer didn't open on the wide figure");
-  await label(page, "right arrow", 800);
+  await label(page, "Ctrl+right", 800);
+  await page.keyboard.down("Control");
   for (let i = 0; i < 2; i++) { await page.keyboard.press("ArrowRight"); await wait(150); }
+  await page.keyboard.up("Control");
   await wait(300);
-  await label(page, "left arrow", 900);
+  await label(page, "Ctrl+left", 900);
+  await page.keyboard.down("Control");
   for (let i = 0; i < 4; i++) { await page.keyboard.press("ArrowLeft"); await wait(150); }
+  await page.keyboard.up("Control");
   await wait(400);
   await label(page, "Esc", 700);
   await page.keyboard.press("Escape");

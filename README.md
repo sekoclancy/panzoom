@@ -25,8 +25,8 @@ using version control, you will want to check in this directory.
 ## Demo
 
 ![Opening a gallery image, zooming with the wheel, dragging, resetting with a
-double-click, stepping to the next image, and panning a wide figure with the
-arrow keys.](images/demo.gif)
+double-click, stepping to the next image, and panning a wide figure with
+Ctrl/Cmd+arrow keys.](images/demo.gif)
 
 ## Viewer controls
 
