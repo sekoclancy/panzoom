@@ -67,21 +67,21 @@ website:
           - href: examples/a-lightbox-r.qmd
             text: "A. `lightbox` comparison (R)"
           - href: examples/b-mixed-r.qmd
-            text: "B. Selected images with `lightbox` (R)"
+            text: "B. Selected images with `lightbox`"
           - href: examples/c-global-r.qmd
             text: "C. Global `panzoom` (R)"
           - href: examples/d-selecting-r.qmd
-            text: "D. Selecting images (R)"
+            text: "D. Selecting images"
           - href: examples/e-image-formats-r.qmd
-            text: "E. Image formats (R)"
+            text: "E. Image formats"
           - href: examples/f-cell-options-r.qmd
             text: "F. Cell options (R)"
           - href: examples/g-captions-r.qmd
-            text: "G. Captions and descriptions (R)"
+            text: "G. Captions and descriptions"
           - href: examples/h-wide-and-tall-r.qmd
-            text: "H. Wide and tall figures (R)"
+            text: "H. Wide and tall figures"
           - href: examples/i-wide-galleries-r.qmd
-            text: "I. Wide figures in galleries (R)"
+            text: "I. Wide figures in galleries"
       - section: "Python"
         contents:
           - href: examples/j-lightbox-python.qmd
@@ -91,13 +91,13 @@ website:
           - href: examples/l-cell-options-python.qmd
             text: "L. Cell options (Python)"
           - href: examples/m-figures-python.qmd
-            text: "M. Captions, formats, and shapes (Python)"
+            text: "M. Captions, formats, and shapes"
       - section: "Styling"
         contents:
           - href: examples/n-color-options-r.qmd
-            text: "N. Color options (R)"
+            text: "N. Color options"
           - href: examples/o-css-r.qmd
-            text: "O. Styling with CSS (R)"
+            text: "O. Styling with CSS"
       - section: "Divs"
         contents:
           - href: examples/p-divs-r.qmd
@@ -107,7 +107,7 @@ website:
       - section: "Theme"
         contents:
           - href: examples/r-dark-plots-r.qmd
-            text: "R. Dark plots (R)"
+            text: "R. Dark plots"
           - href: examples/s-renderings-r.qmd
             text: "S. Renderings (R)"
           - href: examples/t-renderings-python.qmd
