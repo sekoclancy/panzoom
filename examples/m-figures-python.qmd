@@ -450,7 +450,7 @@ next, and the image refits beside it.
 #|   - "Wave 1: y = sin(x)."
 #|   - "Wave 2: y = sin(2x); the area between the curve and y = 0 is
 #|     shaded."
-#|   - "Wave 3: y = sin(3x), three periods across the plot; the area between the
+#|   - "Wave 3: y = sin(3x), six periods across the plot; the area between the
 #|     curve and y = 0 is shaded."
 
 wave(1)

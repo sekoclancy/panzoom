@@ -308,7 +308,7 @@ next, and the image refits beside it.
 #|   - >-
 #|     Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.
 #|   - >-
-#|     Wave 3: y = sin(3x), with three full periods across the plot; the area
+#|     Wave 3: y = sin(3x), with six full periods across the plot; the area
 #|     between the curve and y = 0 is shaded.
 
 wave(k = 1)
