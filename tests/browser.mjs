@@ -624,20 +624,32 @@ async function checkKeyboard(page, handle) {
   if (!out.enterOpens) return out;
   out.focusMovesIn = (await focusState()).inViewer;
 
-  // The arrows pan in each direction the image is larger than the screen
-  // (in a direction where it fits, containment holds it still).
+  // Ctrl/Cmd+arrow pans in each direction the image is larger than the
+  // screen (in a direction where it fits, containment holds it still). A
+  // bare ArrowDown always does nothing (checked here; bare ArrowRight is
+  // gallery-stepping, which may switch this image away on a page full of
+  // galleries, so that's covered more precisely by checkGallery and the
+  // overflow-gallery checks instead of here).
   const over = await zoomPastScreen(page);
-  const before = await viewerTransform(page);
+  const opening = await viewerTransform(page);
+  await page.keyboard.press("ArrowDown");
+  await settle(page);
+  const bare = await viewerTransform(page);
+  out.bareDownDoesNothing = opening && bare && Math.abs(bare.x - opening.x) < 1 && Math.abs(bare.y - opening.y) < 1;
+  await page.keyboard.down("Control");
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("ArrowDown");
+  await page.keyboard.up("Control");
   await settle(page);  // past an end, a pan bounces and settles
   const after = await viewerTransform(page);
-  const movedX = before && after && after.x < before.x - 1;
-  const movedY = before && after && after.y < before.y - 1;
+  const movedX = bare && after && after.x < bare.x - 1;
+  const movedY = bare && after && after.y < bare.y - 1;
   out.arrowsPan = (over.x || over.y) && (!over.x || !!movedX) && (!over.y || !!movedY);
-  // Left and Up pan back the other way.
+  // Ctrl+Left and Ctrl+Up pan back the other way.
+  await page.keyboard.down("Control");
   await page.keyboard.press("ArrowLeft");
   await page.keyboard.press("ArrowUp");
+  await page.keyboard.up("Control");
   await settle(page);
   const back = await viewerTransform(page);
   const backX = after && back && back.x > after.x + 1;
@@ -797,15 +809,24 @@ async function checkGallery(page, handle) {
   out.swipeNext = await counter();
   await page.click(".panzoom-prev");
   await settle(page);
-  // Zoomed in past the screen's width, Right pans instead of switching.
+  // Zoomed in past the screen's width, Ctrl+Right pans, keeping the same
+  // image; bare Right instead switches images regardless, abandoning the
+  // zoom for the next image's own opening fit.
   const wider = (await zoomPastScreen(page, true)).x;
   const z0 = await viewerTransform(page);
+  await page.keyboard.down("Control");
   await page.keyboard.press("ArrowRight");
+  await page.keyboard.up("Control");
   await settle(page);
   const z1 = await viewerTransform(page);
   // Same image, and moved left if it is wider than the screen.
-  out.zoomedArrowPans = (await counter()) === first &&
+  out.zoomedCtrlArrowPans = (await counter()) === first &&
     (!wider || !!(z0 && z1 && z1.x < z0.x - 1));
+  await page.keyboard.press("ArrowRight");
+  await settle(page);
+  out.zoomedBareArrowSwitches = (await counter()) === next;
+  await page.keyboard.press("ArrowLeft");
+  await settle(page);
   // Without loop, the first image has no previous one; with loop it does.
   out.prevDisabledAtStart = m[1] === "1"
     ? await page.$eval(".panzoom-prev", (b) => b.disabled) : null;
@@ -819,20 +840,20 @@ async function checkGallery(page, handle) {
   });
   // On the last image, the mirror of the first: without `loop`, "next" is
   // disabled and Right does nothing; with `loop`, Right goes to the first
-  // image. A last image wider than the screen pans on Right instead, so
-  // there the next button is pressed.
+  // image. Bare Right always switches regardless of size now, so no
+  // button-click fallback is needed here even if the image overflows.
   out.nextDisabledAtEnd = await page.$eval(".panzoom-next", (b) => b.disabled);
   if (out.loop) out.nextDisabledAtEnd = !out.nextDisabledAtEnd;
   const last = await counter();
-  if ((await state(page)).overX) await page.click(".panzoom-next");
-  else await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("ArrowRight");
   await settle(page);
   out.rightAtEnd = await counter();
   out.rightAtEndOk = out.rightAtEnd === (out.loop ? `1 / ${n}` : last);
   await closeAll(page);
   out.ok = out.pageKeysStill &&
     out.arrowNext === next && out.arrowBack && out.buttonNext === next &&
-    out.swipeNext === next && out.zoomedArrowPans && out.prevDisabledAtStart !== false &&
+    out.swipeNext === next && out.zoomedCtrlArrowPans && out.zoomedBareArrowSwitches &&
+    out.prevDisabledAtStart !== false &&
     out.leftAtStartStill && out.focusAtEnd.startsWith("panzoom-") &&
     out.nextDisabledAtEnd && out.rightAtEndOk;
   return out;
@@ -843,8 +864,9 @@ const KEYBOARD_CHECKS = [
   ["oneTabStop", "One Tab stop per image"],
   ["enterOpens", "Enter on the image opens the viewer"],
   ["focusMovesIn", "Focus moves into the viewer"],
-  ["arrowsPan", "Arrow keys pan (Right, Down)"],
-  ["arrowsPanBack", "Arrow keys pan back (Left, Up)"],
+  ["bareDownDoesNothing", "Bare ArrowDown does nothing"],
+  ["arrowsPan", "Ctrl/Cmd+arrow pans (Right, Down)"],
+  ["arrowsPanBack", "Ctrl/Cmd+arrow pans back (Left, Up)"],
   ["tabTrapped", "Tab and Shift+Tab stay in the viewer"],
   ["closeButtonCloses", "Enter on the close button closes"],
   ["focusReturns", "Focus returns to the image"],
@@ -1214,10 +1236,11 @@ async function checkPage(browser, base, file) {
     back.image = `${first.case}. ${first.caseTitle} (img ${first.n})`;
   }
 
-  // Galleries of images that open larger than the screen: Left/Right pan
-  // (a collage, opened at screen height) or do nothing (a tall strip,
-  // opened at screen width: nowhere to go sideways), never switch;
-  // the next button switches.
+  // Galleries of images that open larger than the screen: Ctrl+Left/Right
+  // pan (a collage, opened at screen height) or do nothing (a tall strip,
+  // opened at screen width: nowhere to go sideways), never switching; a
+  // bare arrow always switches instead, immediately, regardless of size
+  // or position.
   const overflowGalleries = [];
   for (const fit of ["height", "width"]) {
     const first = results.find((r) => r.opened === "panzoom" && /^1 \//.test(r.counter || "") && r.fit === fit &&
@@ -1225,27 +1248,29 @@ async function checkPage(browser, base, file) {
     if (!first) continue;
     await openImage(page, first);
     const t0 = await viewerTransform(page);
+    await page.keyboard.down("Control");
     await page.keyboard.press("ArrowRight");
+    await page.keyboard.up("Control");
     await settle(page);
     const t1 = await viewerTransform(page);
     const s1 = await state(page);
-    await page.click(".panzoom-next");
+    await page.keyboard.press("ArrowRight");
     await settle(page);
     const s2 = await state(page);
     const moved = t0 && t1 ? t0.x - t1.x : null;
     const g = {
       fit, image: `${first.case}. ${first.caseTitle} (img ${first.n})`,
-      arrowKeepsImage: s1.counter === first.counter,
-      arrowMoves: fit === "height" ? moved > 1 : Math.abs(moved) < 0.5,
-      nextSwitches: s2.counter === first.counter.replace(/^1 /, "2 "),
-      nextFit: s2.fit,
+      ctrlArrowKeepsImage: s1.counter === first.counter,
+      ctrlArrowMoves: fit === "height" ? moved > 1 : Math.abs(moved) < 0.5,
+      bareArrowSwitches: s2.counter === first.counter.replace(/^1 /, "2 "),
+      switchFit: s2.fit,
     };
     if (fit === "height") {
       // Back on the first collage: its left end is already clear of the
       // previous button, with no panning needed; its right end, panned
-      // there, stays clear of the next button. A held Right (auto-repeat)
-      // pans to the end and stops there; one more press, with the collage
-      // at its end, switches to the next image.
+      // there, stays clear of the next button. A held Ctrl+Right
+      // (auto-repeat) pans to the end and stops there; a bare Right there,
+      // as anywhere else, switches at once.
       await page.click(".panzoom-prev");
       await settle(page);
       const clear = () => page.evaluate(() => {
@@ -1254,13 +1279,13 @@ async function checkPage(browser, base, file) {
         return { left: r.left >= p.right, right: r.right <= n.left, rightEdge: r.right };
       });
       // Stepping back to the clicked image drops its remembered click spot,
-      // so it fits afresh from its left end too. Don't also hold ArrowLeft
-      // here to "reach" that end: already resting there, the first
-      // (non-repeat) press would switch to the previous image instead.
+      // so it fits afresh from its left end too.
       g.backClear = (await clear()).left && (await state(page)).counter === first.counter;
+      await page.keyboard.down("Control");
       await page.keyboard.down("ArrowRight");
       for (let i = 0; i < 120; i++) await page.keyboard.down("ArrowRight");
       await page.keyboard.up("ArrowRight");
+      await page.keyboard.up("Control");
       await settle(page);
       const held = await clear();
       g.heldStays = (await state(page)).counter === first.counter;
@@ -1269,7 +1294,7 @@ async function checkPage(browser, base, file) {
       await settle(page);
       g.endArrowSwitches = (await state(page)).counter === first.counter.replace(/^1 /, "2 ");
     }
-    g.ok = g.arrowKeepsImage && g.arrowMoves && g.nextSwitches &&
+    g.ok = g.ctrlArrowKeepsImage && g.ctrlArrowMoves && g.bareArrowSwitches &&
       (fit !== "height" || (g.backClear && g.heldStays && g.endClear && g.endArrowSwitches));
     overflowGalleries.push(g);
     await closeAll(page);
@@ -1293,6 +1318,9 @@ async function checkPage(browser, base, file) {
       return { left: r.left - a.x, right: r.right - a.x, top: r.top - a.y, w: a.w, m };
     });
     // (Waits of 600 ms let an end-of-image bounce finish: 120 + 200 ms.)
+    // Ctrl/Cmd+arrow pans (a bare arrow would switch, or do nothing: this
+    // image isn't in a gallery).
+    await page.keyboard.down("Control");
     for (let i = 0; i < 200; i++) await page.keyboard.press("ArrowRight");
     await settle(page);
     const end = await edges();
@@ -1327,6 +1355,7 @@ async function checkPage(browser, base, file) {
     c.stretches = c.stretch > 5 && c.stretch <= 81 && Math.abs(released.left - start.left) < 0.5;
     await page.keyboard.press("ArrowUp");
     await page.keyboard.press("ArrowDown");
+    await page.keyboard.up("Control");
     await settle(page);
     c.heldVertically = Math.abs((await edges()).top - start.top) < 0.5;
     await closeAll(page);
@@ -1335,8 +1364,10 @@ async function checkPage(browser, base, file) {
     const w = (containment.whole = { image: `${whole.case}. ${whole.caseTitle}` });
     await openImage(page, whole);
     const t0 = await viewerTransform(page);
+    await page.keyboard.down("Control");
     await page.keyboard.press("ArrowRight");
     await page.keyboard.press("ArrowDown");
+    await page.keyboard.up("Control");
     const cx = VIEWPORT.width / 2, cy = VIEWPORT.height / 2;
     await page.mouse.move(cx, cy);
     await page.mouse.down();
@@ -1409,7 +1440,9 @@ async function checkPage(browser, base, file) {
     await clickAt(strip, 0.5, 0.5);
     const mid = await viewAt();
     c.middle = +mid.fx.toFixed(3);
+    await page.keyboard.down("Control");
     for (let i = 0; i < 5; i++) await page.keyboard.press("ArrowRight");
+    await page.keyboard.up("Control");
     await settle(page);
     await page.keyboard.press("0");
     await sleep(50);
@@ -1757,7 +1790,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- Next button: ${gallery.buttonNext}`,
       `- Focus after the next button reaches the last image: ${gallery.focusAtEnd}`,
       `- Swipe left: ${gallery.swipeNext}`,
-      `- Zoomed in, Right pans instead: ${yes(gallery.zoomedArrowPans)}`,
+      `- Zoomed in, Ctrl+Right pans: ${yes(gallery.zoomedCtrlArrowPans)}; bare Right still switches: ${yes(gallery.zoomedBareArrowSwitches)}`,
       `- On the first image, "previous" is ${gallery.loop ? "enabled (loop) and Left wraps to the last" : "disabled (no loop)"}: ${yes(gallery.prevDisabledAtStart && gallery.leftAtStartStill)}`,
       `- On the last image, "next" is ${gallery.loop ? "enabled (loop) and Right wraps to the first" : "disabled (no loop) and Right stays"}: ${yes(gallery.nextDisabledAtEnd && gallery.rightAtEndOk)} (${gallery.rightAtEnd})`,
       `- All as expected: ${yes(gallery.ok)}`);
@@ -1768,14 +1801,14 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
     const yes = (v) => (v ? "yes" : "**NO**");
     lines.push(
       `Opened on case ${g.image} (opens at screen ${g.fit}).`, "",
-      `- Right arrow keeps the same image: ${yes(g.arrowKeepsImage)}`,
-      `- ...and ${g.fit === "height" ? "pans along it" : "doesn't move it (nowhere to go sideways)"}: ${yes(g.arrowMoves)}`,
-      `- The next button switches to the next image: ${yes(g.nextSwitches)} (opens: ${g.nextFit})`,
+      `- Ctrl+Right keeps the same image: ${yes(g.ctrlArrowKeepsImage)}`,
+      `- ...and ${g.fit === "height" ? "pans along it" : "doesn't move it (nowhere to go sideways)"}: ${yes(g.ctrlArrowMoves)}`,
+      `- A bare Right switches to the next image regardless: ${yes(g.bareArrowSwitches)} (opens: ${g.switchFit})`,
       ...(g.fit === "height" ? [
         `- The previous button, stepped back to, opens clear with no panning: ${yes(g.backClear)}`,
-        `- A held Right pans to the end and stays on the image: ${yes(g.heldStays)}`,
+        `- A held Ctrl+Right pans to the end and stays on the image: ${yes(g.heldStays)}`,
         `- Its right end stops clear of the next button: ${yes(g.endClear)}`,
-        `- Right at the end switches to the next image: ${yes(g.endArrowSwitches)}`] : []), "");
+        `- A bare Right at the end switches to the next image: ${yes(g.endArrowSwitches)}`] : []), "");
   }
   const optioned = results.filter(hasOptionChecks);
   if (optioned.length) {

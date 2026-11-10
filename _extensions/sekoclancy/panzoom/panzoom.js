@@ -6,7 +6,7 @@
   Panzoom does the panning and zooming: drag (or one-finger drag) pans,
   two-finger pinch zooms. This file adds the viewer around it: click image ->
   overlay, wheel / trackpad pinch zooms toward the cursor, double-click or 0
-  resets to fit, +/- zoom, arrow keys pan, Esc / x / background click closes,
+  resets to fit, +/- zoom, Esc / x / background click closes,
   c hides or shows the caption and description, h the hint line. The
   document's `keys:` option changes these keys (see KEYS). The hint line
   names mouse and keyboard controls, so a viewer opened by a tap has none.
@@ -25,17 +25,17 @@
   does.
 
   Galleries: images with the same group are stepped through with the
-  prev/next buttons, Left/Right or a horizontal swipe (the last two only
-  while the image fits the screen; when it is larger in either direction,
-  they pan).
+  prev/next buttons, a horizontal swipe, or bare Left/Right, which always
+  switch (never pan, even on a larger-than-screen image; Ctrl/Cmd+arrow is
+  for that, below). The group is `data-panzoom-group` (cell option), else
+  `data-group` (`group="..."` on a markdown image, as for Quarto's
+  lightbox), else `data-ref-parent` (subfigures of one figure, as Quarto's
+  lightbox groups them).
 
-  Panning: drag, arrow keys, Shift+wheel or sideways trackpad scrolling
-  (sideways), and Alt+wheel (up and down). The image is kept on screen:
-  centered in a direction where it fits, and stopping at its ends where it
-  doesn't. The group
-  is `data-panzoom-group` (cell option), else `data-group` (`group="..."` on
-  a markdown image, as for Quarto's lightbox), else `data-ref-parent`
-  (subfigures of one figure, as Quarto's lightbox groups them).
+  Panning: drag, Ctrl/Cmd+arrow (any direction; KEYS_PAN), Shift+wheel or
+  sideways trackpad scrolling (sideways), and Alt+wheel (up and down). The
+  image is kept on screen: centered in a direction where it fits, and
+  stopping at its ends where it doesn't.
 
   Keyboard: marked images are focusable buttons that open on Enter or Space.
   The open viewer takes focus, keeps Tab inside it, and gives focus back to
@@ -82,6 +82,9 @@
   var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
   var POSITIONS = ["bottom", "top", "left", "right"];
+  // Arrow keys Ctrl/Cmd makes pan instead of switching gallery images (or,
+  // for Up/Down, instead of doing nothing); not user-rebindable (see KEYS).
+  var KEYS_PAN = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
   var NARROW = 769; // px: below this width, left and right show below (as lightbox)
   // Per-image color options: data attribute (as in `dataset`) -> CSS variable.
   var STYLES = {
@@ -645,28 +648,6 @@
     panPx(fx * overlay.clientWidth, fy * overlay.clientHeight);
   }
 
-  // Whether the image, wider than the screen, rests at its end toward
-  // `dir` (1: its right end, -1: its left end).
-  function atEndX(dir) {
-    if (!pz) return false;
-    var a = area(), s = pz.getScale(), x = pz.getPan().x;
-    var end = containAxis(dir > 0 ? -1e9 : 1e9, s, img.naturalWidth, a.w, null, a.x, marginX);
-    return Math.abs(x - end) < 0.5;
-  }
-
-  // Left/Right (`dir` -1 or 1). While the image is larger than the screen
-  // they pan, doing nothing sideways if it fits that way, and a press that
-  // reaches an end bounces; one made while an image wider than the screen
-  // already rests at that end switches gallery images, but a held key
-  // (`repeat`) never does. An image that fits switches at once. Without
-  // `loop`, nothing happens past either end of the gallery.
-  function arrow(dir, repeat) {
-    var o = overflow();
-    if (!o.any) { step(dir); return; }
-    if (o.x && !repeat && atEndX(dir) && step(dir)) return;
-    panBy(0.1 * dir, 0);
-  }
-
   // Shows gallery image `i`, fitted to the screen.
   function show(i) {
     stopBounce();
@@ -1045,10 +1026,12 @@
   // page shortcuts (e.g. focus-mode's arrows, Quarto search on keyup) never
   // see them. Only a window-capture listener registered before this one
   // can still run first, so register at script load, not on first open.
-  // Browser shortcuts with Ctrl/Cmd/Alt, and function keys, pass through.
+  // Browser shortcuts with Ctrl/Cmd/Alt, and function keys, pass through,
+  // except Ctrl/Cmd+arrow (pan; see KEYS_PAN below).
   function onKey(e) {
     if (!overlay || !overlay.classList.contains("open")) return;
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var pan = KEYS_PAN.indexOf(e.key) >= 0 && (e.ctrlKey || e.metaKey) && !e.altKey;
+    if (!pan && (e.ctrlKey || e.metaKey || e.altKey)) return;
     // Function keys are browser features (F5 reload, F3 find, F7 caret
     // browsing), not page shortcuts, so they pass through too.
     if (/^F\d{1,2}$/.test(e.key)) return;
@@ -1068,13 +1051,16 @@
     // A focused caption or description panel takes the scrolling keys.
     else if (active.classList.contains("panzoom-scrollable") && scrollPanel(active, e)) return;
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
-    // Left/Right pan while the image is larger than the screen (doing
-    // nothing if it fits sideways); otherwise they switch gallery images
-    // (doing nothing at either end without `loop`).
-    else if (e.key === "ArrowLeft") arrow(-1, e.repeat);
-    else if (e.key === "ArrowRight") arrow(1, e.repeat);
-    else if (e.key === "ArrowUp") panBy(0, -0.1);
-    else if (e.key === "ArrowDown") panBy(0, 0.1);
+    // Bare Left/Right always switch gallery images (doing nothing at
+    // either end without `loop`, or at all without a gallery); bare
+    // Up/Down do nothing. Ctrl/Cmd+arrow pans instead, any direction,
+    // whether or not the image is larger than the screen that way.
+    else if (pan && e.key === "ArrowLeft") panBy(-0.1, 0);
+    else if (pan && e.key === "ArrowRight") panBy(0.1, 0);
+    else if (pan && e.key === "ArrowUp") panBy(0, -0.1);
+    else if (pan && e.key === "ArrowDown") panBy(0, 0.1);
+    else if (e.key === "ArrowLeft") step(-1);
+    else if (e.key === "ArrowRight") step(1);
     else if (action === "reset") resetView();
     else if (action === "zoom-in") zoomAt(1.25, cx, cy);
     else if (action === "zoom-out") zoomAt(0.8, cx, cy);
