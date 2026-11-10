@@ -38,7 +38,7 @@ collage <- function(n = 12) {
 
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
-  col <- hcl.colors(4, "Dark 3")[k]
+  col <- hcl.colors(4, "Dark 3")[(k - 1) %% 4 + 1]
   plot(
     x,
     sin(k * x),
