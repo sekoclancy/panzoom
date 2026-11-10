@@ -223,7 +223,9 @@ follows the link.
 ```{r}
 #| panzoom: true
 #| fig-link: "https://quarto.org"
-#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
+#| fig-alt: >-
+#|   Scatter plot of vapor pressure rising steeply with temperature; opens the
+#|   Quarto website
 #| fig-cap: "Vapor pressure of mercury against temperature."
 
 plot(pressure)
