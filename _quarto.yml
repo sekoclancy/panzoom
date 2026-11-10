@@ -18,6 +18,8 @@ format:
     theme:
       light: [flatly, assets/light.scss]
       dark: [darkly, assets/dark.scss]
+    # A reader whose system is dark starts in the dark theme.
+    respect-user-color-scheme: true
     # a11y-light and a11y-dark with their colors at WCAG AAA contrast (7:1).
     syntax-highlighting:
       light: assets/a11y-light-aaa.theme

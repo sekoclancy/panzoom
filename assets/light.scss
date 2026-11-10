@@ -7,6 +7,11 @@ $link-color: #0e6252;
 $body-secondary: #4f5963;
 /*-- scss:rules --*/
 
+/* Scrollbars and form controls drawn by the browser are light, and a
+   browser that darkens pages on its own (Safari Adaptive Dark Mode) leaves
+   this one alone. No stylesheet of Quarto or Bootstrap sets this. */
+:root { color-scheme: light; }
+
 /* The "</> Code" button (4.7:1). */
 .code-tools-button { color: #52595f; }
 

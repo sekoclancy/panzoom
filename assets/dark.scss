@@ -6,6 +6,11 @@ $link-color: #00c593;
 $navbar-fg: #ffffff;
 /*-- scss:rules --*/
 
+/* Scrollbars and form controls drawn by the browser are dark (see
+   light.scss). Quarto turns off the stylesheet of the other theme, so
+   this follows the toggle. */
+:root { color-scheme: dark; }
+
 /* Dark theme only (darkly). The .quarto-dark prefix, the class Quarto puts
    on <body> in dark mode, also keeps these rules ahead of the rules they
    override. */
