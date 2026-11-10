@@ -30,21 +30,20 @@ arrow keys.](images/demo.gif)
 
 ## Viewer controls
 
-  | Action                                   | Mouse or touch                                                              | Keyboard             |
-  | ---------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
-  | Zoom                                     | scroll or pinch, toward the cursor                                          | + and -              |
-  | Pan                                      | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | arrow keys           |
-  | Go back to the opening view              | double-click                                                                | 0                    |
-  | Change image in a gallery                | the previous and next buttons, or swipe                                     | left and right arrow |
-  | Hide or show the caption and description |                                                                             | c                    |
-  | Hide or show the hint line               |                                                                             | h                    |
-  | Close                                    | the × button, a click on the background, or the browser Back button         | Esc                  |
+  | Action                                 | Mouse or touch                                                              | Keyboard             |
+  | -------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
+  | Zoom                                   | scroll or pinch, toward the cursor                                          | + and -              |
+  | Pan                                    | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | Ctrl/Cmd+arrow keys  |
+  | Go back to the opening view            | double-click                                                                | 0                    |
+  | Change image in a gallery              | the previous and next buttons, or swipe                                     | left and right arrow |
+  | Hide or show captions and descriptions |                                                                             | c                    |
+  | Hide or show hints                     |                                                                             | h                    |
+  | Close                                  | the × button, a click on the background, or the browser Back button         | Esc                  |
 
-The [`keys`](#keys) option changes the keys for zooming, resetting, hiding the
-caption or the hint line, and closing. Zoom goes up to `max-zoom`. While an
-image is larger than the screen (zoomed in, or a wide figure), the arrow keys
-and swipes pan it. In a gallery, Left or Right pressed again at an end of a wide
-image changes image; holding the key down doesn't.
+The [`keys`](#keys) option changes the keys for zooming, resetting, hiding
+captions or hints, and closing. Zoom goes up to `max-zoom`. Left and Right
+always change the gallery image; Ctrl/Cmd+arrow pans instead, in any direction,
+while the image is larger than the screen (zoomed in, or a wide figure).
 
 From the keyboard, selected images can be reached with Tab and opened with Enter
 or Space; Tab moves between the viewer's buttons, links, and any caption or
@@ -452,8 +451,8 @@ The [color
 options](https://sekoclancy.github.io/panzoom/examples/n-color-options-r.html)
 and [styling with
 CSS](https://sekoclancy.github.io/panzoom/examples/o-css-r.html) examples
-demonstrate setting colors through options and through CSS, and list the
-classes of the viewer's parts.
+demonstrate setting colors through options and through CSS, and list the classes
+of the viewer's parts.
 
 ## Development
 
