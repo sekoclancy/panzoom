@@ -86,6 +86,30 @@ The same collage written as svg. It opens in panzoom at screen height.
 collage(n = 12)
 ```
 
+## webp past its size limit
+
+A 100 × 5 inch collage as webp at 192 dpi. At 19,200 px wide it is past the webp
+limit of 16,383 px per side, so ragg can't write the file. The page shows a
+broken image, and clicking it opens the viewer with "The image could not be
+loaded." in place of the image.
+
+```{r}
+#| panzoom: true
+#| error: true
+#| fig-width: 100
+#| fig-height: 5
+#| dev: agg_webp
+#| dev.args:
+#|   units: "in"
+#|   res: 192
+#| fig-ext: webp
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
+#| fig-cap: "A 100 × 5 inch collage of 12 random walks."
+
+collage(n = 12)
+```
+
 ## webp plot {expect-fit="contain" shift-scroll="none" expect-scale="1"}
 
 A small plot written as webp. It opens in panzoom at its real size.
@@ -158,30 +182,6 @@ filled.contour(
   color.palette = terrain.colors,
   plot.title = title(main = "\u03bc = 5, \u03b1 = 0.05")
 )
-```
-
-## webp past its size limit
-
-A 100 × 5 inch collage as webp at 192 dpi. At 19,200 px wide it is past the webp
-limit of 16,383 px per side, so ragg can't write the file. The page shows a
-broken image, and clicking it opens the viewer with "The image could not be
-loaded." in place of the image.
-
-```{r}
-#| panzoom: true
-#| error: true
-#| fig-width: 100
-#| fig-height: 5
-#| dev: agg_webp
-#| dev.args:
-#|   units: "in"
-#|   res: 192
-#| fig-ext: webp
-#| fig-alt: >-
-#|   A row of 12 small line plots of random walks, each in its own color
-#| fig-cap: "A 100 × 5 inch collage of 12 random walks."
-
-collage(n = 12)
 ```
 
 ## Animation {expect-open="panzoom" expect-fit="contain"}
