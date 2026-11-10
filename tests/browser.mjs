@@ -1241,10 +1241,11 @@ async function checkPage(browser, base, file) {
       nextFit: s2.fit,
     };
     if (fit === "height") {
-      // Back on the first collage: its left end and, panned there, its
-      // right end stay clear of the previous and next buttons. A held Right
-      // (auto-repeat) pans to the end and stops there; one more press, with
-      // the collage at its end, switches to the next image.
+      // Back on the first collage: its left end is already clear of the
+      // previous button, with no panning needed; its right end, panned
+      // there, stays clear of the next button. A held Right (auto-repeat)
+      // pans to the end and stops there; one more press, with the collage
+      // at its end, switches to the next image.
       await page.click(".panzoom-prev");
       await settle(page);
       const clear = () => page.evaluate(() => {
@@ -1252,12 +1253,11 @@ async function checkPage(browser, base, file) {
         const p = o.querySelector(".panzoom-prev").getBoundingClientRect(), n = o.querySelector(".panzoom-next").getBoundingClientRect();
         return { left: r.left >= p.right, right: r.right <= n.left, rightEdge: r.right };
       });
-      // (It reopens where it was clicked: a held Left goes back to its start.)
-      await page.keyboard.down("ArrowLeft");
-      for (let i = 0; i < 120; i++) await page.keyboard.down("ArrowLeft");
-      await page.keyboard.up("ArrowLeft");
-      await settle(page);
-      g.startClear = (await clear()).left && (await state(page)).counter === first.counter;
+      // Stepping back to the clicked image drops its remembered click spot,
+      // so it fits afresh from its left end too. Don't also hold ArrowLeft
+      // here to "reach" that end: already resting there, the first
+      // (non-repeat) press would switch to the previous image instead.
+      g.backClear = (await clear()).left && (await state(page)).counter === first.counter;
       await page.keyboard.down("ArrowRight");
       for (let i = 0; i < 120; i++) await page.keyboard.down("ArrowRight");
       await page.keyboard.up("ArrowRight");
@@ -1270,7 +1270,7 @@ async function checkPage(browser, base, file) {
       g.endArrowSwitches = (await state(page)).counter === first.counter.replace(/^1 /, "2 ");
     }
     g.ok = g.arrowKeepsImage && g.arrowMoves && g.nextSwitches &&
-      (fit !== "height" || (g.startClear && g.heldStays && g.endClear && g.endArrowSwitches));
+      (fit !== "height" || (g.backClear && g.heldStays && g.endClear && g.endArrowSwitches));
     overflowGalleries.push(g);
     await closeAll(page);
   }
@@ -1772,7 +1772,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- ...and ${g.fit === "height" ? "pans along it" : "doesn't move it (nowhere to go sideways)"}: ${yes(g.arrowMoves)}`,
       `- The next button switches to the next image: ${yes(g.nextSwitches)} (opens: ${g.nextFit})`,
       ...(g.fit === "height" ? [
-        `- Its left end opens clear of the previous button: ${yes(g.startClear)}`,
+        `- The previous button, stepped back to, opens clear with no panning: ${yes(g.backClear)}`,
         `- A held Right pans to the end and stays on the image: ${yes(g.heldStays)}`,
         `- Its right end stops clear of the next button: ${yes(g.endClear)}`,
         `- Right at the end switches to the next image: ${yes(g.endArrowSwitches)}`] : []), "");

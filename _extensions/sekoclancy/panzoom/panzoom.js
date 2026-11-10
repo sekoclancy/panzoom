@@ -734,6 +734,8 @@
   }
 
   // Steps through the gallery; returns false at either end without `loop`.
+  // Stepping away from the clicked image drops its remembered click spot,
+  // so coming back to it also fits afresh, like every other image.
   function step(delta) {
     var n = gallery.length, i = index + delta;
     if (n < 2) return false;
@@ -741,6 +743,7 @@
       if (!opts.loop) return false;
       i = (i + n) % n;
     }
+    clicked = null;
     show(i);
     return true;
   }
