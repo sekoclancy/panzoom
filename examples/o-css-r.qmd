@@ -197,6 +197,13 @@ the `.plum-viewer` rules above:
   --panzoom-panel-fg: #fdf0d8;
   --panzoom-link: #ffc966;
 }
+.panzoom-overlay.amber-viewer .panzoom-panel {
+  border-top: 4px solid #e0a030;
+}
+.panzoom-overlay.amber-viewer .panzoom-caption {
+  font-style: normal;
+  letter-spacing: 0.02em;
+}
 ```
 
 ```show-source
