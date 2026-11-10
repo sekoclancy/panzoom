@@ -77,7 +77,8 @@ Not offered (lightbox has this):
 ## Usage
 
 panzoom is a filter: turn it on for one document in the YAML header at the top
-of its `.qmd` file:
+of its `.qmd` file, or for every page of a Quarto project (website, book) in
+`_quarto.yml`:
 
 ```yaml
 ---
@@ -86,15 +87,13 @@ filters:
 ---
 ```
 
-For every page of a Quarto project (website, book), put the same lines in
-`_quarto.yml`, without the `---` lines. The other YAML examples below work in
-either place too.
+The other YAML examples below work in either place.
 
 ### Global Panzoom
 
-With `panzoom: true` in the YAML header, every figure opens in the viewer, as
-does any image alone in its own paragraph. Images inside a line of text are left
-out. These are the same images `lightbox: true` takes.
+Add `panzoom: true` to the same header to open every figure in the viewer, and
+any image alone in its own paragraph, except images given the `.nopanzoom`
+class. These are the same images `lightbox: true` takes.
 
 ```yaml
 ---
@@ -109,6 +108,8 @@ panzoom: true
 Without the setting, only the images you select open in the viewer.
 
 ### Selecting images
+
+To open specific images without `panzoom: true`, select them directly.
 
 In a code cell, use the `panzoom` cell option:
 
@@ -126,7 +127,8 @@ On a markdown image, use the `.panzoom` class:
 ![Caption](figure.png){.panzoom}
 ```
 
-This also works for an image inside a line of text, which `panzoom: true` skips:
+The `.panzoom` class also opens an image inside a line of text, which
+`panzoom: true` does not match:
 
 ```markdown
 Some text with an inline image ![](image.jpg){.panzoom width=60px} in the middle.
@@ -300,7 +302,7 @@ image in a layout opens on its own, and subfigures form a gallery.
 
 ### Wide and tall figures
 
-panzoom guesses how each figure opens best from its shape:
+panzoom opens each figure according to its shape:
 
   | Figure                                | Opens                                     | Same as        |
   | ------------------------------------- | ----------------------------------------- | -------------- |
@@ -310,8 +312,8 @@ panzoom guesses how each figure opens best from its shape:
 
 The [wide and tall figures
 example](https://sekoclancy.github.io/panzoom/examples/h-wide-and-tall-r.html)
-has the exact rules and an example of each shape. Set `fit:` to choose for one
-figure:
+has the exact rules and an example of each shape. To choose the behavior
+explicitly for one figure, set `fit` in its code cell:
 
 ````markdown
 ```{r}
@@ -335,24 +337,9 @@ panzoom:
 ---
 ```
 
-### Math
-
-Math in captions and descriptions is displayed in the viewer.
-
-MathJax and KaTeX are loaded from the web, so math needs a connection. To make
-math work offline, render with MathJax (the Quarto default) and add to the YAML
-header:
-
-```yaml
----
-embed-resources: true
-self-contained-math: true
----
-```
-
 ### Self-contained documents
 
-panzoom works in a self-contained document, with no internet access. In the YAML
+panzoom works in a self-contained document with no internet access. In the YAML
 header:
 
 ```yaml
@@ -363,14 +350,27 @@ embed-resources: true
 ---
 ```
 
-For math, use `html-math-method: mathml`, or `katex` with
-`self-contained-math: true`. MathJax loads its fonts from the internet even with
-`self-contained-math: true`.
+MathJax, the Quarto default, loads its fonts from the internet even with
+`self-contained-math: true` set. For math that works fully offline, use
+`html-math-method: mathml`, or `katex` with:
+
+```yaml
+---
+embed-resources: true
+self-contained-math: true
+---
+```
+
+### Math
+
+Math in captions and descriptions is displayed in the viewer. MathJax and KaTeX
+need an internet connection by default; see Self-contained documents above for
+offline setup.
 
 ### Styling
 
-Set the viewer's colors with the options, or with the CSS variables they stand
-for in your own CSS (a `css:` file, or the theme's `.scss`):
+Set the viewer's colors with the `panzoom` options, or with the CSS variables
+they stand for:
 
   | Option             | CSS variable         | Element                                 | Default              |
   | ------------------ | -------------------- | --------------------------------------- | -------------------- |
@@ -379,7 +379,7 @@ for in your own CSS (a `css:` file, or the theme's `.scss`):
   | `panel-color`      | `--panzoom-panel-fg` | Caption, description, and hint          | Page text color      |
   | `link-color`       | `--panzoom-link`     | Links in captions                       | Page link color      |
 
-In the YAML header, for the whole document:
+Set the options in the YAML header to style every viewer in the document:
 
 ```yaml
 ---
@@ -395,7 +395,8 @@ A color can also be a
 name, or a role such as `primary` or `background`. With a light and a dark
 brand, it follows the theme. `panel-colour` and `link-colour` work too.
 
-In CSS, for every viewer on the site:
+Set the CSS variables in a stylesheet (a `css:` file, or the theme's `.scss`) to
+style every viewer on the site:
 
 ```css
 .panzoom-overlay {
@@ -403,6 +404,20 @@ In CSS, for every viewer on the site:
   --panzoom-panel-bg: black;
   --panzoom-panel-fg: white;
 }
+```
+
+Or set them inline, in the document's `include-in-header`:
+
+```yaml
+---
+include-in-header:
+  text: |
+    <style>
+    .panzoom-overlay {
+      --panzoom-backdrop: black;
+    }
+    </style>
+---
 ```
 
 For some documents only, set `css-class: dark-viewer` and write the same rule
@@ -417,9 +432,9 @@ These variables have no option, only CSS:
   | `--panzoom-panel-min-width` | Side panel (`desc-position` `left` or `right`) | `min(12rem, 32vw)`   |
   | `--panzoom-panel-max-width` | Side panel, which is as wide as its text needs | `min(22rem, 32vw)`   |
 
-For one image, give its code cell the same options under `#| panzoom:`, or write
-them as attributes on a markdown image. They apply while that image is open, on
-top of the document's:
+To style one image differently, give its code cell the same options under
+`#| panzoom:`, or write them as attributes on a markdown image; they override
+the document's options while that image is open:
 
 ````markdown
 ```{r}
@@ -436,8 +451,9 @@ plot(pressure)
 The [color
 options](https://sekoclancy.github.io/panzoom/examples/n-color-options-r.html)
 and [styling with
-CSS](https://sekoclancy.github.io/panzoom/examples/o-css-r.html) examples have
-each way, and the classes of the viewer's parts.
+CSS](https://sekoclancy.github.io/panzoom/examples/o-css-r.html) examples
+demonstrate setting colors through options and through CSS, and list the
+classes of the viewer's parts.
 
 ## Development
 
