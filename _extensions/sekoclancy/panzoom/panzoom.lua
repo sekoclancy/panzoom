@@ -579,9 +579,10 @@ local function keep_link(link)
   return nil, false
 end
 
--- Gives every image in an opted-out cell or div `.nopanzoom`, since
--- panzoom.js also opens any image inside a `.panzoom` div: one around it,
--- or its own `.panzoom` class next to `panzoom=false`.
+-- Gives every image in an opted-out cell or div `.nopanzoom`, so a
+-- `match: auto` site default or an ancestor `.panzoom` element can't still
+-- mark it: JS only opens `img.panzoom`, never an image merely inside a
+-- `.panzoom` container.
 local function opt_out(el)
   local filter = {
     Image = function(img)
