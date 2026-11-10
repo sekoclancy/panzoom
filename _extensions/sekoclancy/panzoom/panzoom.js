@@ -137,6 +137,12 @@
   // done. `stepping`: that step hasn't landed yet (history.back() is
   // asynchronous); a viewer opened meanwhile adds its entry once it has.
   var inHistory = false, leaving = null, stepping = false;
+  // The page's scroll position right as the viewer opened. The viewer's
+  // pushState keeps the page's URL, including any #anchor, so stepping back
+  // over it returns to an entry with that same #anchor: the browser
+  // re-scrolls to the anchor's own position there instead of keeping the
+  // page where it was. Put it back once that happens (see close()).
+  var openScroll = null;
   // The classes the shown image added to the viewer (see restyle()).
   var imageClasses = [];
   // The c and h keys hide the caption (with the description) and the hint,
@@ -750,6 +756,7 @@
 
   function open(el, point, pointer) {
     if (!overlay) build();
+    openScroll = { x: window.scrollX, y: window.scrollY };
     clicked = point ? { el: el, fx: point.fx, fy: point.fy } : null;
     returnFocus = document.activeElement;
     byPointer = !!pointer;
@@ -793,6 +800,15 @@
       if (fromHistory !== true) {
         stepping = true;
         history.back();
+      }
+      // Either way, the browser just put back the scroll position of the
+      // entry below the viewer's, which may be an earlier #anchor jump
+      // (see `openScroll`'s comment). Put it back, once that happens, to
+      // where the page was when the viewer opened (same ordering as the
+      // `leaving` case below).
+      if (openScroll) {
+        var pos = openScroll;
+        setTimeout(function () { window.scrollTo(pos.x, pos.y); }, 0);
       }
     }
     stopBounce();
