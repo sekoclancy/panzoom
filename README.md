@@ -424,12 +424,16 @@ for `.dark-viewer`.
 
 These variables have no option, only CSS:
 
-  | CSS variable                | Element                                        | Default              |
-  | --------------------------- | ---------------------------------------------- | -------------------- |
-  | `--panzoom-button-bg`       | Close, previous, and next buttons, and counter | `rgba(0, 0, 0, 0.6)` |
-  | `--panzoom-button-fg`       | Their text and focus ring                      | `#eee`               |
-  | `--panzoom-panel-min-width` | Side panel (`desc-position` `left` or `right`) | `min(12rem, 32vw)`   |
-  | `--panzoom-panel-max-width` | Side panel, which is as wide as its text needs | `min(22rem, 32vw)`   |
+  | CSS variables                                  | Element                                              | Default                                                |
+  | ---------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------ |
+  | `--panzoom-button-bg`, `--panzoom-button-fg`   | Shared default for the four pairs below              | `rgba(0, 0, 0, 0.6)`, `#eee`                           |
+  | `--panzoom-close-bg`, `--panzoom-close-fg`     | Close button background, text, focus ring            | `var(--panzoom-button-bg)`, `var(--panzoom-button-fg)` |
+  | `--panzoom-nav-bg`, `--panzoom-nav-fg`         | Previous/next buttons background, text, focus ring   | `var(--panzoom-button-bg)`, `var(--panzoom-button-fg)` |
+  | `--panzoom-counter-bg`, `--panzoom-counter-fg` | Counter background and text                          | `var(--panzoom-button-bg)`, `var(--panzoom-button-fg)` |
+  | `--panzoom-status-bg`, `--panzoom-status-fg`   | Status ("Loading image", errors) background and text | `var(--panzoom-button-bg)`, `var(--panzoom-button-fg)` |
+  | `--panzoom-hint-fg`                            | Hint line text                                       | 70% `--panzoom-panel-fg`                               |
+  | `--panzoom-panel-min-width`                    | Side panel (`desc-position` `left` or `right`)       | `min(12rem, 32vw)`                                     |
+  | `--panzoom-panel-max-width`                    | Side panel, which is as wide as its text needs       | `min(22rem, 32vw)`                                     |
 
 To style one image differently, give its code cell the same options under
 `#| panzoom:`, or write them as attributes on a markdown image; they override
