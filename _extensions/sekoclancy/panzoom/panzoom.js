@@ -167,6 +167,9 @@
   // The opening view fit() set ({ s, x, y }), to tell whether the reader
   // has zoomed or panned since.
   var opening = null;
+  // The `onClose` of a viewer opened with QuartoPanzoom.open(), called once
+  // when it closes.
+  var onClose = null;
 
   // Document-wide options, overridden by the image's data attributes.
   function options(el) {
@@ -831,6 +834,14 @@
     if (byPointer) document.documentElement.classList.add("panzoom-no-ring");
     if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
     returnFocus = null;
+    closed();
+  }
+
+  // Calls the `onClose` of the viewer that just closed, if it has one.
+  function closed() {
+    var f = onClose;
+    onClose = null;
+    if (f) f();
   }
   // Capture phase, before the key moves focus (Tab).
   document.addEventListener("keydown", function () {
@@ -1171,9 +1182,15 @@
 
   // Make marked images reachable with Tab and announced as buttons. An
   // image in an `a.panzoom-link` is reached through the link (one Tab stop).
-  function makeFocusable() {
-    document.querySelectorAll(SELECTOR).forEach(function (img) {
-      if (!opens(img)) return;
+  // Each image is set up once (`data-panzoom-attached`), so a later scan
+  // or a second copy of this script leaves it alone.
+  function makeFocusable(root) {
+    root = root || document;
+    var found = Array.prototype.slice.call(root.querySelectorAll(SELECTOR));
+    if (root.matches && root.matches(SELECTOR)) found.unshift(root);
+    found.forEach(function (img) {
+      if (img.dataset.panzoomAttached || !opens(img)) return;
+      img.dataset.panzoomAttached = "true";
       var el = img.closest("a.panzoom-link") || img;
       el.tabIndex = 0;
       el.setAttribute("role", "button");
@@ -1181,6 +1198,69 @@
       el.setAttribute("aria-label", (img.alt ? img.alt + ": " : "") + "open in zoom viewer");
     });
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", makeFocusable);
-  else makeFocusable();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { makeFocusable(); });
+  } else makeFocusable();
+
+  function isOpen() {
+    return !!overlay && overlay.classList.contains("open");
+  }
+
+  // For scripts on the page.
+  //
+  // open(img, { opener, onClose }) opens any <img> in the viewer, marked or
+  // not, as Enter does on a marked one, and returns whether it did. Focus
+  // returns to `opener` (default: the focused element) when the viewer
+  // closes, and `onClose` is then called, however it closed.
+  //
+  // close() closes the viewer, if it is open.
+  //
+  // observe(root, { match }) watches `root` (default: the body) for images
+  // added after the page loaded, and makes the marked ones reachable with
+  // Tab, as those of the page are. `match`, a selector or a function of an
+  // <img>, marks the images it accepts first (`.nopanzoom` ones excepted).
+  // Returns { scan, disconnect }: scan() looks through `root` now,
+  // disconnect() stops watching.
+  window.QuartoPanzoom = {
+    open: function (el, o) {
+      o = o || {};
+      if (!(el instanceof HTMLImageElement) || (overlay && overlay.contains(el))) return false;
+      // Opened over an open viewer: that one is done, and focus still
+      // returns to where it was before either opened.
+      var was = isOpen() ? returnFocus : null;
+      closed();
+      open(el);
+      returnFocus = o.opener || was || returnFocus;
+      onClose = typeof o.onClose === "function" ? o.onClose : null;
+      return true;
+    },
+    close: function () {
+      if (isOpen()) close();
+    },
+    observe: function (root, o) {
+      root = root || document.body;
+      var match = o && o.match, queued = false;
+      function accepts(img) {
+        return typeof match === "function" ? match(img) : img.matches(match);
+      }
+      function scan() {
+        queued = false;
+        if (match) {
+          root.querySelectorAll("img:not(.panzoom):not(.nopanzoom)").forEach(function (img) {
+            if (!(overlay && overlay.contains(img)) && accepts(img)) img.classList.add("panzoom");
+          });
+        }
+        makeFocusable(root);
+      }
+      // One scan for all the changes of a task.
+      var observer = new MutationObserver(function () {
+        if (queued) return;
+        queued = true;
+        queueMicrotask(scan);
+      });
+      observer.observe(root, { childList: true, subtree: true });
+      scan();
+      return { scan: scan, disconnect: function () { observer.disconnect(); } };
+    }
+  };
 })();

@@ -458,6 +458,34 @@ CSS](https://sekoclancy.github.io/panzoom/examples/o-css-r.html) examples
 demonstrate setting colors through options and through CSS, and list the classes
 of the viewer's parts.
 
+### JavaScript
+
+`window.QuartoPanzoom` opens and closes the viewer from a script:
+
+```js
+const img = document.querySelector("#plot img");
+
+QuartoPanzoom.open(img, {
+  opener: button,                      // focus returns here on close
+  onClose: () => console.log("closed")
+});
+
+QuartoPanzoom.close();
+```
+
+`open()` takes any `<img>`, marked or not. For images a script adds after the
+page loads, `observe()` makes marked ones reachable with Tab and
+marks the ones `match` selects:
+
+```js
+const watch = QuartoPanzoom.observe(document.querySelector("#results"), {
+  match: "img.plot"                    // a selector, or a function of the image
+});
+
+watch.scan();                          // look again now
+watch.disconnect();                    // stop watching
+```
+
 ## Development
 
 ### Setup

@@ -16,6 +16,7 @@
     "bench:save": "node bench.mjs --save",
     "offline": "node standalone.mjs --offline && node browser.mjs --offline ../docs/examples/*.html standalone/*.html",
     "options": "node options.mjs",
+    "api": "node api.mjs",
     "order": "node order.mjs",
     "demo": "node demo.mjs"
   },
