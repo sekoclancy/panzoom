@@ -16,6 +16,13 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-no-ring a.panzoom-link:focus-visible img {
   outline: none;
 }
+/* Quarto pins a permalink icon to the top-right corner of every labeled
+   figure (`.quarto-figure > .anchorjs-link`), which can land on a marked
+   image's own top-right corner. It's invisible until :hover, so there's no
+   hover on touch to warn a tap is about to hit it instead of the image. */
+@media (hover: none) {
+  .quarto-figure:has(img.panzoom) > .anchorjs-link { pointer-events: none; }
+}
 
 /* As Quarto's lightbox: the page shows through a dark overlay, and the
    caption takes the page's own colors, so it follows a light or dark
