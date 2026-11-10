@@ -393,8 +393,8 @@ collage(n=3, height=3)
 
 Two collages in a gallery, 6.4 × 0.8 inches (12 panels) and 8 × 0.8 inches (15
 panels), so their panels have the same shape. Each opens at screen height. The
-left and right arrow keys and dragging pan along the collage, and at its end one
-more press moves to the other collage, as do the previous and next buttons. The
+left and right arrow keys always switch between them, the same as the previous
+and next buttons; Ctrl/Cmd+arrow (or dragging) pans along a collage instead. The
 viewer keeps the sides of the screen free for the buttons.
 
 ```{python}

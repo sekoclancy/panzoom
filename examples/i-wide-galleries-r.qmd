@@ -17,12 +17,11 @@ tall figures](h-wide-and-tall-r.html).
 
 Wide figures open at screen height, and tall ones at screen width. The one you
 click opens at the spot you clicked, and stepping to another in a gallery starts
-it at its left end or top. In a gallery, the left and right arrow keys pan a
-wide figure, and at its end one more press moves to the next image; holding the
-key down stops at the end. On a tall strip they do nothing. The previous and
-next buttons step through the gallery. The viewer keeps the sides of the screen
-free for them, so a figure shown whole, or panned to its end, is never under a
-button.
+it at its left end or top. The left and right arrow keys always step through the
+gallery, the same as the previous and next buttons; Ctrl/Cmd+arrow pans a wide
+figure instead, in any direction, without changing image. The viewer keeps the
+sides of the screen free for the previous and next buttons, so a figure shown
+whole, or panned to its end, is never under one.
 
 The plots are drawn with these helpers:
 
@@ -77,8 +76,8 @@ strip <- function(seed = 2, n = 8) {
 ## Gallery of two collages {expect-fit="height"}
 
 Two 25 × 2 inch collages in a gallery. Each opens at screen height. The left and
-right arrow keys and dragging pan along the collage, and at its end one more
-press moves to the other collage, as do the previous and next buttons.
+right arrow keys always switch between them, the same as the previous and next
+buttons; Ctrl/Cmd+arrow (or dragging) pans along a collage instead.
 
 ```{r}
 #| panzoom:
@@ -101,8 +100,9 @@ collage(n = 15)
 ## Gallery of two tall strips {expect-fit="width"}
 
 Two tall strips in a gallery. Each opens at screen width and extends downwards.
-The left and right arrow keys do nothing, since there is nowhere to go sideways,
-and the previous and next buttons move between the strips.
+The left and right arrow keys switch between them, the same as the previous and
+next buttons; there is nowhere to go sideways, so Ctrl/Cmd+Left/Right do nothing
+here (Ctrl/Cmd+Up/Down still pan).
 
 ```{r}
 #| panzoom:
