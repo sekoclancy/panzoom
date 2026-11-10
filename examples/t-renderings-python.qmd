@@ -19,8 +19,7 @@ Each one is worth opening in light and dark mode.
 Each case shows its source above the plot: Jupyter leaves `panzoom:` out of the
 echoed code of a cell.
 
-The plots are drawn with this helper. `ink` colors the axes, labels, and title;
-`paper` fills the plot background, and `"none"` leaves it transparent.
+The plots are drawn with this helper:
 
 ```{python}
 import matplotlib.pyplot as plt
@@ -28,6 +27,13 @@ import numpy as np
 
 
 def wave(k=1, ink="black", paper="white", col="#3B7DB8"):
+    """Draw a shaded sine wave.
+
+    k: wave number; the curve completes k cycles.
+    ink: color for the axes, labels, and title.
+    paper: plot background color, or "none" to leave it transparent.
+    col: color for the curve and its shaded area.
+    """
     x = np.linspace(0, 4 * np.pi, 400)
     fig, ax = plt.subplots(figsize=(7, 5))
     fig.patch.set_facecolor(paper)

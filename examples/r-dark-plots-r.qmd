@@ -19,10 +19,15 @@ transparent plots set `bg = "transparent"` in their own cells. They use the
 `ragg_png` device, since R's own png device tints light text drawn on a
 transparent background.
 
-The plots are drawn with this helper. `ink` colors the axes, labels, and title;
-`paper` fills the plot background, and `NULL` leaves the device background.
+The plots are drawn with this helper:
 
 ```{r}
+#' Draw a shaded sine wave.
+#'
+#' @param k Wave number; the curve completes k cycles.
+#' @param ink Color for the axes, labels, and title.
+#' @param paper Plot background color, or NULL to leave the device background.
+#' @param col Color for the curve and its shaded area.
 wave <- function(k = 1, ink = "black", paper = NULL, col = "#3B7DB8") {
   if (!is.null(paper)) {
     par(bg = paper)
