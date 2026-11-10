@@ -5,8 +5,9 @@
 
   Panzoom does the panning and zooming: drag (or one-finger drag) pans,
   two-finger pinch zooms. This file adds the viewer around it: click image ->
-  overlay, wheel / trackpad pinch zooms toward the cursor, double-click or 0
-  resets to fit, +/- zoom, Esc / x / background click closes,
+  overlay, wheel / trackpad pinch zooms toward the cursor, double-click (or a
+  double-tap; see release()) or 0 resets to fit, +/- zoom, Esc / x /
+  background click closes,
   c hides or shows the caption and description, h the hint line. The
   document's `keys:` option changes these keys (see KEYS). The hint line
   names mouse and keyboard controls, so a viewer opened by a tap has none.
@@ -75,6 +76,8 @@
 (function () {
   var SELECTOR = "img.panzoom:not(.nopanzoom)";
   var SWIPE = 50;  // px of horizontal drag that switches images
+  var DOUBLETAP_MS = 350;  // max gap between two taps counted as a double-tap
+  var DOUBLETAP_PX = 60;   // max distance between them, a finger being imprecise
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
   var STRIP = 3;    // ...but only for images at least this many times wider than tall (or vice versa)
   var BOUNCE = 40;  // px a key or scroll pan overshoots an image's end
@@ -104,6 +107,12 @@
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
   var loadId = 0, loadTimer = null;
   var pz = null, opts, press = null, returnFocus = null, margin = 0, marginX = 0;
+  // The last touch tap that could start a double-tap (a single, stationary
+  // touch release; see release()), or null. Desktop already gets a reset
+  // from the browser's own "dblclick" event; this is only for touch, where
+  // Panzoom's own preventDefault() on pointerdown (needed for its drag/pinch
+  // gesture) keeps WebKit from ever synthesizing one from two taps.
+  var lastTap = null;
   // Where the caption band is now (see place()): opts.descPosition, or
   // bottom instead of left or right on a narrow screen.
   var side = "bottom";
@@ -998,14 +1007,25 @@
       var moved = Math.abs(dx) + Math.abs(dy) > 3;
       var clickedBackground = single && !moved && !press.onImg;
       var swipe = single && !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
+      // A second same-spot tap within DOUBLETAP_MS resets the view, as
+      // "dblclick" below does for a mouse. WebKit never synthesizes a
+      // "dblclick" from two taps once Panzoom's own pointerdown handler has
+      // called preventDefault() on them (needed for its drag/pinch
+      // gesture), so touch needs its own detection instead of that event.
+      var tap = single && !moved && e.pointerType === "touch";
+      var doubleTap = tap && lastTap && e.timeStamp - lastTap.time < DOUBLETAP_MS &&
+        Math.abs(e.clientX - lastTap.x) < DOUBLETAP_PX && Math.abs(e.clientY - lastTap.y) < DOUBLETAP_PX;
+      lastTap = tap && !doubleTap ? { time: e.timeStamp, x: e.clientX, y: e.clientY } : null;
       press = null;
       overlay.classList.remove("dragging");
-      if (clickedBackground) close();
+      if (doubleTap) resetView();
+      else if (clickedBackground) close();
       else if (!(swipe && step(dx < 0 ? 1 : -1))) settle();
     }
     document.addEventListener("pointerup", release);
     document.addEventListener("pointercancel", release);
 
+    // Desktop double-click; see release() above for a double-tap's own path.
     overlay.addEventListener("dblclick", function (e) {
       if (!e.target.closest(".panzoom-exclude")) resetView();
     });

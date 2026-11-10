@@ -34,7 +34,7 @@ Ctrl/Cmd+arrow keys.](images/demo.gif)
   | -------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
   | Zoom                                   | scroll or pinch, toward the cursor                                          | + and -              |
   | Pan                                    | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | Ctrl/Cmd+arrow keys  |
-  | Go back to the opening view            | double-click                                                                | 0                    |
+  | Go back to the opening view            | double-click or double-tap                                                  | 0                    |
   | Change image in a gallery              | the previous and next buttons, or swipe                                     | left and right arrow |
   | Hide or show captions and descriptions |                                                                             | c                    |
   | Hide or show hints                     |                                                                             | h                    |
