@@ -211,7 +211,7 @@ does nothing.
 #|   Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red
 #|   (high).
 
-image(volcano)
+image(z = volcano)
 ```
 
 ## Cell with a link {expect-open="navigation"}

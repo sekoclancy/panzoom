@@ -206,7 +206,7 @@ A cross-referenced R figure with no options. It opens in lightbox.
 #|   Heights of Maunga Whau (Mount Eden), from pale yellow (low) to dark red
 #|   (high).
 
-image(volcano)
+image(z = volcano)
 ```
 
 ## Credits {.unnumbered}

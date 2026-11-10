@@ -98,7 +98,7 @@ in the viewer:
 #|   Heights of Maunga Whau (Mount Eden) in Auckland, from dark blue (low) to
 #|   yellow (high).
 
-image(volcano, col = hcl.colors(100, "Viridis"))
+image(z = volcano, col = hcl.colors(100, "Viridis"))
 ```
 
 ## Cross-referenced figure
@@ -136,7 +136,7 @@ under the `panzoom:` option in the YAML header) and hides the hint line.
 #| fig-cap: >-
 #|   Maunga Whau's heights as a heat map, with contour lines.
 
-image(volcano, col = hcl.colors(100, "Terrain 2"))
+image(z = volcano, col = hcl.colors(100, "Terrain 2"))
 contour(volcano, add = TRUE)
 ```
 
@@ -188,7 +188,7 @@ included:
 #| fig-cap: >-
 #|   Maunga Whau's heights as a heat map, from green (low) to white (high).
 
-image(volcano, col = terrain.colors(100))
+image(z = volcano, col = terrain.colors(100))
 ```
 
 ![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
@@ -205,7 +205,7 @@ image(volcano, col = terrain.colors(100))
 #| fig-cap: >-
 #|   Maunga Whau's heights as a heat map, from green (low) to white (high).
 
-image(volcano, col = terrain.colors(100))
+image(z = volcano, col = terrain.colors(100))
 ```
 
 ![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}
@@ -235,7 +235,7 @@ gallery. Subfigures of one figure are a gallery automatically.
 #|     on a 10 m by 10 m grid, viewed from above at an angle. The crater rim and
 #|     the slope down to the surrounding ground read as relief.
 
-image(volcano, col = hcl.colors(100, "Viridis"))
+image(z = volcano, col = hcl.colors(100, "Viridis"))
 persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
 ```
 
@@ -252,7 +252,7 @@ persp(volcano, theta = 135, phi = 30, col = "green3", shade = 0.5, border = NA)
 #|   - "A heat map, from pale yellow (low) to dark red (high)."
 
 contour(volcano)
-image(volcano)
+image(z = volcano)
 ```
 
 ## Wide figure {expect-fit="height"}
