@@ -1,15 +1,15 @@
 # panzoom
 
+> [!WARNING]
+> This extension is experimental and not guaranteed to work. Its behavior may
+> change without notice.
+
 **Live demo:** <https://sekoclancy.github.io/panzoom/>
 
 A [Quarto](https://quarto.org) extension that opens figures in a full-screen
 viewer, built on [Panzoom](https://github.com/timmywil/panzoom) and inspired by
 the built-in Quarto
 [lightbox](https://quarto.org/docs/output-formats/html-lightbox-figures.html).
-
-> [!WARNING]
-> This extension is experimental and not guaranteed to work. Its behavior may
-> change without notice.
 
 ## Installation
 
