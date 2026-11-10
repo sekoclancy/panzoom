@@ -16,9 +16,9 @@ lightbox:
 panzoom is not listed under `filters:` in the YAML header, so every image opens
 in lightbox. The cases are the same as the ones used in the panzoom examples, so
 each one can be compared with the case of the same number on [selected images
-with `lightbox`](b-mixed-r.html), [`panzoom` on every figure](c-global-r.html),
-and [selecting images](d-selecting-r.html). These are the lightbox settings in
-the YAML header:
+with `lightbox`](b-mixed-r.html), [Global `panzoom`](c-global-r.html), and
+[selecting images](d-selecting-r.html). These are the lightbox settings in the
+YAML header:
 
 ```yaml
 ---

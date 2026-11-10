@@ -13,10 +13,10 @@ filters:
 
 panzoom is not listed under `filters:` in the YAML header, so every Python
 (Jupyter) figure opens in lightbox. The cases are the same as the ones used in
-[`panzoom` on every figure](k-global-python.html), so each one can be compared
-with the case of the same number there. The R cases are on the [`lightbox`
-comparison (R)](a-lightbox-r.html) and [`panzoom` on every figure
-(R)](c-global-r.html). The YAML header turns on lightbox:
+[Global `panzoom`](k-global-python.html), so each one can be compared with the
+case of the same number there. The R cases are on the [`lightbox` comparison
+(R)](a-lightbox-r.html) and [Global `panzoom` (R)](c-global-r.html). The YAML
+header turns on lightbox:
 
 ```yaml
 ---

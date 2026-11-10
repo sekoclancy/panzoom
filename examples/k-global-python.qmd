@@ -1,5 +1,5 @@
 ---
-title: "`panzoom` on every figure (Python)"
+title: "Global `panzoom` (Python)"
 engine: jupyter
 jupyter: python3
 format:
@@ -17,8 +17,8 @@ panzoom takes every Python (Jupyter) figure lightbox would take on its own, so
 no figure needs to be marked. `lightbox: true` in the YAML header turns lightbox
 on too, but only [cells that ask for it](#sec-lightbox-options) with lightbox
 options open in it. The same cases open in lightbox alone on the [`lightbox`
-comparison](j-lightbox-python.html), and the R cases are on [`panzoom` on every
-figure (R)](c-global-r.html). The YAML header turns on panzoom and lightbox:
+comparison](j-lightbox-python.html), and the R cases are on [Global `panzoom`
+(R)](c-global-r.html). The YAML header turns on panzoom and lightbox:
 
 ```yaml
 ---
@@ -87,9 +87,9 @@ plt.show()
 ## lightbox options {#sec-lightbox-options expect-open="glightbox"}
 
 One cell with two plots and `lightbox:` options for a group and a description.
-Requesting lightbox prevents panzoom from working, as on [`panzoom` on every
-figure (R)](c-global-r.html). With Jupyter, lightbox ignores these options, so
-each plot opens in lightbox on its own, without the group or description.
+Requesting lightbox prevents panzoom from working, as on [Global `panzoom`
+(R)](c-global-r.html). With Jupyter, lightbox ignores these options, so each
+plot opens in lightbox on its own, without the group or description.
 
 ```{python}
 #| lightbox:

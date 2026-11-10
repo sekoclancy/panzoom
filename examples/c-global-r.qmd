@@ -1,5 +1,5 @@
 ---
-title: "`panzoom` on every figure (R)"
+title: "Global `panzoom` (R)"
 format:
   html:
     code-tools: true

@@ -69,7 +69,7 @@ website:
           - href: examples/b-mixed-r.qmd
             text: "B. Selected images with `lightbox` (R)"
           - href: examples/c-global-r.qmd
-            text: "C. `panzoom` on every figure (R)"
+            text: "C. Global `panzoom` (R)"
           - href: examples/d-selecting-r.qmd
             text: "D. Selecting images (R)"
           - href: examples/e-image-formats-r.qmd
@@ -87,7 +87,7 @@ website:
           - href: examples/j-lightbox-python.qmd
             text: "J. `lightbox` comparison (Python)"
           - href: examples/k-global-python.qmd
-            text: "K. `panzoom` on every figure (Python)"
+            text: "K. Global `panzoom` (Python)"
           - href: examples/l-cell-options-python.qmd
             text: "L. Cell options (Python)"
           - href: examples/m-figures-python.qmd
