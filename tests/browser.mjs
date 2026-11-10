@@ -257,7 +257,7 @@ async function state(page) {
         hintShown: !pz.querySelector(".panzoom-hint").hidden,
         // The hint names the caption key only when there is a caption or
         // description to hide or show (and a key bound to it).
-        hintCaptionOk: /to (hide|show) the caption/.test(pz.querySelector(".panzoom-hint-keys").textContent) ===
+        hintCaptionOk: /to (hide|show) captions/.test(pz.querySelector(".panzoom-hint-keys").textContent) ===
           ((window.PANZOOM_OPTIONS?.keys || {}).caption !== false &&
             (!!caption.innerHTML || !!pz.querySelector(".panzoom-description").innerHTML.trim())),
         overlayClass: pz.className,
@@ -690,8 +690,8 @@ async function checkKeyboard(page, handle) {
   const cap = captioned ? named("caption", ["c"]) : "", hin = named("hint", ["h"]), shut = named("close", ["Escape"]);
   // Each bound key is its own item on the hint line.
   const items = hintText.split(/\s\u00b7\s/);
-  out.hintNamesKeys = (cap ? items.includes(`${cap} to hide the caption`) : !hintText.includes("caption")) &&
-    (hin ? items.includes(`${hin} to hide the hint`) : !hintText.includes("the hint")) &&
+  out.hintNamesKeys = (cap ? items.includes(`${cap} to hide captions`) : !hintText.includes("caption")) &&
+    (hin ? items.includes(`${hin} to hide hints`) : !hintText.includes("hints")) &&
     (shut ? items.includes(`${shut} to close`) : !hintText.includes("close"));
   const band = () => page.evaluate(() => {
     const o = document.querySelector(".panzoom-overlay"), f = o.querySelector(".panzoom-panel");
@@ -717,7 +717,7 @@ async function checkKeyboard(page, handle) {
   // With the caption hidden, the hint says its key shows it again.
   out.captionToggles = capKey
     ? !b1.caption && !b1.desc && b3.caption === b0.caption && b3.desc === b0.desc &&
-      (!cap || (b1.hintKeys.includes(`${cap} to show the caption`) && b3.hintKeys.includes(`${cap} to hide the caption`)))
+      (!cap || (b1.hintKeys.includes(`${cap} to show captions`) && b3.hintKeys.includes(`${cap} to hide captions`)))
     : b1.caption === b0.caption && b1.desc === b0.desc;
   // A hint shown at first goes; one that starts hidden (`hint: hide`, shown
   // by the key; see expect-hint-key) or is off may show or stay hidden.

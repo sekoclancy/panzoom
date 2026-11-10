@@ -225,15 +225,17 @@
 
   // The hint line's parts, naming the keys bound: the caption key only when
   // the image has a caption or description, to hide it or, once hidden, to
-  // show it.
+  // show it. "captions"/"hints", not "the caption"/"the hint": both keys
+  // stay in effect for as long as the page is open (see hideCaption),
+  // not just this image.
   function hintParts(captioned) {
     var named = function (a) {
       return keys()[a].map(function (k) { return k === "Escape" ? "Esc" : k; }).join(" or ");
     };
     var cap = captioned ? named("caption") : "", hin = named("hint"), shut = named("close");
     var parts = ["scroll to zoom", "drag to pan", "double-click to reset"];
-    if (cap) parts.push(cap + (hideCaption ? " to show" : " to hide") + " the caption");
-    if (hin) parts.push(hin + " to hide the hint");
+    if (cap) parts.push(cap + (hideCaption ? " to show" : " to hide") + " captions");
+    if (hin) parts.push(hin + " to hide hints");
     if (shut) parts.push(shut + " to close");
     return parts;
   }
