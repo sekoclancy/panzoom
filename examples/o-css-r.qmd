@@ -29,8 +29,7 @@ default viewer even if they load the same rules. [One
 image](#sec-class-for-one-image) or [one code cell](#sec-class-for-one-cell) can
 add a class of its own, which applies while that image is open.
 
-The rules are in a raw HTML block on this page. The same block works in any
-Quarto document:
+The rules are in a raw HTML block on this page:
 
 ````show-source
 ```{=html}

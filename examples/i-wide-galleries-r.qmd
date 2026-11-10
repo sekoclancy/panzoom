@@ -212,11 +212,11 @@ strip(seed = 5, n = 8)
 ## Collages of different lengths {expect-fit="height"}
 
 A long collage (40 × 2 in, 24 panels) and a shorter one (24 × 2 in, 12 panels)
-from two cells, joined by `group`. Each opens at screen height, and stepping to
-the other fits it afresh, from its left end, so the short collage doesn't keep
-the scale or position of the long one. Only the short collage has a description,
-so the caption band changes height between them, and each collage stays clear of
-it. `fig-dpi: 48` only keeps the files small.
+from two cells, joined by `group`. Each opens at screen height; moving to the
+other collage resets its scale and position, opening it whole from its left end
+rather than keeping the first collage's zoom or pan. Only the shorter collage
+has a description, so the caption band changes height between them, and each
+collage stays clear of it. Here we use `fig-dpi: 48` to keep the files small.
 
 ```{r}
 #| panzoom:

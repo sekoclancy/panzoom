@@ -14,8 +14,8 @@ filters:
 The cell options from the R examples, on matplotlib figures, and svg output.
 lightbox is not set in the YAML header, so only cells marked for panzoom open in
 it. Clicking any other figure does nothing, unless [its
-cell](#sec-lightbox-only) turns lightbox on with `#| lightbox: true`. The YAML
-header turns on panzoom:
+cell](#sec-lightbox-only) turns lightbox on with `#| lightbox: true`. This
+notebook's YAML header adds the `panzoom` filter:
 
 ```yaml
 ---
@@ -357,7 +357,7 @@ plt.show()
 ## Plot aligned right {expect-open="panzoom" expect-fit="contain"}
 
 A 3 × 2 inch plot with `fig-align: right`, narrower than the column, so the page
-puts it at the right edge. It opens in panzoom centered, like any other plot.
+puts it at the right edge. It opens in panzoom centered.
 
 ```{python}
 #| panzoom: true

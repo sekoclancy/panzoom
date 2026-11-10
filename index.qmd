@@ -259,9 +259,9 @@ image(volcano)
 
 A figure many times wider than tall would be too thin to read if it opened
 whole, so it opens at screen height, at the spot you clicked. panzoom does this
-on its own for very wide figures; `fit: height` makes sure this one always does,
-whatever the window's shape. Click the highlighted panel, and the viewer opens
-right on it.
+on its own for very wide figures; here, `fit: height` is set so this figure
+always opens that way, whatever the window's shape. Click the highlighted panel,
+and the viewer opens right on it.
 
 ```{r}
 #| panzoom:

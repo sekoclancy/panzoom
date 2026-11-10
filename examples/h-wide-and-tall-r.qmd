@@ -318,7 +318,7 @@ wave(k = 5)
 ## Plot aligned right {expect-open="panzoom" expect-fit="contain"}
 
 A 4 × 3 inch plot with `fig-align: right`, narrower than the column, so the page
-puts it at the right edge. It opens in panzoom centered, like any other plot.
+puts it at the right edge. It opens in panzoom centered.
 
 ```{r}
 #| panzoom: true

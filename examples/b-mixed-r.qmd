@@ -13,12 +13,11 @@ panzoom:
 ---
 
 `lightbox: true` under `format: html:` in the YAML header turns lightbox on for
-the whole page, and only images marked with the `.panzoom` class or the
-`#| panzoom: true` cell option open in panzoom. Every other image opens in
-lightbox. The same cases open in lightbox alone on the [`lightbox`
-comparison](a-lightbox-r.html), and the same markup without lightbox is on
-[selecting images](d-selecting-r.html). The YAML header turns on lightbox and
-panzoom, and turns off the hint line:
+the whole page; only images marked with the `.panzoom` class or the
+`#| panzoom: true` cell option open in panzoom instead, and every other image
+opens in lightbox. The same cases open in lightbox alone on the [`lightbox`
+comparison](a-lightbox-r.html). The YAML header turns on lightbox and panzoom,
+and turns off the hint line:
 
 ```yaml
 ---
@@ -115,7 +114,9 @@ Some text with an inline image ![A white lighthouse](../images/mv-2.jpg){.panzoo
 ## R subfigures {expect-open="panzoom"}
 
 One R cell with `#| panzoom: true` and two plots, made subfigures by
-`fig-subcap`. Either one opens in panzoom, in a two-image gallery.
+`fig-subcap`. panzoom isn't declared in the project `_quarto.yml` or as a
+document-wide option here, so only the cell's own option opens its plots; either
+one opens in panzoom, in a two-image gallery.
 
 ```{r}
 #| panzoom: true

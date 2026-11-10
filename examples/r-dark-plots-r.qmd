@@ -9,7 +9,7 @@ filters:
   - panzoom
 ---
 
-Plots with dark backgrounds and plots with transparent backgrounds, in the
+Plots with dark backgrounds and plots with transparent backgrounds with the
 viewer's default 70% black backdrop. Each one is worth opening in light and dark
 mode (the toggle in the navbar). [Renderings](s-renderings-r.html) draws a plot
 for each mode instead.
@@ -112,10 +112,9 @@ wave(k = 3, ink = "gray85")
 
 ## Gallery of light and dark plots {expect-open="panzoom" expect-steps="true"}
 
-A plot on white, the [dark plot](#sec-dark-background), and the [transparent
-plot](#sec-transparent-background-dark-ink) with black ink, in a gallery. They
-open in panzoom as a three-image gallery, appearing as they do on the page prior
-to opening the viewer.
+A plot on white, a dark plot, and a transparent plot with black ink, in a
+gallery. They open in panzoom as a three-image gallery, appearing as they do on
+the page prior to opening the viewer.
 
 ```{r}
 #| panzoom:
