@@ -183,7 +183,7 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-description p:last-child { margin-bottom: 0; }
 .panzoom-hint-part { white-space: nowrap; }
 .panzoom-hint {
-  font-size: 0.8rem; pointer-events: none;
+  font-size: 0.8rem; user-select: text; -webkit-user-select: text;
   color: color-mix(in srgb, var(--panzoom-panel-fg) 70%, var(--panzoom-panel-bg));
 }
 
