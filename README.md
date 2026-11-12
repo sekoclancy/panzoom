@@ -145,6 +145,10 @@ To select every image in a block, wrap it in a `.panzoom` div:
 To leave out a code cell's plots, use `#| panzoom: false`; to leave out a
 markdown image, give it `.nopanzoom`. An image inside a link keeps its link.
 
+A selected image or cell opens in panzoom even with lightbox on for the page.
+panzoom drops the `#| lightbox:` options of a selected cell, so set `group` and
+`description` under `#| panzoom:` instead.
+
 ### Options
 
 Options go under `panzoom:` in the document's YAML header, in place of `true`:

@@ -20,8 +20,9 @@ lightbox:
 
 The `lightbox:` option in the YAML header turns lightbox on for the whole page;
 only images marked with the `.panzoom` class or the `#| panzoom: true` cell
-option open in panzoom instead, and every other image opens in lightbox. The
-same cases open in lightbox alone on the [`lightbox`
+option open in panzoom instead, and every other image opens in lightbox. A [cell
+with both options](#sec-both-options) opens in panzoom, without its lightbox
+options. The same cases open in lightbox alone on the [`lightbox`
 comparison](a-lightbox-r.html). The YAML header sets up both with the same
 caption position and gallery loop, and turns off the hint line:
 
@@ -225,6 +226,23 @@ isn't marked.
 #|   (high).
 
 image(z = volcano)
+```
+
+## Both options {#sec-both-options expect-open="panzoom"}
+
+An R cell with `#| panzoom: true` and `lightbox` options for a group and a
+description. panzoom takes it and drops the lightbox options, so it opens on its
+own, without the description.
+
+```{r}
+#| panzoom: true
+#| lightbox:
+#|   group: both
+#|   description: Vapor pressure against temperature.
+#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"
+#| fig-cap: "Vapor pressure of mercury against temperature."
+
+plot(pressure)
 ```
 
 ## Credits {.unnumbered}

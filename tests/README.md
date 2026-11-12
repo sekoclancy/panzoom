@@ -74,7 +74,8 @@ The example pages are in [examples/](../examples/), rendered with the site and
 published at <https://sekoclancy.github.io/panzoom/>. Each starts with a note
 describing the expected result.
 
-**R (knitr).** A–D render the same 12 cases four ways:
+**R (knitr).** A–D render the same 12 cases four ways (B adds a 13th, a cell with both
+options):
 
   | Page                                                     | Description                                                               | panzoom | Lightbox      |
   | -------------------------------------------------------- | ------------------------------------------------------------------------- | ------- | ------------- |
