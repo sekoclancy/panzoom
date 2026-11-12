@@ -16,7 +16,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ORDER = `panzoom lightbox classes
-  label echo include output error cache
+  label echo code-fold code-summary include output error cache
   fig-width fig-height fig-dpi dev dev.args fig-ext
   out-width fig-align fig-link fig-show animation.hook interval
   renderings column layout layout-ncol layout-nrow
