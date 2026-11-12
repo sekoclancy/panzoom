@@ -3,31 +3,41 @@ title: "Interaction with `lightbox` (R)"
 format:
   html:
     code-tools: true
-    lightbox: true
 filters:
   - path: ../_filters/show-source.lua
     at: pre-ast
   - panzoom
 panzoom:
   hint: false
+  desc-position: right
+  loop: true
+lightbox:
+  match: auto
+  effect: fade
+  desc-position: right
+  loop: true
 ---
 
-`lightbox: true` under `format: html:` in the YAML header turns lightbox on for
-the whole page; only images marked with the `.panzoom` class or the
-`#| panzoom: true` cell option open in panzoom instead, and every other image
-opens in lightbox. The same cases open in lightbox alone on the [`lightbox`
-comparison](a-lightbox-r.html). The YAML header turns on lightbox and panzoom,
-and turns off the hint line:
+The `lightbox:` option in the YAML header turns lightbox on for the whole page;
+only images marked with the `.panzoom` class or the `#| panzoom: true` cell
+option open in panzoom instead, and every other image opens in lightbox. The
+same cases open in lightbox alone on the [`lightbox`
+comparison](a-lightbox-r.html). The YAML header sets up both with the same
+caption position and gallery loop, and turns off the hint line:
 
 ```yaml
 ---
-format:
-  html:
-    lightbox: true
 filters:
   - panzoom
 panzoom:
   hint: false
+  desc-position: right
+  loop: true
+lightbox:
+  match: auto
+  effect: fade
+  desc-position: right
+  loop: true
 ---
 ```
 
@@ -35,7 +45,7 @@ panzoom:
 
 A markdown image with `.panzoom`, a description, and `desc-position="left"`. It
 opens in panzoom, with the caption and description in a panel on the left of the
-image.
+image, not on the right as set in the YAML header.
 
 ```show-source
 ![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){.panzoom description="Chilmark has _some_ of the best beaches. **credit:** [Chilmark Beach](https://unsplash.com/photos/VBDJGOMCwps)" desc-position="left" fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
