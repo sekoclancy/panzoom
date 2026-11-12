@@ -19,7 +19,12 @@ selects the tab or expands the callout.
 The plots are drawn with these helpers:
 
 ```{r}
-# A collage: `n` panels side by side, like a wide patchwork figure.
+#| code-fold: true
+#| code-summary: "collage()"
+
+#' Draw random walks in side-by-side panels.
+#'
+#' @param n Number of panels.
 collage <- function(n = 12) {
   set.seed(1)
   par(mfrow = c(1, n), mar = c(3, 3, 2, 1))
@@ -35,7 +40,15 @@ collage <- function(n = 12) {
     )
   }
 }
+```
 
+```{r}
+#| code-fold: true
+#| code-summary: "wave()"
+
+#' Draw a sine wave with shading to zero.
+#'
+#' @param k Frequency multiplier; the curve completes 2 * k cycles on 0 to 4 * pi.
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
   col <- hcl.colors(4, "Dark 3")[(k - 1) %% 4 + 1]

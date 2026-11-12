@@ -115,9 +115,17 @@ The plots are drawn with these helpers:
 ```{python}
 import matplotlib.pyplot as plt
 import numpy as np
+```
 
+```{python}
+#| code-fold: true
+#| code-summary: "wave()"
 
 def wave(k=1):
+    """Draw a sine wave with shading to zero.
+
+    k: frequency multiplier; draws 2 * k cycles from 0 to 4 * pi.
+    """
     x = np.linspace(0, 4 * np.pi, 400)
     col = plt.cm.Dark2(k - 1)
     fig, ax = plt.subplots(figsize=(7, 5))
@@ -125,10 +133,19 @@ def wave(k=1):
     ax.plot(x, np.sin(k * x), color=col, linewidth=2)
     ax.set(title=f"Wave {k}", xlabel="x", ylabel="sin(kx)")
     plt.show()
+```
 
+```{python}
+#| code-fold: true
+#| code-summary: "collage()"
 
-# A collage: `n` panels side by side, like a wide patchwork figure.
 def collage(n=12, height=0.8, width=8):
+    """Draw random walks in side-by-side panels.
+
+    n: number of panels.
+    height: figure height in inches.
+    width: figure width in inches.
+    """
     rng = np.random.default_rng(1)
     fig, axes = plt.subplots(1, n, figsize=(width, height), layout="constrained")
     for i, ax in enumerate(axes):
@@ -136,10 +153,18 @@ def collage(n=12, height=0.8, width=8):
         ax.set_title(f"Panel {i + 1}", fontsize=5)
         ax.tick_params(labelsize=4)
     plt.show()
+```
 
+```{python}
+#| code-fold: true
+#| code-summary: "strip()"
 
-# A tall strip: `n` rows stacked, like a tall patchwork figure.
 def strip(seed=2, n=8):
+    """Draw random walks in stacked rows.
+
+    seed: random seed for the walks.
+    n: number of rows.
+    """
     rng = np.random.default_rng(seed)
     fig, axes = plt.subplots(n, 1, figsize=(3, 10), layout="constrained")
     for i, ax in enumerate(axes):

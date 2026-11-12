@@ -59,6 +59,12 @@ citation](#sec-citation-in-a-caption) as raw `[@key]`.
 The plots are drawn with this helper:
 
 ```{r}
+#| code-fold: true
+#| code-summary: "wave()"
+
+#' Draw a sine wave with shading to zero.
+#'
+#' @param k Frequency multiplier; the curve completes 2 * k cycles on 0 to 4 * pi.
 wave <- function(k = 1) {
   x <- seq(0, 4 * pi, length.out = 400)
   col <- hcl.colors(4, "Dark 3")[(k - 1) %% 4 + 1]

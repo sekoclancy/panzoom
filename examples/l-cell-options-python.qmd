@@ -34,9 +34,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 rng = np.random.default_rng(1)
+```
 
+```{python}
+#| code-fold: true
+#| code-summary: "walk()"
 
 def walk(ax, n=200, title=None):
+    """Draw a random walk using the shared random number generator.
+
+    ax: matplotlib axes to draw on.
+    n: number of steps.
+    title: optional axes title.
+    """
     ax.plot(np.cumsum(rng.normal(size=n)))
     if title:
         ax.set_title(title)

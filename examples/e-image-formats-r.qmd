@@ -31,8 +31,15 @@ The collage cases draw with this helper:
 
 ```{r}
 library(ragg)
+```
 
-# A collage: `n` panels side by side, like a wide patchwork figure.
+```{r}
+#| code-fold: true
+#| code-summary: "collage()"
+
+#' Draw random walks in side-by-side panels.
+#'
+#' @param n Number of panels.
 collage <- function(n = 12) {
   set.seed(1)
   par(mfrow = c(1, n), mar = c(3, 3, 2, 1))

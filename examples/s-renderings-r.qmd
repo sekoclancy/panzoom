@@ -17,11 +17,14 @@ tints light text drawn on a transparent background.
 The plots are drawn with this helper:
 
 ```{r}
-#' Draw a shaded sine wave.
+#| code-fold: true
+#| code-summary: "wave()"
+
+#' Draw a sine wave with shading to zero.
 #'
-#' @param k Wave number; the curve completes k cycles.
+#' @param k Frequency multiplier; the curve completes 2 * k cycles on 0 to 4 * pi.
 #' @param ink Color for the axes, labels, and title.
-#' @param paper Plot background color, or NULL to leave the device background.
+#' @param paper Plot background color, or NULL to keep the device background.
 #' @param col Color for the curve and its shaded area.
 wave <- function(k = 1, ink = "black", paper = NULL, col = "#3B7DB8") {
   if (!is.null(paper)) {

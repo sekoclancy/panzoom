@@ -24,14 +24,18 @@ The plots are drawn with this helper:
 ```{python}
 import matplotlib.pyplot as plt
 import numpy as np
+```
 
+```{python}
+#| code-fold: true
+#| code-summary: "wave()"
 
 def wave(k=1, ink="black", paper="white", col="#3B7DB8"):
-    """Draw a shaded sine wave.
+    """Draw a sine wave with shading to zero.
 
-    k: wave number; the curve completes k cycles.
+    k: frequency multiplier; draws 2 * k cycles from 0 to 4 * pi.
     ink: color for the axes, labels, and title.
-    paper: plot background color, or "none" to leave it transparent.
+    paper: plot background color, or "none" for transparency.
     col: color for the curve and its shaded area.
     """
     x = np.linspace(0, 4 * np.pi, 400)
