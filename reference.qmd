@@ -1,0 +1,140 @@
+---
+title: "Reference"
+sidebar: false
+format:
+  html:
+    toc: true
+---
+
+Enable the extension with `filters: [panzoom]`. Set options under `panzoom:`
+in the document header, under `#| panzoom:` in a code cell, or as attributes
+on a selected markdown image. Cell and image options override document options.
+
+## Selecting images
+
+| Setting | Applies to |
+| --- | --- |
+| `panzoom: true` or `panzoom: auto` | Every figure and every image alone in its paragraph. |
+| `panzoom: false` | No images in the document, including explicitly selected images. |
+| `panzoom:` with an option map | Selected images only, unless the map includes `match: auto`. |
+| `#| panzoom: true` | All plots from that code cell. A cell option map also selects its plots. |
+| `.panzoom` on an image or div | That image, or every image inside the div. |
+| `.nopanzoom` on an image, or `#| panzoom: false` on a cell | Excludes the image or cell's plots. |
+
+See [selecting images](examples/d-selecting-r.qmd) and
+[divs](examples/p-divs-r.qmd) for examples.
+
+## Viewer options
+
+“Document” means the document's `panzoom:` map; “cell/image” means a cell's
+`#| panzoom:` map or an attribute on a markdown image.
+
+| Option | Default | Scope | Description |
+| --- | --- | --- | --- |
+| `match` | Selected images | Document | Set to `auto` to select every figure and standalone image. |
+| `max-zoom` | `4` | Document, cell/image | Maximum screen pixels per image pixel. |
+| `hint` | `true` | Document, cell/image | `true` or `show` shows the controls hint; `hide` starts hidden but allows toggling; `false` removes it. Opening by touch hides the hint initially. |
+| `caption` | `true` | Document, cell/image | Show the figure caption in the viewer. |
+| `loop` | `false` | Document | Wrap from the last gallery image to the first, and back. |
+| `fit` | `auto` | Document, cell/image | `auto`, `contain`, `height`, or `width`; see below. |
+| `desc-position` | Figure caption position | Document, cell/image | Place the caption and description at `bottom`, `top`, `left`, or `right`. Side panels move below the image on screens narrower than 769 px. |
+| `css-class` | None | Document, cell/image | Add a class to the viewer for custom CSS. |
+| `keys` | See [Keyboard options](#keyboard-options) | Document | Change keys for viewer actions. |
+| `group` | Automatic for subfigures | Cell/image | Give images the same group name to form a gallery. Also supported on `.panzoom` divs. |
+| `description` | None | Cell/image | Markdown text below the caption. A cell can use a list with one description per plot, in order. |
+
+With `fit: auto`, most images open whole, never larger than their real size.
+Very wide images open at screen height, near the clicked spot; very tall
+images open at screen width, from the top. Choose `contain` to always open
+the whole image, or `height` or `width` to force the corresponding fit.
+
+See [cell options](examples/f-cell-options-r.qmd),
+[captions and descriptions](examples/g-captions-r.qmd), and
+[wide and tall figures](examples/h-wide-and-tall-r.qmd).
+
+### Document example
+
+```yaml
+---
+filters:
+  - panzoom
+panzoom:
+  match: auto
+  max-zoom: 6
+  loop: true
+  desc-position: bottom
+---
+```
+
+### Cell and image examples
+
+````markdown
+```{{r}}
+#| panzoom:
+#|   max-zoom: 8
+#|   hint: false
+#|   group: pressure
+#|   description:
+#|     - "Pressure against temperature."
+#|     - "The same, on a log scale."
+
+plot(pressure)
+plot(pressure, log = "y")
+```
+
+![A beach.](beach.jpg){.panzoom fit="contain" desc-position="left" description="An afternoon by the sea."}
+````
+
+Unknown options and invalid values stop the render with a validation error.
+
+## Keyboard options
+
+Set `keys` in the document's `panzoom:` map. Each action accepts one key, a
+list of keys, or `false` to disable its binding. Omitted actions keep their defaults.
+
+| Action | Default | Behavior |
+| --- | --- | --- |
+| `caption` | `c` | Hide or show the caption and description. |
+| `hint` | `h` | Hide or show the hint. |
+| `close` | `Escape` | Close the viewer. |
+| `reset` | `"0"` | Return to the opening view. |
+| `zoom-in` | `["+", "="]` | Zoom in. |
+| `zoom-out` | `"-"` | Zoom out. |
+
+```yaml
+panzoom:
+  keys:
+    caption: k
+    hint: false
+    close: [Escape, q]
+```
+
+A key is one character, or `Escape`, `Backspace`, `Delete`, or `Insert`.
+Each key can serve only one action. Tab, Enter, Space, arrow keys, Page Up,
+Page Down, Home, and End have fixed behavior. Left and Right change gallery
+images; Ctrl/Cmd+arrow pans when the image is larger than the screen.
+
+## Color options
+
+These options work at document, cell, and image scope. Colors accept CSS
+values, a `_brand.yml` palette name, or a brand role such as `primary`.
+Quote hex colors in YAML. `panel-colour` and `link-colour` are aliases.
+
+| Option | Default | CSS variable | Applies to |
+| --- | --- | --- | --- |
+| `backdrop` | `rgba(0, 0, 0, 0.7)` | `--panzoom-backdrop` | Layer over the page. |
+| `panel-background` | Page background | `--panzoom-panel-bg` | Caption band or side panel. |
+| `panel-color` | Page text color | `--panzoom-panel-fg` | Caption, description, and hint. |
+| `link-color` | Page link color | `--panzoom-link` | Links in captions and descriptions. |
+
+```yaml
+panzoom:
+  backdrop: rgba(0, 0, 0, 0.9)
+  panel-background: "#222"
+  panel-color: white
+  link-color: lightblue
+```
+
+See [color options](examples/n-color-options-r.qmd) for examples and
+[styling with CSS](examples/o-css-r.qmd) for additional CSS variables and
+the viewer's classes.

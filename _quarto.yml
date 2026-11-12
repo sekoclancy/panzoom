@@ -5,6 +5,7 @@ project:
   output-dir: docs
   render:
     - index.qmd
+    - reference.qmd
     - examples/*.qmd
   preview:
     host: 127.0.0.1
@@ -52,6 +53,8 @@ website:
   favicon: assets/favicon.png
   navbar:
     left:
+      - href: reference.qmd
+        text: Reference
       - href: examples/b-mixed-r.qmd
         text: Examples
     right:
