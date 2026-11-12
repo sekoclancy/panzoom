@@ -145,13 +145,13 @@ plot(cars)
 
 ## Grouped cells {expect-open="panzoom glightbox"}
 
-Two R cells in the lightbox group `r-graph`. The first also has
-`#| panzoom: true`, so it opens in panzoom on its own, without the lightbox
-description. The second opens in lightbox as the only image in its group.
+Two R cells in the group `r-graph`, each with a description. The first sets both
+under the `panzoom` cell option, so it opens in panzoom on its own. The second
+sets both under `lightbox`, so it opens in lightbox as the only image in its
+group.
 
 ```{r}
-#| panzoom: true
-#| lightbox:
+#| panzoom:
 #|   group: r-graph
 #|   description: Ten random points.
 #| fig-alt: "Scatter plot of ten random points"
@@ -173,13 +173,12 @@ plot(cars)
 
 ## Two plots in one cell {expect-open="panzoom"}
 
-One R cell with `#| panzoom: true`, two plots, and the lightbox options
-`group: cars` and a description for each plot. panzoom drops the lightbox
-options, so each plot opens in panzoom on its own, without a description.
+One R cell with two plots, joined by `group: cars` under the `panzoom` cell
+option, with a description for each plot. Either one opens in panzoom, in a
+two-image gallery.
 
 ```{r}
-#| panzoom: true
-#| lightbox:
+#| panzoom:
 #|   group: cars
 #|   description:
 #|     - The mtcars data, each variable against every other.
