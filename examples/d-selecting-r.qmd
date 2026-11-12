@@ -16,9 +16,8 @@ option open in panzoom. lightbox is not set in the YAML header, so clicking any
 other image does nothing, except in [cells that ask for
 lightbox](#sec-grouped-cells) with options of their own. The same cases open in
 lightbox alone on the [`lightbox` comparison](a-lightbox-r.html), and with
-lightbox on for the whole page on [selected images with
-`lightbox`](b-mixed-r.html). The YAML header turns on panzoom and turns off the
-hint line:
+lightbox on for the whole page on [interaction with `lightbox`](b-mixed-r.html).
+The YAML header turns on panzoom and turns off the hint line:
 
 ```yaml
 ---

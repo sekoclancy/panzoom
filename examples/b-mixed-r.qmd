@@ -1,5 +1,5 @@
 ---
-title: "Selected images with `lightbox` (R)"
+title: "Interaction with `lightbox` (R)"
 format:
   html:
     code-tools: true

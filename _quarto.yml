@@ -69,7 +69,7 @@ website:
           - href: examples/a-lightbox-r.qmd
             text: "A. `lightbox` comparison (R)"
           - href: examples/b-mixed-r.qmd
-            text: "B. Selected images with `lightbox`"
+            text: "B. Interaction with `lightbox`"
           - href: examples/c-global-r.qmd
             text: "C. Global `panzoom` (R)"
           - href: examples/d-selecting-r.qmd
