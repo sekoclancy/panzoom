@@ -34,6 +34,11 @@ $navbar-fg: #ffffff;
   color: var(--bs-body-color);
 }
 
+/* Fold summaries use the same gray (3.4:1); match the page text instead. */
+.quarto-dark details.code-fold > summary {
+  color: var(--bs-body-color);
+}
+
 /* Dark mode: code in figure captions (5.9:1 on its background). */
 .quarto-dark figcaption :is(code, code.sourceCode) { color: #d1d1d1; }
 

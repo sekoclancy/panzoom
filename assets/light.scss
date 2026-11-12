@@ -15,6 +15,9 @@ $body-secondary: #4f5963;
 /* The "</> Code" button (4.7:1). */
 .code-tools-button { color: #52595f; }
 
+/* Fold summaries use page text to meet the site's 7:1 contrast target. */
+details.code-fold > summary { color: var(--bs-body-color); }
+
 /* Links in captions are underlined, citations too (Quarto's `.citation a`
    takes their underline off): color alone doesn't set them apart from the
    caption (axe: link-in-text-block). */
