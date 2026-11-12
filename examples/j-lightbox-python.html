@@ -84,9 +84,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7018cc8867401cb480acf35f2ed2882d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c34573a46a3c265f37fb87111ed1aa6c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-307cabbe07ae71f9c617fc54d3ef415e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-c34573a46a3c265f37fb87111ed1aa6c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f157217e1616e2d29265d38c09db305d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -271,7 +271,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       }
     };
     const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
       document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
       document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
@@ -285,6 +286,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
     };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
       toggleColorMode(true);
@@ -307,6 +317,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../reference.html"> 
+<span class="menu-text">Reference</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link active" href="../examples/b-mixed-r.html" aria-current="page"> 
 <span class="menu-text">Examples</span></a>
@@ -358,25 +372,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/b-mixed-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">B. Selected images with <code>lightbox</code> (R)</span></a>
+ <span class="menu-text">B. Interaction with <code>lightbox</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/c-global-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">C. <code>panzoom</code> on every figure (R)</span></a>
+ <span class="menu-text">C. Global <code>panzoom</code> (R)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/d-selecting-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">D. Selecting images (R)</span></a>
+ <span class="menu-text">D. Selecting images</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/e-image-formats-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">E. Image formats (R)</span></a>
+ <span class="menu-text">E. Image formats</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -388,19 +402,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/g-captions-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">G. Captions and descriptions (R)</span></a>
+ <span class="menu-text">G. Captions and descriptions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/h-wide-and-tall-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">H. Wide and tall figures (R)</span></a>
+ <span class="menu-text">H. Wide and tall figures</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/i-wide-galleries-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. Wide figures in galleries (R)</span></a>
+ <span class="menu-text">I. Wide figures in galleries</span></a>
   </div>
 </li>
       </ul>
@@ -420,7 +434,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/k-global-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">K. <code>panzoom</code> on every figure (Python)</span></a>
+ <span class="menu-text">K. Global <code>panzoom</code> (Python)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -432,7 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/m-figures-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">M. Captions, formats, and shapes (Python)</span></a>
+ <span class="menu-text">M. Captions, formats, and shapes</span></a>
   </div>
 </li>
       </ul>
@@ -446,13 +460,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/n-color-options-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">N. Color options (R)</span></a>
+ <span class="menu-text">N. Color options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/o-css-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">O. Styling with CSS (R)</span></a>
+ <span class="menu-text">O. Styling with CSS</span></a>
   </div>
 </li>
       </ul>
@@ -486,7 +500,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/r-dark-plots-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">R. Dark plots (R)</span></a>
+ <span class="menu-text">R. Dark plots</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -547,13 +561,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>panzoom is not listed under <code>filters:</code> in the YAML header, so every Python (Jupyter) figure opens in lightbox. The cases are the same as the ones used in <a href="k-global-python.html"><code>panzoom</code> on every figure</a>, so each one can be compared with the case of the same number there. The R cases are on the <a href="a-lightbox-r.html"><code>lightbox</code> comparison (R)</a> and <a href="c-global-r.html"><code>panzoom</code> on every figure (R)</a>. The YAML header turns on lightbox:</p>
+<p>panzoom is not listed under <code>filters:</code> in the YAML header, so every Python (Jupyter) figure opens in lightbox. The cases are the same as the ones used in <a href="k-global-python.html">Global <code>panzoom</code></a>, so each one can be compared with the case of the same number there. The R cases are on the <a href="a-lightbox-r.html"><code>lightbox</code> comparison (R)</a> and <a href="c-global-r.html">Global <code>panzoom</code> (R)</a>. The YAML header turns on lightbox:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lightbox</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Jupyter leaves the <code>panzoom</code> and <code>lightbox</code> options out of the code shown on the page. The <strong>Code</strong> button at the top shows the full source.</p>
 <p>The plots share this setup:</p>
-<div id="1ade51b1" class="cell" data-execution_count="1">
+<div id="22c85ad5" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -564,7 +578,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-with-a-caption" class="level2" data-expect-open="glightbox" data-number="1">
 <h2 data-expect-open="glightbox" data-number="1" class="anchored" data-anchor-id="plot-with-a-caption"><span class="header-section-number">1</span> Plot with a caption</h2>
 <p>A plot with a caption. It opens in lightbox.</p>
-<div id="75b9b6d3" class="cell" data-execution_count="2">
+<div id="8a96639e" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Line plot of a sine wave"</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "A sine wave."</span></span>
@@ -585,7 +599,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-without-a-caption" class="level2" data-expect-open="glightbox" data-number="2">
 <h2 data-expect-open="glightbox" data-number="2" class="anchored" data-anchor-id="plot-without-a-caption"><span class="header-section-number">2</span> Plot without a caption</h2>
 <p>A plot without a caption. It opens in lightbox.</p>
-<div id="a641be42" class="cell" data-execution_count="3">
+<div id="40a5553d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Line plot of a cosine wave"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -659,7 +673,7 @@ Figure&nbsp;1: A sine wave and a cosine wave, sin(2x) and cos(2x).
 <section id="lightbox-options" class="level2" data-expect-open="glightbox" data-number="4">
 <h2 data-expect-open="glightbox" data-number="4" class="anchored" data-anchor-id="lightbox-options"><span class="header-section-number">4</span> lightbox options</h2>
 <p>One cell with two plots and <code>lightbox:</code> options for a group and a description. With Jupyter, lightbox ignores these options, so each plot opens in lightbox on its own, without the group or description.</p>
-<div id="3ae33f63" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lightbox&quot;,&quot;value&quot;:{&quot;description&quot;:&quot;Ignored by lightbox with Jupyter.&quot;,&quot;group&quot;:&quot;waves&quot;}}" data-execution_count="5">
+<div id="76c10d39" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;lightbox&quot;,&quot;value&quot;:{&quot;description&quot;:&quot;Ignored by lightbox with Jupyter.&quot;,&quot;group&quot;:&quot;waves&quot;}}" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt:</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - Line plot of a sine wave</span></span>
@@ -694,7 +708,7 @@ Figure&nbsp;1: A sine wave and a cosine wave, sin(2x) and cos(2x).
 <section id="lightbox-off" class="level2" data-expect-open="nothing" data-number="5">
 <h2 data-expect-open="nothing" data-number="5" class="anchored" data-anchor-id="lightbox-off"><span class="header-section-number">5</span> lightbox off</h2>
 <p>A cell with <code>lightbox: false</code>. Clicking the plot does nothing.</p>
-<div id="373ddce8" class="cell" data-execution_count="6">
+<div id="f1ba7036" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: Line plot of a sine wave</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: A sine wave, sin(4x).</span></span>
@@ -715,7 +729,7 @@ Figure&nbsp;1: A sine wave and a cosine wave, sin(2x) and cos(2x).
 <section id="panzoom-on-a-cell" class="level2" data-expect-open="glightbox" data-number="6">
 <h2 data-expect-open="glightbox" data-number="6" class="anchored" data-anchor-id="panzoom-on-a-cell"><span class="header-section-number">6</span> panzoom on a cell</h2>
 <p>A cell with <code>#| panzoom: true</code>. panzoom is not listed under <code>filters:</code> in the YAML header, so the option does nothing, and the plot opens in lightbox.</p>
-<div id="147f1ef6" class="cell" data-panzoom="true" data-execution_count="7">
+<div id="c077b794" class="cell" data-panzoom="true" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: Line plot of a cosine wave</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: A cosine wave, cos(4x).</span></span>
@@ -1355,10 +1369,10 @@ Figure&nbsp;1: A sine wave and a cosine wave, sin(2x) and cos(2x).
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>panzoom is not listed under <span class="in">`filters:`</span> in the YAML header, so every Python</span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>(Jupyter) figure opens in lightbox. The cases are the same as the ones used in</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">`panzoom` on every figure</span><span class="co">](k-global-python.html)</span>, so each one can be compared</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>with the case of the same number there. The R cases are on the [<span class="in">`lightbox`</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>comparison (R)](a-lightbox-r.html) and [<span class="in">`panzoom`</span> on every figure</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>(R)](c-global-r.html). The YAML header turns on lightbox:</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Global `panzoom`</span><span class="co">](k-global-python.html)</span>, so each one can be compared with the</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>case of the same number there. The R cases are on the [<span class="in">`lightbox`</span> comparison</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>(R)](a-lightbox-r.html) and <span class="co">[</span><span class="ot">Global `panzoom` (R)</span><span class="co">](c-global-r.html)</span>. The YAML</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>header turns on lightbox:</span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>

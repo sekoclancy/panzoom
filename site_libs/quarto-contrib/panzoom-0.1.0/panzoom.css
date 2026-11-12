@@ -7,7 +7,7 @@ a:not(.panzoom-link) img.panzoom {
 }
 img.panzoom:not(.nopanzoom):focus-visible,
 a.panzoom-link:focus-visible img {
-  outline: 3px solid var(--bs-link-color, #0d6efd); outline-offset: 2px;
+  outline: 3px solid var(--bs-link-color, Highlight); outline-offset: 2px;
 }
 a.panzoom-link:focus-visible { outline: none; }
 /* No ring on the image focus returns to after a viewer opened with the
@@ -16,20 +16,38 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-no-ring a.panzoom-link:focus-visible img {
   outline: none;
 }
+/* Quarto pins a permalink icon to the top-right corner of every labeled
+   figure (`.quarto-figure > .anchorjs-link`), which can land on a marked
+   image's own top-right corner. It's invisible until :hover, so there's no
+   hover on touch to warn a tap is about to hit it instead of the image. */
+@media (hover: none) {
+  .quarto-figure:has(img.panzoom) > .anchorjs-link { pointer-events: none; }
+}
 
 /* As Quarto's lightbox: the page shows through a dark overlay, and the
    caption takes the page's own colors, so it follows a light or dark
-   theme. The fallbacks are Bootstrap's light defaults. The variables are
+   theme. The fallbacks are system colors, for a page without the Quarto or
+   Bootstrap variables, and for forced colors. The variables are
    for restyling the viewer; :where() gives them no specificity, so any
    rule that sets them wins, whatever order the stylesheets load in. */
 :where(.panzoom-overlay) {
   --panzoom-backdrop: rgba(0, 0, 0, 0.7);
-  --panzoom-panel-bg: var(--quarto-body-bg, #fff);
-  --panzoom-panel-fg: var(--quarto-body-color, #212529);
-  --panzoom-link: var(--bs-link-color, #0d6efd);
-  /* The close, previous, and next buttons, the counter, and the status. */
+  --panzoom-panel-bg: var(--quarto-body-bg, var(--bs-body-bg, Canvas));
+  --panzoom-panel-fg: var(--quarto-body-color, var(--bs-body-color, CanvasText));
+  --panzoom-link: var(--bs-link-color, LinkText);
+  /* Shared default for the close button, the previous/next pair, the
+     counter, and the status, each stylable on its own below. */
   --panzoom-button-bg: rgba(0, 0, 0, 0.6);
   --panzoom-button-fg: #eee;
+  --panzoom-close-bg: var(--panzoom-button-bg);
+  --panzoom-close-fg: var(--panzoom-button-fg);
+  --panzoom-nav-bg: var(--panzoom-button-bg);
+  --panzoom-nav-fg: var(--panzoom-button-fg);
+  --panzoom-counter-bg: var(--panzoom-button-bg);
+  --panzoom-counter-fg: var(--panzoom-button-fg);
+  --panzoom-status-bg: var(--panzoom-button-bg);
+  --panzoom-status-fg: var(--panzoom-button-fg);
+  --panzoom-hint-fg: color-mix(in srgb, var(--panzoom-panel-fg) 70%, var(--panzoom-panel-bg));
   /* A side panel (desc-position left or right) is as wide as its text
      needs, between these. */
   --panzoom-panel-min-width: min(12rem, 32vw);
@@ -58,13 +76,13 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-close {
   position: absolute; top: 10px; right: 14px; z-index: 1;
   border: 0; border-radius: 4px; padding: 0.1em 0.35em;
-  background: var(--panzoom-button-bg); color: var(--panzoom-button-fg); font-size: 2rem; line-height: 1;
+  background: var(--panzoom-close-bg); color: var(--panzoom-close-fg); font-size: 2rem; line-height: 1;
   cursor: pointer;
 }
 /* Hover: the button background with a quarter black mixed in, which takes
    the default 0.6 black to 0.7. */
-.panzoom-close:hover { background: color-mix(in srgb, var(--panzoom-button-bg), black 25%); }
-.panzoom-close:focus-visible { outline: 2px solid var(--panzoom-button-fg); outline-offset: 2px; }
+.panzoom-close:hover { background: color-mix(in srgb, var(--panzoom-close-bg), black 25%); }
+.panzoom-close:focus-visible { outline: 2px solid var(--panzoom-close-fg); outline-offset: 2px; }
 .panzoom-overlay:focus { outline: none; }
 
 .panzoom-overlay [hidden] { display: none !important; }
@@ -72,15 +90,15 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-prev, .panzoom-next {
   position: absolute; top: 50%; transform: translateY(-50%); z-index: 1;
   border: 0; border-radius: 4px; padding: 0.2em 0.45em;
-  background: var(--panzoom-button-bg); color: var(--panzoom-button-fg);
+  background: var(--panzoom-nav-bg); color: var(--panzoom-nav-fg);
   font-size: 2.5rem; line-height: 1; cursor: pointer;
 }
 .panzoom-prev { left: 10px; }
 .panzoom-next { right: 10px; }
-.panzoom-prev:hover, .panzoom-next:hover { background: color-mix(in srgb, var(--panzoom-button-bg), black 25%); }
+.panzoom-prev:hover, .panzoom-next:hover { background: color-mix(in srgb, var(--panzoom-nav-bg), black 25%); }
 .panzoom-prev:disabled, .panzoom-next:disabled { opacity: 0.3; cursor: default; }
 .panzoom-prev:focus-visible, .panzoom-next:focus-visible {
-  outline: 2px solid var(--panzoom-button-fg); outline-offset: 2px;
+  outline: 2px solid var(--panzoom-nav-fg); outline-offset: 2px;
 }
 
 /* While an image loads it is hidden, so the last one doesn't show in its
@@ -90,14 +108,14 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-status {
   position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
   border-radius: 4px; padding: 0.4em 0.8em;
-  background: var(--panzoom-button-bg); color: var(--panzoom-button-fg); font-size: 1rem;
+  background: var(--panzoom-status-bg); color: var(--panzoom-status-fg); font-size: 1rem;
 }
 .panzoom-status:empty { display: none; }
 
 .panzoom-counter {
   position: absolute; top: 14px; left: 16px; z-index: 1;
   border-radius: 4px; padding: 0.15em 0.5em;
-  background: var(--panzoom-button-bg); color: var(--panzoom-button-fg); font-size: 0.9rem;
+  background: var(--panzoom-counter-bg); color: var(--panzoom-counter-fg); font-size: 0.9rem;
 }
 
 /* Caption and hint, below the image (fit() leaves room for this). They
@@ -183,9 +201,16 @@ a.panzoom-link:focus-visible { outline: none; }
 .panzoom-description p:last-child { margin-bottom: 0; }
 .panzoom-hint-part { white-space: nowrap; }
 .panzoom-hint {
-  font-size: 0.8rem; pointer-events: none;
-  color: color-mix(in srgb, var(--panzoom-panel-fg) 70%, var(--panzoom-panel-bg));
+  font-size: 0.8rem; user-select: text; -webkit-user-select: text;
+  color: var(--panzoom-hint-fg);
 }
 
 /* Descriptions, rendered on the page for the viewer to copy (panzoom.lua) */
 .panzoom-desc { display: none; }
+
+/* Printed with the viewer open: the page, not the viewer, and all of it
+   (panzoom.js stops the page scrolling while the viewer is open). */
+@media print {
+  .panzoom-overlay { display: none !important; }
+  html:has(.panzoom-overlay.open) { overflow: visible !important; }
+}

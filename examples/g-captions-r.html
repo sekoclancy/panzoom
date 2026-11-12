@@ -103,9 +103,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7018cc8867401cb480acf35f2ed2882d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c34573a46a3c265f37fb87111ed1aa6c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-307cabbe07ae71f9c617fc54d3ef415e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-c34573a46a3c265f37fb87111ed1aa6c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f157217e1616e2d29265d38c09db305d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.min.js"></script>
 <script src="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.js"></script>
 <link href="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.css" rel="stylesheet">
@@ -320,7 +320,8 @@ window.Quarto = {
       }
     };
     const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
       document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
       document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
@@ -334,6 +335,15 @@ window.Quarto = {
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
     };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
       toggleColorMode(true);
@@ -356,6 +366,10 @@ window.Quarto = {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../reference.html"> 
+<span class="menu-text">Reference</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link active" href="../examples/b-mixed-r.html" aria-current="page"> 
 <span class="menu-text">Examples</span></a>
@@ -407,25 +421,25 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/b-mixed-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">B. Selected images with <code>lightbox</code> (R)</span></a>
+ <span class="menu-text">B. Interaction with <code>lightbox</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/c-global-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">C. <code>panzoom</code> on every figure (R)</span></a>
+ <span class="menu-text">C. Global <code>panzoom</code> (R)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/d-selecting-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">D. Selecting images (R)</span></a>
+ <span class="menu-text">D. Selecting images</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/e-image-formats-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">E. Image formats (R)</span></a>
+ <span class="menu-text">E. Image formats</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -437,19 +451,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/g-captions-r.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">G. Captions and descriptions (R)</span></a>
+ <span class="menu-text">G. Captions and descriptions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/h-wide-and-tall-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">H. Wide and tall figures (R)</span></a>
+ <span class="menu-text">H. Wide and tall figures</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/i-wide-galleries-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. Wide figures in galleries (R)</span></a>
+ <span class="menu-text">I. Wide figures in galleries</span></a>
   </div>
 </li>
       </ul>
@@ -469,7 +483,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/k-global-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">K. <code>panzoom</code> on every figure (Python)</span></a>
+ <span class="menu-text">K. Global <code>panzoom</code> (Python)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -481,7 +495,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/m-figures-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">M. Captions, formats, and shapes (Python)</span></a>
+ <span class="menu-text">M. Captions, formats, and shapes</span></a>
   </div>
 </li>
       </ul>
@@ -495,13 +509,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/n-color-options-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">N. Color options (R)</span></a>
+ <span class="menu-text">N. Color options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/o-css-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">O. Styling with CSS (R)</span></a>
+ <span class="menu-text">O. Styling with CSS</span></a>
   </div>
 </li>
       </ul>
@@ -535,7 +549,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/r-dark-plots-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">R. Dark plots (R)</span></a>
+ <span class="menu-text">R. Dark plots</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -588,7 +602,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Captions and descriptions (R)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block">Captions and descriptions (R)</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -608,27 +622,36 @@ window.Quarto = {
 <p>A caption is copied from the page, so whatever Quarto renders there comes through to the viewer. A description is rendered with the page too, in a hidden block the viewer copies, so its citations resolve, its cross-references get numbers, and a work cited only in a description is still listed under <a href="#references">References</a>. In a caption, lightbox shows <a href="#sec-citation-in-a-caption">a citation</a> as raw <code>[@key]</code>.</p>
 <p>The plots are drawn with this helper:</p>
 <div class="cell">
+<details class="code-fold">
+<summary>wave()</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>wave <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">k =</span> <span class="dv">1</span>) {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4</span> <span class="sc">*</span> pi, <span class="at">length.out =</span> <span class="dv">400</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  col <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(<span class="dv">4</span>, <span class="st">"Dark 3"</span>)[k]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    x,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(k <span class="sc">*</span> x),</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"n"</span>,</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"Wave"</span>, k),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="st">"x"</span>,</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">"sin(kx)"</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon</span>(</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(x, <span class="fu">rev</span>(x)),</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fu">sin</span>(k <span class="sc">*</span> x), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x))),</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="fu">adjustcolor</span>(col, <span class="fl">0.35</span>),</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">border =</span> <span class="cn">NA</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "wave()"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#' Draw a sine wave with shading to zero.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param k Frequency multiplier; the curve completes 2 * k cycles on 0 to 4 * pi.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>wave <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">k =</span> <span class="dv">1</span>) {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4</span> <span class="sc">*</span> pi, <span class="at">length.out =</span> <span class="dv">400</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  col <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(<span class="dv">4</span>, <span class="st">"Dark 3"</span>)[(k <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    x,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(k <span class="sc">*</span> x),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"Wave"</span>, k),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="st">"x"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">"sin(kx)"</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, <span class="fu">sin</span>(k <span class="sc">*</span> x), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> col)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon</span>(</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(x, <span class="fu">rev</span>(x)),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fu">sin</span>(k <span class="sc">*</span> x), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x))),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="fu">adjustcolor</span>(col, <span class="fl">0.35</span>),</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">border =</span> <span class="cn">NA</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, <span class="fu">sin</span>(k <span class="sc">*</span> x), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> col)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <section id="sec-citation-in-a-caption" class="level2" data-expect-references="" data-number="1">
 <h2 data-expect-references="" data-number="1" class="anchored" data-anchor-id="sec-citation-in-a-caption"><span class="header-section-number">1</span> Citation in a caption</h2>
@@ -1644,268 +1667,274 @@ Weast, Robert C., ed. 1973. <em>Handbook of Chemistry and Physics: A Ready-Refer
 <span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>The plots are drawn with this helper:</span>
 <span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>wave <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">k =</span> <span class="dv">1</span>) {</span>
-<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4</span> <span class="sc">*</span> pi, <span class="at">length.out =</span> <span class="dv">400</span>)</span>
-<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>  col <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(<span class="dv">4</span>, <span class="st">"Dark 3"</span>)[k]</span>
-<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(</span>
-<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>    x,</span>
-<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(k <span class="sc">*</span> x),</span>
-<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"n"</span>,</span>
-<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"Wave"</span>, k),</span>
-<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="st">"x"</span>,</span>
-<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">"sin(kx)"</span></span>
-<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon</span>(</span>
-<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(x, <span class="fu">rev</span>(x)),</span>
-<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fu">sin</span>(k <span class="sc">*</span> x), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x))),</span>
-<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="fu">adjustcolor</span>(col, <span class="fl">0.35</span>),</span>
-<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">border =</span> <span class="cn">NA</span></span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "wave()"</span></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a><span class="co">#' Draw a sine wave with shading to zero.</span></span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param k Frequency multiplier; the curve completes 2 * k cycles on 0 to 4 * pi.</span></span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>wave <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">k =</span> <span class="dv">1</span>) {</span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4</span> <span class="sc">*</span> pi, <span class="at">length.out =</span> <span class="dv">400</span>)</span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>  col <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(<span class="dv">4</span>, <span class="st">"Dark 3"</span>)[(k <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(</span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>    x,</span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(k <span class="sc">*</span> x),</span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"Wave"</span>, k),</span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="st">"x"</span>,</span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">"sin(kx)"</span></span>
 <span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, <span class="fu">sin</span>(k <span class="sc">*</span> x), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> col)</span>
-<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citation in a caption {#sec-citation-in-a-caption expect-references=""}</span></span>
-<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>An image with <span class="in">`.panzoom`</span>, with a citation in its caption. It opens in panzoom</span>
-<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>with the citation resolved, where lightbox shows it raw</span>
-<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>(<span class="co">[</span><span class="ot">quarto-cli#10709</span><span class="co">](https://github.com/quarto-dev/quarto-cli/issues/10709)</span>).</span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon</span>(</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(x, <span class="fu">rev</span>(x)),</span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fu">sin</span>(k <span class="sc">*</span> x), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x))),</span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="fu">adjustcolor</span>(col, <span class="fl">0.35</span>),</span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">border =</span> <span class="cn">NA</span></span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, <span class="fu">sin</span>(k <span class="sc">*</span> x), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> col)</span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
-<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a><span class="ex">![Maunga</span> Whau <span class="er">(</span><span class="ex">Mount</span> Eden<span class="kw">)</span> <span class="er">in</span> <span class="ex">Auckland,</span> as a shaded 3D surface, from heights digitized by Ross Ihaka <span class="pp">[</span><span class="ss">@rcore2026</span><span class="pp">]</span>.]<span class="er">(</span><span class="ex">../images/volcano.png</span><span class="kw">)</span><span class="ex">{.panzoom</span> fig-alt=<span class="st">"Perspective plot of Maunga Whau's heights, shaded green"</span>}</span>
-<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citation in a description {expect-references=""}</span></span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citation in a caption {#sec-citation-in-a-caption expect-references=""}</span></span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>An image with <span class="in">`.panzoom`</span>, with a citation in its caption. It opens in panzoom</span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a>with the citation resolved, where lightbox shows it raw</span>
+<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>(<span class="co">[</span><span class="ot">quarto-cli#10709</span><span class="co">](https://github.com/quarto-dev/quarto-cli/issues/10709)</span>).</span>
 <span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a>An image with <span class="in">`.panzoom`</span> citing Tufte only in its description. It opens in</span>
-<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a>panzoom with the citation resolved, and Tufte is listed under</span>
-<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">References</span><span class="co">](#references)</span>.</span>
+<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
+<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a><span class="ex">![Maunga</span> Whau <span class="er">(</span><span class="ex">Mount</span> Eden<span class="kw">)</span> <span class="er">in</span> <span class="ex">Auckland,</span> as a shaded 3D surface, from heights digitized by Ross Ihaka <span class="pp">[</span><span class="ss">@rcore2026</span><span class="pp">]</span>.]<span class="er">(</span><span class="ex">../images/volcano.png</span><span class="kw">)</span><span class="ex">{.panzoom</span> fig-alt=<span class="st">"Perspective plot of Maunga Whau's heights, shaded green"</span>}</span>
+<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
-<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a><span class="ex">![Edgartown</span> Lighthouse, Martha<span class="st">'s Vineyard.](../images/mv-2.jpg){.panzoom description="Show the data [@tufte2001, p. 13]." fig-alt="A white lighthouse against a blue sky"}</span></span>
-<span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
-<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a><span class="st">## Cross-reference in a description {expect-references=""}</span></span>
+<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citation in a description {expect-references=""}</span></span>
+<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a>An image with <span class="in">`.panzoom`</span> citing Tufte only in its description. It opens in</span>
+<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a>panzoom with the citation resolved, and Tufte is listed under</span>
+<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">References</span><span class="co">](#references)</span>.</span>
 <span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a><span class="st">An image with `.panzoom` whose description cross-references the [figure with a</span></span>
-<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a><span class="st">cell description](#sec-cell-description) and links to the [citation in a</span></span>
-<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a><span class="st">caption](#sec-citation-in-a-caption). It opens in panzoom with both links</span></span>
-<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a><span class="st">working.</span></span>
-<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a><span class="st">```show-source</span></span>
-<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a><span class="st">![Waves breaking below the clay cliffs at Aquinnah, Martha'</span>s Vineyard.]<span class="er">(</span><span class="ex">../images/mv-1.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> description=<span class="st">"Compare with @fig-pressure, and see @sec-citation-in-a-caption."</span> fig-alt=<span class="st">"Waves breaking below grassy clay cliffs at Aquinnah"</span>}</span>
-<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cell description {#sec-cell-description expect-references=""}</span></span>
+<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
+<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a><span class="ex">![Edgartown</span> Lighthouse, Martha<span class="st">'s Vineyard.](../images/mv-2.jpg){.panzoom description="Show the data [@tufte2001, p. 13]." fig-alt="A white lighthouse against a blue sky"}</span></span>
+<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a><span class="st">## Cross-reference in a description {expect-references=""}</span></span>
+<span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a><span class="st">An image with `.panzoom` whose description cross-references the [figure with a</span></span>
+<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a><span class="st">cell description](#sec-cell-description) and links to the [citation in a</span></span>
+<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a><span class="st">caption](#sec-citation-in-a-caption). It opens in panzoom with both links</span></span>
+<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a><span class="st">working.</span></span>
 <span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a>A labeled R figure with a citation in its caption, and a description with math</span>
-<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a>and a citation. It opens in panzoom with all of them rendered.</span>
-<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
-<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a><span class="co">#|   description: "Rises roughly as $p \\propto e^{-1/T}$ [@rcore2026]."</span></span>
-<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-pressure</span></span>
-<span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"</span></span>
-<span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Vapor pressure of mercury [@weast1973]."</span></span>
-<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-130"><a href="#cb18-130" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pressure)</span>
-<span id="cb18-131"><a href="#cb18-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code in a caption {expect-open="panzoom"}</span></span>
-<span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a>An R cell with code in its caption and description. It opens in panzoom with</span>
-<span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a>both shown as code.</span>
-<span id="cb18-137"><a href="#cb18-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
-<span id="cb18-142"><a href="#cb18-142" aria-hidden="true" tabindex="-1"></a><span class="co">#|   description: "The plot comes from `wave(k = 3)`."</span></span>
-<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
-<span id="cb18-144"><a href="#cb18-144" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb18-145"><a href="#cb18-145" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Wave 3: `y = sin(3 * x)`; the area between the curve and y = 0 is shaded.</span></span>
-<span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a><span class="fu">wave</span>(<span class="at">k =</span> <span class="dv">3</span>)</span>
-<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gallery descriptions {expect-references=""}</span></span>
-<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a>Two images with <span class="in">`.panzoom`</span> in a gallery, one with a cross-reference and one with</span>
-<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a>a citation in its description. They open in panzoom as a two-image gallery with</span>
-<span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a>the figure number and the citation filled in.</span>
+<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a><span class="st">```show-source</span></span>
+<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a><span class="st">![Waves breaking below the clay cliffs at Aquinnah, Martha'</span>s Vineyard.]<span class="er">(</span><span class="ex">../images/mv-1.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> description=<span class="st">"Compare with @fig-pressure, and see @sec-citation-in-a-caption."</span> fig-alt=<span class="st">"Waves breaking below grassy clay cliffs at Aquinnah"</span>}</span>
+<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-121"><a href="#cb18-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cell description {#sec-cell-description expect-references=""}</span></span>
+<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a>A labeled R figure with a citation in its caption, and a description with math</span>
+<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a>and a citation. It opens in panzoom with all of them rendered.</span>
+<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-130"><a href="#cb18-130" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
+<span id="cb18-131"><a href="#cb18-131" aria-hidden="true" tabindex="-1"></a><span class="co">#|   description: "Rises roughly as $p \\propto e^{-1/T}$ [@rcore2026]."</span></span>
+<span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-pressure</span></span>
+<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Scatter plot of vapor pressure rising steeply with temperature"</span></span>
+<span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Vapor pressure of mercury [@weast1973]."</span></span>
+<span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pressure)</span>
+<span id="cb18-137"><a href="#cb18-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-138"><a href="#cb18-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-139"><a href="#cb18-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code in a caption {expect-open="panzoom"}</span></span>
+<span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a>An R cell with code in its caption and description. It opens in panzoom with</span>
+<span id="cb18-142"><a href="#cb18-142" aria-hidden="true" tabindex="-1"></a>both shown as code.</span>
+<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
+<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a><span class="co">#|   description: "The plot comes from `wave(k = 3)`."</span></span>
+<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
+<span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Wave 3: `y = sin(3 * x)`; the area between the curve and y = 0 is shaded.</span></span>
+<span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a><span class="fu">wave</span>(<span class="at">k =</span> <span class="dv">3</span>)</span>
+<span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-156"><a href="#cb18-156" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
-<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a><span class="ex">![A</span> gingerbread cottage in Oak Bluffs, Martha<span class="st">'s Vineyard.](../images/mv-3.jpg){.panzoom group="refs" description="Painted trim on a shingled cottage. For a plot rather than a photo, see @fig-pressure." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}</span></span>
-<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a><span class="st">![A sailboat off Edgartown, Martha'</span>s Vineyard.]<span class="er">(</span><span class="ex">../images/mv-4.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> group=<span class="st">"refs"</span> description=<span class="st">"Taken off Edgartown. On graphics for data rather than photos, see @tufte2001."</span> fig-alt=<span class="st">"A sailboat with a flag-striped sail off a sandy beach"</span>}</span>
-<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-156"><a href="#cb18-156" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gallery descriptions {expect-references=""}</span></span>
+<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a>Two images with <span class="in">`.panzoom`</span> in a gallery, one with a cross-reference and one with</span>
+<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a>a citation in its description. They open in panzoom as a two-image gallery with</span>
+<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a>the figure number and the citation filled in.</span>
 <span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-162"><a href="#cb18-162" aria-hidden="true" tabindex="-1"></a><span class="fu">## No caption {#sec-no-caption expect-open="panzoom" expect-caption="none"}</span></span>
-<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-164"><a href="#cb18-164" aria-hidden="true" tabindex="-1"></a>An R cell with <span class="in">`caption: false`</span> under the <span class="in">`panzoom`</span> cell option. The figure has</span>
-<span id="cb18-165"><a href="#cb18-165" aria-hidden="true" tabindex="-1"></a>a caption on the page, but it opens in panzoom without one.</span>
-<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
-<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a><span class="co">#|   caption: false</span></span>
-<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
-<span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb18-174"><a href="#cb18-174" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.</span></span>
-<span id="cb18-175"><a href="#cb18-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-176"><a href="#cb18-176" aria-hidden="true" tabindex="-1"></a><span class="fu">wave</span>(<span class="at">k =</span> <span class="dv">2</span>)</span>
-<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a><span class="fu">## Description option {#sec-description-option expect-open="panzoom"}</span></span>
-<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a>An R cell with a panzoom description, written in markdown with math. It opens in</span>
-<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a>panzoom with the description under the caption.</span>
-<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-187"><a href="#cb18-187" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
-<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a><span class="co">#|   description: "A sine wave, $y = \\sin(kx)$, **k = 2**."</span></span>
-<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
-<span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.</span></span>
-<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-193"><a href="#cb18-193" aria-hidden="true" tabindex="-1"></a><span class="fu">wave</span>(<span class="at">k =</span> <span class="dv">2</span>)</span>
-<span id="cb18-194"><a href="#cb18-194" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-195"><a href="#cb18-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a><span class="fu">## Labeled figures in a div {expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}</span></span>
-<span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a>A labeled plot and a labeled markdown image in a <span class="in">`.panzoom`</span> div. Each opens in</span>
-<span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a>panzoom on its own, and both keep their numbers and anchors, so @fig-div-plot</span>
-<span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a>and @fig-div-image link to them.</span>
+<span id="cb18-162"><a href="#cb18-162" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
+<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a><span class="ex">![A</span> gingerbread cottage in Oak Bluffs, Martha<span class="st">'s Vineyard.](../images/mv-3.jpg){.panzoom group="refs" description="Painted trim on a shingled cottage. For a plot rather than a photo, see @fig-pressure." fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}</span></span>
+<span id="cb18-164"><a href="#cb18-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-165"><a href="#cb18-165" aria-hidden="true" tabindex="-1"></a><span class="st">![A sailboat off Edgartown, Martha'</span>s Vineyard.]<span class="er">(</span><span class="ex">../images/mv-4.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> group=<span class="st">"refs"</span> description=<span class="st">"Taken off Edgartown. On graphics for data rather than photos, see @tufte2001."</span> fig-alt=<span class="st">"A sailboat with a flag-striped sail off a sandy beach"</span>}</span>
+<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a><span class="fu">## No caption {#sec-no-caption expect-open="panzoom" expect-caption="none"}</span></span>
+<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a>An R cell with <span class="in">`caption: false`</span> under the <span class="in">`panzoom`</span> cell option. The figure has</span>
+<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a>a caption on the page, but it opens in panzoom without one.</span>
+<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-175"><a href="#cb18-175" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-176"><a href="#cb18-176" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
+<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a><span class="co">#|   caption: false</span></span>
+<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
+<span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.</span></span>
+<span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a><span class="fu">wave</span>(<span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a><span class="fu">## Description option {#sec-description-option expect-open="panzoom"}</span></span>
+<span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-187"><a href="#cb18-187" aria-hidden="true" tabindex="-1"></a>An R cell with a panzoom description, written in markdown with math. It opens in</span>
+<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a>panzoom with the description under the caption.</span>
+<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-193"><a href="#cb18-193" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
+<span id="cb18-194"><a href="#cb18-194" aria-hidden="true" tabindex="-1"></a><span class="co">#|   description: "A sine wave, $y = \\sin(kx)$, **k = 2**."</span></span>
+<span id="cb18-195"><a href="#cb18-195" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
+<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.</span></span>
+<span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a><span class="fu">wave</span>(<span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-201"><a href="#cb18-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-202"><a href="#cb18-202" aria-hidden="true" tabindex="-1"></a><span class="in">````source</span></span>
-<span id="cb18-203"><a href="#cb18-203" aria-hidden="true" tabindex="-1"></a><span class="in">::: {.panzoom layout-ncol="2"}</span></span>
-<span id="cb18-204"><a href="#cb18-204" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-205"><a href="#cb18-205" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-div-plot</span></span>
-<span id="cb18-206"><a href="#cb18-206" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 7.5</span></span>
-<span id="cb18-207"><a href="#cb18-207" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 5</span></span>
-<span id="cb18-208"><a href="#cb18-208" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
-<span id="cb18-209"><a href="#cb18-209" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: &gt;-</span></span>
-<span id="cb18-210"><a href="#cb18-210" aria-hidden="true" tabindex="-1"></a><span class="in">#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.</span></span>
-<span id="cb18-211"><a href="#cb18-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-212"><a href="#cb18-212" aria-hidden="true" tabindex="-1"></a><span class="in">wave(k = 3)</span></span>
-<span id="cb18-213"><a href="#cb18-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-214"><a href="#cb18-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-215"><a href="#cb18-215" aria-hidden="true" tabindex="-1"></a><span class="in">![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg){#fig-div-image fig-alt="A white lighthouse against a blue sky"}</span></span>
-<span id="cb18-216"><a href="#cb18-216" aria-hidden="true" tabindex="-1"></a><span class="in">:::</span></span>
-<span id="cb18-217"><a href="#cb18-217" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb18-218"><a href="#cb18-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-219"><a href="#cb18-219" aria-hidden="true" tabindex="-1"></a>::: {.panzoom layout-ncol="2"}</span>
-<span id="cb18-222"><a href="#cb18-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-223"><a href="#cb18-223" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-div-plot</span></span>
-<span id="cb18-224"><a href="#cb18-224" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-225"><a href="#cb18-225" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 7.5</span></span>
-<span id="cb18-226"><a href="#cb18-226" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
-<span id="cb18-227"><a href="#cb18-227" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
-<span id="cb18-228"><a href="#cb18-228" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb18-229"><a href="#cb18-229" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.</span></span>
-<span id="cb18-230"><a href="#cb18-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-231"><a href="#cb18-231" aria-hidden="true" tabindex="-1"></a><span class="fu">wave</span>(<span class="at">k =</span> <span class="dv">3</span>)</span>
-<span id="cb18-232"><a href="#cb18-232" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-233"><a href="#cb18-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-234"><a href="#cb18-234" aria-hidden="true" tabindex="-1"></a><span class="al">![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg)</span>{#fig-div-image fig-alt="A white lighthouse against a blue sky"}</span>
-<span id="cb18-235"><a href="#cb18-235" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-202"><a href="#cb18-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Labeled figures in a div {expect-open="panzoom" expect-anchors="fig-div-plot fig-div-image"}</span></span>
+<span id="cb18-203"><a href="#cb18-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-204"><a href="#cb18-204" aria-hidden="true" tabindex="-1"></a>A labeled plot and a labeled markdown image in a <span class="in">`.panzoom`</span> div. Each opens in</span>
+<span id="cb18-205"><a href="#cb18-205" aria-hidden="true" tabindex="-1"></a>panzoom on its own, and both keep their numbers and anchors, so @fig-div-plot</span>
+<span id="cb18-206"><a href="#cb18-206" aria-hidden="true" tabindex="-1"></a>and @fig-div-image link to them.</span>
+<span id="cb18-207"><a href="#cb18-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-208"><a href="#cb18-208" aria-hidden="true" tabindex="-1"></a><span class="in">````source</span></span>
+<span id="cb18-209"><a href="#cb18-209" aria-hidden="true" tabindex="-1"></a><span class="in">::: {.panzoom layout-ncol="2"}</span></span>
+<span id="cb18-210"><a href="#cb18-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-211"><a href="#cb18-211" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: fig-div-plot</span></span>
+<span id="cb18-212"><a href="#cb18-212" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 7.5</span></span>
+<span id="cb18-213"><a href="#cb18-213" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 5</span></span>
+<span id="cb18-214"><a href="#cb18-214" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
+<span id="cb18-215"><a href="#cb18-215" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: &gt;-</span></span>
+<span id="cb18-216"><a href="#cb18-216" aria-hidden="true" tabindex="-1"></a><span class="in">#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.</span></span>
+<span id="cb18-217"><a href="#cb18-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-218"><a href="#cb18-218" aria-hidden="true" tabindex="-1"></a><span class="in">wave(k = 3)</span></span>
+<span id="cb18-219"><a href="#cb18-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-220"><a href="#cb18-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-221"><a href="#cb18-221" aria-hidden="true" tabindex="-1"></a><span class="in">![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg){#fig-div-image fig-alt="A white lighthouse against a blue sky"}</span></span>
+<span id="cb18-222"><a href="#cb18-222" aria-hidden="true" tabindex="-1"></a><span class="in">:::</span></span>
+<span id="cb18-223"><a href="#cb18-223" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb18-224"><a href="#cb18-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-225"><a href="#cb18-225" aria-hidden="true" tabindex="-1"></a>::: {.panzoom layout-ncol="2"}</span>
+<span id="cb18-228"><a href="#cb18-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-229"><a href="#cb18-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-div-plot</span></span>
+<span id="cb18-230"><a href="#cb18-230" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-231"><a href="#cb18-231" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 7.5</span></span>
+<span id="cb18-232"><a href="#cb18-232" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
+<span id="cb18-233"><a href="#cb18-233" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "A sine curve, shaded between the curve and y = 0"</span></span>
+<span id="cb18-234"><a href="#cb18-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb18-235"><a href="#cb18-235" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Wave 3: y = sin(3x); the area between the curve and y = 0 is shaded.</span></span>
 <span id="cb18-236"><a href="#cb18-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-237"><a href="#cb18-237" aria-hidden="true" tabindex="-1"></a><span class="fu">## Long description {#sec-long-description expect-open="panzoom" expect-scroll="description"}</span></span>
-<span id="cb18-238"><a href="#cb18-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-239"><a href="#cb18-239" aria-hidden="true" tabindex="-1"></a>An image with <span class="in">`.panzoom`</span> and a description longer than its panel. It opens in</span>
-<span id="cb18-240"><a href="#cb18-240" aria-hidden="true" tabindex="-1"></a>panzoom, and the description panel scrolls. Tab reaches the panel, and the arrow</span>
-<span id="cb18-241"><a href="#cb18-241" aria-hidden="true" tabindex="-1"></a>keys, Page Up and Page Down, Home, End, and Space scroll it.</span>
+<span id="cb18-237"><a href="#cb18-237" aria-hidden="true" tabindex="-1"></a><span class="fu">wave</span>(<span class="at">k =</span> <span class="dv">3</span>)</span>
+<span id="cb18-238"><a href="#cb18-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-239"><a href="#cb18-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-240"><a href="#cb18-240" aria-hidden="true" tabindex="-1"></a><span class="al">![Edgartown Lighthouse, Martha's Vineyard.](../images/mv-2.jpg)</span>{#fig-div-image fig-alt="A white lighthouse against a blue sky"}</span>
+<span id="cb18-241"><a href="#cb18-241" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-242"><a href="#cb18-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-243"><a href="#cb18-243" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
-<span id="cb18-244"><a href="#cb18-244" aria-hidden="true" tabindex="-1"></a><span class="ex">![A</span> gingerbread cottage in Oak Bluffs, Martha<span class="st">'s Vineyard.](../images/mv-3.jpg){.panzoom description="This description is long on purpose: it is taller than the space the viewer gives a description, so its panel scrolls. With a mouse or trackpad, scrolling over the panel scrolls it. From the keyboard, Tab moves focus to the panel, and then the arrow keys, Page Up and Page Down, Home, End and Space scroll it, as they would scroll a page. The image stays where it is meanwhile, and the page behind the viewer doesn'</span>t move. Tab again moves on to the close button, and Esc still closes the viewer. Photographs like this one often come with long notes: who took them, when, and from where<span class="kw">;</span> <span class="ex">what</span> the light was like<span class="kw">;</span> <span class="ex">what</span> the harbor looked like then and what has changed since. Notes like these can run to several paragraphs, and a reader who uses the keyboard must be able to read all of them, not just the lines that fit. In a short window, or on a phone, the panel is smaller still, so even a description of two or three sentences can scroll there. The panel is a Tab stop only while it scrolls, so a short description adds no extra stop. The rest of this description only adds length, so that it scrolls in every window the tests use, including the wide screen, where the panel is tallest and its lines are longest. The harbor is busiest in the early morning, when the fishing boats go out, and again in the late afternoon, when they come back and the light turns gold over the water. Between those times it is quiet: a few sailboats at their moorings, gulls on the pilings, and the sound of halyards against the masts. In winter most of the boats are hauled out, and the harbor belongs to the ducks. The jetty at the harbor mouth was rebuilt more than once after storms, and the channel has to be dredged every few years to stay deep enough for the boats. On the far side of the channel, a small ferry carries bicycles and people across to the beach, a trip of a few minutes. Beyond the harbor the land rises to clay cliffs, red, white and gray, that change color with the light through the day. Sunsets over the water draw a crowd to the beach and the docks most evenings in summer, and on a clear evening the light lasts long after the sun has gone. By autumn the crowds are gone, the shacks on the docks close one by one, and the harbor returns to the people who work on it. Nothing in this description is needed for the test except its length: a description this long scrolls in any window.<span class="st">" fig-alt="</span>A shingled gingerbread cottage with pink and green trim, behind a garden path<span class="st">"}</span></span>
-<span id="cb18-245"><a href="#cb18-245" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
-<span id="cb18-246"><a href="#cb18-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-247"><a href="#cb18-247" aria-hidden="true" tabindex="-1"></a><span class="co">## Long caption {#sec-long-caption expect-open="panzoom" expect-scroll="caption"}</span></span>
+<span id="cb18-243"><a href="#cb18-243" aria-hidden="true" tabindex="-1"></a><span class="fu">## Long description {#sec-long-description expect-open="panzoom" expect-scroll="description"}</span></span>
+<span id="cb18-244"><a href="#cb18-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-245"><a href="#cb18-245" aria-hidden="true" tabindex="-1"></a>An image with <span class="in">`.panzoom`</span> and a description longer than its panel. It opens in</span>
+<span id="cb18-246"><a href="#cb18-246" aria-hidden="true" tabindex="-1"></a>panzoom, and the description panel scrolls. Tab reaches the panel, and the arrow</span>
+<span id="cb18-247"><a href="#cb18-247" aria-hidden="true" tabindex="-1"></a>keys, Page Up and Page Down, Home, End, and Space scroll it.</span>
 <span id="cb18-248"><a href="#cb18-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-249"><a href="#cb18-249" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> image with <span class="kw">`</span><span class="st">.panzoom</span><span class="kw">`</span> <span class="ex">and</span> a caption of placeholder text, from the <span class="kw">`</span><span class="st">lipsum</span><span class="kw">`</span></span>
-<span id="cb18-250"><a href="#cb18-250" aria-hidden="true" tabindex="-1"></a><span class="ex">shortcode,</span> longer than the caption panel. It opens in panzoom, and the caption</span>
-<span id="cb18-251"><a href="#cb18-251" aria-hidden="true" tabindex="-1"></a><span class="ex">panel</span> scrolls, from the keyboard too, while the image keeps its room.</span>
+<span id="cb18-249"><a href="#cb18-249" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
+<span id="cb18-250"><a href="#cb18-250" aria-hidden="true" tabindex="-1"></a><span class="ex">![A</span> gingerbread cottage in Oak Bluffs, Martha<span class="st">'s Vineyard.](../images/mv-3.jpg){.panzoom description="This description is long on purpose: it is taller than the space the viewer gives a description, so its panel scrolls. With a mouse or trackpad, scrolling over the panel scrolls it. From the keyboard, Tab moves focus to the panel, and then the arrow keys, Page Up and Page Down, Home, End and Space scroll it, as they would scroll a page. The image stays where it is meanwhile, and the page behind the viewer doesn'</span>t move. Tab again moves on to the close button, and Esc still closes the viewer. Photographs like this one often come with long notes: who took them, when, and from where<span class="kw">;</span> <span class="ex">what</span> the light was like<span class="kw">;</span> <span class="ex">what</span> the harbor looked like then and what has changed since. Notes like these can run to several paragraphs, and a reader who uses the keyboard must be able to read all of them, not just the lines that fit. In a short window, or on a phone, the panel is smaller still, so even a description of two or three sentences can scroll there. The panel is a Tab stop only while it scrolls, so a short description adds no extra stop. The rest of this description only adds length, so that it scrolls in every window the tests use, including the wide screen, where the panel is tallest and its lines are longest. The harbor is busiest in the early morning, when the fishing boats go out, and again in the late afternoon, when they come back and the light turns gold over the water. Between those times it is quiet: a few sailboats at their moorings, gulls on the pilings, and the sound of halyards against the masts. In winter most of the boats are hauled out, and the harbor belongs to the ducks. The jetty at the harbor mouth was rebuilt more than once after storms, and the channel has to be dredged every few years to stay deep enough for the boats. On the far side of the channel, a small ferry carries bicycles and people across to the beach, a trip of a few minutes. Beyond the harbor the land rises to clay cliffs, red, white and gray, that change color with the light through the day. Sunsets over the water draw a crowd to the beach and the docks most evenings in summer, and on a clear evening the light lasts long after the sun has gone. By autumn the crowds are gone, the shacks on the docks close one by one, and the harbor returns to the people who work on it. Nothing in this description is needed for the test except its length: a description this long scrolls in any window.<span class="st">" fig-alt="</span>A shingled gingerbread cottage with pink and green trim, behind a garden path<span class="st">"}</span></span>
+<span id="cb18-251"><a href="#cb18-251" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
 <span id="cb18-252"><a href="#cb18-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-253"><a href="#cb18-253" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="st">source</span></span>
-<span id="cb18-254"><a href="#cb18-254" aria-hidden="true" tabindex="-1"></a><span class="st">![{{{&lt; lipsum 4 &gt;}}}](../images/mv-0.jpg){.panzoom fig-alt="</span>Sunset over a sandy beach, with a tall rock stack against the sun<span class="st">"}</span></span>
-<span id="cb18-255"><a href="#cb18-255" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
-<span id="cb18-256"><a href="#cb18-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-257"><a href="#cb18-257" aria-hidden="true" tabindex="-1"></a><span class="ex">![{{</span><span class="op">&lt;</span> lipsum <span class="ex">4</span> <span class="op">&gt;</span>}}]<span class="er">(</span><span class="ex">../images/mv-0.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> fig-alt=<span class="st">"Sunset over a sandy beach, with a tall rock stack against the sun"</span>}</span>
+<span id="cb18-253"><a href="#cb18-253" aria-hidden="true" tabindex="-1"></a><span class="co">## Long caption {#sec-long-caption expect-open="panzoom" expect-scroll="caption"}</span></span>
+<span id="cb18-254"><a href="#cb18-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-255"><a href="#cb18-255" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> image with <span class="kw">`</span><span class="st">.panzoom</span><span class="kw">`</span> <span class="ex">and</span> a caption of placeholder text, from the <span class="kw">`</span><span class="st">lipsum</span><span class="kw">`</span></span>
+<span id="cb18-256"><a href="#cb18-256" aria-hidden="true" tabindex="-1"></a><span class="ex">shortcode,</span> longer than the caption panel. It opens in panzoom, and the caption</span>
+<span id="cb18-257"><a href="#cb18-257" aria-hidden="true" tabindex="-1"></a><span class="ex">panel</span> scrolls, from the keyboard too, while the image keeps its room.</span>
 <span id="cb18-258"><a href="#cb18-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-259"><a href="#cb18-259" aria-hidden="true" tabindex="-1"></a><span class="co">## Long caption above the image {expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="top"}</span></span>
-<span id="cb18-260"><a href="#cb18-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-261"><a href="#cb18-261" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> image with <span class="kw">`</span><span class="st">.panzoom</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">desc-position="</span>top<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">hint="</span>true<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> and a caption of</span>
-<span id="cb18-262"><a href="#cb18-262" aria-hidden="true" tabindex="-1"></a><span class="ex">placeholder</span> text longer than its panel. It opens in panzoom with the caption</span>
-<span id="cb18-263"><a href="#cb18-263" aria-hidden="true" tabindex="-1"></a><span class="ex">above</span> the image. The caption panel scrolls, and the hint line stays in view</span>
-<span id="cb18-264"><a href="#cb18-264" aria-hidden="true" tabindex="-1"></a><span class="ex">below</span> it.</span>
-<span id="cb18-265"><a href="#cb18-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-266"><a href="#cb18-266" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="st">source</span></span>
-<span id="cb18-267"><a href="#cb18-267" aria-hidden="true" tabindex="-1"></a><span class="st">![{{{&lt; lipsum 4 &gt;}}}](../images/mv-1.jpg){.panzoom desc-position="</span>top<span class="st">" hint="</span>true<span class="st">" fig-alt="</span>Waves breaking below grassy clay cliffs at Aquinnah<span class="st">"}</span></span>
-<span id="cb18-268"><a href="#cb18-268" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
-<span id="cb18-269"><a href="#cb18-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-270"><a href="#cb18-270" aria-hidden="true" tabindex="-1"></a><span class="ex">![{{</span><span class="op">&lt;</span> lipsum <span class="ex">4</span> <span class="op">&gt;</span>}}]<span class="er">(</span><span class="ex">../images/mv-1.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> desc-position=<span class="st">"top"</span> hint=<span class="st">"true"</span> fig-alt=<span class="st">"Waves breaking below grassy clay cliffs at Aquinnah"</span>}</span>
+<span id="cb18-259"><a href="#cb18-259" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="st">source</span></span>
+<span id="cb18-260"><a href="#cb18-260" aria-hidden="true" tabindex="-1"></a><span class="st">![{{{&lt; lipsum 4 &gt;}}}](../images/mv-0.jpg){.panzoom fig-alt="</span>Sunset over a sandy beach, with a tall rock stack against the sun<span class="st">"}</span></span>
+<span id="cb18-261"><a href="#cb18-261" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb18-262"><a href="#cb18-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-263"><a href="#cb18-263" aria-hidden="true" tabindex="-1"></a><span class="ex">![{{</span><span class="op">&lt;</span> lipsum <span class="ex">4</span> <span class="op">&gt;</span>}}]<span class="er">(</span><span class="ex">../images/mv-0.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> fig-alt=<span class="st">"Sunset over a sandy beach, with a tall rock stack against the sun"</span>}</span>
+<span id="cb18-264"><a href="#cb18-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-265"><a href="#cb18-265" aria-hidden="true" tabindex="-1"></a><span class="co">## Long caption above the image {expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="top"}</span></span>
+<span id="cb18-266"><a href="#cb18-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-267"><a href="#cb18-267" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> image with <span class="kw">`</span><span class="st">.panzoom</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">desc-position="</span>top<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">hint="</span>true<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> and a caption of</span>
+<span id="cb18-268"><a href="#cb18-268" aria-hidden="true" tabindex="-1"></a><span class="ex">placeholder</span> text longer than its panel. It opens in panzoom with the caption</span>
+<span id="cb18-269"><a href="#cb18-269" aria-hidden="true" tabindex="-1"></a><span class="ex">above</span> the image. The caption panel scrolls, and the hint line stays in view</span>
+<span id="cb18-270"><a href="#cb18-270" aria-hidden="true" tabindex="-1"></a><span class="ex">below</span> it.</span>
 <span id="cb18-271"><a href="#cb18-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-272"><a href="#cb18-272" aria-hidden="true" tabindex="-1"></a><span class="co">## Long caption on the left {expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="left"}</span></span>
-<span id="cb18-273"><a href="#cb18-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> image with <span class="kw">`</span><span class="st">.panzoom</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">desc-position="</span>left<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">hint="</span>true<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> and a caption</span>
-<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a><span class="ex">of</span> placeholder text longer than its panel. It opens in panzoom with the caption</span>
-<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a><span class="er">in</span> <span class="ex">a</span> panel on the left of the image. The caption scrolls, and the hint line</span>
-<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a><span class="ex">stays</span> in view at the foot of the panel.</span>
-<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="st">source</span></span>
-<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a><span class="st">![{{{&lt; lipsum 4 &gt;}}}](../images/mv-2.jpg){.panzoom desc-position="</span>left<span class="st">" hint="</span>true<span class="st">" fig-alt="</span>A white lighthouse against a blue sky<span class="st">"}</span></span>
-<span id="cb18-281"><a href="#cb18-281" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
-<span id="cb18-282"><a href="#cb18-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a><span class="ex">![{{</span><span class="op">&lt;</span> lipsum <span class="ex">4</span> <span class="op">&gt;</span>}}]<span class="er">(</span><span class="ex">../images/mv-2.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> desc-position=<span class="st">"left"</span> hint=<span class="st">"true"</span> fig-alt=<span class="st">"A white lighthouse against a blue sky"</span>}</span>
+<span id="cb18-272"><a href="#cb18-272" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="st">source</span></span>
+<span id="cb18-273"><a href="#cb18-273" aria-hidden="true" tabindex="-1"></a><span class="st">![{{{&lt; lipsum 4 &gt;}}}](../images/mv-1.jpg){.panzoom desc-position="</span>top<span class="st">" hint="</span>true<span class="st">" fig-alt="</span>Waves breaking below grassy clay cliffs at Aquinnah<span class="st">"}</span></span>
+<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a><span class="ex">![{{</span><span class="op">&lt;</span> lipsum <span class="ex">4</span> <span class="op">&gt;</span>}}]<span class="er">(</span><span class="ex">../images/mv-1.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> desc-position=<span class="st">"top"</span> hint=<span class="st">"true"</span> fig-alt=<span class="st">"Waves breaking below grassy clay cliffs at Aquinnah"</span>}</span>
+<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a><span class="co">## Long caption on the left {expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="left"}</span></span>
+<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> image with <span class="kw">`</span><span class="st">.panzoom</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">desc-position="</span>left<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">hint="</span>true<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> and a caption</span>
+<span id="cb18-281"><a href="#cb18-281" aria-hidden="true" tabindex="-1"></a><span class="ex">of</span> placeholder text longer than its panel. It opens in panzoom with the caption</span>
+<span id="cb18-282"><a href="#cb18-282" aria-hidden="true" tabindex="-1"></a><span class="er">in</span> <span class="ex">a</span> panel on the left of the image. The caption scrolls, and the hint line</span>
+<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a><span class="ex">stays</span> in view at the foot of the panel.</span>
 <span id="cb18-284"><a href="#cb18-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a><span class="co">## Long caption on the right {expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="right"}</span></span>
-<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-287"><a href="#cb18-287" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> image with <span class="kw">`</span><span class="st">.panzoom</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">desc-position="</span>right<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">hint="</span>true<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> and a caption</span>
-<span id="cb18-288"><a href="#cb18-288" aria-hidden="true" tabindex="-1"></a><span class="ex">of</span> placeholder text longer than its panel. It opens in panzoom with the caption</span>
-<span id="cb18-289"><a href="#cb18-289" aria-hidden="true" tabindex="-1"></a><span class="er">in</span> <span class="ex">a</span> panel on the right of the image. The caption scrolls, and the hint line</span>
-<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a><span class="ex">stays</span> in view at the foot of the panel.</span>
-<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="st">source</span></span>
-<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a><span class="st">![{{{&lt; lipsum 4 &gt;}}}](../images/mv-3.jpg){.panzoom desc-position="</span>right<span class="st">" hint="</span>true<span class="st">" fig-alt="</span>A shingled gingerbread cottage with pink and green trim, behind a garden path<span class="st">"}</span></span>
-<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
-<span id="cb18-295"><a href="#cb18-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-296"><a href="#cb18-296" aria-hidden="true" tabindex="-1"></a><span class="ex">![{{</span><span class="op">&lt;</span> lipsum <span class="ex">4</span> <span class="op">&gt;</span>}}]<span class="er">(</span><span class="ex">../images/mv-3.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> desc-position=<span class="st">"right"</span> hint=<span class="st">"true"</span> fig-alt=<span class="st">"A shingled gingerbread cottage with pink and green trim, behind a garden path"</span>}</span>
+<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="st">source</span></span>
+<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a><span class="st">![{{{&lt; lipsum 4 &gt;}}}](../images/mv-2.jpg){.panzoom desc-position="</span>left<span class="st">" hint="</span>true<span class="st">" fig-alt="</span>A white lighthouse against a blue sky<span class="st">"}</span></span>
+<span id="cb18-287"><a href="#cb18-287" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb18-288"><a href="#cb18-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-289"><a href="#cb18-289" aria-hidden="true" tabindex="-1"></a><span class="ex">![{{</span><span class="op">&lt;</span> lipsum <span class="ex">4</span> <span class="op">&gt;</span>}}]<span class="er">(</span><span class="ex">../images/mv-2.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> desc-position=<span class="st">"left"</span> hint=<span class="st">"true"</span> fig-alt=<span class="st">"A white lighthouse against a blue sky"</span>}</span>
+<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a><span class="co">## Long caption on the right {expect-open="panzoom" expect-hint="shown" expect-scroll="caption" expect-desc-position="right"}</span></span>
+<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> image with <span class="kw">`</span><span class="st">.panzoom</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">desc-position="</span>right<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> <span class="kw">`</span><span class="st">hint="</span>true<span class="st">"</span><span class="kw">`</span><span class="ex">,</span> and a caption</span>
+<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a><span class="ex">of</span> placeholder text longer than its panel. It opens in panzoom with the caption</span>
+<span id="cb18-295"><a href="#cb18-295" aria-hidden="true" tabindex="-1"></a><span class="er">in</span> <span class="ex">a</span> panel on the right of the image. The caption scrolls, and the hint line</span>
+<span id="cb18-296"><a href="#cb18-296" aria-hidden="true" tabindex="-1"></a><span class="ex">stays</span> in view at the foot of the panel.</span>
 <span id="cb18-297"><a href="#cb18-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-298"><a href="#cb18-298" aria-hidden="true" tabindex="-1"></a><span class="co">## Caption in the margin {expect-open="panzoom" expect-desc-position="right"}</span></span>
-<span id="cb18-299"><a href="#cb18-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> R cell with <span class="kw">`</span><span class="st">#| panzoom: true</span><span class="kw">`</span> <span class="ex">and</span> <span class="kw">`</span><span class="st">fig-cap-location: margin</span><span class="kw">`</span><span class="bu">.</span> The page shows</span>
-<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a><span class="ex">the</span> caption in the margin, beside the plot. It opens in panzoom with the caption</span>
-<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a><span class="er">in</span> <span class="ex">a</span> panel on the right, the margin side, with no <span class="kw">`</span><span class="st">desc-position</span><span class="kw">`</span> <span class="ex">set.</span></span>
+<span id="cb18-298"><a href="#cb18-298" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="st">source</span></span>
+<span id="cb18-299"><a href="#cb18-299" aria-hidden="true" tabindex="-1"></a><span class="st">![{{{&lt; lipsum 4 &gt;}}}](../images/mv-3.jpg){.panzoom desc-position="</span>right<span class="st">" hint="</span>true<span class="st">" fig-alt="</span>A shingled gingerbread cottage with pink and green trim, behind a garden path<span class="st">"}</span></span>
+<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a><span class="ex">![{{</span><span class="op">&lt;</span> lipsum <span class="ex">4</span> <span class="op">&gt;</span>}}]<span class="er">(</span><span class="ex">../images/mv-3.jpg</span><span class="kw">)</span><span class="ex">{.panzoom</span> desc-position=<span class="st">"right"</span> hint=<span class="st">"true"</span> fig-alt=<span class="st">"A shingled gingerbread cottage with pink and green trim, behind a garden path"</span>}</span>
 <span id="cb18-303"><a href="#cb18-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-306"><a href="#cb18-306" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a><span class="st">#| panzoom: true</span></span>
-<span id="cb18-308"><a href="#cb18-308" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-alt: "</span>A sine curve, shaded between the curve and y = 0<span class="st">"</span></span>
-<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-cap: &gt;-</span></span>
-<span id="cb18-310"><a href="#cb18-310" aria-hidden="true" tabindex="-1"></a><span class="st">#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.</span></span>
-<span id="cb18-311"><a href="#cb18-311" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-cap-location: margin</span></span>
-<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a><span class="st">wave(k = 2)</span></span>
-<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
-<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-316"><a href="#cb18-316" aria-hidden="true" tabindex="-1"></a><span class="co">## Caption above the figure {expect-open="panzoom" expect-desc-position="top"}</span></span>
-<span id="cb18-317"><a href="#cb18-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> R cell with a figure label, <span class="kw">`</span><span class="st">#| panzoom: true</span><span class="kw">`</span><span class="ex">,</span> and <span class="kw">`</span><span class="st">fig-cap-location: top</span><span class="kw">`</span><span class="bu">.</span></span>
-<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> page shows the caption above the plot: Quarto moves a caption to the top</span>
-<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a><span class="ex">only</span> for a labeled figure. It opens in panzoom with the caption above the image,</span>
-<span id="cb18-321"><a href="#cb18-321" aria-hidden="true" tabindex="-1"></a><span class="ex">with</span> no <span class="kw">`</span><span class="st">desc-position</span><span class="kw">`</span> <span class="ex">set.</span></span>
-<span id="cb18-322"><a href="#cb18-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-325"><a href="#cb18-325" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a><span class="st">#| panzoom: true</span></span>
-<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a><span class="st">#| label: fig-caption-top</span></span>
-<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-alt: "</span>A sine curve, shaded between the curve and y = 0<span class="st">"</span></span>
-<span id="cb18-329"><a href="#cb18-329" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-cap: &gt;-</span></span>
-<span id="cb18-330"><a href="#cb18-330" aria-hidden="true" tabindex="-1"></a><span class="st">#|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.</span></span>
-<span id="cb18-331"><a href="#cb18-331" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-cap-location: top</span></span>
-<span id="cb18-332"><a href="#cb18-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a><span class="st">wave(k = 4)</span></span>
-<span id="cb18-334"><a href="#cb18-334" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
-<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a><span class="co">## References {.unnumbered}</span></span>
-<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {#refs}</span>
-<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb18-304"><a href="#cb18-304" aria-hidden="true" tabindex="-1"></a><span class="co">## Caption in the margin {expect-open="panzoom" expect-desc-position="right"}</span></span>
+<span id="cb18-305"><a href="#cb18-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-306"><a href="#cb18-306" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> R cell with <span class="kw">`</span><span class="st">#| panzoom: true</span><span class="kw">`</span> <span class="ex">and</span> <span class="kw">`</span><span class="st">fig-cap-location: margin</span><span class="kw">`</span><span class="bu">.</span> The page shows</span>
+<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a><span class="ex">the</span> caption in the margin, beside the plot. It opens in panzoom with the caption</span>
+<span id="cb18-308"><a href="#cb18-308" aria-hidden="true" tabindex="-1"></a><span class="er">in</span> <span class="ex">a</span> panel on the right, the margin side, with no <span class="kw">`</span><span class="st">desc-position</span><span class="kw">`</span> <span class="ex">set.</span></span>
+<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a><span class="st">#| panzoom: true</span></span>
+<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-alt: "</span>A sine curve, shaded between the curve and y = 0<span class="st">"</span></span>
+<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-cap: &gt;-</span></span>
+<span id="cb18-316"><a href="#cb18-316" aria-hidden="true" tabindex="-1"></a><span class="st">#|   Wave 2: y = sin(2x); the area between the curve and y = 0 is shaded.</span></span>
+<span id="cb18-317"><a href="#cb18-317" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-cap-location: margin</span></span>
+<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a><span class="st">wave(k = 2)</span></span>
+<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb18-321"><a href="#cb18-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-322"><a href="#cb18-322" aria-hidden="true" tabindex="-1"></a><span class="co">## Caption above the figure {expect-open="panzoom" expect-desc-position="top"}</span></span>
+<span id="cb18-323"><a href="#cb18-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-324"><a href="#cb18-324" aria-hidden="true" tabindex="-1"></a><span class="ex">An</span> R cell with a figure label, <span class="kw">`</span><span class="st">#| panzoom: true</span><span class="kw">`</span><span class="ex">,</span> and <span class="kw">`</span><span class="st">fig-cap-location: top</span><span class="kw">`</span><span class="bu">.</span></span>
+<span id="cb18-325"><a href="#cb18-325" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> page shows the caption above the plot: Quarto moves a caption to the top</span>
+<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a><span class="ex">only</span> for a labeled figure. It opens in panzoom with the caption above the image,</span>
+<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a><span class="ex">with</span> no <span class="kw">`</span><span class="st">desc-position</span><span class="kw">`</span> <span class="ex">set.</span></span>
+<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-331"><a href="#cb18-331" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-332"><a href="#cb18-332" aria-hidden="true" tabindex="-1"></a><span class="st">#| panzoom: true</span></span>
+<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a><span class="st">#| label: fig-caption-top</span></span>
+<span id="cb18-334"><a href="#cb18-334" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-alt: "</span>A sine curve, shaded between the curve and y = 0<span class="st">"</span></span>
+<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-cap: &gt;-</span></span>
+<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a><span class="st">#|   Wave 4: y = sin(4x); the area between the curve and y = 0 is shaded.</span></span>
+<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a><span class="st">#| fig-cap-location: top</span></span>
+<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a><span class="st">wave(k = 4)</span></span>
+<span id="cb18-340"><a href="#cb18-340" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb18-341"><a href="#cb18-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-342"><a href="#cb18-342" aria-hidden="true" tabindex="-1"></a><span class="co">## References {.unnumbered}</span></span>
+<span id="cb18-343"><a href="#cb18-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-344"><a href="#cb18-344" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {#refs}</span>
+<span id="cb18-345"><a href="#cb18-345" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

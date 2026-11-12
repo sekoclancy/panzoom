@@ -5,8 +5,9 @@
 
   Panzoom does the panning and zooming: drag (or one-finger drag) pans,
   two-finger pinch zooms. This file adds the viewer around it: click image ->
-  overlay, wheel / trackpad pinch zooms toward the cursor, double-click or 0
-  resets to fit, +/- zoom, arrow keys pan, Esc / x / background click closes,
+  overlay, wheel / trackpad pinch zooms toward the cursor, double-click (or a
+  double-tap; see release()) or 0 resets to fit, +/- zoom, Esc / x /
+  background click closes,
   c hides or shows the caption and description, h the hint line. The
   document's `keys:` option changes these keys (see KEYS). The hint line
   names mouse and keyboard controls, so a viewer opened by a tap has none.
@@ -25,17 +26,17 @@
   does.
 
   Galleries: images with the same group are stepped through with the
-  prev/next buttons, Left/Right or a horizontal swipe (the last two only
-  while the image fits the screen; when it is larger in either direction,
-  they pan).
+  prev/next buttons, a horizontal swipe, or bare Left/Right, which always
+  switch (never pan, even on a larger-than-screen image; Ctrl/Cmd+arrow is
+  for that, below). The group is `data-panzoom-group` (cell option), else
+  `data-group` (`group="..."` on a markdown image, as for Quarto's
+  lightbox), else `data-ref-parent` (subfigures of one figure, as Quarto's
+  lightbox groups them).
 
-  Panning: drag, arrow keys, Shift+wheel or sideways trackpad scrolling
-  (sideways), and Alt+wheel (up and down). The image is kept on screen:
-  centered in a direction where it fits, and stopping at its ends where it
-  doesn't. The group
-  is `data-panzoom-group` (cell option), else `data-group` (`group="..."` on
-  a markdown image, as for Quarto's lightbox), else `data-ref-parent`
-  (subfigures of one figure, as Quarto's lightbox groups them).
+  Panning: drag, Ctrl/Cmd+arrow (any direction; KEYS_PAN), Shift+wheel or
+  sideways trackpad scrolling (sideways), and Alt+wheel (up and down). The
+  image is kept on screen: centered in a direction where it fits, and
+  stopping at its ends where it doesn't.
 
   Keyboard: marked images are focusable buttons that open on Enter or Space.
   The open viewer takes focus, keeps Tab inside it, and gives focus back to
@@ -75,6 +76,8 @@
 (function () {
   var SELECTOR = "img.panzoom:not(.nopanzoom)";
   var SWIPE = 50;  // px of horizontal drag that switches images
+  var DOUBLETAP_MS = 350;  // max gap between two taps counted as a double-tap
+  var DOUBLETAP_PX = 60;   // max distance between them, a finger being imprecise
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
   var STRIP = 3;    // ...but only for images at least this many times wider than tall (or vice versa)
   var BOUNCE = 40;  // px a key or scroll pan overshoots an image's end
@@ -82,6 +85,9 @@
   var OUT = 120, BACK = 200;  // ms out past the end, and back
   var FITS = ["auto", "contain", "height", "width"];
   var POSITIONS = ["bottom", "top", "left", "right"];
+  // Arrow keys Ctrl/Cmd makes pan instead of switching gallery images (or,
+  // for Up/Down, instead of doing nothing); not user-rebindable (see KEYS).
+  var KEYS_PAN = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
   var NARROW = 769; // px: below this width, left and right show below (as lightbox)
   // Per-image color options: data attribute (as in `dataset`) -> CSS variable.
   var STYLES = {
@@ -101,6 +107,12 @@
   var overlay, img, closeBtn, prevBtn, nextBtn, counter, status, footer, caption, desc, hint;
   var loadId = 0, loadTimer = null;
   var pz = null, opts, press = null, returnFocus = null, margin = 0, marginX = 0;
+  // The last touch tap that could start a double-tap (a single, stationary
+  // touch release; see release()), or null. Desktop already gets a reset
+  // from the browser's own "dblclick" event; this is only for touch, where
+  // Panzoom's own preventDefault() on pointerdown (needed for its drag/pinch
+  // gesture) keeps WebKit from ever synthesizing one from two taps.
+  var lastTap = null;
   // Where the caption band is now (see place()): opts.descPosition, or
   // bottom instead of left or right on a narrow screen.
   var side = "bottom";
@@ -137,6 +149,12 @@
   // done. `stepping`: that step hasn't landed yet (history.back() is
   // asynchronous); a viewer opened meanwhile adds its entry once it has.
   var inHistory = false, leaving = null, stepping = false;
+  // The page's scroll position right as the viewer opened. The viewer's
+  // pushState keeps the page's URL, including any #anchor, so stepping back
+  // over it returns to an entry with that same #anchor: the browser
+  // re-scrolls to the anchor's own position there instead of keeping the
+  // page where it was. Put it back once that happens (see close()).
+  var openScroll = null;
   // The classes the shown image added to the viewer (see restyle()).
   var imageClasses = [];
   // The c and h keys hide the caption (with the description) and the hint,
@@ -149,6 +167,9 @@
   // The opening view fit() set ({ s, x, y }), to tell whether the reader
   // has zoomed or panned since.
   var opening = null;
+  // The `onClose` of a viewer opened with QuartoPanzoom.open(), called once
+  // when it closes.
+  var onClose = null;
 
   // Document-wide options, overridden by the image's data attributes.
   function options(el) {
@@ -216,15 +237,17 @@
 
   // The hint line's parts, naming the keys bound: the caption key only when
   // the image has a caption or description, to hide it or, once hidden, to
-  // show it.
+  // show it. "captions"/"hints", not "the caption"/"the hint": both keys
+  // stay in effect for as long as the page is open (see hideCaption),
+  // not just this image.
   function hintParts(captioned) {
     var named = function (a) {
       return keys()[a].map(function (k) { return k === "Escape" ? "Esc" : k; }).join(" or ");
     };
     var cap = captioned ? named("caption") : "", hin = named("hint"), shut = named("close");
     var parts = ["scroll to zoom", "drag to pan", "double-click to reset"];
-    if (cap) parts.push(cap + (hideCaption ? " to show" : " to hide") + " the caption");
-    if (hin) parts.push(hin + " to hide the hint");
+    if (cap) parts.push(cap + (hideCaption ? " to show" : " to hide") + " captions");
+    if (hin) parts.push(hin + " to hide hints");
     if (shut) parts.push(shut + " to close");
     return parts;
   }
@@ -639,28 +662,6 @@
     panPx(fx * overlay.clientWidth, fy * overlay.clientHeight);
   }
 
-  // Whether the image, wider than the screen, rests at its end toward
-  // `dir` (1: its right end, -1: its left end).
-  function atEndX(dir) {
-    if (!pz) return false;
-    var a = area(), s = pz.getScale(), x = pz.getPan().x;
-    var end = containAxis(dir > 0 ? -1e9 : 1e9, s, img.naturalWidth, a.w, null, a.x, marginX);
-    return Math.abs(x - end) < 0.5;
-  }
-
-  // Left/Right (`dir` -1 or 1). While the image is larger than the screen
-  // they pan, doing nothing sideways if it fits that way, and a press that
-  // reaches an end bounces; one made while an image wider than the screen
-  // already rests at that end switches gallery images, but a held key
-  // (`repeat`) never does. An image that fits switches at once. Without
-  // `loop`, nothing happens past either end of the gallery.
-  function arrow(dir, repeat) {
-    var o = overflow();
-    if (!o.any) { step(dir); return; }
-    if (o.x && !repeat && atEndX(dir) && step(dir)) return;
-    panBy(0.1 * dir, 0);
-  }
-
   // Shows gallery image `i`, fitted to the screen.
   function show(i) {
     stopBounce();
@@ -734,6 +735,8 @@
   }
 
   // Steps through the gallery; returns false at either end without `loop`.
+  // Stepping away from the clicked image drops its remembered click spot,
+  // so coming back to it also fits afresh, like every other image.
   function step(delta) {
     var n = gallery.length, i = index + delta;
     if (n < 2) return false;
@@ -741,12 +744,14 @@
       if (!opts.loop) return false;
       i = (i + n) % n;
     }
+    clicked = null;
     show(i);
     return true;
   }
 
   function open(el, point, pointer) {
     if (!overlay) build();
+    openScroll = { x: window.scrollX, y: window.scrollY };
     clicked = point ? { el: el, fx: point.fx, fy: point.fy } : null;
     returnFocus = document.activeElement;
     byPointer = !!pointer;
@@ -791,6 +796,15 @@
         stepping = true;
         history.back();
       }
+      // Either way, the browser just put back the scroll position of the
+      // entry below the viewer's, which may be an earlier #anchor jump
+      // (see `openScroll`'s comment). Put it back, once that happens, to
+      // where the page was when the viewer opened (same ordering as the
+      // `leaving` case below).
+      if (openScroll) {
+        var pos = openScroll;
+        setTimeout(function () { window.scrollTo(pos.x, pos.y); }, 0);
+      }
     }
     stopBounce();
     if (pz) { pz.destroy(); pz = null; }
@@ -820,6 +834,14 @@
     if (byPointer) document.documentElement.classList.add("panzoom-no-ring");
     if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
     returnFocus = null;
+    closed();
+  }
+
+  // Calls the `onClose` of the viewer that just closed, if it has one.
+  function closed() {
+    var f = onClose;
+    onClose = null;
+    if (f) f();
   }
   // Capture phase, before the key moves focus (Tab).
   document.addEventListener("keydown", function () {
@@ -996,14 +1018,25 @@
       var moved = Math.abs(dx) + Math.abs(dy) > 3;
       var clickedBackground = single && !moved && !press.onImg;
       var swipe = single && !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
+      // A second same-spot tap within DOUBLETAP_MS resets the view, as
+      // "dblclick" below does for a mouse. WebKit never synthesizes a
+      // "dblclick" from two taps once Panzoom's own pointerdown handler has
+      // called preventDefault() on them (needed for its drag/pinch
+      // gesture), so touch needs its own detection instead of that event.
+      var tap = single && !moved && e.pointerType === "touch";
+      var doubleTap = tap && lastTap && e.timeStamp - lastTap.time < DOUBLETAP_MS &&
+        Math.abs(e.clientX - lastTap.x) < DOUBLETAP_PX && Math.abs(e.clientY - lastTap.y) < DOUBLETAP_PX;
+      lastTap = tap && !doubleTap ? { time: e.timeStamp, x: e.clientX, y: e.clientY } : null;
       press = null;
       overlay.classList.remove("dragging");
-      if (clickedBackground) close();
+      if (doubleTap) resetView();
+      else if (clickedBackground) close();
       else if (!(swipe && step(dx < 0 ? 1 : -1))) settle();
     }
     document.addEventListener("pointerup", release);
     document.addEventListener("pointercancel", release);
 
+    // Desktop double-click; see release() above for a double-tap's own path.
     overlay.addEventListener("dblclick", function (e) {
       if (!e.target.closest(".panzoom-exclude")) resetView();
     });
@@ -1026,10 +1059,12 @@
   // page shortcuts (e.g. focus-mode's arrows, Quarto search on keyup) never
   // see them. Only a window-capture listener registered before this one
   // can still run first, so register at script load, not on first open.
-  // Browser shortcuts with Ctrl/Cmd/Alt, and function keys, pass through.
+  // Browser shortcuts with Ctrl/Cmd/Alt, and function keys, pass through,
+  // except Ctrl/Cmd+arrow (pan; see KEYS_PAN below).
   function onKey(e) {
     if (!overlay || !overlay.classList.contains("open")) return;
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var pan = KEYS_PAN.indexOf(e.key) >= 0 && (e.ctrlKey || e.metaKey) && !e.altKey;
+    if (!pan && (e.ctrlKey || e.metaKey || e.altKey)) return;
     // Function keys are browser features (F5 reload, F3 find, F7 caret
     // browsing), not page shortcuts, so they pass through too.
     if (/^F\d{1,2}$/.test(e.key)) return;
@@ -1049,13 +1084,16 @@
     // A focused caption or description panel takes the scrolling keys.
     else if (active.classList.contains("panzoom-scrollable") && scrollPanel(active, e)) return;
     else if ((e.key === "Enter" || e.key === " ") && onControl) active.click();
-    // Left/Right pan while the image is larger than the screen (doing
-    // nothing if it fits sideways); otherwise they switch gallery images
-    // (doing nothing at either end without `loop`).
-    else if (e.key === "ArrowLeft") arrow(-1, e.repeat);
-    else if (e.key === "ArrowRight") arrow(1, e.repeat);
-    else if (e.key === "ArrowUp") panBy(0, -0.1);
-    else if (e.key === "ArrowDown") panBy(0, 0.1);
+    // Bare Left/Right always switch gallery images (doing nothing at
+    // either end without `loop`, or at all without a gallery); bare
+    // Up/Down do nothing. Ctrl/Cmd+arrow pans instead, any direction,
+    // whether or not the image is larger than the screen that way.
+    else if (pan && e.key === "ArrowLeft") panBy(-0.1, 0);
+    else if (pan && e.key === "ArrowRight") panBy(0.1, 0);
+    else if (pan && e.key === "ArrowUp") panBy(0, -0.1);
+    else if (pan && e.key === "ArrowDown") panBy(0, 0.1);
+    else if (e.key === "ArrowLeft") step(-1);
+    else if (e.key === "ArrowRight") step(1);
     else if (action === "reset") resetView();
     else if (action === "zoom-in") zoomAt(1.25, cx, cy);
     else if (action === "zoom-out") zoomAt(0.8, cx, cy);
@@ -1144,9 +1182,15 @@
 
   // Make marked images reachable with Tab and announced as buttons. An
   // image in an `a.panzoom-link` is reached through the link (one Tab stop).
-  function makeFocusable() {
-    document.querySelectorAll(SELECTOR).forEach(function (img) {
-      if (!opens(img)) return;
+  // Each image is set up once (`data-panzoom-attached`), so a later scan
+  // or a second copy of this script leaves it alone.
+  function makeFocusable(root) {
+    root = root || document;
+    var found = Array.prototype.slice.call(root.querySelectorAll(SELECTOR));
+    if (root.matches && root.matches(SELECTOR)) found.unshift(root);
+    found.forEach(function (img) {
+      if (img.dataset.panzoomAttached || !opens(img)) return;
+      img.dataset.panzoomAttached = "true";
       var el = img.closest("a.panzoom-link") || img;
       el.tabIndex = 0;
       el.setAttribute("role", "button");
@@ -1154,6 +1198,69 @@
       el.setAttribute("aria-label", (img.alt ? img.alt + ": " : "") + "open in zoom viewer");
     });
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", makeFocusable);
-  else makeFocusable();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { makeFocusable(); });
+  } else makeFocusable();
+
+  function isOpen() {
+    return !!overlay && overlay.classList.contains("open");
+  }
+
+  // For scripts on the page.
+  //
+  // open(img, { opener, onClose }) opens any <img> in the viewer, marked or
+  // not, as Enter does on a marked one, and returns whether it did. Focus
+  // returns to `opener` (default: the focused element) when the viewer
+  // closes, and `onClose` is then called, however it closed.
+  //
+  // close() closes the viewer, if it is open.
+  //
+  // observe(root, { match }) watches `root` (default: the body) for images
+  // added after the page loaded, and makes the marked ones reachable with
+  // Tab, as those of the page are. `match`, a selector or a function of an
+  // <img>, marks the images it accepts first (`.nopanzoom` ones excepted).
+  // Returns { scan, disconnect }: scan() looks through `root` now,
+  // disconnect() stops watching.
+  window.QuartoPanzoom = {
+    open: function (el, o) {
+      o = o || {};
+      if (!(el instanceof HTMLImageElement) || (overlay && overlay.contains(el))) return false;
+      // Opened over an open viewer: that one is done, and focus still
+      // returns to where it was before either opened.
+      var was = isOpen() ? returnFocus : null;
+      closed();
+      open(el);
+      returnFocus = o.opener || was || returnFocus;
+      onClose = typeof o.onClose === "function" ? o.onClose : null;
+      return true;
+    },
+    close: function () {
+      if (isOpen()) close();
+    },
+    observe: function (root, o) {
+      root = root || document.body;
+      var match = o && o.match, queued = false;
+      function accepts(img) {
+        return typeof match === "function" ? match(img) : img.matches(match);
+      }
+      function scan() {
+        queued = false;
+        if (match) {
+          root.querySelectorAll("img:not(.panzoom):not(.nopanzoom)").forEach(function (img) {
+            if (!(overlay && overlay.contains(img)) && accepts(img)) img.classList.add("panzoom");
+          });
+        }
+        makeFocusable(root);
+      }
+      // One scan for all the changes of a task.
+      var observer = new MutationObserver(function () {
+        if (queued) return;
+        queued = true;
+        queueMicrotask(scan);
+      });
+      observer.observe(root, { childList: true, subtree: true });
+      scan();
+      return { scan: scan, disconnect: function () { observer.disconnect(); } };
+    }
+  };
 })();

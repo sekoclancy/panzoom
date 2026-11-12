@@ -84,12 +84,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7018cc8867401cb480acf35f2ed2882d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c34573a46a3c265f37fb87111ed1aa6c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-307cabbe07ae71f9c617fc54d3ef415e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-c34573a46a3c265f37fb87111ed1aa6c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f157217e1616e2d29265d38c09db305d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/panzoom-0.1.0/panzoom.min.js"></script>
 <script src="site_libs/quarto-contrib/panzoom-0.1.0/panzoom.js"></script>
 <link href="site_libs/quarto-contrib/panzoom-0.1.0/panzoom.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/kbd/kbd.js"></script>
+<link href="site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -301,7 +303,8 @@ window.Quarto = {
       }
     };
     const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
       document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
       document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
     let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
@@ -315,6 +318,15 @@ window.Quarto = {
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
     };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
     // Switch to dark mode if need be
     if (hasAlternateSentinel()) {
       toggleColorMode(true);
@@ -337,6 +349,10 @@ window.Quarto = {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./reference.html"> 
+<span class="menu-text">Reference</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./examples/b-mixed-r.html" aria-current="page"> 
 <span class="menu-text">Examples</span></a>
@@ -388,25 +404,25 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/b-mixed-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">B. Selected images with <code>lightbox</code> (R)</span></a>
+ <span class="menu-text">B. Interaction with <code>lightbox</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/c-global-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">C. <code>panzoom</code> on every figure (R)</span></a>
+ <span class="menu-text">C. Global <code>panzoom</code> (R)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/d-selecting-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">D. Selecting images (R)</span></a>
+ <span class="menu-text">D. Selecting images</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/e-image-formats-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">E. Image formats (R)</span></a>
+ <span class="menu-text">E. Image formats</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -418,19 +434,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/g-captions-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">G. Captions and descriptions (R)</span></a>
+ <span class="menu-text">G. Captions and descriptions</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/h-wide-and-tall-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">H. Wide and tall figures (R)</span></a>
+ <span class="menu-text">H. Wide and tall figures</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/i-wide-galleries-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. Wide figures in galleries (R)</span></a>
+ <span class="menu-text">I. Wide figures in galleries</span></a>
   </div>
 </li>
       </ul>
@@ -450,7 +466,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/k-global-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">K. <code>panzoom</code> on every figure (Python)</span></a>
+ <span class="menu-text">K. Global <code>panzoom</code> (Python)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -462,7 +478,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/m-figures-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">M. Captions, formats, and shapes (Python)</span></a>
+ <span class="menu-text">M. Captions, formats, and shapes</span></a>
   </div>
 </li>
       </ul>
@@ -476,13 +492,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/n-color-options-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">N. Color options (R)</span></a>
+ <span class="menu-text">N. Color options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/o-css-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">O. Styling with CSS (R)</span></a>
+ <span class="menu-text">O. Styling with CSS</span></a>
   </div>
 </li>
       </ul>
@@ -516,7 +532,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/r-dark-plots-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">R. Dark plots (R)</span></a>
+ <span class="menu-text">R. Dark plots</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -606,7 +622,7 @@ Warning
 </section>
 <section id="demo" class="level2">
 <h2 class="anchored" data-anchor-id="demo">Demo</h2>
-<video id="demo-video" src="images/demo.mp4" poster="images/demo-poster.png" muted="" loop="" playsinline="" controls="" preload="metadata" style="width: 100%; height: auto;" aria-label="Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with the arrow keys.">
+<video id="demo-video" src="images/demo.mp4" poster="images/demo-poster.png" muted="" loop="" playsinline="" controls="" preload="metadata" style="width: 100%; height: auto;" aria-label="Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with Ctrl/Cmd+arrow keys.">
 </video>
 <script>
   // Plays while at least half of it is on screen, unless the reader paused
@@ -635,8 +651,8 @@ Warning
 <table class="caption-top table">
 <colgroup>
 <col style="width: 22%">
-<col style="width: 41%">
-<col style="width: 36%">
+<col style="width: 43%">
+<col style="width: 34%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -654,25 +670,25 @@ Warning
 <tr class="even">
 <td>Pan</td>
 <td>drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac)</td>
-<td>arrow keys</td>
+<td><p><kbd title="Ctrl-arrow, mac: Cmd-arrow" aria-hidden="true" data-mac="Cmd-arrow">Ctrl-arrow</kbd><span class="visually-hidden">Ctrl-arrow</span></p></td>
 </tr>
 <tr class="odd">
 <td>Go back to the opening view</td>
-<td>double-click</td>
+<td>double-click or double-tap</td>
 <td>0</td>
 </tr>
 <tr class="even">
 <td>Change image in a gallery</td>
 <td>the previous and next buttons, or swipe</td>
-<td>left and right arrow (on a zoomed image, once it reaches its edge)</td>
+<td>left and right arrow</td>
 </tr>
 <tr class="odd">
-<td>Hide or show the caption and description</td>
+<td>Hide or show captions and descriptions</td>
 <td></td>
 <td>c</td>
 </tr>
 <tr class="even">
-<td>Hide or show the hint line</td>
+<td>Hide or show hints</td>
 <td></td>
 <td>h</td>
 </tr>
@@ -699,7 +715,7 @@ Warning
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heights of Maunga Whau (Mount Eden) in Auckland, from dark blue (low) to</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#|   yellow (high).</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -755,13 +771,13 @@ Figure&nbsp;1: Heights of Maunga Whau (Mount Eden) in Auckland as filled contour
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Maunga Whau's heights as a heat map, with contour lines.</span></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Terrain 2"</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Terrain 2"</span>))</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="index_files/figure-html/unnamed-chunk-2-1.png" class="panzoom-link"><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="panzoom nolightbox img-fluid figure-img" data-panzoom-hint="false" data-panzoom-max-zoom="10" alt="Heat map of Maunga Whau's heights in terrain colors, with contour lines" width="672"></a></p>
+<p><a href="index_files/figure-html/unnamed-chunk-2-1.png" class="panzoom-link"><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="panzoom nolightbox img-fluid figure-img" data-panzoom-max-zoom="10" data-panzoom-hint="false" alt="Heat map of Maunga Whau's heights in terrain colors, with contour lines" width="672"></a></p>
 <figcaption>Maunga Whau’s heights as a heat map, with contour lines.</figcaption>
 </figure>
 </div>
@@ -805,7 +821,7 @@ Figure&nbsp;1: Heights of Maunga Whau (Mount Eden) in Auckland as filled contour
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Maunga Whau's heights as a heat map, from green (low) to white (high).</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">100</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">100</span>))</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="al">![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png)</span>{fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}</span>
@@ -856,7 +872,7 @@ Figure&nbsp;1: Heights of Maunga Whau (Mount Eden) in Auckland as filled contour
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#|     on a 10 m by 10 m grid, viewed from above at an angle. The crater rim and</span></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#|     the slope down to the surrounding ground read as relief.</span></span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(volcano, <span class="at">theta =</span> <span class="dv">135</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">"green3"</span>, <span class="at">shade =</span> <span class="fl">0.5</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell quarto-layout-panel" data-layout-ncol="2">
@@ -892,7 +908,7 @@ Figure&nbsp;1: Heights of Maunga Whau (Mount Eden) in Auckland as filled contour
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "A heat map, from pale yellow (low) to dark red (high)."</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano)</span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="fig-volcano-sub" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
@@ -932,7 +948,7 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 </section>
 <section id="wide-figure" class="level2" data-expect-fit="height">
 <h2 data-expect-fit="height" class="anchored" data-anchor-id="wide-figure">Wide figure</h2>
-<p>A figure many times wider than tall would be too thin to read if it opened whole, so it opens at screen height, at the spot you clicked. panzoom does this on its own for very wide figures; <code>fit: height</code> makes sure this one always does, whatever the window’s shape. Click the highlighted panel, and the viewer opens right on it.</p>
+<p>A figure many times wider than tall would be too thin to read if it opened whole, so it opens at screen height, at the spot you clicked. panzoom does this on its own for very wide figures; here, <code>fit: height</code> is set so this figure always opens that way, whatever the window’s shape. Click the highlighted panel, and the viewer opens right on it.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
@@ -1691,7 +1707,7 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
 <span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;video id="demo-video" src="images/demo.mp4" poster="images/demo-poster.png"</span></span>
 <span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="in">  muted loop playsinline controls preload="metadata" style="width: 100%; height: auto;"</span></span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="in">  aria-label="Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with the arrow keys."&gt;</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="in">  aria-label="Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with Ctrl/Cmd+arrow keys."&gt;</span></span>
 <span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/video&gt;</span></span>
 <span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;script&gt;</span></span>
 <span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="in">  // Plays while at least half of it is on screen, unless the reader paused</span></span>
@@ -1719,15 +1735,15 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>Click a figure to open it, or reach it with Tab and press Enter.</span>
 <span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Action                                   <span class="pp">|</span> Mouse or touch                                                              <span class="pp">|</span> Keyboard                                                           <span class="pp">|</span></span>
-<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>  <span class="pp">| ----------------------------------------</span> <span class="pp">| ---------------------------------------------------------------------------</span> <span class="pp">| ------------------------------------------------------------------</span> <span class="pp">|</span></span>
-<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Zoom                                     <span class="pp">|</span> scroll or pinch, toward the cursor                                          <span class="pp">|</span> + and -                                                            <span class="pp">|</span></span>
-<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Pan                                      <span class="pp">|</span> drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) <span class="pp">|</span> arrow keys                                                         <span class="pp">|</span></span>
-<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Go back to the opening view              <span class="pp">|</span> double-click                                                                <span class="pp">|</span> 0                                                                  <span class="pp">|</span></span>
-<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Change image in a gallery                <span class="pp">|</span> the previous and next buttons, or swipe                                     <span class="pp">|</span> left and right arrow (on a zoomed image, once it reaches its edge) <span class="pp">|</span></span>
-<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Hide or show the caption and description <span class="pp">|</span>                                                                             <span class="pp">|</span> c                                                                  <span class="pp">|</span></span>
-<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Hide or show the hint line               <span class="pp">|</span>                                                                             <span class="pp">|</span> h                                                                  <span class="pp">|</span></span>
-<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Close                                    <span class="pp">|</span> the × button, a click on the background, or the browser Back button         <span class="pp">|</span> Esc                                                                <span class="pp">|</span></span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Action                                  <span class="pp">|</span> Mouse or touch                                                               <span class="pp">|</span> Keyboard                                                    <span class="pp">|</span></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>  <span class="pp">| ---------------------------------------</span> <span class="pp">| ---------------------------------------------------------------------------</span>  <span class="pp">| -----------------------------------------------------------</span> <span class="pp">|</span></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Zoom                                    <span class="pp">|</span> scroll or pinch, toward the cursor                                           <span class="pp">|</span> + and -                                                     <span class="pp">|</span></span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Pan                                     <span class="pp">|</span> drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac)  <span class="pp">|</span> {{&lt; kbd Ctrl-arrow mac=Cmd-arrow &gt;}}                        <span class="pp">|</span></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Go back to the opening view             <span class="pp">|</span> double-click or double-tap                                                   <span class="pp">|</span> 0                                                           <span class="pp">|</span></span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Change image in a gallery               <span class="pp">|</span> the previous and next buttons, or swipe                                      <span class="pp">|</span> left and right arrow                                        <span class="pp">|</span></span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Hide or show captions and descriptions  <span class="pp">|</span>                                                                              <span class="pp">|</span> c                                                           <span class="pp">|</span></span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Hide or show hints                      <span class="pp">|</span>                                                                              <span class="pp">|</span> h                                                           <span class="pp">|</span></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Close                                   <span class="pp">|</span> the × button, a click on the background, or the browser Back button          <span class="pp">|</span> Esc                                                         <span class="pp">|</span></span>
 <span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code cell</span></span>
 <span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a></span>
@@ -1745,7 +1761,7 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heights of Maunga Whau (Mount Eden) in Auckland, from dark blue (low) to</span></span>
 <span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a><span class="co">#|   yellow (high).</span></span>
 <span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
 <span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cross-referenced figure</span></span>
@@ -1783,7 +1799,7 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
 <span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Maunga Whau's heights as a heat map, with contour lines.</span></span>
 <span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Terrain 2"</span>))</span>
+<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Terrain 2"</span>))</span>
 <span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a></span>
@@ -1835,7 +1851,7 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: &gt;-</span></span>
 <span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a><span class="in">#|   Maunga Whau's heights as a heat map, from green (low) to white (high).</span></span>
 <span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a><span class="in">image(volcano, col = terrain.colors(100))</span></span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a><span class="in">image(z = volcano, col = terrain.colors(100))</span></span>
 <span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a><span class="in">![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}</span></span>
@@ -1852,7 +1868,7 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
 <span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Maunga Whau's heights as a heat map, from green (low) to white (high).</span></span>
 <span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">100</span>))</span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">100</span>))</span>
 <span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a><span class="al">![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png)</span>{fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}</span>
@@ -1882,7 +1898,7 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="co">#|     on a 10 m by 10 m grid, viewed from above at an angle. The crater rim and</span></span>
 <span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a><span class="co">#|     the slope down to the surrounding ground read as relief.</span></span>
 <span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
 <span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(volcano, <span class="at">theta =</span> <span class="dv">135</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">"green3"</span>, <span class="at">shade =</span> <span class="fl">0.5</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
 <span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a></span>
@@ -1899,16 +1915,16 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "A heat map, from pale yellow (low) to dark red (high)."</span></span>
 <span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
-<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano)</span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano)</span>
 <span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wide figure {expect-fit="height"}</span></span>
 <span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>A figure many times wider than tall would be too thin to read if it opened</span>
 <span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>whole, so it opens at screen height, at the spot you clicked. panzoom does this</span>
-<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a>on its own for very wide figures; <span class="in">`fit: height`</span> makes sure this one always does,</span>
-<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a>whatever the window's shape. Click the highlighted panel, and the viewer opens</span>
-<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a>right on it.</span>
+<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a>on its own for very wide figures; here, <span class="in">`fit: height`</span> is set so this figure</span>
+<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a>always opens that way, whatever the window's shape. Click the highlighted panel,</span>
+<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a>and the viewer opens right on it.</span>
 <span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
