@@ -10,6 +10,8 @@ expect-descriptions:
   - "Braces } and ] and , “x”:"
   - 'It’s a “quoted” one, with \(\theta = \alpha_1\)'
   - 'Two lines, joined as one, with \(\nabla f \neq 0\).'
+  - "First of two, with a “quote”, and a comma."
+  - "Second of two."
 ---
 
 Descriptions that look like more options, as knitr passes them: each must come
@@ -63,4 +65,17 @@ plot(1)
 #|   hint: false
 
 plot(1)
+```
+
+```{r}
+#| panzoom:
+#|   group: pair
+#|   description:
+#|     - 'First of two, with a "quote", and a comma.'
+#|     - Second of two.
+#|   hint: false
+
+plot(1)
+plot(2)
+plot(3)
 ```

@@ -11,6 +11,8 @@ expect-descriptions:
   - "Braces } and ] and , “x”:"
   - 'It’s a “quoted” one, with \(\theta = \alpha_1\)'
   - 'Two lines, joined as one, with \(\nabla f \neq 0\).'
+  - "First of two, with a “quote”, and a comma."
+  - "Second of two."
 ---
 
 Descriptions that look like more options, as Jupyter passes them: each must come
@@ -76,4 +78,22 @@ plt.plot([1, 2])
 import matplotlib.pyplot as plt
 
 plt.plot([1, 2])
+```
+
+```{python}
+#| panzoom:
+#|   group: pair
+#|   description:
+#|     - 'First of two, with a "quote", and a comma.'
+#|     - "Second of two."
+#|   hint: false
+
+import matplotlib.pyplot as plt
+
+plt.plot([1, 2])
+plt.show()
+plt.plot([2, 1])
+plt.show()
+plt.plot([2, 2])
+plt.show()
 ```

@@ -199,7 +199,8 @@ local BOOLEAN = "`true` or `false`"
 local HINTS = { "show", "hide" }
 
 -- What each option accepts: a check on the value, given as
--- { kind = "boolean" | "number" | "string" | "color" | "enum", values = ... },
+-- { kind = "boolean" | "number" | "string" | "color" | "enum", values = ... }
+-- ("strings": a string, or in a cell a list with one string per plot),
 -- for the document's `panzoom:` map and for a cell's `#| panzoom:` map.
 local DOCUMENT_OPTIONS = {
   ["match"] = { kind = "enum", values = { "auto" } },
@@ -220,7 +221,7 @@ local CELL_OPTIONS = {
   ["group"] = { kind = "string" },
   ["fit"] = { kind = "enum", values = FITS },
   ["desc-position"] = { kind = "enum", values = POSITIONS },
-  ["description"] = { kind = "string" },
+  ["description"] = { kind = "strings" },
 }
 -- Options that style the viewer for one image: a cell option, or an
 -- attribute on a markdown image.
@@ -253,6 +254,8 @@ local function check(key, spec, value, text, shown, where)
     ok, expected = n ~= nil and n > 0, "a number greater than 0"
   elseif spec.kind == "string" then
     ok, expected = text ~= nil and type(value) ~= "boolean", "a string"
+  elseif spec.kind == "strings" then
+    ok, expected = text ~= nil and type(value) ~= "boolean", "a string or a list of strings"
   elseif spec.kind == "color" then
     ok, expected = text ~= nil and type(value) ~= "boolean" and not text:find("[;{}<]"), "a CSS color"
   else
@@ -433,6 +436,25 @@ end
 -- Checks a cell's (or div's) parsed `#| panzoom:` map, and removes the
 -- options that fail. Values come from parse_options: booleans, numbers,
 -- quoted strings, or the raw text of anything else.
+-- The items of a list of strings written in a cell (`["a","b"]`, the
+-- strings unescaped as in parse_options), or nil if an item isn't a string.
+-- An item containing `","` exactly is split there.
+local function string_list(raw)
+  local body = raw:match("^%[%s*(.-)%s*%]$")
+  if body == nil then return nil end
+  if body == "" then return {} end
+  if #body < 2 or body:sub(1, 1) ~= '"' or body:sub(-1) ~= '"' then return nil end
+  local items, pos = {}, 2
+  while true do
+    local s, e = body:find('"%s*,%s*"', pos)
+    if s == nil then break end
+    table.insert(items, body:sub(pos, s - 1))
+    pos = e + 1
+  end
+  table.insert(items, body:sub(pos, -2))
+  return items
+end
+
 local function validate_cell(cfg, raw, el)
   local known = names(CELL_OPTIONS)
   rename_aliases({ cfg, raw }, raw.order, function(key) return "panzoom:" .. key .. ", in " .. place(el) end)
@@ -450,10 +472,16 @@ local function validate_cell(cfg, raw, el)
       local shown = (quoted and (text == "true" or text == "false" or tonumber(text))) and raw[key] or text
       local value = v
       -- A list or map written in the cell arrives as raw text.
+      local list = nil
       if type(v) == "string" and not raw[key]:match('^"') and raw[key]:match("^[%[{]") then
         value, text = nil, nil
+        if spec.kind == "strings" then list = string_list(raw[key]) end
       end
-      if not check(key, spec, value, text, shown, where) then cfg[key] = nil end
+      if list then
+        cfg[key] = list
+      elseif not check(key, spec, value, text, shown, where) then
+        cfg[key] = nil
+      end
     end
   end
 end
@@ -698,6 +726,10 @@ local function drop_option(el, key)
   if k then el.attributes[k] = nil end
 end
 
+-- The key, among a cell's per-image attributes, of its list of
+-- descriptions: { texts = ..., used = how many plots have taken one }.
+local EACH_DESCRIPTION = {}
+
 -- Reads a cell's `#| panzoom:` option. Quarto passes it as an attribute:
 -- "true"/"false", or JSON for the nested form. Returns false to opt the cell
 -- out, otherwise true plus the per-image data attributes for its options.
@@ -731,9 +763,21 @@ local function cell_option(el)
     end
     if type(cfg.description) == "string" and cfg.description ~= "" then
       attrs["data-panzoom-desc"] = add_description(line_breaks(cfg.description))
+    elseif type(cfg.description) == "table" then
+      -- One description per plot, in order (as `fig-cap` lists).
+      attrs[EACH_DESCRIPTION] = { texts = cfg.description, used = 0 }
     end
   end
   return true, attrs
+end
+
+-- A cell's list of descriptions longer than its plots is a problem.
+local function check_descriptions(attrs, el)
+  local each = attrs and attrs[EACH_DESCRIPTION]
+  if each and #each.texts > each.used then
+    problem({ 'Field "description" has ' .. #each.texts .. " items, which must instead be at most " .. each.used ..
+      ", one for each plot", "\u{2139} The error happened in location panzoom:description, in " .. place(el) .. "." })
+  end
 end
 
 -- Walks `el` and marks every image in it, except those inside links.
@@ -752,7 +796,9 @@ local function mark_all(el, attrs)
         local merged = {}
         for k, v in pairs(attrs or {}) do merged[k] = v end
         for k, v in pairs(own) do merged[k] = v end
-        return mark_all(div, merged), false
+        local marked = mark_all(div, merged)
+        check_descriptions(own, div)
+        return marked, false
       end
     end,
     Image = function(img)
@@ -760,8 +806,16 @@ local function mark_all(el, attrs)
       img = mark(img)
       if img and attrs then
         for k, v in pairs(attrs) do
+          if k == EACH_DESCRIPTION then
+            v.used = v.used + 1
+            local text = v.texts[v.used]
+            if text ~= nil and text ~= "" and img.attributes["data-panzoom-desc"] == nil then
+              img.attributes["data-panzoom-desc"] = add_description(line_breaks(text))
+            end
           -- A div's group yields to an image's own `group="..."`.
-          if not (k == "data-panzoom-group" and own_group) then img.attributes[k] = v end
+          elseif not (k == "data-panzoom-group" and own_group) then
+            img.attributes[k] = v
+          end
         end
       end
       return img
@@ -867,11 +921,13 @@ local function container(el)
     end
     -- A FloatRefTarget is a Quarto custom node without :walk(); its content
     -- is ordinary Pandoc AST (nested subfigures are plain Divs inside it).
+    local cell = el
     if el.walk then
       el = mark_all(el, attrs)
     else
       el.content = mark_all(el.content, attrs)
     end
+    check_descriptions(attrs, cell)
     return el, false
   end
   if match_auto and (el.attributes["lightbox"] ~= nil or jupyter_option(el, "lightbox")) then

@@ -262,6 +262,21 @@ plot(pressure)
 ```
 ````
 
+A list gives each plot of the cell its own description, in order, as in
+lightbox. A list with more entries than plots stops the render:
+
+````markdown
+```{r}
+#| panzoom:
+#|   description:
+#|     - "Pressure against temperature."
+#|     - "The same, on a log scale."
+
+plot(pressure)
+plot(pressure, log = "y")
+```
+````
+
 ### Galleries
 
 Subfigures of one figure form a gallery on their own. Other images join one with
