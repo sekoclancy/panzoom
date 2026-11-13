@@ -508,6 +508,15 @@ local off = false
 local descriptions = {}
 local n_descriptions = 0
 
+-- The version in _extension.yml, which names the site_libs folder, so a new
+-- release does not reuse the cached files of the old one.
+local function extension_version()
+  local file = io.open(quarto.utils.resolve_path("_extension.yml"), "r")
+  local text = file:read("a")
+  file:close()
+  return text:match("\nversion:%s*([^%s]+)")
+end
+
 local function has(classes, name)
   return classes ~= nil and classes:includes(name)
 end
@@ -874,7 +883,7 @@ local function setup(meta)
 
   quarto.doc.add_html_dependency({
     name = "panzoom",
-    version = "0.1.0",
+    version = extension_version(),
     -- Panzoom (https://github.com/timmywil/panzoom), then the viewer
     scripts = { "panzoom.min.js", "panzoom.js" },
     stylesheets = { "panzoom.css" },

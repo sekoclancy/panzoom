@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1
+
+### Fixed
+
+- The viewer files go to `panzoom-<version>/` under `site_libs/`, so browsers
+  load the new files after an upgrade. 0.2.0 still used `panzoom-0.1.0/`.
+
 ## 0.2.0
 
 ### Changed
