@@ -505,7 +505,8 @@ watch.scan();                          // look again now
 watch.disconnect();                    // stop watching
 ```
 
-## Development
+<details>
+<summary>Development</summary>
 
 ### Setup
 
@@ -552,3 +553,5 @@ rv upgrade                      # R, then commit rv.lock
 
 R packages come from a dated snapshot, the `p3m.dev/cran/<date>` URL in
 `rproject.toml`. Move its date forward first to get newer versions.
+
+</details>
