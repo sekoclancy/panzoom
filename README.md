@@ -32,7 +32,7 @@ Ctrl/Cmd+arrow keys.](images/demo.gif)
 
   | Action                                 | Mouse or touch                                                              | Keyboard             |
   | -------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
-  | Zoom                                   | scroll or pinch, toward the cursor                                          | + and -              |
+  | Zoom                                   | scroll or pinch, toward the cursor                                          | + or =, and -        |
   | Pan                                    | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | Ctrl/Cmd+arrow keys  |
   | Go back to the opening view            | double-click or double-tap                                                  | 0                    |
   | Change image in a gallery              | the previous and next buttons, or swipe                                     | left and right arrow |
