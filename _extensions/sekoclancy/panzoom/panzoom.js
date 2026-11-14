@@ -409,6 +409,7 @@
     pz = Panzoom(img, {
       canvas: true,             // drag anywhere on the overlay, not just the image
       cursor: "grab",
+      setTransform: paint,
       startScale: s,
       // The opening view is also where reset (0, double-click) returns.
       startX: containAxis((cx - w / 2) / s, s, w, vw, null, a.x, marginX),
@@ -530,23 +531,33 @@
     return (over < 0 ? -1 : 1) * STRETCH * (1 - Math.exp(-Math.abs(over) / (2 * STRETCH)));
   }
 
-  // Runs after every Panzoom change (drag, pinch, zoom, pan, reset), when
-  // Panzoom draws it (in an animation frame), and moves the image back
-  // inside if needed; that correction is drawn on the next frame. It works
-  // from Panzoom's own pan and scale, which are always current. During a
-  // drag the image may go past its ends with resistance (stretch()); it
-  // springs back when released (settle()). Not during a bounce: that
-  // animation goes past the end on purpose.
+  // Where pan (x, y) at scale s shows: moved back inside, or, during a
+  // drag, past an end with resistance (stretch()). Not during a bounce:
+  // that animation goes past the end on purpose.
+  function shown(x, y, s) {
+    if (!pz || bouncing) return { x: x, y: y };
+    var c = contained(x, y, s);
+    if (!press) return c;
+    return { x: c.x + stretch((x - c.x) * s) / s, y: c.y + stretch((y - c.y) * s) / s };
+  }
+
+  // Panzoom draws every change (drag, pinch, zoom, pan, reset) through this,
+  // in an animation frame, so the image is only ever drawn where it shows.
+  function paint(el, v) {
+    var p = shown(v.x, v.y, v.scale);
+    el.style.transform = "scale(" + v.scale + ") translate(" + p.x + "px, " + p.y + "px)";
+  }
+
+  // Runs after every Panzoom change and moves Panzoom's own pan inside too,
+  // so later pans and zooms start from where the image is. Not during a
+  // drag: Panzoom works out each drag step from the pan where the drag
+  // began, so it keeps the pan past the end, and paint() draws it with
+  // resistance; it springs back when released (settle()).
   function contain() {
-    if (!pz || bouncing) return;
+    if (!pz || bouncing || press) return;
     var s = pz.getScale(), p = pz.getPan(), c = contained(p.x, p.y, s);
-    var x = c.x, y = c.y;
-    if (press) {
-      x += stretch((p.x - c.x) * s) / s;
-      y += stretch((p.y - c.y) * s) / s;
-    }
-    if (Math.abs(x - p.x) > 1e-6 || Math.abs(y - p.y) > 1e-6) {
-      pz.pan(x, y, { animate: false, force: true, silent: true });
+    if (Math.abs(c.x - p.x) > 1e-6 || Math.abs(c.y - p.y) > 1e-6) {
+      pz.pan(c.x, c.y, { animate: false, force: true, silent: true });
     }
   }
 

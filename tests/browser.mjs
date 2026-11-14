@@ -1368,21 +1368,42 @@ async function checkPage(browser, base, file) {
     await page.keyboard.press("ArrowRight");
     await page.keyboard.press("ArrowDown");
     await page.keyboard.up("Control");
+    // The drag is drawn every frame: one step a frame, each frame recorded.
+    // Past the end, the image follows with resistance, one way only; it is
+    // never drawn where the drag alone would put it and pulled back a frame
+    // later (that flicker reads as shaking).
     const cx = VIEWPORT.width / 2, cy = VIEWPORT.height / 2;
     await page.mouse.move(cx, cy);
+    await page.evaluate(() => {
+      const im = document.querySelector(".panzoom-overlay img");
+      window.__frames = [];
+      window.__recording = true;
+      const tick = () => {
+        window.__frames.push(im.getBoundingClientRect().left);
+        if (window.__recording) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
     await page.mouse.down();
-    await page.mouse.move(cx + 150, cy + 80, { steps: 8 });
+    for (let i = 1; i <= 20; i++) {
+      await page.mouse.move(cx + i * 8, cy + i * 4);
+      await sleep(16);
+    }
+    const frames = await page.evaluate(() => { window.__recording = false; return window.__frames; });
     await page.mouse.up();
     await settle(page);  // a drag stretches it, then it springs back
     const t1 = await viewerTransform(page);
     w.stays = !!(t0 && t1) && Math.abs(t1.x - t0.x) < 0.5 && Math.abs(t1.y - t0.y) < 0.5;
+    const moves = frames.slice(1).map((x, i) => x - frames[i]).filter((d) => Math.abs(d) >= 0.5);
+    w.reversals = moves.slice(1).filter((d, i) => Math.sign(d) !== Math.sign(moves[i])).length;
+    w.steady = moves.length > 0 && w.reversals === 0;
     await closeAll(page);
   }
   if (containment) {
     containment.ok = (!containment.collage || (containment.collage.stopsAtRightEnd &&
       containment.collage.stopsAtLeftEnd && containment.collage.heldVertically &&
       containment.collage.bounces && containment.collage.stretches)) &&
-      (!containment.whole || containment.whole.stays);
+      (!containment.whole || (containment.whole.stays && containment.whole.steady));
   }
 
   // Shift+scroll and Alt+scroll: which way each moves the image, for cases
@@ -1879,7 +1900,8 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- A drag past the end stretches ${containment.collage.stretch} px and springs back: ${yes(containment.collage.stretches)}`, "");
     if (containment.whole) lines.push(
       `Image shown whole, case ${containment.whole.image}:`, "",
-      `- Arrow keys don't move it, and after a drag it springs back: ${yes(containment.whole.stays)}`);
+      `- Arrow keys don't move it, and after a drag it springs back: ${yes(containment.whole.stays)}`,
+      `- A drag past the end moves it one way, without shaking: ${yes(containment.whole.steady)} (${containment.whole.reversals} reversals)`);
   }
   return lines.join("\n") + "\n";
 }
