@@ -493,22 +493,22 @@
     return { x: x, y: y, any: x || y };
   }
 
-  // Keeps the image on screen, one axis at a time: where it is smaller than
-  // the space it stays where zooming put it (`hold`, its center on screen),
-  // or centered, and wholly on screen (within the opening margin where it
-  // fits); drags and arrow keys don't move it. Where it is larger, its
-  // edges stop at the screen edges (less the margin), so panning ends at
-  // the image's ends. `t` is Panzoom's pan along the axis (unscaled px, see
+  // Keeps the image on screen, one axis at a time: where it fits within the
+  // margins it stays where zooming put it (`hold`, its center on screen),
+  // or centered, and wholly inside the margins; drags and arrow keys don't
+  // move it. Where it doesn't, its ends stop at the margins, so panning
+  // ends at the image's ends. At the size where it just fits, both ways
+  // give the one centered place, so a zoom across that size doesn't make
+  // the image jump. `t` is Panzoom's pan along the axis (unscaled px, see
   // fit()), `n` the image size and `avail` the space, both along the axis,
   // and `off` where the space starts on screen (the caption band above or
   // to the left); `mg` the margin along the axis (see fit()).
   function containAxis(t, s, n, avail, hold, off, mg) {
     var size = n * s;
     off = off || 0;
-    if (size <= avail) {
-      var m = Math.min(mg, (avail - size) / 2);
+    if (size <= avail - 2 * mg) {
       var h = hold === null || hold === undefined ? avail / 2 : hold - off;
-      h = Math.min(avail - m - size / 2, Math.max(m + size / 2, h));
+      h = Math.min(avail - mg - size / 2, Math.max(mg + size / 2, h));
       return (off + h - n / 2) / s;
     }
     var c = n / 2 + s * t - off;                       // image center in the space
@@ -619,7 +619,10 @@
   // Along an axis where the image ends up smaller than the screen, its
   // center is held where this zoom puts it (see containAxis()), so the
   // point under the cursor stays there instead of the image re-centering
-  // and drifting away from it. Zoomed out to the whole image, it centers.
+  // and drifting away from it. Zoomed out to the whole image, it centers:
+  // each zoom out moves it toward the center by the share of the zoom out
+  // left that the step uses up, so it arrives there as the zoom reaches the
+  // whole image, without a jump on the last step.
   function zoomAt(factor, px, py) {
     if (!pz) return;
     stopBounce();
@@ -630,9 +633,11 @@
     var w = img.naturalWidth, h = img.naturalHeight;
     var fx = px - box.left, fy = py - box.top, f = s / s0;
     var whole = s <= o.minScale + 1e-9;
+    var k = s < s0 && !whole ? Math.log(s / o.minScale) / Math.log(s0 / o.minScale) : 1;
+    var toward = function (at, mid) { return mid + (at - mid) * k; };
     held = {
-      x: whole || w * s > a.w ? null : fx - (fx - (w / 2 + s0 * p.x)) * f,
-      y: whole || h * s > a.h ? null : fy - (fy - (h / 2 + s0 * p.y)) * f
+      x: whole || w * s > a.w ? null : toward(fx - (fx - (w / 2 + s0 * p.x)) * f, a.x + a.w / 2),
+      y: whole || h * s > a.h ? null : toward(fy - (fy - (h / 2 + s0 * p.y)) * f, a.y + a.h / 2)
     };
     pz.zoom(s, { animate: false, focal: { x: (fx - w / 2) * s, y: (fy - h / 2) * s } });
   }

@@ -392,10 +392,7 @@ async function exercisePanzoom(page) {
     const o = document.querySelector(".panzoom-overlay");
     const a = window.__area(o);
     const ob = o.getBoundingClientRect(), r = o.querySelector("img").getBoundingClientRect();
-    const at = (lo, size, avail, margin) => {
-      const m = size > avail ? margin : Math.min(margin, (avail - size) / 2);
-      return Math.abs(lo - m) <= 2 || Math.abs(avail - lo - size - m) <= 2;
-    };
+    const at = (lo, size, avail, m) => Math.abs(lo - m) <= 2 || Math.abs(avail - lo - size - m) <= 2;
     return [at(r.left - ob.left - a.x, r.width, a.w, a.mx), at(r.top - ob.top - a.y, r.height, a.h, a.m)];
   });
   out.anchorOk = true;
@@ -1358,6 +1355,43 @@ async function checkPage(browser, base, file) {
     await page.keyboard.up("Control");
     await settle(page);
     c.heldVertically = Math.abs((await edges()).top - start.top) < 0.5;
+    // A trackpad pinch (Ctrl+wheel, one step a frame) in near the right end,
+    // then out to the whole image, each frame recorded. The image moves
+    // one way along each axis, and eases into the center (no step much
+    // larger than the one before it): it doesn't jump when it gets small
+    // enough to fit, or when it reaches the whole image.
+    const pinch = async (dy, n) => {
+      for (let i = 0; i < n; i++) {
+        await page.evaluate((x, y, d) => {
+          document.querySelector(".panzoom-overlay").dispatchEvent(new WheelEvent("wheel",
+            { deltaY: d, ctrlKey: true, clientX: x, clientY: y, bubbles: true, cancelable: true }));
+        }, VIEWPORT.width * 0.9, VIEWPORT.height * 0.375, dy);
+        await sleep(16);
+      }
+    };
+    await pinch(-6, 60);
+    await settle(page);
+    await page.evaluate(() => {
+      const im = document.querySelector(".panzoom-overlay img");
+      window.__frames = [];
+      window.__recording = true;
+      const tick = () => {
+        const r = im.getBoundingClientRect();
+        window.__frames.push({ x: r.left, y: r.top });
+        if (window.__recording) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    await pinch(6, 60);
+    await sleep(300);
+    const pinched = await page.evaluate(() => { window.__recording = false; return window.__frames; });
+    const steps = (k) => pinched.slice(1).map((p, i) => p[k] - pinched[i][k]).filter((d) => Math.abs(d) >= 0.5);
+    const turns = (d) => d.slice(1).filter((v, i) => Math.sign(v) !== Math.sign(d[i])).length;
+    const leaps = (d) => d.slice(1).filter((v, i) => Math.abs(v) > 10 && Math.abs(v) > 3 * Math.abs(d[i])).length;
+    c.pinchReversals = turns(steps("x")) + turns(steps("y"));
+    c.pinchLeaps = leaps(steps("x")) + leaps(steps("y"));
+    c.pinchSteady = c.pinchReversals === 0;
+    c.pinchSmooth = c.pinchLeaps === 0;
     await closeAll(page);
   }
   if (whole) {
@@ -1402,7 +1436,8 @@ async function checkPage(browser, base, file) {
   if (containment) {
     containment.ok = (!containment.collage || (containment.collage.stopsAtRightEnd &&
       containment.collage.stopsAtLeftEnd && containment.collage.heldVertically &&
-      containment.collage.bounces && containment.collage.stretches)) &&
+      containment.collage.bounces && containment.collage.stretches &&
+      containment.collage.pinchSteady && containment.collage.pinchSmooth)) &&
       (!containment.whole || (containment.whole.stays && containment.whole.steady));
   }
 
@@ -1897,7 +1932,9 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- Left arrow stops at the left end: ${yes(containment.collage.stopsAtLeftEnd)}`,
       `- Up/Down don't move it (it fits vertically): ${yes(containment.collage.heldVertically)}`,
       `- A key press at the end bounces ${containment.collage.bounceOut} px past it and back: ${yes(containment.collage.bounces)}`,
-      `- A drag past the end stretches ${containment.collage.stretch} px and springs back: ${yes(containment.collage.stretches)}`, "");
+      `- A drag past the end stretches ${containment.collage.stretch} px and springs back: ${yes(containment.collage.stretches)}`,
+      `- A pinch in and out moves it one way along each axis: ${yes(containment.collage.pinchSteady)} (${containment.collage.pinchReversals} reversals)`,
+      `- The pinch out eases into the whole image, without a jump: ${yes(containment.collage.pinchSmooth)} (${containment.collage.pinchLeaps} jumps)`, "");
     if (containment.whole) lines.push(
       `Image shown whole, case ${containment.whole.image}:`, "",
       `- Arrow keys don't move it, and after a drag it springs back: ${yes(containment.whole.stays)}`,
