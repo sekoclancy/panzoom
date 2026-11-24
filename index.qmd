@@ -39,6 +39,10 @@ quarto add sekoclancy/panzoom
 This will install the extension under the `_extensions` subdirectory. If you're
 using version control, you will want to check in this directory.
 
+This page was rendered with Quarto {{< version >}} and panzoom
+{{< panzoom-version >}}. Write `{{</* panzoom-version */>}}` in your own
+documents to show the installed version.
+
 ## Demo
 
 ```{=html}

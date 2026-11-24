@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- A `{{< panzoom-version >}}` shortcode, which prints the installed version.
+
 ## 0.2.1
 
 ### Fixed
