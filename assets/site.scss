@@ -1,0 +1,17 @@
+/*-- scss:rules --*/
+// Layout fixes shared by the light and dark themes.
+
+/* On narrow screens the sidebar opens as a fixed panel under the navbar and
+   title bar, but Quarto's `min-height: 100%` there makes it as tall as the
+   whole screen, so its last links sit past the bottom and can never be
+   scrolled into view. It ends at the screen's bottom instead, the visible
+   one (Quarto's `100vh` max-height counts the area behind a phone's browser
+   toolbar), and a swipe past its end no longer scrolls the page behind it. */
+@media (max-width: 991.98px) {
+  #quarto-sidebar.sidebar-navigation {
+    min-height: 0;
+    bottom: 0;
+    max-height: none !important;
+    overscroll-behavior: contain;
+  }
+}

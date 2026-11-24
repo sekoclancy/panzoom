@@ -1,5 +1,5 @@
 ---
-title: "`lightbox` comparison (R)"
+title: "`lightbox` reference (R)"
 format:
   html:
     code-tools: true

@@ -25,6 +25,7 @@ cd tests && npm run all
   | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ |
   | `npm test`           | The front page and the example pages (A–T): the viewer per image, zoom, pan, keys, galleries, captions                                                                                                                         | ~2 min |
   | `npm run touch`      | The viewer on an emulated phone: tap, pinch, drag, swipe                                                                                                                                                                       | ~10 s  |
+  | `npm run mobile-nav` | The site's menus on an emulated phone: the sidebar's last link and every navbar Examples item can be reached and tapped                                                                                                        | ~10 s  |
   | `npm run loading`    | Slow and failed images: loading message, late arrivals, error message                                                                                                                                                          | ~5 s   |
   | `npm run nojs`       | Every page with JavaScript off: each marked image links to its file                                                                                                                                                            | ~10 s  |
   | `npm run contrast`   | Text contrast in light and dark mode, and that the viewer follows the theme                                                                                                                                                    | ~7 s   |
@@ -200,6 +201,13 @@ phone (390 × 844) and sends real multi-finger touch events: tap, pinch,
 one-finger pan, double-tap, swipe, tap outside, and a pinch with one finger on
 the background, which must not close the viewer. A caption set beside the image
 must show below it.
+
+**Mobile navigation.** `npm run mobile-nav` ([mobile-nav.mjs](mobile-nav.mjs))
+opens page A on two emulated phones (390 × 664 and 375 × 560). The sidebar,
+opened from the title bar, must end at the screen's bottom and scroll with a
+swipe to its last link, which a tap then opens, without the page behind it
+scrolling. Every item of the navbar's Examples menu must be on screen, and the
+last one must open its page.
 
 **Loading.** `npm run loading` ([loading.mjs](loading.mjs)) opens page B with a
 server that holds back or refuses chosen images. A slow image shows "Loading

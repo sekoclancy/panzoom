@@ -23,7 +23,7 @@ only images marked with the `.panzoom` class or the `#| panzoom: true` cell
 option open in panzoom instead, and every other image opens in lightbox. A [cell
 with both options](#sec-both-options) opens in panzoom, without its lightbox
 options. The same cases open in lightbox alone on the [`lightbox`
-comparison](a-lightbox-r.html). The YAML header sets up both with the same
+reference page](a-lightbox-r.html). The YAML header sets up both with the same
 caption position and gallery loop, and turns off the hint line:
 
 ```yaml
