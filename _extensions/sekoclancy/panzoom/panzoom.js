@@ -83,6 +83,7 @@
   var BOUNCE = 40;  // px a key or scroll pan overshoots an image's end
   var STRETCH = 80; // px a drag can pull an image past its end, at most
   var OUT = 120, BACK = 200;  // ms out past the end, and back
+  var RUN = 200;    // ms: wheel events closer than this are one held scroll
   var FITS = ["auto", "contain", "height", "width"];
   var POSITIONS = ["bottom", "top", "left", "right"];
   // Arrow keys Ctrl/Cmd makes pan instead of switching gallery images (or,
@@ -129,6 +130,9 @@
   // from a tap in every browser.
   var lastPointer = "";
   var bouncing = false, bounceTimer = null;
+  // A held scroll or key sends a run of pans (see panPx()): whether this
+  // run already bounced off an end, and when the last wheel pan came.
+  var runBounced = false, lastWheel = -Infinity;
   // With "reduce motion" set, a pan that runs into an end stops there and
   // a drag past an end snaps back, instead of bouncing or sliding.
   var motion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
@@ -656,16 +660,27 @@
   // Panzoom's translate is in unscaled px, so divide by the scale. A pan
   // that runs into an end of the image (where it is larger than the
   // screen) goes up to BOUNCE px past it and slides back, to show the end.
-  function panPx(dx, dy) {
+  // `more`: this pan continues a run (a held scroll or key). A run bounces
+  // once: later pans into the same end let that bounce finish, then hold
+  // the image at the end, instead of each starting the bounce again.
+  function panPx(dx, dy, more) {
     if (!pz) return;
-    stopBounce();
-    var s = pz.getScale(), p = pz.getPan(), o = overflow();
-    var tx = p.x - dx / s, ty = p.y - dy / s, c = contained(tx, ty, s);
+    if (!more) runBounced = false;
+    var s = pz.getScale(), o = overflow();
+    // During a bounce Panzoom's pan is the point past the end it slides to.
+    var p = pz.getPan(), from = contained(p.x, p.y, s);
+    var tx = from.x - dx / s, ty = from.y - dy / s, c = contained(tx, ty, s);
     var ex = o.x ? (tx - c.x) * s : 0, ey = o.y ? (ty - c.y) * s : 0;  // px past the end
-    if (reducedMotion() || (Math.abs(ex) < 0.5 && Math.abs(ey) < 0.5)) {
+    var past = Math.abs(ex) >= 0.5 || Math.abs(ey) >= 0.5;
+    var still = Math.abs(c.x - from.x) * s < 0.5 && Math.abs(c.y - from.y) * s < 0.5;
+    if (bouncing && more && past && still) return;
+    stopBounce();
+    if (!past) runBounced = false;
+    if (reducedMotion() || !past || runBounced) {
       pz.pan(c.x, c.y, { animate: false, force: true });
       return;
     }
+    runBounced = true;
     var bx = (ex < 0 ? -1 : 1) * Math.min(BOUNCE, Math.abs(ex));
     var by = (ey < 0 ? -1 : 1) * Math.min(BOUNCE, Math.abs(ey));
     slideTo(c.x + bx / s, c.y + by / s, OUT, "ease-out", function () {
@@ -674,8 +689,8 @@
   }
 
   // Pan the view by a fraction of the screen.
-  function panBy(fx, fy) {
-    panPx(fx * overlay.clientWidth, fy * overlay.clientHeight);
+  function panBy(fx, fy, more) {
+    panPx(fx * overlay.clientWidth, fy * overlay.clientHeight, more);
   }
 
   // Shows gallery image `i`, fitted to the screen.
@@ -971,15 +986,19 @@
       e.preventDefault();
       if (e.ctrlKey && gesture) return;
       var unit = e.deltaMode === 1 ? 16 : 1;
+      var more = e.timeStamp - lastWheel < RUN;
       if (e.altKey && !e.ctrlKey) {
-        panPx(0, (e.deltaY || e.deltaX) * unit);
+        lastWheel = e.timeStamp;
+        panPx(0, (e.deltaY || e.deltaX) * unit, more);
         return;
       }
       if (!e.ctrlKey && (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))) {
+        lastWheel = e.timeStamp;
         // Some browsers turn Shift+wheel into deltaX, others keep deltaY.
-        panPx((e.deltaX || e.deltaY) * unit, 0);
+        panPx((e.deltaX || e.deltaY) * unit, 0, more);
         return;
       }
+      lastWheel = -Infinity;
       var dy = e.deltaY * unit;
       // ctrlKey = trackpad pinch (small deltas), so it gets a higher gain
       zoomAt(Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015)), e.clientX, e.clientY);
@@ -1104,10 +1123,10 @@
     // either end without `loop`, or at all without a gallery); bare
     // Up/Down do nothing. Ctrl/Cmd+arrow pans instead, any direction,
     // whether or not the image is larger than the screen that way.
-    else if (pan && e.key === "ArrowLeft") panBy(-0.1, 0);
-    else if (pan && e.key === "ArrowRight") panBy(0.1, 0);
-    else if (pan && e.key === "ArrowUp") panBy(0, -0.1);
-    else if (pan && e.key === "ArrowDown") panBy(0, 0.1);
+    else if (pan && e.key === "ArrowLeft") panBy(-0.1, 0, e.repeat);
+    else if (pan && e.key === "ArrowRight") panBy(0.1, 0, e.repeat);
+    else if (pan && e.key === "ArrowUp") panBy(0, -0.1, e.repeat);
+    else if (pan && e.key === "ArrowDown") panBy(0, 0.1, e.repeat);
     else if (e.key === "ArrowLeft") step(-1);
     else if (e.key === "ArrowRight") step(1);
     else if (action === "reset") resetView();

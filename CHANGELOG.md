@@ -11,6 +11,9 @@
 - Dragging an image past its end no longer shakes it.
 - Zooming out to the whole image no longer snaps on the last step, and the image
   stays inside the margins on the way.
+- A held scroll or arrow key into the end of an image bounces once, then holds
+  the image at the end. Before, the image hung past the end until the scroll
+  stopped.
 
 ## 0.2.1
 

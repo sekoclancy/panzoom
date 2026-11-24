@@ -1333,6 +1333,35 @@ async function checkPage(browser, base, file) {
     const back = await edges();
     c.bounceOut = Math.round(end.right - out.right);
     c.bounces = c.bounceOut > 5 && c.bounceOut <= 41 && Math.abs(back.right - end.right) < 0.5;
+    // A held sideways trackpad scroll into the end (one wheel event a
+    // frame, about a second), each frame recorded: it bounces once, then
+    // holds at the end while the events keep coming, instead of each event
+    // starting the bounce again (which keeps it hanging past the end).
+    await page.evaluate(() => {
+      const o = document.querySelector(".panzoom-overlay");
+      const im = o.querySelector("img");
+      window.__frames = [];
+      window.__recording = true;
+      const tick = () => {
+        window.__frames.push({ t: performance.now(), right: im.getBoundingClientRect().right - window.__area(o).x });
+        if (window.__recording) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    const scrollStart = await page.evaluate(() => performance.now());
+    for (let i = 0; i < 60; i++) {
+      await page.evaluate((x, y) => {
+        document.querySelector(".panzoom-overlay").dispatchEvent(new WheelEvent("wheel",
+          { deltaX: 40, clientX: x, clientY: y, bubbles: true, cancelable: true }));
+      }, VIEWPORT.width / 2, VIEWPORT.height / 2);
+      await sleep(16);
+    }
+    const scrollEnd = await page.evaluate(() => performance.now());
+    const scrolled = await page.evaluate(() => { window.__recording = false; return window.__frames; });
+    await settle(page);
+    const holding = scrolled.filter((f) => f.t > scrollStart + 500 && f.t < scrollEnd);
+    c.scrollPast = holding.length ? Math.max(...holding.map((f) => Math.abs(end.right - f.right))) : null;
+    c.scrollHolds = holding.length > 10 && c.scrollPast < 0.5;
     for (let i = 0; i < 250; i++) await page.keyboard.press("ArrowLeft");
     await settle(page);
     const start = await edges();
@@ -1436,7 +1465,7 @@ async function checkPage(browser, base, file) {
   if (containment) {
     containment.ok = (!containment.collage || (containment.collage.stopsAtRightEnd &&
       containment.collage.stopsAtLeftEnd && containment.collage.heldVertically &&
-      containment.collage.bounces && containment.collage.stretches &&
+      containment.collage.bounces && containment.collage.scrollHolds && containment.collage.stretches &&
       containment.collage.pinchSteady && containment.collage.pinchSmooth)) &&
       (!containment.whole || (containment.whole.stays && containment.whole.steady));
   }
@@ -1932,6 +1961,7 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- Left arrow stops at the left end: ${yes(containment.collage.stopsAtLeftEnd)}`,
       `- Up/Down don't move it (it fits vertically): ${yes(containment.collage.heldVertically)}`,
       `- A key press at the end bounces ${containment.collage.bounceOut} px past it and back: ${yes(containment.collage.bounces)}`,
+      `- A held scroll into the end bounces once, then holds at the end: ${yes(containment.collage.scrollHolds)} (${containment.collage.scrollPast === null ? "no frames" : containment.collage.scrollPast.toFixed(1) + " px past it"})`,
       `- A drag past the end stretches ${containment.collage.stretch} px and springs back: ${yes(containment.collage.stretches)}`,
       `- A pinch in and out moves it one way along each axis: ${yes(containment.collage.pinchSteady)} (${containment.collage.pinchReversals} reversals)`,
       `- The pinch out eases into the whole image, without a jump: ${yes(containment.collage.pinchSmooth)} (${containment.collage.pinchLeaps} jumps)`, "");
