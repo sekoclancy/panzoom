@@ -6,6 +6,12 @@
 
 - A `{{< panzoom-version >}}` shortcode, which prints the installed version.
 
+### Fixed
+
+- Dragging an image past its end no longer shakes it.
+- Zooming out to the whole image no longer snaps on the last step, and the image
+  stays inside the margins on the way.
+
 ## 0.2.1
 
 ### Fixed
