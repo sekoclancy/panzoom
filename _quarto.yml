@@ -17,8 +17,8 @@ format:
   html:
     # Light and dark themes: Quarto adds a toggle to the navbar.
     theme:
-      light: [flatly, assets/light.scss]
-      dark: [darkly, assets/dark.scss]
+      light: [flatly, assets/site.scss, assets/light.scss]
+      dark: [darkly, assets/site.scss, assets/dark.scss]
     # A reader whose system is dark starts in the dark theme.
     respect-user-color-scheme: true
     # a11y-light and a11y-dark with their colors at WCAG AAA contrast (7:1).
@@ -55,8 +55,20 @@ website:
     left:
       - href: reference.qmd
         text: Reference
-      - href: examples/b-mixed-r.qmd
-        text: Examples
+      # One item per sidebar section, each to its first page. A list of
+      # every example ran past a phone's screen; the sidebar has them all.
+      - text: Examples
+        menu:
+          - href: examples/a-lightbox-r.qmd
+            text: "R examples"
+          - href: examples/j-lightbox-python.qmd
+            text: "Python examples"
+          - href: examples/n-color-options-r.qmd
+            text: "Styling"
+          - href: examples/p-divs-r.qmd
+            text: "Divs"
+          - href: examples/r-dark-plots-r.qmd
+            text: "Theme"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom
@@ -72,17 +84,17 @@ website:
       - section: "R"
         contents:
           - href: examples/a-lightbox-r.qmd
-            text: "A. `lightbox` comparison (R)"
+            text: "A. `lightbox` reference"
           - href: examples/b-mixed-r.qmd
             text: "B. Interaction with `lightbox`"
           - href: examples/c-global-r.qmd
-            text: "C. Global `panzoom` (R)"
+            text: "C. Global `panzoom`"
           - href: examples/d-selecting-r.qmd
             text: "D. Selecting images"
           - href: examples/e-image-formats-r.qmd
             text: "E. Image formats"
           - href: examples/f-cell-options-r.qmd
-            text: "F. Cell options (R)"
+            text: "F. Cell options"
           - href: examples/g-captions-r.qmd
             text: "G. Captions and descriptions"
           - href: examples/h-wide-and-tall-r.qmd
@@ -92,11 +104,11 @@ website:
       - section: "Python"
         contents:
           - href: examples/j-lightbox-python.qmd
-            text: "J. `lightbox` comparison (Python)"
+            text: "J. `lightbox` reference"
           - href: examples/k-global-python.qmd
-            text: "K. Global `panzoom` (Python)"
+            text: "K. Global `panzoom`"
           - href: examples/l-cell-options-python.qmd
-            text: "L. Cell options (Python)"
+            text: "L. Cell options"
           - href: examples/m-figures-python.qmd
             text: "M. Captions, formats, and shapes"
       - section: "Styling"

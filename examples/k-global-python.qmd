@@ -17,8 +17,8 @@ panzoom takes every Python (Jupyter) figure lightbox would take on its own, so
 no figure needs to be marked. `lightbox: true` in the YAML header turns lightbox
 on too, but only [cells that ask for it](#sec-lightbox-options) with lightbox
 options open in it. The same cases open in lightbox alone on the [`lightbox`
-comparison](j-lightbox-python.html), and the R cases are on [Global `panzoom`
-(R)](c-global-r.html). The YAML header turns on panzoom and lightbox:
+reference page](j-lightbox-python.html), and the R cases are on [Global
+`panzoom` (R)](c-global-r.html). The YAML header turns on panzoom and lightbox:
 
 ```yaml
 ---

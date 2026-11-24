@@ -23,9 +23,9 @@ panzoom takes every image lightbox would take on its own, so no image needs to
 be marked. The `lightbox:` option in the YAML header sets up lightbox too, but
 only cells that ask for it with the `#| lightbox: true` cell option, or with
 lightbox options such as `group`, open in it. The same cases open in lightbox
-alone on the [`lightbox` comparison](a-lightbox-r.html). The YAML header sets up
-both with the same caption position and gallery loop, and turns off the hint
-line:
+alone on the [`lightbox` reference page](a-lightbox-r.html). The YAML header
+sets up both with the same caption position and gallery loop, and turns off the
+hint line:
 
 ```yaml
 ---

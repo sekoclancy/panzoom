@@ -11,6 +11,7 @@
     "lightbox": "node lightbox-match.mjs",
     "a11y": "node a11y.mjs",
     "touch": "node touch.mjs",
+    "mobile-nav": "node mobile-nav.mjs",
     "loading": "node loading.mjs",
     "bench": "node bench.mjs",
     "bench:save": "node bench.mjs --save",
