@@ -63,6 +63,8 @@ website:
         aria-label: GitHub repository
   # The sidebar names the page, so no breadcrumbs above the title.
   bread-crumbs: false
+  # Previous and next buttons at the end of each example, in sidebar order.
+  page-navigation: true
   # The example pages, by letter.
   sidebar:
     style: docked
