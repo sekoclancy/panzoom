@@ -1,3 +1,7 @@
+{
+	admin off
+}
+
 :{$CADDYPORT:4242} {
 	encode gzip
 
