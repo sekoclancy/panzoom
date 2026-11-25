@@ -214,6 +214,46 @@ async function viewerTransform(page) {
   });
 }
 
+// A trackpad pinch (Ctrl+wheel, one step a frame) in near the right end
+// of the open viewer, then out to the whole image, each frame recorded.
+// The image moves one way along each axis, and eases into the center (no
+// step much larger than the one before it): it doesn't jump when it gets
+// small enough to fit, or when it reaches the whole image.
+async function pinchInOut(page) {
+  const pinch = async (dy, n) => {
+    for (let i = 0; i < n; i++) {
+      await page.evaluate((x, y, d) => {
+        document.querySelector(".panzoom-overlay").dispatchEvent(new WheelEvent("wheel",
+          { deltaY: d, ctrlKey: true, clientX: x, clientY: y, bubbles: true, cancelable: true }));
+      }, VIEWPORT.width * 0.9, VIEWPORT.height * 0.375, dy);
+      await sleep(16);
+    }
+  };
+  await pinch(-6, 60);
+  await settle(page);
+  await page.evaluate(() => {
+    const im = document.querySelector(".panzoom-overlay img");
+    window.__frames = [];
+    window.__recording = true;
+    const tick = () => {
+      const r = im.getBoundingClientRect();
+      window.__frames.push({ x: r.left, y: r.top });
+      if (window.__recording) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+  await pinch(6, 60);
+  await sleep(300);
+  const pinched = await page.evaluate(() => { window.__recording = false; return window.__frames; });
+  const steps = (k) => pinched.slice(1).map((p, i) => p[k] - pinched[i][k]).filter((d) => Math.abs(d) >= 0.5);
+  const turns = (d) => d.slice(1).filter((v, i) => Math.sign(v) !== Math.sign(d[i])).length;
+  const leaps = (d) => d.slice(1).filter((v, i) => Math.abs(v) > 10 && Math.abs(v) > 3 * Math.abs(d[i])).length;
+  const r = { pinchReversals: turns(steps("x")) + turns(steps("y")), pinchLeaps: leaps(steps("x")) + leaps(steps("y")) };
+  r.pinchSteady = r.pinchReversals === 0;
+  r.pinchSmooth = r.pinchLeaps === 0;
+  return r;
+}
+
 // Zooms in (+) until the viewer's image is larger than the screen, wider
 // if `wide`, and returns which ways it is ({ x, y }). Two steps are enough
 // for most images, but not for small ones (Quarto before 1.7 renders
@@ -1362,7 +1402,9 @@ async function checkPage(browser, base, file) {
   let containment = null;
   const collage = results.find((r) => r.opened === "panzoom" && r.fit === "height" && r.overX && (r.counter || "1 / 1") === "1 / 1");
   const whole = results.find((r) => r.opened === "panzoom" && r.fit === "contain" && (r.counter || "1 / 1") === "1 / 1");
-  if (collage || whole) containment = {};
+  // A collage in a gallery: wider side margins (room for the buttons).
+  const galleryCollage = results.find((r) => r.opened === "panzoom" && r.fit === "height" && r.overX && r.counter && r.counter !== "1 / 1");
+  if (collage || whole || galleryCollage) containment = {};
   if (collage) {
     const c = (containment.collage = { image: `${collage.case}. ${collage.caseTitle}` });
     await openImage(page, collage);
@@ -1444,43 +1486,13 @@ async function checkPage(browser, base, file) {
     await page.keyboard.up("Control");
     await settle(page);
     c.heldVertically = Math.abs((await edges()).top - start.top) < 0.5;
-    // A trackpad pinch (Ctrl+wheel, one step a frame) in near the right end,
-    // then out to the whole image, each frame recorded. The image moves
-    // one way along each axis, and eases into the center (no step much
-    // larger than the one before it): it doesn't jump when it gets small
-    // enough to fit, or when it reaches the whole image.
-    const pinch = async (dy, n) => {
-      for (let i = 0; i < n; i++) {
-        await page.evaluate((x, y, d) => {
-          document.querySelector(".panzoom-overlay").dispatchEvent(new WheelEvent("wheel",
-            { deltaY: d, ctrlKey: true, clientX: x, clientY: y, bubbles: true, cancelable: true }));
-        }, VIEWPORT.width * 0.9, VIEWPORT.height * 0.375, dy);
-        await sleep(16);
-      }
-    };
-    await pinch(-6, 60);
-    await settle(page);
-    await page.evaluate(() => {
-      const im = document.querySelector(".panzoom-overlay img");
-      window.__frames = [];
-      window.__recording = true;
-      const tick = () => {
-        const r = im.getBoundingClientRect();
-        window.__frames.push({ x: r.left, y: r.top });
-        if (window.__recording) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    });
-    await pinch(6, 60);
-    await sleep(300);
-    const pinched = await page.evaluate(() => { window.__recording = false; return window.__frames; });
-    const steps = (k) => pinched.slice(1).map((p, i) => p[k] - pinched[i][k]).filter((d) => Math.abs(d) >= 0.5);
-    const turns = (d) => d.slice(1).filter((v, i) => Math.sign(v) !== Math.sign(d[i])).length;
-    const leaps = (d) => d.slice(1).filter((v, i) => Math.abs(v) > 10 && Math.abs(v) > 3 * Math.abs(d[i])).length;
-    c.pinchReversals = turns(steps("x")) + turns(steps("y"));
-    c.pinchLeaps = leaps(steps("x")) + leaps(steps("y"));
-    c.pinchSteady = c.pinchReversals === 0;
-    c.pinchSmooth = c.pinchLeaps === 0;
+    Object.assign(c, await pinchInOut(page));
+    await closeAll(page);
+  }
+  if (galleryCollage) {
+    const g = (containment.galleryCollage = { image: `${galleryCollage.case}. ${galleryCollage.caseTitle}` });
+    await openImage(page, galleryCollage);
+    Object.assign(g, await pinchInOut(page));
     await closeAll(page);
   }
   if (whole) {
@@ -1527,7 +1539,8 @@ async function checkPage(browser, base, file) {
       containment.collage.stopsAtLeftEnd && containment.collage.heldVertically &&
       containment.collage.bounces && containment.collage.scrollHolds && containment.collage.stretches &&
       containment.collage.pinchSteady && containment.collage.pinchSmooth)) &&
-      (!containment.whole || (containment.whole.stays && containment.whole.steady));
+      (!containment.whole || (containment.whole.stays && containment.whole.steady)) &&
+      (!containment.galleryCollage || (containment.galleryCollage.pinchSteady && containment.galleryCollage.pinchSmooth));
   }
 
   // Shift+scroll and Alt+scroll: which way each moves the image, for cases
@@ -2033,6 +2046,10 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- A drag past the end stretches ${containment.collage.stretch} px and springs back: ${yes(containment.collage.stretches)}`,
       `- A pinch in and out moves it one way along each axis: ${yes(containment.collage.pinchSteady)} (${containment.collage.pinchReversals} reversals)`,
       `- The pinch out eases into the whole image, without a jump: ${yes(containment.collage.pinchSmooth)} (${containment.collage.pinchLeaps} jumps)`, "");
+    if (containment.galleryCollage) lines.push(
+      `Collage in a gallery, case ${containment.galleryCollage.image}:`, "",
+      `- A pinch in and out moves it one way along each axis: ${yes(containment.galleryCollage.pinchSteady)} (${containment.galleryCollage.pinchReversals} reversals)`,
+      `- The pinch out eases into the whole image, without a jump: ${yes(containment.galleryCollage.pinchSmooth)} (${containment.galleryCollage.pinchLeaps} jumps)`, "");
     if (containment.whole) lines.push(
       `Image shown whole, case ${containment.whole.image}:`, "",
       `- Arrow keys don't move it, and after a drag it springs back: ${yes(containment.whole.stays)}`,
