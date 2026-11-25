@@ -30,15 +30,15 @@ Ctrl/Cmd+arrow keys.](images/demo.gif)
 
 ## Viewer controls
 
-  | Action                                 | Mouse or touch                                                              | Keyboard             |
-  | -------------------------------------- | --------------------------------------------------------------------------- | -------------------- |
-  | Zoom                                   | scroll or pinch, toward the cursor                                          | + or =, and -        |
-  | Pan                                    | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac) | Ctrl/Cmd+arrow keys  |
-  | Go back to the opening view            | double-click or double-tap                                                  | 0                    |
-  | Change image in a gallery              | the previous and next buttons, or swipe                                     | left and right arrow |
-  | Hide or show captions and descriptions |                                                                             | c                    |
-  | Hide or show hints                     |                                                                             | h                    |
-  | Close                                  | the × button, a click on the background, or the browser Back button         | Esc                  |
+  | Action                                 | Mouse or touch                                                                          | Keyboard             |
+  | -------------------------------------- | --------------------------------------------------------------------------------------- | -------------------- |
+  | Zoom                                   | scroll or pinch, toward the cursor                                                      | + or =, and -        |
+  | Pan                                    | drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac)             | Ctrl/Cmd+arrow keys  |
+  | Go back to the opening view            | double-click or double-tap                                                              | 0                    |
+  | Change image in a gallery              | the previous and next buttons, or swipe                                                 | left and right arrow |
+  | Hide or show captions and descriptions |                                                                                         | c                    |
+  | Hide or show hints                     |                                                                                         | h                    |
+  | Close                                  | the × button, a click on the background, a swipe up or down, or the browser Back button | Esc                  |
 
 The [`keys`](#keys) option changes the keys for zooming, resetting, hiding
 captions or hints, and closing. Zoom goes up to `max-zoom`. Left and Right
@@ -160,7 +160,7 @@ panzoom:
   max-zoom: 4     # number: screen pixels per image pixel, at most (default 4)
   hint: true      # true or show, hide (starts hidden; h shows it), or false (none): the controls hint, except when opened by a tap (default true)
   caption: true   # boolean: show the figure caption in the viewer (default true)
-  loop: false     # boolean: in a gallery, wrap from the last image to the first (default false)
+  loop: false     # boolean: in a gallery, the buttons and arrow keys wrap from the last image to the first (default false)
   fit: auto       # auto, contain, height, or width (default auto, see Wide and tall figures)
   desc-position: bottom  # bottom, top, left, or right: where the caption goes (default: where the page has it, see Captions)
   css-class: my-viewer  # an extra class on the viewer, for styling it (default none; see Styling)
@@ -493,8 +493,8 @@ QuartoPanzoom.close();
 ```
 
 `open()` takes any `<img>`, marked or not. For images a script adds after the
-page loads, `observe()` makes marked ones reachable with Tab and
-marks the ones `match` selects:
+page loads, `observe()` makes marked ones reachable with Tab and marks the ones
+`match` selects:
 
 ```js
 const watch = QuartoPanzoom.observe(document.querySelector("#results"), {

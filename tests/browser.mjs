@@ -796,16 +796,46 @@ async function checkGallery(page, handle) {
   out.buttonNext = await counter();
   await page.click(".panzoom-prev");
   await settle(page);
-  // Swipe left on the background: next image.
-  const cx = VIEWPORT.width / 2, cy = VIEWPORT.height / 2;
-  await page.mouse.move(cx + 120, cy);
-  await page.mouse.down();
-  await page.mouse.move(cx - 120, cy, { steps: 8 });
-  await page.mouse.up();
-  await settle(page);
+  // Mouse swipes, as lightbox has them: from the image, sideways, 40 px or
+  // more switch images. (dx, dy) from the image center.
+  const box = () => page.evaluate(() => {
+    const r = document.querySelector(".panzoom-overlay img").getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2, left: r.left, top: r.top };
+  });
+  const drag = async (from, dx, dy) => {
+    await page.mouse.move(from.x, from.y);
+    await page.mouse.down();
+    await page.mouse.move(from.x + dx, from.y + dy, { steps: 6 });
+    await page.mouse.up();
+    await settle(page);
+  };
+  await drag(await box(), -240, 0);
   out.swipeNext = await counter();
   await page.click(".panzoom-prev");
   await settle(page);
+  await drag(await box(), -35, 0);
+  out.shortDragStays = (await counter()) === first;
+  await drag(await box(), -45, 0);
+  out.shortSwipeNext = (await counter()) === next;
+  await page.click(".panzoom-prev");
+  await settle(page);
+  // A drag on the background, beside or above the image, leaves it as it
+  // is.
+  const b = await box();
+  const bg = b.left > 120 ? { x: b.left / 2, y: b.top + 20 } : b.top > 60 ? { x: b.x, y: b.top / 2 } : null;
+  if (bg) {
+    const t0 = await viewerTransform(page);
+    await drag(bg, -240, 0);
+    const t1 = await viewerTransform(page);
+    out.backgroundDragStays = (await counter()) === first && !!(t0 && t1) &&
+      Math.abs(t1.x - t0.x) < 0.5 && Math.abs(t1.y - t0.y) < 0.5;
+  }
+  // Swipe right on the first image: stays there, even with `loop` (as
+  // lightbox: only the buttons and keys wrap).
+  if (m[1] === "1") {
+    await drag(await box(), 240, 0);
+    out.swipeStopsAtStart = (await counter()) === first;
+  }
   // Zoomed in past the screen's width, Ctrl+Right pans, keeping the same
   // image; bare Right instead switches images regardless, abandoning the
   // zoom for the next image's own opening fit.
@@ -846,10 +876,15 @@ async function checkGallery(page, handle) {
   await settle(page);
   out.rightAtEnd = await counter();
   out.rightAtEndOk = out.rightAtEnd === (out.loop ? `1 / ${n}` : last);
+  // A swipe down of 65 px or more closes the viewer (as lightbox).
+  await drag(await box(), 0, 80);
+  out.swipeDownCloses = !(await page.$(".panzoom-overlay.open"));
   await closeAll(page);
   out.ok = out.pageKeysStill &&
     out.arrowNext === next && out.arrowBack && out.buttonNext === next &&
-    out.swipeNext === next && out.zoomedCtrlArrowPans && out.zoomedBareArrowSwitches &&
+    out.swipeNext === next && out.shortDragStays && out.shortSwipeNext &&
+    out.backgroundDragStays !== false && out.swipeStopsAtStart !== false &&
+    out.swipeDownCloses && out.zoomedCtrlArrowPans && out.zoomedBareArrowSwitches &&
     out.prevDisabledAtStart !== false &&
     out.leftAtStartStill && out.focusAtEnd.startsWith("panzoom-") &&
     out.nextDisabledAtEnd && out.rightAtEndOk;
@@ -1875,6 +1910,12 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       `- Next button: ${gallery.buttonNext}`,
       `- Focus after the next button reaches the last image: ${gallery.focusAtEnd}`,
       `- Swipe left: ${gallery.swipeNext}`,
+      `- A 35 px drag keeps the image, a 45 px swipe switches: ${yes(gallery.shortDragStays && gallery.shortSwipeNext)}`,
+      ...(gallery.backgroundDragStays === undefined ? [] : [
+        `- A drag on the background leaves the image as it is: ${yes(gallery.backgroundDragStays)}`]),
+      `- A swipe down closes the viewer: ${yes(gallery.swipeDownCloses)}`,
+      ...(gallery.swipeStopsAtStart === undefined ? [] : [
+        `- Swipe right on the first image stays there${gallery.loop ? ", with loop" : ""}: ${yes(gallery.swipeStopsAtStart)}`]),
       `- Zoomed in, Ctrl+Right pans: ${yes(gallery.zoomedCtrlArrowPans)}; bare Right still switches: ${yes(gallery.zoomedBareArrowSwitches)}`,
       `- On the first image, "previous" is ${gallery.loop ? "enabled (loop) and Left wraps to the last" : "disabled (no loop)"}: ${yes(gallery.prevDisabledAtStart && gallery.leftAtStartStill)}`,
       `- On the last image, "next" is ${gallery.loop ? "enabled (loop) and Right wraps to the first" : "disabled (no loop) and Right stays"}: ${yes(gallery.nextDisabledAtEnd && gallery.rightAtEndOk)} (${gallery.rightAtEnd})`,

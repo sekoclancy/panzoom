@@ -12,7 +12,8 @@
   - pinch with a resting finger: a pinch whose other finger rests on the
     background, lifted first, must not close the viewer;
   - swipe: a sideways swipe on a gallery image at its opening size shows
-    the next image;
+    the next image; a swipe right on the first image stays there, even
+    with `loop`; a swipe down closes the viewer;
   - double-tap: returns a zoomed image to its opening view;
   - tap the background: closes the viewer;
   - hint: a viewer opened by a tap has no hint line (it names mouse and
@@ -235,6 +236,28 @@ try {
   s = await state(page);
   check("swipe shows the next image", s.open && /^1 \//.test(first) && /^2 \//.test(s.counter),
     `${first} -> ${s.counter}`);
+
+  // Back on the first image, a swipe right stays there, though page B sets
+  // `loop` (as lightbox: only the buttons and keys wrap).
+  await page.click(".panzoom-prev");
+  await settle(page);
+  await touch(cdp, "touchStart", [{ id: 1, x: x1, y }]);
+  await move(cdp, [{ id: 1, x: x1, y }], [{ id: 1, x: x0, y }], 8);
+  await touch(cdp, "touchEnd", []);
+  await settle(page);
+  s = await state(page);
+  check("swipe right on the first image stays there", s.open && s.counter === first,
+    `${first} -> ${s.counter}`);
+
+  // A swipe down of more than 30% of the screen height closes the viewer
+  // (as lightbox).
+  const y1 = y + 0.35 * PHONE.height;
+  await touch(cdp, "touchStart", [{ id: 1, x: s.w / 2, y }]);
+  await move(cdp, [{ id: 1, x: s.w / 2, y }], [{ id: 1, x: s.w / 2, y: y1 }], 8);
+  await touch(cdp, "touchEnd", []);
+  await settle(page);
+  s = await state(page);
+  check("swipe down closes the viewer", !s.open, s.open ? "still open" : "closed");
 
   // The hint line (page F, "Default hint", which has it): not after a tap,
   // but after a mouse click.

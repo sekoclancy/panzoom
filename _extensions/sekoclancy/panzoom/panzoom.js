@@ -75,7 +75,12 @@
 */
 (function () {
   var SELECTOR = "img.panzoom:not(.nopanzoom)";
-  var SWIPE = 50;  // px of horizontal drag that switches images
+  // Swipes on an image that fits the screen, as lightbox (GLightbox) has
+  // them: px sideways that switch images, and down or up that close the
+  // viewer, with a mouse (its `dragToleranceX` and `dragToleranceY`); with
+  // a finger, more px sideways, and a share of the screen height down or up.
+  var SWIPE = 40, SWIPE_CLOSE = 65;
+  var SWIPE_TOUCH = 31, SWIPE_CLOSE_TOUCH = 0.3;
   var DOUBLETAP_MS = 350;  // max gap between two taps counted as a double-tap
   var DOUBLETAP_PX = 60;   // max distance between them, a finger being imprecise
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
@@ -536,12 +541,17 @@
   }
 
   // Where pan (x, y) at scale s shows: moved back inside, or, during a
-  // drag, past an end with resistance (stretch()). Not during a bounce:
+  // drag, past an end with resistance (stretch()). An image that fits the
+  // screen follows a swipe along its axis instead (see release()), and
+  // stays put for a mouse drag on the background. Not during a bounce:
   // that animation goes past the end on purpose.
   function shown(x, y, s) {
     if (!pz || bouncing) return { x: x, y: y };
     var c = contained(x, y, s);
     if (!press) return c;
+    if (!press.pans && !press.multi) {
+      return { x: press.axis === "x" ? x : c.x, y: press.axis === "y" ? y : c.y };
+    }
     return { x: c.x + stretch((x - c.x) * s) / s, y: c.y + stretch((y - c.y) * s) / s };
   }
 
@@ -765,14 +775,16 @@
     status.textContent = "The image could not be loaded.";
   }
 
-  // Steps through the gallery; returns false at either end without `loop`.
+  // Steps through the gallery; returns false at either end without `loop`,
+  // and for a swipe (`swiped`) with it too: as in lightbox, a swipe stops
+  // at the first and last image, so a strong drag can't wrap around.
   // Stepping away from the clicked image drops its remembered click spot,
   // so coming back to it also fits afresh, like every other image.
-  function step(delta) {
+  function step(delta, swiped) {
     var n = gallery.length, i = index + delta;
     if (n < 2) return false;
     if (i < 0 || i >= n) {
-      if (!opts.loop) return false;
+      if (!opts.loop || swiped) return false;
       i = (i + n) % n;
     }
     clicked = null;
@@ -1026,11 +1038,17 @@
     });
 
     // Panzoom handles the drag itself. A press and release on the background
-    // without moving closes the viewer; a horizontal swipe switches images
-    // unless the image is larger than the screen (then the drag pans it).
-    // Only a single finger (or the mouse) taps or swipes: once a second
-    // finger is down (a pinch), lifting the fingers just ends the gesture,
-    // whichever finger touched down last or rests on the background.
+    // without moving closes the viewer. On an image that fits the screen
+    // (else the drag pans it), a swipe works as in lightbox: the image
+    // follows it, sideways or up and down, and past SWIPE px sideways it
+    // switches images (stopping at the first and last, even with `loop`),
+    // past SWIPE_CLOSE px up or down it closes the viewer, and short of
+    // those it slides back. A mouse swipes from the image only, along the
+    // axis it moves first; a finger from anywhere, along the axis it has
+    // moved most. Only a single finger (or the mouse) taps or swipes: once
+    // a second finger is down (a pinch), lifting the fingers just ends the
+    // gesture, whichever finger touched down last or rests on the
+    // background.
     overlay.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest(".panzoom-exclude")) return;
       stopBounce();
@@ -1039,9 +1057,16 @@
         press.multi = true;
         return;
       }
+      var touch = e.pointerType === "touch", onImg = e.target === img, pans = overflow().any;
       press = { id: e.pointerId, ids: [e.pointerId], multi: false, sx: e.clientX, sy: e.clientY,
-        onImg: e.target === img, pans: overflow().any };
+        onImg: onImg, pans: pans, touch: touch, swipes: !pans && (touch || onImg), axis: null };
       overlay.classList.add("dragging");
+    });
+    document.addEventListener("pointermove", function (e) {
+      if (!press || press.multi || !press.swipes || e.pointerId !== press.id) return;
+      var dx = e.clientX - press.sx, dy = e.clientY - press.sy;
+      if (!dx && !dy) return;
+      if (press.touch || !press.axis) press.axis = Math.abs(dx) >= Math.abs(dy) ? "x" : "y";
     });
     function release(e) {
       var i = press ? press.ids.indexOf(e.pointerId) : -1;
@@ -1052,7 +1077,10 @@
       var dx = e.clientX - press.sx, dy = e.clientY - press.sy;
       var moved = Math.abs(dx) + Math.abs(dy) > 3;
       var clickedBackground = single && !moved && !press.onImg;
-      var swipe = single && !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
+      var swiped = single && press.swipes;
+      var swipe = swiped && press.axis === "x" && Math.abs(dx) >= (press.touch ? SWIPE_TOUCH : SWIPE);
+      var swipeClose = swiped && press.axis === "y" &&
+        Math.abs(dy) >= (press.touch ? SWIPE_CLOSE_TOUCH * window.innerHeight : SWIPE_CLOSE);
       // A second same-spot tap within DOUBLETAP_MS resets the view, as
       // "dblclick" below does for a mouse. WebKit never synthesizes a
       // "dblclick" from two taps once Panzoom's own pointerdown handler has
@@ -1065,8 +1093,8 @@
       press = null;
       overlay.classList.remove("dragging");
       if (doubleTap) resetView();
-      else if (clickedBackground) close();
-      else if (!(swipe && step(dx < 0 ? 1 : -1))) settle();
+      else if (clickedBackground || swipeClose) close();
+      else if (!(swipe && step(dx < 0 ? 1 : -1, true))) settle();
     }
     document.addEventListener("pointerup", release);
     document.addEventListener("pointercancel", release);
