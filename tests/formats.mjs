@@ -1,10 +1,13 @@
 /*
   Other output formats (the Formats pages, render first):
-  - revealjs (U): images open from a slide, the slide keys go to the viewer
+  - revealjs (the slides U embeds): images open from a slide, the slide keys go to the viewer
     while it is open, Escape closes the viewer without the slide overview,
     the arrows move between slides again after it closes, a gallery steps
     within the slide, Back closes the viewer and keeps the slide, an image in
     a hidden fragment can't be clicked and opens once shown;
+  - the frame on U: the slides load in it, an image there opens in the
+    viewer inside the frame, and the Full screen button asks for full screen
+    on the frame;
   - dashboard (V): images open from a card, the viewer covers an expanded
     card and Escape closes the viewer first, then the card, an image on a tab
     opens once the tab is selected, Back closes the viewer and keeps the
@@ -83,7 +86,7 @@ async function checkImages(page, name) {
 }
 
 async function checkDeck(browser, base) {
-  const name = "u-revealjs-r";
+  const name = "revealjs-slides";
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 800 });
   const errors = [];
@@ -229,10 +232,42 @@ async function checkDashboard(browser, base) {
   return n;
 }
 
+async function checkFrame(browser, base) {
+  const name = "u-revealjs-r";
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(String(e)));
+  await page.goto(base + `formats/${name}.html`, { waitUntil: "load" });
+  const frame = await (await page.$("iframe#slides")).contentFrame();
+  await frame.waitForFunction(() => window.Reveal?.isReady(), { timeout: 15000 });
+  await frame.evaluate(() => {
+    const i = [...document.querySelectorAll(".reveal .slides > section")].findIndex((s) => s.id === "single-image");
+    window.Reveal.slide(i);
+  });
+  await wait(500);
+  await (await frame.$("#single-image img")).click();
+  await wait(800);
+  check(`${name}: opens in the frame`, await frame.evaluate(() => !!document.querySelector(".panzoom-overlay.open")));
+  await page.keyboard.press("Escape");
+  await wait(400);
+  check(`${name}: Escape closes`, !(await frame.evaluate(() => !!document.querySelector(".panzoom-overlay.open"))));
+
+  // Headless Chrome may refuse full screen, so record the request itself.
+  await page.evaluate(() => {
+    Element.prototype.requestFullscreen = function () { window.__full = this.id; return Promise.resolve(); };
+  });
+  await page.click("#slides-full-screen");
+  check(`${name}: Full screen asks for the frame`, (await page.evaluate(() => window.__full)) === "slides");
+  check(`${name}: no page errors`, errors.length === 0, errors);
+  await page.close();
+}
+
 const server = await serve(SITE);
 const base = `http://127.0.0.1:${server.address().port}/`;
 const browser = await puppeteer.launch({ executablePath: CHROME, args: ["--no-sandbox"] });
 const counts = [await checkDeck(browser, base), await checkDashboard(browser, base)];
+await checkFrame(browser, base);
 await browser.close();
 server.close();
 console.log(failed ? `${failed} check(s) FAILED` : `formats: ok (${counts.join(" + ")} images)`);
