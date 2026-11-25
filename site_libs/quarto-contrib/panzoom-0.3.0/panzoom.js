@@ -75,7 +75,12 @@
 */
 (function () {
   var SELECTOR = "img.panzoom:not(.nopanzoom)";
-  var SWIPE = 50;  // px of horizontal drag that switches images
+  // Swipes on an image that fits the screen, as lightbox (GLightbox) has
+  // them: px sideways that switch images, and down or up that close the
+  // viewer, with a mouse (its `dragToleranceX` and `dragToleranceY`); with
+  // a finger, more px sideways, and a share of the screen height down or up.
+  var SWIPE = 40, SWIPE_CLOSE = 65;
+  var SWIPE_TOUCH = 31, SWIPE_CLOSE_TOUCH = 0.3;
   var DOUBLETAP_MS = 350;  // max gap between two taps counted as a double-tap
   var DOUBLETAP_PX = 60;   // max distance between them, a finger being imprecise
   var THIN = 0.25;  // fit: auto fills the screen below this fraction of it
@@ -83,6 +88,7 @@
   var BOUNCE = 40;  // px a key or scroll pan overshoots an image's end
   var STRETCH = 80; // px a drag can pull an image past its end, at most
   var OUT = 120, BACK = 200;  // ms out past the end, and back
+  var RUN = 200;    // ms: wheel events closer than this are one held scroll
   var FITS = ["auto", "contain", "height", "width"];
   var POSITIONS = ["bottom", "top", "left", "right"];
   // Arrow keys Ctrl/Cmd makes pan instead of switching gallery images (or,
@@ -129,6 +135,9 @@
   // from a tap in every browser.
   var lastPointer = "";
   var bouncing = false, bounceTimer = null;
+  // A held scroll or key sends a run of pans (see panPx()): whether this
+  // run already bounced off an end, and when the last wheel pan came.
+  var runBounced = false, lastWheel = -Infinity;
   // With "reduce motion" set, a pan that runs into an end stops there and
   // a drag past an end snaps back, instead of bouncing or sliding.
   var motion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
@@ -149,6 +158,12 @@
   // done. `stepping`: that step hasn't landed yet (history.back() is
   // asynchronous); a viewer opened meanwhile adds its entry once it has.
   var inHistory = false, leaving = null, stepping = false;
+  // Opened in full screen (e.g. revealjs `f`). Escape there belongs to the
+  // browser: it leaves full screen and never reaches the page, so the
+  // viewer closes along with full screen (see the fullscreenchange
+  // listener). It adds no history entry then: Firefox leaves full screen
+  // when a framed page changes its history.
+  var inFullscreen = false;
   // The page's scroll position right as the viewer opened. The viewer's
   // pushState keeps the page's URL, including any #anchor, so stepping back
   // over it returns to an entry with that same #anchor: the browser
@@ -409,6 +424,7 @@
     pz = Panzoom(img, {
       canvas: true,             // drag anywhere on the overlay, not just the image
       cursor: "grab",
+      setTransform: paint,
       startScale: s,
       // The opening view is also where reset (0, double-click) returns.
       startX: containAxis((cx - w / 2) / s, s, w, vw, null, a.x, marginX),
@@ -483,31 +499,33 @@
     return { x: 0, y: side === "top" ? bh : 0, w: w, h: h - bh };
   }
 
-  // Which ways the image is larger than that space (zoomed in, or a wide or
-  // tall figure opened at screen height or width). In either case Left/Right
-  // and horizontal drags pan rather than switch gallery images.
+  // Which ways the image is larger than that space less its margins (zoomed
+  // in, or a wide or tall figure opened at screen height or width): the
+  // size where containAxis() lets it pan. Drags on such an image pan
+  // rather than swipe.
   function overflow() {
     var a = area(), s = pz ? pz.getScale() : 0;
-    var x = img.naturalWidth * s > a.w + 1, y = img.naturalHeight * s > a.h + 1;
+    var x = img.naturalWidth * s > a.w - 2 * marginX + 1;
+    var y = img.naturalHeight * s > a.h - 2 * margin + 1;
     return { x: x, y: y, any: x || y };
   }
 
-  // Keeps the image on screen, one axis at a time: where it is smaller than
-  // the space it stays where zooming put it (`hold`, its center on screen),
-  // or centered, and wholly on screen (within the opening margin where it
-  // fits); drags and arrow keys don't move it. Where it is larger, its
-  // edges stop at the screen edges (less the margin), so panning ends at
-  // the image's ends. `t` is Panzoom's pan along the axis (unscaled px, see
+  // Keeps the image on screen, one axis at a time: where it fits within the
+  // margins it stays where zooming put it (`hold`, its center on screen),
+  // or centered, and wholly inside the margins; drags and arrow keys don't
+  // move it. Where it doesn't, its ends stop at the margins, so panning
+  // ends at the image's ends. At the size where it just fits, both ways
+  // give the one centered place, so a zoom across that size doesn't make
+  // the image jump. `t` is Panzoom's pan along the axis (unscaled px, see
   // fit()), `n` the image size and `avail` the space, both along the axis,
   // and `off` where the space starts on screen (the caption band above or
   // to the left); `mg` the margin along the axis (see fit()).
   function containAxis(t, s, n, avail, hold, off, mg) {
     var size = n * s;
     off = off || 0;
-    if (size <= avail) {
-      var m = Math.min(mg, (avail - size) / 2);
+    if (size <= avail - 2 * mg) {
       var h = hold === null || hold === undefined ? avail / 2 : hold - off;
-      h = Math.min(avail - m - size / 2, Math.max(m + size / 2, h));
+      h = Math.min(avail - mg - size / 2, Math.max(mg + size / 2, h));
       return (off + h - n / 2) / s;
     }
     var c = n / 2 + s * t - off;                       // image center in the space
@@ -530,23 +548,38 @@
     return (over < 0 ? -1 : 1) * STRETCH * (1 - Math.exp(-Math.abs(over) / (2 * STRETCH)));
   }
 
-  // Runs after every Panzoom change (drag, pinch, zoom, pan, reset), when
-  // Panzoom draws it (in an animation frame), and moves the image back
-  // inside if needed; that correction is drawn on the next frame. It works
-  // from Panzoom's own pan and scale, which are always current. During a
-  // drag the image may go past its ends with resistance (stretch()); it
-  // springs back when released (settle()). Not during a bounce: that
-  // animation goes past the end on purpose.
-  function contain() {
-    if (!pz || bouncing) return;
-    var s = pz.getScale(), p = pz.getPan(), c = contained(p.x, p.y, s);
-    var x = c.x, y = c.y;
-    if (press) {
-      x += stretch((p.x - c.x) * s) / s;
-      y += stretch((p.y - c.y) * s) / s;
+  // Where pan (x, y) at scale s shows: moved back inside, or, during a
+  // drag, past an end with resistance (stretch()). An image that fits the
+  // screen follows a swipe along its axis instead (see release()), and
+  // stays put for a mouse drag on the background. Not during a bounce:
+  // that animation goes past the end on purpose.
+  function shown(x, y, s) {
+    if (!pz || bouncing) return { x: x, y: y };
+    var c = contained(x, y, s);
+    if (!press) return c;
+    if (!press.pans && !press.multi) {
+      return { x: press.axis === "x" ? x : c.x, y: press.axis === "y" ? y : c.y };
     }
-    if (Math.abs(x - p.x) > 1e-6 || Math.abs(y - p.y) > 1e-6) {
-      pz.pan(x, y, { animate: false, force: true, silent: true });
+    return { x: c.x + stretch((x - c.x) * s) / s, y: c.y + stretch((y - c.y) * s) / s };
+  }
+
+  // Panzoom draws every change (drag, pinch, zoom, pan, reset) through this,
+  // in an animation frame, so the image is only ever drawn where it shows.
+  function paint(el, v) {
+    var p = shown(v.x, v.y, v.scale);
+    el.style.transform = "scale(" + v.scale + ") translate(" + p.x + "px, " + p.y + "px)";
+  }
+
+  // Runs after every Panzoom change and moves Panzoom's own pan inside too,
+  // so later pans and zooms start from where the image is. Not during a
+  // drag: Panzoom works out each drag step from the pan where the drag
+  // began, so it keeps the pan past the end, and paint() draws it with
+  // resistance; it springs back when released (settle()).
+  function contain() {
+    if (!pz || bouncing || press) return;
+    var s = pz.getScale(), p = pz.getPan(), c = contained(p.x, p.y, s);
+    if (Math.abs(c.x - p.x) > 1e-6 || Math.abs(c.y - p.y) > 1e-6) {
+      pz.pan(c.x, c.y, { animate: false, force: true, silent: true });
     }
   }
 
@@ -608,7 +641,10 @@
   // Along an axis where the image ends up smaller than the screen, its
   // center is held where this zoom puts it (see containAxis()), so the
   // point under the cursor stays there instead of the image re-centering
-  // and drifting away from it. Zoomed out to the whole image, it centers.
+  // and drifting away from it. Zoomed out to the whole image, it centers:
+  // each zoom out moves it toward the center by the share of the zoom out
+  // left that the step uses up, so it arrives there as the zoom reaches the
+  // whole image, without a jump on the last step.
   function zoomAt(factor, px, py) {
     if (!pz) return;
     stopBounce();
@@ -619,9 +655,11 @@
     var w = img.naturalWidth, h = img.naturalHeight;
     var fx = px - box.left, fy = py - box.top, f = s / s0;
     var whole = s <= o.minScale + 1e-9;
+    var k = s < s0 && !whole ? Math.log(s / o.minScale) / Math.log(s0 / o.minScale) : 1;
+    var toward = function (at, mid) { return mid + (at - mid) * k; };
     held = {
-      x: whole || w * s > a.w ? null : fx - (fx - (w / 2 + s0 * p.x)) * f,
-      y: whole || h * s > a.h ? null : fy - (fy - (h / 2 + s0 * p.y)) * f
+      x: whole || w * s > a.w ? null : toward(fx - (fx - (w / 2 + s0 * p.x)) * f, a.x + a.w / 2),
+      y: whole || h * s > a.h ? null : toward(fy - (fy - (h / 2 + s0 * p.y)) * f, a.y + a.h / 2)
     };
     pz.zoom(s, { animate: false, focal: { x: (fx - w / 2) * s, y: (fy - h / 2) * s } });
   }
@@ -640,16 +678,27 @@
   // Panzoom's translate is in unscaled px, so divide by the scale. A pan
   // that runs into an end of the image (where it is larger than the
   // screen) goes up to BOUNCE px past it and slides back, to show the end.
-  function panPx(dx, dy) {
+  // `more`: this pan continues a run (a held scroll or key). A run bounces
+  // once: later pans into the same end let that bounce finish, then hold
+  // the image at the end, instead of each starting the bounce again.
+  function panPx(dx, dy, more) {
     if (!pz) return;
-    stopBounce();
-    var s = pz.getScale(), p = pz.getPan(), o = overflow();
-    var tx = p.x - dx / s, ty = p.y - dy / s, c = contained(tx, ty, s);
+    if (!more) runBounced = false;
+    var s = pz.getScale(), o = overflow();
+    // During a bounce Panzoom's pan is the point past the end it slides to.
+    var p = pz.getPan(), from = contained(p.x, p.y, s);
+    var tx = from.x - dx / s, ty = from.y - dy / s, c = contained(tx, ty, s);
     var ex = o.x ? (tx - c.x) * s : 0, ey = o.y ? (ty - c.y) * s : 0;  // px past the end
-    if (reducedMotion() || (Math.abs(ex) < 0.5 && Math.abs(ey) < 0.5)) {
+    var past = Math.abs(ex) >= 0.5 || Math.abs(ey) >= 0.5;
+    var still = Math.abs(c.x - from.x) * s < 0.5 && Math.abs(c.y - from.y) * s < 0.5;
+    if (bouncing && more && past && still) return;
+    stopBounce();
+    if (!past) runBounced = false;
+    if (reducedMotion() || !past || runBounced) {
       pz.pan(c.x, c.y, { animate: false, force: true });
       return;
     }
+    runBounced = true;
     var bx = (ex < 0 ? -1 : 1) * Math.min(BOUNCE, Math.abs(ex));
     var by = (ey < 0 ? -1 : 1) * Math.min(BOUNCE, Math.abs(ey));
     slideTo(c.x + bx / s, c.y + by / s, OUT, "ease-out", function () {
@@ -658,8 +707,8 @@
   }
 
   // Pan the view by a fraction of the screen.
-  function panBy(fx, fy) {
-    panPx(fx * overlay.clientWidth, fy * overlay.clientHeight);
+  function panBy(fx, fy, more) {
+    panPx(fx * overlay.clientWidth, fy * overlay.clientHeight, more);
   }
 
   // Shows gallery image `i`, fitted to the screen.
@@ -734,14 +783,16 @@
     status.textContent = "The image could not be loaded.";
   }
 
-  // Steps through the gallery; returns false at either end without `loop`.
+  // Steps through the gallery; returns false at either end without `loop`,
+  // and for a swipe (`swiped`) with it too: as in lightbox, a swipe stops
+  // at the first and last image, so a strong drag can't wrap around.
   // Stepping away from the clicked image drops its remembered click spot,
   // so coming back to it also fits afresh, like every other image.
-  function step(delta) {
+  function step(delta, swiped) {
     var n = gallery.length, i = index + delta;
     if (n < 2) return false;
     if (i < 0 || i >= n) {
-      if (!opts.loop) return false;
+      if (!opts.loop || swiped) return false;
       i = (i + n) % n;
     }
     clicked = null;
@@ -766,8 +817,9 @@
         inerted.push({ el: el, was: el.inert });
         el.inert = true;
       });
+      inFullscreen = !!document.fullscreenElement;
     }
-    if (!inHistory && !stepping) {
+    if (!inHistory && !stepping && !inFullscreen) {
       history.pushState({ panzoom: true }, "");
       inHistory = true;
     }
@@ -955,15 +1007,19 @@
       e.preventDefault();
       if (e.ctrlKey && gesture) return;
       var unit = e.deltaMode === 1 ? 16 : 1;
+      var more = e.timeStamp - lastWheel < RUN;
       if (e.altKey && !e.ctrlKey) {
-        panPx(0, (e.deltaY || e.deltaX) * unit);
+        lastWheel = e.timeStamp;
+        panPx(0, (e.deltaY || e.deltaX) * unit, more);
         return;
       }
       if (!e.ctrlKey && (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))) {
+        lastWheel = e.timeStamp;
         // Some browsers turn Shift+wheel into deltaX, others keep deltaY.
-        panPx((e.deltaX || e.deltaY) * unit, 0);
+        panPx((e.deltaX || e.deltaY) * unit, 0, more);
         return;
       }
+      lastWheel = -Infinity;
       var dy = e.deltaY * unit;
       // ctrlKey = trackpad pinch (small deltas), so it gets a higher gain
       zoomAt(Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015)), e.clientX, e.clientY);
@@ -991,11 +1047,17 @@
     });
 
     // Panzoom handles the drag itself. A press and release on the background
-    // without moving closes the viewer; a horizontal swipe switches images
-    // unless the image is larger than the screen (then the drag pans it).
-    // Only a single finger (or the mouse) taps or swipes: once a second
-    // finger is down (a pinch), lifting the fingers just ends the gesture,
-    // whichever finger touched down last or rests on the background.
+    // without moving closes the viewer. On an image that fits the screen
+    // (else the drag pans it), a swipe works as in lightbox: the image
+    // follows it, sideways or up and down, and past SWIPE px sideways it
+    // switches images (stopping at the first and last, even with `loop`),
+    // past SWIPE_CLOSE px up or down it closes the viewer, and short of
+    // those it slides back. A mouse swipes from the image only, along the
+    // axis it moves first; a finger from anywhere, along the axis it has
+    // moved most. Only a single finger (or the mouse) taps or swipes: once
+    // a second finger is down (a pinch), lifting the fingers just ends the
+    // gesture, whichever finger touched down last or rests on the
+    // background.
     overlay.addEventListener("pointerdown", function (e) {
       if (e.button !== 0 || e.target.closest(".panzoom-exclude")) return;
       stopBounce();
@@ -1004,9 +1066,16 @@
         press.multi = true;
         return;
       }
+      var touch = e.pointerType === "touch", onImg = e.target === img, pans = overflow().any;
       press = { id: e.pointerId, ids: [e.pointerId], multi: false, sx: e.clientX, sy: e.clientY,
-        onImg: e.target === img, pans: overflow().any };
+        onImg: onImg, pans: pans, touch: touch, swipes: !pans && (touch || onImg), axis: null };
       overlay.classList.add("dragging");
+    });
+    document.addEventListener("pointermove", function (e) {
+      if (!press || press.multi || !press.swipes || e.pointerId !== press.id) return;
+      var dx = e.clientX - press.sx, dy = e.clientY - press.sy;
+      if (!dx && !dy) return;
+      if (press.touch || !press.axis) press.axis = Math.abs(dx) >= Math.abs(dy) ? "x" : "y";
     });
     function release(e) {
       var i = press ? press.ids.indexOf(e.pointerId) : -1;
@@ -1017,7 +1086,10 @@
       var dx = e.clientX - press.sx, dy = e.clientY - press.sy;
       var moved = Math.abs(dx) + Math.abs(dy) > 3;
       var clickedBackground = single && !moved && !press.onImg;
-      var swipe = single && !press.pans && Math.abs(dx) > SWIPE && Math.abs(dx) > 2 * Math.abs(dy);
+      var swiped = single && press.swipes;
+      var swipe = swiped && press.axis === "x" && Math.abs(dx) >= (press.touch ? SWIPE_TOUCH : SWIPE);
+      var swipeClose = swiped && press.axis === "y" &&
+        Math.abs(dy) >= (press.touch ? SWIPE_CLOSE_TOUCH * window.innerHeight : SWIPE_CLOSE);
       // A second same-spot tap within DOUBLETAP_MS resets the view, as
       // "dblclick" below does for a mouse. WebKit never synthesizes a
       // "dblclick" from two taps once Panzoom's own pointerdown handler has
@@ -1030,8 +1102,8 @@
       press = null;
       overlay.classList.remove("dragging");
       if (doubleTap) resetView();
-      else if (clickedBackground) close();
-      else if (!(swipe && step(dx < 0 ? 1 : -1))) settle();
+      else if (clickedBackground || swipeClose) close();
+      else if (!(swipe && step(dx < 0 ? 1 : -1, true))) settle();
     }
     document.addEventListener("pointerup", release);
     document.addEventListener("pointercancel", release);
@@ -1088,10 +1160,10 @@
     // either end without `loop`, or at all without a gallery); bare
     // Up/Down do nothing. Ctrl/Cmd+arrow pans instead, any direction,
     // whether or not the image is larger than the screen that way.
-    else if (pan && e.key === "ArrowLeft") panBy(-0.1, 0);
-    else if (pan && e.key === "ArrowRight") panBy(0.1, 0);
-    else if (pan && e.key === "ArrowUp") panBy(0, -0.1);
-    else if (pan && e.key === "ArrowDown") panBy(0, 0.1);
+    else if (pan && e.key === "ArrowLeft") panBy(-0.1, 0, e.repeat);
+    else if (pan && e.key === "ArrowRight") panBy(0.1, 0, e.repeat);
+    else if (pan && e.key === "ArrowUp") panBy(0, -0.1, e.repeat);
+    else if (pan && e.key === "ArrowDown") panBy(0, 0.1, e.repeat);
     else if (e.key === "ArrowLeft") step(-1);
     else if (e.key === "ArrowRight") step(1);
     else if (action === "reset") resetView();
@@ -1107,7 +1179,7 @@
     if (stepping && !ours) {
       stepping = false;
       // Opened again before the step back landed: add its entry now.
-      if (overlay.classList.contains("open")) {
+      if (overlay.classList.contains("open") && !inFullscreen) {
         history.pushState({ panzoom: true }, "");
         inHistory = true;
         return;
@@ -1123,6 +1195,11 @@
     }
     // Forward into the entry of a viewer since closed: step back over it.
     else if (ours && !inHistory) history.back();
+  });
+  // Full screen ended while a viewer opened in it is open: Escape, most
+  // likely (see `inFullscreen`), so close the viewer too.
+  document.addEventListener("fullscreenchange", function () {
+    if (inFullscreen && !document.fullscreenElement && overlay && overlay.classList.contains("open")) close();
   });
   // Reloaded with the viewer open: its entry stays, but the viewer doesn't.
   if (history.state && history.state.panzoom) history.replaceState(null, "");

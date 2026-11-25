@@ -71,6 +71,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../examples/e-image-formats-r.html" rel="next">
+<link href="../examples/c-global-r.html" rel="prev">
 <link href="../assets/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -84,12 +86,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7018cc8867401cb480acf35f2ed2882d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-f157217e1616e2d29265d38c09db305d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.min.js"></script>
-<script src="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.js"></script>
-<link href="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f590bd4fc3bbd6e13650ddcdf3230981.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.min.js"></script>
+<script src="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.js"></script>
+<link href="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.css" rel="stylesheet">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -354,10 +356,37 @@ window.Quarto = {
     <a class="nav-link" href="../reference.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../examples/b-mixed-r.html" aria-current="page"> 
-<span class="menu-text">Examples</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Examples</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-examples">    
+        <li>
+    <a class="dropdown-item" href="../examples/a-lightbox-r.html">
+ <span class="dropdown-text">R examples</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/j-lightbox-python.html">
+ <span class="dropdown-text">Python examples</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/n-color-options-r.html">
+ <span class="dropdown-text">Styling</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/p-divs-r.html">
+ <span class="dropdown-text">Divs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/r-dark-plots-r.html">
+ <span class="dropdown-text">Theme</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../formats/u-revealjs-r.html">
+ <span class="dropdown-text">Formats</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
@@ -399,7 +428,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/a-lightbox-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">A. <code>lightbox</code> comparison (R)</span></a>
+ <span class="menu-text">A. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -411,7 +440,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/c-global-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">C. Global <code>panzoom</code> (R)</span></a>
+ <span class="menu-text">C. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -429,7 +458,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/f-cell-options-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">F. Cell options (R)</span></a>
+ <span class="menu-text">F. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -461,19 +490,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/j-lightbox-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">J. <code>lightbox</code> comparison (Python)</span></a>
+ <span class="menu-text">J. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/k-global-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">K. Global <code>panzoom</code> (Python)</span></a>
+ <span class="menu-text">K. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/l-cell-options-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">L. Cell options (Python)</span></a>
+ <span class="menu-text">L. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -550,6 +579,26 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Formats</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../formats/u-revealjs-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">U. Slides (revealjs)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../formats/v-dashboard-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">V. Dashboard</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -600,7 +649,7 @@ window.Quarto = {
 </header>
 
 
-<p>Only images marked with the <code>.panzoom</code> class or the <code>#| panzoom: true</code> cell option open in panzoom. lightbox is not set in the YAML header, so clicking any other image does nothing, except in <a href="#sec-grouped-cells">cells that ask for lightbox</a> with options of their own. The same cases open in lightbox alone on the <a href="a-lightbox-r.html"><code>lightbox</code> comparison</a>, and with lightbox on for the whole page on <a href="b-mixed-r.html">interaction with <code>lightbox</code></a>. The YAML header turns on panzoom and turns off the hint line:</p>
+<p>Only images marked with the <code>.panzoom</code> class or the <code>#| panzoom: true</code> cell option open in panzoom. lightbox is not set in the YAML header, so clicking any other image does nothing, except in <a href="#sec-grouped-cells">cells that ask for lightbox</a> with options of their own. The same cases open in lightbox alone on the <a href="a-lightbox-r.html"><code>lightbox</code> reference page</a>, and with lightbox on for the whole page on <a href="b-mixed-r.html">interaction with <code>lightbox</code></a>. The YAML header turns on panzoom and turns off the hint line:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filters</span><span class="kw">:</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> panzoom</span></span>
@@ -860,7 +909,7 @@ Figure&nbsp;2: Vapor pressure of mercury, and stopping distances of cars.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="d-selecting-r_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-gallery="r-graph" data-glightbox="description: .lightbox-desc-1;title:Stopping distance against speed for 50 cars.;" title="Stopping distance against speed for 50 cars."><img src="d-selecting-r_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" alt="Scatter plot of stopping distance against speed for 50 cars" width="672"></a></p>
+<p><a href="d-selecting-r_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1;title:Stopping distance against speed for 50 cars.;" data-gallery="r-graph" title="Stopping distance against speed for 50 cars."><img src="d-selecting-r_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" alt="Scatter plot of stopping distance against speed for 50 cars" width="672"></a></p>
 <figcaption>Stopping distance against speed for 50 cars.</figcaption>
 </figure>
 </div>
@@ -1584,7 +1633,19 @@ Figure&nbsp;3: Heights of Maunga Whau (Mount Eden), from pale yellow (low) to da
   </script>
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../examples/c-global-r.html" class="pagination-link" aria-label="C. Global `panzoom`">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">C. Global <code>panzoom</code></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../examples/e-image-formats-r.html" class="pagination-link" aria-label="E. Image formats">
+        <span class="nav-page-text">E. Image formats</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Selecting images (R)"</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
@@ -1602,7 +1663,7 @@ Figure&nbsp;3: Heights of Maunga Whau (Mount Eden), from pale yellow (low) to da
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>option open in panzoom. lightbox is not set in the YAML header, so clicking any</span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>other image does nothing, except in [cells that ask for</span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>lightbox](#sec-grouped-cells) with options of their own. The same cases open in</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>lightbox alone on the <span class="co">[</span><span class="ot">`lightbox` comparison</span><span class="co">](a-lightbox-r.html)</span>, and with</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>lightbox alone on the <span class="co">[</span><span class="ot">`lightbox` reference page</span><span class="co">](a-lightbox-r.html)</span>, and with</span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>lightbox on for the whole page on <span class="co">[</span><span class="ot">interaction with `lightbox`</span><span class="co">](b-mixed-r.html)</span>.</span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>The YAML header turns on panzoom and turns off the hint line:</span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>

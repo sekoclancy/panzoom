@@ -1,15 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/t-renderings-python.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/formats/v-dashboard-r.html</loc>
+    <lastmod>2026-11-25T22:22:39.588Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/formats/revealjs-slides.html</loc>
+    <lastmod>2026-11-25T22:22:39.588Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/s-renderings-r.html</loc>
+    <lastmod>2026-11-12T19:16:22.662Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/q-divs-python.html</loc>
+    <lastmod>2026-11-12T19:16:22.662Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/o-css-r.html</loc>
+    <lastmod>2026-11-10T19:05:13.191Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/m-figures-python.html</loc>
     <lastmod>2026-11-12T19:16:22.658Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/r-dark-plots-r.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/examples/k-global-python.html</loc>
+    <lastmod>2026-11-24T22:23:37.576Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/i-wide-galleries-r.html</loc>
+    <lastmod>2026-11-12T19:16:22.650Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/g-captions-r.html</loc>
     <lastmod>2026-11-12T19:16:22.658Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/p-divs-r.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/examples/e-image-formats-r.html</loc>
+    <lastmod>2026-11-12T19:16:22.654Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/c-global-r.html</loc>
+    <lastmod>2026-11-24T22:23:37.576Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/a-lightbox-r.html</loc>
+    <lastmod>2026-11-24T22:23:37.576Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/index.html</loc>
+    <lastmod>2026-11-25T00:05:19.333Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/reference.html</loc>
+    <lastmod>2026-11-25T00:05:19.333Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/b-mixed-r.html</loc>
+    <lastmod>2026-11-24T22:23:37.576Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/d-selecting-r.html</loc>
+    <lastmod>2026-11-24T22:23:37.576Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/f-cell-options-r.html</loc>
+    <lastmod>2026-11-12T19:16:22.662Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/h-wide-and-tall-r.html</loc>
+    <lastmod>2026-11-12T19:16:22.662Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/j-lightbox-python.html</loc>
+    <lastmod>2026-11-24T22:23:37.576Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sekoclancy.github.io/panzoom/examples/l-cell-options-python.html</loc>
     <lastmod>2026-11-12T19:16:22.654Z</lastmod>
   </url>
   <url>
@@ -17,75 +85,19 @@
     <lastmod>2026-11-06T20:38:35.282Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/l-cell-options-python.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/examples/p-divs-r.html</loc>
     <lastmod>2026-11-12T19:16:22.654Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/j-lightbox-python.html</loc>
-    <lastmod>2026-11-10T17:01:34.667Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/h-wide-and-tall-r.html</loc>
-    <lastmod>2026-11-12T19:16:22.662Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/f-cell-options-r.html</loc>
-    <lastmod>2026-11-12T19:16:22.662Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/d-selecting-r.html</loc>
-    <lastmod>2026-11-12T18:00:29.389Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/b-mixed-r.html</loc>
-    <lastmod>2026-11-12T18:07:39.542Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/reference.html</loc>
-    <lastmod>2026-11-12T19:13:04.258Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/index.html</loc>
-    <lastmod>2026-11-10T22:02:20.887Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/a-lightbox-r.html</loc>
-    <lastmod>2026-11-12T17:17:55.965Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/c-global-r.html</loc>
-    <lastmod>2026-11-12T17:17:50.997Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/e-image-formats-r.html</loc>
-    <lastmod>2026-11-12T19:16:22.654Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/g-captions-r.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/examples/r-dark-plots-r.html</loc>
     <lastmod>2026-11-12T19:16:22.658Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/i-wide-galleries-r.html</loc>
-    <lastmod>2026-11-12T19:16:22.650Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/k-global-python.html</loc>
-    <lastmod>2026-11-10T17:01:34.667Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/m-figures-python.html</loc>
+    <loc>https://sekoclancy.github.io/panzoom/examples/t-renderings-python.html</loc>
     <lastmod>2026-11-12T19:16:22.658Z</lastmod>
   </url>
   <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/o-css-r.html</loc>
-    <lastmod>2026-11-10T19:05:13.191Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/q-divs-python.html</loc>
-    <lastmod>2026-11-12T19:16:22.662Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sekoclancy.github.io/panzoom/examples/s-renderings-r.html</loc>
-    <lastmod>2026-11-12T19:16:22.662Z</lastmod>
+    <loc>https://sekoclancy.github.io/panzoom/formats/u-revealjs-r.html</loc>
+    <lastmod>2026-11-25T22:22:39.588Z</lastmod>
   </url>
 </urlset>

@@ -57,6 +57,10 @@ a.panzoom-link:focus-visible { outline: none; }
   position: fixed; inset: 0; z-index: 100000; display: none;
   overflow: hidden; background: var(--panzoom-backdrop);
   touch-action: none; user-select: none; -webkit-user-select: none;
+  /* The slide font in revealjs (set on .reveal, not on the body the viewer
+     is in), else the page font Bootstrap sets, else a plain sans-serif in
+     place of the browser default serif. */
+  font-family: var(--r-main-font, var(--bs-body-font-family, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif));
 }
 .panzoom-overlay.open { display: block; }
 .panzoom-overlay img {

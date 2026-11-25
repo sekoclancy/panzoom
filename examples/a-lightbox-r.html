@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>lightbox comparison (R) – panzoom</title>
+<title>lightbox reference (R) – panzoom</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,6 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../examples/b-mixed-r.html" rel="next">
 <link href="../assets/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -84,9 +85,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7018cc8867401cb480acf35f2ed2882d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-f157217e1616e2d29265d38c09db305d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f590bd4fc3bbd6e13650ddcdf3230981.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -350,10 +351,37 @@ window.Quarto = {
     <a class="nav-link" href="../reference.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../examples/b-mixed-r.html" aria-current="page"> 
-<span class="menu-text">Examples</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Examples</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-examples">    
+        <li>
+    <a class="dropdown-item" href="../examples/a-lightbox-r.html">
+ <span class="dropdown-text">R examples</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/j-lightbox-python.html">
+ <span class="dropdown-text">Python examples</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/n-color-options-r.html">
+ <span class="dropdown-text">Styling</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/p-divs-r.html">
+ <span class="dropdown-text">Divs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/r-dark-plots-r.html">
+ <span class="dropdown-text">Theme</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../formats/u-revealjs-r.html">
+ <span class="dropdown-text">Formats</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
@@ -375,7 +403,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title"><code>lightbox</code> comparison (R)</h1>
+          <h1 class="quarto-secondary-nav-title"><code>lightbox</code> reference (R)</h1>
         </a>     
     </div>
   </nav>
@@ -395,7 +423,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/a-lightbox-r.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">A. <code>lightbox</code> comparison (R)</span></a>
+ <span class="menu-text">A. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -407,7 +435,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/c-global-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">C. Global <code>panzoom</code> (R)</span></a>
+ <span class="menu-text">C. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -425,7 +453,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/f-cell-options-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">F. Cell options (R)</span></a>
+ <span class="menu-text">F. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -457,19 +485,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/j-lightbox-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">J. <code>lightbox</code> comparison (Python)</span></a>
+ <span class="menu-text">J. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/k-global-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">K. Global <code>panzoom</code> (Python)</span></a>
+ <span class="menu-text">K. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/l-cell-options-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">L. Cell options (Python)</span></a>
+ <span class="menu-text">L. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -546,6 +574,26 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Formats</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../formats/u-revealjs-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">U. Slides (revealjs)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../formats/v-dashboard-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">V. Dashboard</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -578,7 +626,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block"><code>lightbox</code> comparison (R)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block"><code>lightbox</code> reference (R)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -1561,9 +1609,18 @@ Figure&nbsp;3: Heights of Maunga Whau (Mount Eden), from pale yellow (low) to da
   </script>
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../examples/b-mixed-r.html" class="pagination-link" aria-label="B. Interaction with `lightbox`">
+        <span class="nav-page-text">B. Interaction with <code>lightbox</code></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "`lightbox` comparison (R)"</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "`lightbox` reference (R)"</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>

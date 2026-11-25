@@ -71,6 +71,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../examples/r-dark-plots-r.html" rel="next">
+<link href="../examples/p-divs-r.html" rel="prev">
 <link href="../assets/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -84,12 +86,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7018cc8867401cb480acf35f2ed2882d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-f157217e1616e2d29265d38c09db305d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.min.js"></script>
-<script src="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.js"></script>
-<link href="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f590bd4fc3bbd6e13650ddcdf3230981.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.min.js"></script>
+<script src="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.js"></script>
+<link href="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -322,10 +324,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../reference.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../examples/b-mixed-r.html" aria-current="page"> 
-<span class="menu-text">Examples</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Examples</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-examples">    
+        <li>
+    <a class="dropdown-item" href="../examples/a-lightbox-r.html">
+ <span class="dropdown-text">R examples</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/j-lightbox-python.html">
+ <span class="dropdown-text">Python examples</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/n-color-options-r.html">
+ <span class="dropdown-text">Styling</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/p-divs-r.html">
+ <span class="dropdown-text">Divs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/r-dark-plots-r.html">
+ <span class="dropdown-text">Theme</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../formats/u-revealjs-r.html">
+ <span class="dropdown-text">Formats</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
@@ -367,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/a-lightbox-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">A. <code>lightbox</code> comparison (R)</span></a>
+ <span class="menu-text">A. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -379,7 +408,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/c-global-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">C. Global <code>panzoom</code> (R)</span></a>
+ <span class="menu-text">C. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -397,7 +426,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/f-cell-options-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">F. Cell options (R)</span></a>
+ <span class="menu-text">F. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -429,19 +458,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/j-lightbox-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">J. <code>lightbox</code> comparison (Python)</span></a>
+ <span class="menu-text">J. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/k-global-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">K. Global <code>panzoom</code> (Python)</span></a>
+ <span class="menu-text">K. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/l-cell-options-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">L. Cell options (Python)</span></a>
+ <span class="menu-text">L. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -514,6 +543,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../examples/t-renderings-python.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">T. Renderings (Python)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Formats</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../formats/u-revealjs-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">U. Slides (revealjs)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../formats/v-dashboard-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">V. Dashboard</span></a>
   </div>
 </li>
       </ul>
@@ -1626,7 +1675,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../examples/p-divs-r.html" class="pagination-link" aria-label="P. Divs (R)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">P. Divs (R)</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../examples/r-dark-plots-r.html" class="pagination-link" aria-label="R. Dark plots">
+        <span class="nav-page-text">R. Dark plots</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Divs (Python)"</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="an">engine:</span><span class="co"> jupyter</span></span>

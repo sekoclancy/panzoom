@@ -84,12 +84,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7018cc8867401cb480acf35f2ed2882d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-f157217e1616e2d29265d38c09db305d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/panzoom-0.1.0/panzoom.min.js"></script>
-<script src="site_libs/quarto-contrib/panzoom-0.1.0/panzoom.js"></script>
-<link href="site_libs/quarto-contrib/panzoom-0.1.0/panzoom.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f590bd4fc3bbd6e13650ddcdf3230981.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/panzoom-0.3.0/panzoom.min.js"></script>
+<script src="site_libs/quarto-contrib/panzoom-0.3.0/panzoom.js"></script>
+<link href="site_libs/quarto-contrib/panzoom-0.3.0/panzoom.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/kbd/kbd.js"></script>
 <link href="site_libs/quarto-contrib/kbd/kbd.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -353,10 +353,37 @@ window.Quarto = {
     <a class="nav-link" href="./reference.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="./examples/b-mixed-r.html" aria-current="page"> 
-<span class="menu-text">Examples</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Examples</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-examples">    
+        <li>
+    <a class="dropdown-item" href="./examples/a-lightbox-r.html">
+ <span class="dropdown-text">R examples</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./examples/j-lightbox-python.html">
+ <span class="dropdown-text">Python examples</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./examples/n-color-options-r.html">
+ <span class="dropdown-text">Styling</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./examples/p-divs-r.html">
+ <span class="dropdown-text">Divs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./examples/r-dark-plots-r.html">
+ <span class="dropdown-text">Theme</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./formats/u-revealjs-r.html">
+ <span class="dropdown-text">Formats</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
@@ -398,7 +425,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/a-lightbox-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">A. <code>lightbox</code> comparison (R)</span></a>
+ <span class="menu-text">A. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -410,7 +437,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/c-global-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">C. Global <code>panzoom</code> (R)</span></a>
+ <span class="menu-text">C. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -428,7 +455,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/f-cell-options-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">F. Cell options (R)</span></a>
+ <span class="menu-text">F. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -460,19 +487,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/j-lightbox-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">J. <code>lightbox</code> comparison (Python)</span></a>
+ <span class="menu-text">J. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/k-global-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">K. Global <code>panzoom</code> (Python)</span></a>
+ <span class="menu-text">K. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./examples/l-cell-options-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">L. Cell options (Python)</span></a>
+ <span class="menu-text">L. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -549,6 +576,26 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Formats</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./formats/u-revealjs-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">U. Slides (revealjs)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./formats/v-dashboard-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">V. Dashboard</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -619,6 +666,7 @@ Warning
 <p>You can install this extension using the Quarto CLI (Quarto &gt;=1.8.27):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> add sekoclancy/panzoom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This will install the extension under the <code>_extensions</code> subdirectory. If you’re using version control, you will want to check in this directory.</p>
+<p>This page was rendered with Quarto 1.11.9 and panzoom 0.3.0. Write <code>{{&lt; panzoom-version &gt;}}</code> in your own documents to show the installed version.</p>
 </section>
 <section id="demo" class="level2">
 <h2 class="anchored" data-anchor-id="demo">Demo</h2>
@@ -665,7 +713,7 @@ Warning
 <tr class="odd">
 <td>Zoom</td>
 <td>scroll or pinch, toward the cursor</td>
-<td>+ and -</td>
+<td>+ or =, and -</td>
 </tr>
 <tr class="even">
 <td>Pan</td>
@@ -694,7 +742,7 @@ Warning
 </tr>
 <tr class="odd">
 <td>Close</td>
-<td>the × button, a click on the background, or the browser Back button</td>
+<td>the × button, a click on the background, a swipe up or down, or the browser Back button</td>
 <td>Esc</td>
 </tr>
 </tbody>
@@ -777,7 +825,7 @@ Figure&nbsp;1: Heights of Maunga Whau (Mount Eden) in Auckland as filled contour
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="index_files/figure-html/unnamed-chunk-2-1.png" class="panzoom-link"><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="panzoom nolightbox img-fluid figure-img" data-panzoom-max-zoom="10" data-panzoom-hint="false" alt="Heat map of Maunga Whau's heights in terrain colors, with contour lines" width="672"></a></p>
+<p><a href="index_files/figure-html/unnamed-chunk-2-1.png" class="panzoom-link"><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="panzoom nolightbox img-fluid figure-img" data-panzoom-hint="false" data-panzoom-max-zoom="10" alt="Heat map of Maunga Whau's heights in terrain colors, with contour lines" width="672"></a></p>
 <figcaption>Maunga Whau’s heights as a heat map, with contour lines.</figcaption>
 </figure>
 </div>
@@ -1702,328 +1750,332 @@ Figure&nbsp;2: Maunga Whau’s heights, drawn two ways.
 <span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>This will install the extension under the <span class="in">`_extensions`</span> subdirectory. If you're</span>
 <span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>using version control, you will want to check in this directory.</span>
 <span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## Demo</span></span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;video id="demo-video" src="images/demo.mp4" poster="images/demo-poster.png"</span></span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="in">  muted loop playsinline controls preload="metadata" style="width: 100%; height: auto;"</span></span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="in">  aria-label="Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with Ctrl/Cmd+arrow keys."&gt;</span></span>
-<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/video&gt;</span></span>
-<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;script&gt;</span></span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="in">  // Plays while at least half of it is on screen, unless the reader paused</span></span>
-<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a><span class="in">  // it or asks for reduced motion.</span></span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="in">  (function () {</span></span>
-<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a><span class="in">    var video = document.getElementById("demo-video");</span></span>
-<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a><span class="in">    if (!("IntersectionObserver" in window)) return;</span></span>
-<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="in">    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;</span></span>
-<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="in">    var paused = false, ours = false;</span></span>
-<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="in">    video.addEventListener("pause", function () { if (!ours) paused = true; ours = false; });</span></span>
-<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="in">    video.addEventListener("play", function () { paused = false; });</span></span>
-<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a><span class="in">    new IntersectionObserver(function (entries) {</span></span>
-<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a><span class="in">      if (entries[0].isIntersecting) {</span></span>
-<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="in">        if (!paused) video.play().catch(function () {});</span></span>
-<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a><span class="in">      } else if (!video.paused) {</span></span>
-<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="in">        ours = true;</span></span>
-<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a><span class="in">        video.pause();</span></span>
-<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
-<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a><span class="in">    }, { threshold: 0.5 }).observe(video);</span></span>
-<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="in">  })();</span></span>
-<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/script&gt;</span></span>
-<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## Controls</span></span>
-<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>Click a figure to open it, or reach it with Tab and press Enter.</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>This page was rendered with Quarto {{&lt; version &gt;}} and panzoom</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>{{&lt; panzoom-version &gt;}}. Write <span class="in">`{{{&lt; panzoom-version &gt;}}}`</span> in your own</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>documents to show the installed version.</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Demo</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;video id="demo-video" src="images/demo.mp4" poster="images/demo-poster.png"</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="in">  muted loop playsinline controls preload="metadata" style="width: 100%; height: auto;"</span></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a><span class="in">  aria-label="Opening a gallery image, zooming with the wheel, dragging, resetting with a double-click, stepping to the next image, and panning a wide figure with Ctrl/Cmd+arrow keys."&gt;</span></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/video&gt;</span></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;script&gt;</span></span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a><span class="in">  // Plays while at least half of it is on screen, unless the reader paused</span></span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="in">  // it or asks for reduced motion.</span></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="in">  (function () {</span></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="in">    var video = document.getElementById("demo-video");</span></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="in">    if (!("IntersectionObserver" in window)) return;</span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a><span class="in">    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;</span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a><span class="in">    var paused = false, ours = false;</span></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="in">    video.addEventListener("pause", function () { if (!ours) paused = true; ours = false; });</span></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a><span class="in">    video.addEventListener("play", function () { paused = false; });</span></span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="in">    new IntersectionObserver(function (entries) {</span></span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a><span class="in">      if (entries[0].isIntersecting) {</span></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="in">        if (!paused) video.play().catch(function () {});</span></span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a><span class="in">      } else if (!video.paused) {</span></span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="in">        ours = true;</span></span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a><span class="in">        video.pause();</span></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a><span class="in">    }, { threshold: 0.5 }).observe(video);</span></span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a><span class="in">  })();</span></span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/script&gt;</span></span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Action                                  <span class="pp">|</span> Mouse or touch                                                               <span class="pp">|</span> Keyboard                                                    <span class="pp">|</span></span>
-<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>  <span class="pp">| ---------------------------------------</span> <span class="pp">| ---------------------------------------------------------------------------</span>  <span class="pp">| -----------------------------------------------------------</span> <span class="pp">|</span></span>
-<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Zoom                                    <span class="pp">|</span> scroll or pinch, toward the cursor                                           <span class="pp">|</span> + and -                                                     <span class="pp">|</span></span>
-<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Pan                                     <span class="pp">|</span> drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac)  <span class="pp">|</span> {{&lt; kbd Ctrl-arrow mac=Cmd-arrow &gt;}}                        <span class="pp">|</span></span>
-<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Go back to the opening view             <span class="pp">|</span> double-click or double-tap                                                   <span class="pp">|</span> 0                                                           <span class="pp">|</span></span>
-<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Change image in a gallery               <span class="pp">|</span> the previous and next buttons, or swipe                                      <span class="pp">|</span> left and right arrow                                        <span class="pp">|</span></span>
-<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Hide or show captions and descriptions  <span class="pp">|</span>                                                                              <span class="pp">|</span> c                                                           <span class="pp">|</span></span>
-<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Hide or show hints                      <span class="pp">|</span>                                                                              <span class="pp">|</span> h                                                           <span class="pp">|</span></span>
-<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Close                                   <span class="pp">|</span> the × button, a click on the background, or the browser Back button          <span class="pp">|</span> Esc                                                         <span class="pp">|</span></span>
-<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code cell</span></span>
-<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a>Give a code cell the <span class="in">`#| panzoom: true`</span> option, and clicking its plot opens it</span>
-<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a>in the viewer:</span>
-<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom: true</span></span>
-<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
-<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
-<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
-<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heat map of the Maunga Whau volcano's heights, from dark blue low ground to</span></span>
-<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a><span class="co">#|   a yellow peak</span></span>
-<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heights of Maunga Whau (Mount Eden) in Auckland, from dark blue (low) to</span></span>
-<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a><span class="co">#|   yellow (high).</span></span>
-<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
-<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cross-referenced figure</span></span>
-<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a>A figure with a label (<span class="in">`#| label: fig-volcano`</span>) keeps its number and its</span>
-<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a>cross-references: @fig-volcano links here, and the viewer shows the caption as</span>
-<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a>"Figure 1: ...".</span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## Controls</span></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>Click a figure to open it, or reach it with Tab and press Enter.</span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Action                                  <span class="pp">|</span> Mouse or touch                                                                                   <span class="pp">|</span> Keyboard                                                    <span class="pp">|</span></span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>  <span class="pp">| ---------------------------------------</span> <span class="pp">| ---------------------------------------------------------------------------</span>                      <span class="pp">| -----------------------------------------------------------</span> <span class="pp">|</span></span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Zoom                                    <span class="pp">|</span> scroll or pinch, toward the cursor                                                               <span class="pp">|</span> + or =, and -                                               <span class="pp">|</span></span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Pan                                     <span class="pp">|</span> drag, Shift+scroll (sideways), or Alt+scroll (up and down; Option on a Mac)                      <span class="pp">|</span> {{&lt; kbd Ctrl-arrow mac=Cmd-arrow &gt;}}                        <span class="pp">|</span></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Go back to the opening view             <span class="pp">|</span> double-click or double-tap                                                                       <span class="pp">|</span> 0                                                           <span class="pp">|</span></span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Change image in a gallery               <span class="pp">|</span> the previous and next buttons, or swipe                                                          <span class="pp">|</span> left and right arrow                                        <span class="pp">|</span></span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Hide or show captions and descriptions  <span class="pp">|</span>                                                                                                  <span class="pp">|</span> c                                                           <span class="pp">|</span></span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Hide or show hints                      <span class="pp">|</span>                                                                                                  <span class="pp">|</span> h                                                           <span class="pp">|</span></span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a>  <span class="pp">|</span> Close                                   <span class="pp">|</span> the × button, a click on the background, a swipe up or down, or the browser Back button          <span class="pp">|</span> Esc                                                         <span class="pp">|</span></span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code cell</span></span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a>Give a code cell the <span class="in">`#| panzoom: true`</span> option, and clicking its plot opens it</span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a>in the viewer:</span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom: true</span></span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 12</span></span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heat map of the Maunga Whau volcano's heights, from dark blue low ground to</span></span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a><span class="co">#|   a yellow peak</span></span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heights of Maunga Whau (Mount Eden) in Auckland, from dark blue (low) to</span></span>
+<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a><span class="co">#|   yellow (high).</span></span>
+<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cross-referenced figure</span></span>
 <span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom: true</span></span>
-<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-volcano</span></span>
-<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
-<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color</span></span>
-<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a><span class="co">#|   key</span></span>
-<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heights of Maunga Whau (Mount Eden) in Auckland as filled contours, from</span></span>
-<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a><span class="co">#|   green on the low ground to white at the 195 m summit. The key gives heights</span></span>
-<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a><span class="co">#|   in meters.</span></span>
-<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(volcano, <span class="at">color.palette =</span> terrain.colors)</span>
-<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cell options</span></span>
-<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a>Options under <span class="in">`#| panzoom:`</span> override the document's settings for one cell. This</span>
-<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set</span>
-<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a>under the <span class="in">`panzoom:`</span> option in the YAML header) and hides the hint line.</span>
+<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a>A figure with a label (<span class="in">`#| label: fig-volcano`</span>) keeps its number and its</span>
+<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a>cross-references: @fig-volcano links here, and the viewer shows the caption as</span>
+<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a>"Figure 1: ...".</span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom: true</span></span>
+<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-volcano</span></span>
+<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
+<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Filled contour map of Maunga Whau's heights in terrain colors, with a color</span></span>
+<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a><span class="co">#|   key</span></span>
+<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heights of Maunga Whau (Mount Eden) in Auckland as filled contours, from</span></span>
+<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a><span class="co">#|   green on the low ground to white at the 195 m summit. The key gives heights</span></span>
+<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a><span class="co">#|   in meters.</span></span>
+<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(volcano, <span class="at">color.palette =</span> terrain.colors)</span>
+<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cell options</span></span>
 <span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
-<span id="cb15-138"><a href="#cb15-138" aria-hidden="true" tabindex="-1"></a><span class="co">#|   max-zoom: 10</span></span>
-<span id="cb15-139"><a href="#cb15-139" aria-hidden="true" tabindex="-1"></a><span class="co">#|   hint: false</span></span>
-<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
-<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heat map of Maunga Whau's heights in terrain colors, with contour lines</span></span>
-<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Maunga Whau's heights as a heat map, with contour lines.</span></span>
-<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Terrain 2"</span>))</span>
-<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>Options under <span class="in">`#| panzoom:`</span> override the document's settings for one cell. This</span>
+<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a>figure zooms in up to 10 screen pixels per image pixel (instead of the 6 set</span>
+<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a>under the <span class="in">`panzoom:`</span> option in the YAML header) and hides the hint line.</span>
+<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
+<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a><span class="co">#|   max-zoom: 10</span></span>
+<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a><span class="co">#|   hint: false</span></span>
+<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
+<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heat map of Maunga Whau's heights in terrain colors, with contour lines</span></span>
+<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Maunga Whau's heights as a heat map, with contour lines.</span></span>
 <span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a><span class="fu">## Keys</span></span>
-<span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a>The <span class="in">`keys`</span> option in the YAML header changes the keys for zooming, resetting,</span>
-<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a>hiding the caption or the hint line, and closing. Actions left out keep their</span>
-<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a>defaults:</span>
+<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Terrain 2"</span>))</span>
+<span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a><span class="fu">## Keys</span></span>
 <span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
-<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a><span class="fu">panzoom</span><span class="kw">:</span></span>
-<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">keys</span><span class="kw">:</span></span>
-<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">caption</span><span class="kw">:</span><span class="at"> k</span><span class="co">          # one key</span></span>
-<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hint</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">         # no key</span></span>
-<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">close</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">Escape</span><span class="kw">,</span><span class="at"> q</span><span class="kw">]</span><span class="co">  # several keys</span></span>
-<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a><span class="fu">## Markdown image</span></span>
-<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"images/volcano.png"</span>, <span class="at">width =</span> <span class="dv">1600</span>, <span class="at">height =</span> <span class="dv">1100</span>)</span>
-<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(volcano, <span class="at">theta =</span> <span class="dv">135</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">"green3"</span>, <span class="at">shade =</span> <span class="fl">0.5</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
-<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">dev.off</span>())</span>
-<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>Give a markdown image the <span class="in">`.panzoom`</span> class. The text in brackets is the caption,</span>
-<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>and <span class="in">`fig-alt`</span> is the alt text:</span>
-<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
-<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a><span class="ex">![Maunga</span> Whau <span class="er">(</span><span class="ex">Mount</span> Eden<span class="kw">)</span> <span class="er">in</span> <span class="ex">Auckland,</span> as a shaded 3D surface.]<span class="er">(</span><span class="ex">images/volcano.png</span><span class="kw">)</span><span class="ex">{.panzoom</span> fig-alt=<span class="st">"Perspective plot of Maunga Whau's heights, shaded green"</span>}</span>
-<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a>The <span class="in">`keys`</span> option in the YAML header changes the keys for zooming, resetting,</span>
+<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a>hiding the caption or the hint line, and closing. Actions left out keep their</span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a>defaults:</span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a><span class="fu">panzoom</span><span class="kw">:</span></span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">keys</span><span class="kw">:</span></span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">caption</span><span class="kw">:</span><span class="at"> k</span><span class="co">          # one key</span></span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hint</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">         # no key</span></span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">close</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">Escape</span><span class="kw">,</span><span class="at"> q</span><span class="kw">]</span><span class="co">  # several keys</span></span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a><span class="fu">## Markdown image</span></span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"images/volcano.png"</span>, <span class="at">width =</span> <span class="dv">1600</span>, <span class="at">height =</span> <span class="dv">1100</span>)</span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(volcano, <span class="at">theta =</span> <span class="dv">135</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">"green3"</span>, <span class="at">shade =</span> <span class="fl">0.5</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">dev.off</span>())</span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a>Give a markdown image the <span class="in">`.panzoom`</span> class. The text in brackets is the caption,</span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a>and <span class="in">`fig-alt`</span> is the alt text:</span>
 <span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a><span class="fu">## Div</span></span>
-<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a>Wrap any block in a <span class="in">`.panzoom`</span> div to select every image in it, code cell output</span>
-<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>included:</span>
-<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a><span class="in">````source</span></span>
-<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a><span class="in">::: {.panzoom layout-ncol="2"}</span></span>
-<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 8</span></span>
-<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 5.5</span></span>
-<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-alt: &gt;-</span></span>
-<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a><span class="in">#|   Heat map of Maunga Whau's heights in terrain colors, from green to white</span></span>
-<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: &gt;-</span></span>
-<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a><span class="in">#|   Maunga Whau's heights as a heat map, from green (low) to white (high).</span></span>
-<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a><span class="in">image(z = volcano, col = terrain.colors(100))</span></span>
-<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a><span class="in">![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}</span></span>
-<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a><span class="in">:::</span></span>
-<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a><span class="ex">![Maunga</span> Whau <span class="er">(</span><span class="ex">Mount</span> Eden<span class="kw">)</span> <span class="er">in</span> <span class="ex">Auckland,</span> as a shaded 3D surface.]<span class="er">(</span><span class="ex">images/volcano.png</span><span class="kw">)</span><span class="ex">{.panzoom</span> fig-alt=<span class="st">"Perspective plot of Maunga Whau's heights, shaded green"</span>}</span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a><span class="fu">## Div</span></span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>Wrap any block in a <span class="in">`.panzoom`</span> div to select every image in it, code cell output</span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a>included:</span>
+<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a><span class="in">````source</span></span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a><span class="in">::: {.panzoom layout-ncol="2"}</span></span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-width: 8</span></span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-height: 5.5</span></span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-alt: &gt;-</span></span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a><span class="in">#|   Heat map of Maunga Whau's heights in terrain colors, from green to white</span></span>
+<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-cap: &gt;-</span></span>
+<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a><span class="in">#|   Maunga Whau's heights as a heat map, from green (low) to white (high).</span></span>
+<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a><span class="in">image(z = volcano, col = terrain.colors(100))</span></span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>::: {.panzoom layout-ncol="2"}</span>
-<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
-<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5.5</span></span>
-<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
-<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heat map of Maunga Whau's heights in terrain colors, from green to white</span></span>
-<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Maunga Whau's heights as a heat map, from green (low) to white (high).</span></span>
-<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">100</span>))</span>
-<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a><span class="al">![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png)</span>{fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}</span>
-<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a><span class="fu">## Captions and galleries</span></span>
-<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>The viewer shows the figure's caption. Plots with the same <span class="in">`group`</span> form a</span>
-<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a>gallery. Subfigures of one figure are a gallery automatically.</span>
-<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
-<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a><span class="co">#|   group: volcano-views</span></span>
-<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt:</span></span>
-<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - &gt;-</span></span>
-<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a><span class="co">#|     Heat map of Maunga Whau's heights in Viridis colors, from dark blue to</span></span>
-<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a><span class="co">#|     yellow</span></span>
-<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Perspective plot of Maunga Whau's heights, shaded green"</span></span>
-<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap:</span></span>
-<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - &gt;-</span></span>
-<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a><span class="co">#|     Maunga Whau (Mount Eden) in Auckland, as heights on a 10 m by 10 m grid,</span></span>
-<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="co">#|     from 94 m (dark blue) to 195 m (yellow). The crater is the darker hollow</span></span>
-<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a><span class="co">#|     inside the yellow rim.</span></span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a><span class="in">![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png){fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}</span></span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a><span class="in">:::</span></span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>::: {.panzoom layout-ncol="2"}</span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5.5</span></span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Heat map of Maunga Whau's heights in terrain colors, from green to white</span></span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Maunga Whau's heights as a heat map, from green (low) to white (high).</span></span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">100</span>))</span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="al">![Maunga Whau (Mount Eden) in Auckland, as a shaded 3D surface.](images/volcano.png)</span>{fig-alt="Perspective plot of Maunga Whau's heights, shaded green"}</span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a><span class="fu">## Captions and galleries</span></span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a>The viewer shows the figure's caption. Plots with the same <span class="in">`group`</span> form a</span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a>gallery. Subfigures of one figure are a gallery automatically.</span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
+<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a><span class="co">#|   group: volcano-views</span></span>
+<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt:</span></span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - &gt;-</span></span>
+<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a><span class="co">#|     Heat map of Maunga Whau's heights in Viridis colors, from dark blue to</span></span>
+<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a><span class="co">#|     yellow</span></span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Perspective plot of Maunga Whau's heights, shaded green"</span></span>
+<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap:</span></span>
 <span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - &gt;-</span></span>
-<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="co">#|     Maunga Whau (Mount Eden) in Auckland, as a shaded surface of its heights</span></span>
-<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="co">#|     on a 10 m by 10 m grid, viewed from above at an angle. The crater rim and</span></span>
-<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a><span class="co">#|     the slope down to the surrounding ground read as relief.</span></span>
-<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
-<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(volcano, <span class="at">theta =</span> <span class="dv">135</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">"green3"</span>, <span class="at">shade =</span> <span class="fl">0.5</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
-<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="co">#|     Maunga Whau (Mount Eden) in Auckland, as heights on a 10 m by 10 m grid,</span></span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="co">#|     from 94 m (dark blue) to 195 m (yellow). The crater is the darker hollow</span></span>
+<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a><span class="co">#|     inside the yellow rim.</span></span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - &gt;-</span></span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a><span class="co">#|     Maunga Whau (Mount Eden) in Auckland, as a shaded surface of its heights</span></span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="co">#|     on a 10 m by 10 m grid, viewed from above at an angle. The crater rim and</span></span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a><span class="co">#|     the slope down to the surrounding ground read as relief.</span></span>
 <span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom: true</span></span>
-<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-volcano-sub</span></span>
-<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt:</span></span>
-<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Contour lines of Maunga Whau's heights"</span></span>
-<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Heat map of Maunga Whau's heights, in yellow, orange, and red"</span></span>
-<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Maunga Whau's heights, drawn two ways."</span></span>
-<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap:</span></span>
-<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Contour lines every 10 m."</span></span>
-<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "A heat map, from pale yellow (low) to dark red (high)."</span></span>
-<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
-<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano)</span>
-<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>, <span class="st">"Viridis"</span>))</span>
+<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(volcano, <span class="at">theta =</span> <span class="dv">135</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">col =</span> <span class="st">"green3"</span>, <span class="at">shade =</span> <span class="fl">0.5</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom: true</span></span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-volcano-sub</span></span>
+<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt:</span></span>
+<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Contour lines of Maunga Whau's heights"</span></span>
+<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Heat map of Maunga Whau's heights, in yellow, orange, and red"</span></span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Maunga Whau's heights, drawn two ways."</span></span>
+<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-subcap:</span></span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "Contour lines every 10 m."</span></span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="co">#|   - "A heat map, from pale yellow (low) to dark red (high)."</span></span>
 <span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wide figure {expect-fit="height"}</span></span>
-<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>A figure many times wider than tall would be too thin to read if it opened</span>
-<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>whole, so it opens at screen height, at the spot you clicked. panzoom does this</span>
-<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a>on its own for very wide figures; here, <span class="in">`fit: height`</span> is set so this figure</span>
-<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a>always opens that way, whatever the window's shape. Click the highlighted panel,</span>
-<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a>and the viewer opens right on it.</span>
-<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
-<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a><span class="co">#|   fit: height</span></span>
-<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 16</span></span>
-<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 2</span></span>
-<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
-<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Eight line plots of random walks side by side; the sixth, titled Click</span></span>
-<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a><span class="co">#|   here, is highlighted in yellow and pink</span></span>
-<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
-<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Eight simulated random walks of 200 steps each, with the sixth highlighted.</span></span>
-<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">8</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="at">cex.main =</span> <span class="fl">1.3</span>)</span>
-<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>) {</span>
-<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(<span class="dv">200</span>))</span>
-<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">6</span>) {</span>
-<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(y, <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">main =</span> <span class="st">"Click here"</span>, <span class="at">col.main =</span> <span class="st">"#c2185b"</span>)</span>
-<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a>    usr <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">"usr"</span>)</span>
-<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rect</span>(usr[<span class="dv">1</span>], usr[<span class="dv">3</span>], usr[<span class="dv">2</span>], usr[<span class="dv">4</span>], <span class="at">col =</span> <span class="st">"#fff3b0"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
-<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines</span>(y, <span class="at">col =</span> <span class="st">"#c2185b"</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
-<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"Panel"</span>, i))</span>
-<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a><span class="fu">## Math and code in captions</span></span>
-<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a>Captions and descriptions keep their math and inline code, typeset as on the</span>
-<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a>page, along with citations, cross-references, and links.</span>
-<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
-<span id="cb15-317"><a href="#cb15-317" aria-hidden="true" tabindex="-1"></a><span class="co">#|   description: &gt;-</span></span>
-<span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a><span class="co">#|     $\varphi(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}$, drawn with `dnorm(x)`.</span></span>
-<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a><span class="co">#|     The shaded area is $P(|X| &lt; 1) \approx 0.683$.</span></span>
-<span id="cb15-320"><a href="#cb15-320" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
-<span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a><span class="co">#|   The bell curve of the standard normal density, with the area between -1 and</span></span>
-<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a><span class="co">#|   1 shaded grey</span></span>
-<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "The standard normal density, $\\varphi(x)$."</span></span>
-<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">400</span>)</span>
-<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">dnorm</span>(x), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>)</span>
-<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a>inner <span class="ot">&lt;-</span> <span class="fu">abs</span>(x) <span class="sc">&lt;</span> <span class="dv">1</span></span>
-<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(</span>
-<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, x[inner], <span class="dv">1</span>),</span>
-<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">dnorm</span>(x[inner]), <span class="dv">0</span>),</span>
-<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"grey85"</span>,</span>
-<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="cn">NA</span></span>
-<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, <span class="fu">dnorm</span>(x), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a><span class="fu">## Untouched figure</span></span>
-<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a>Without the <span class="in">`#| panzoom:`</span> option, a figure is left as it is, and clicking it</span>
-<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a>does nothing.</span>
-<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-344"><a href="#cb15-344" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Contour lines of Maunga Whau's heights"</span></span>
-<span id="cb15-346"><a href="#cb15-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-347"><a href="#cb15-347" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
-<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-349"><a href="#cb15-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a><span class="fu">## Opting out</span></span>
-<span id="cb15-351"><a href="#cb15-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-352"><a href="#cb15-352" aria-hidden="true" tabindex="-1"></a>Inside a <span class="in">`.panzoom`</span> div, every image gets the viewer except one with the</span>
-<span id="cb15-353"><a href="#cb15-353" aria-hidden="true" tabindex="-1"></a><span class="in">`.nopanzoom`</span> class, so clicking the image below does nothing.</span>
-<span id="cb15-354"><a href="#cb15-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
-<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.panzoom}</span>
-<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a><span class="ex">![Maunga</span> Whau <span class="er">(</span><span class="ex">Mount</span> Eden<span class="kw">)</span> <span class="er">in</span> <span class="ex">Auckland,</span> as a shaded 3D surface.]<span class="er">(</span><span class="ex">images/volcano.png</span><span class="kw">)</span><span class="ex">{.nopanzoom</span> width=40% fig-alt=<span class="st">"Perspective plot of Maunga Whau's heights, shaded green"</span>}</span>
-<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
-<span id="cb15-359"><a href="#cb15-359" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-360"><a href="#cb15-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-361"><a href="#cb15-361" aria-hidden="true" tabindex="-1"></a>For a whole code cell, use <span class="in">`#| panzoom: false`</span>. Clicking the plot below does</span>
-<span id="cb15-362"><a href="#cb15-362" aria-hidden="true" tabindex="-1"></a>nothing either:</span>
-<span id="cb15-363"><a href="#cb15-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-364"><a href="#cb15-364" aria-hidden="true" tabindex="-1"></a><span class="in">````source</span></span>
-<span id="cb15-365"><a href="#cb15-365" aria-hidden="true" tabindex="-1"></a><span class="in">::: {.panzoom}</span></span>
-<span id="cb15-366"><a href="#cb15-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-367"><a href="#cb15-367" aria-hidden="true" tabindex="-1"></a><span class="in">#| panzoom: false</span></span>
-<span id="cb15-368"><a href="#cb15-368" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-alt: "Contour lines of Maunga Whau's heights"</span></span>
-<span id="cb15-369"><a href="#cb15-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-370"><a href="#cb15-370" aria-hidden="true" tabindex="-1"></a><span class="in">contour(volcano)</span></span>
-<span id="cb15-371"><a href="#cb15-371" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-372"><a href="#cb15-372" aria-hidden="true" tabindex="-1"></a><span class="in">:::</span></span>
-<span id="cb15-373"><a href="#cb15-373" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb15-374"><a href="#cb15-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-375"><a href="#cb15-375" aria-hidden="true" tabindex="-1"></a>::: {.panzoom}</span>
-<span id="cb15-378"><a href="#cb15-378" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-379"><a href="#cb15-379" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom: false</span></span>
-<span id="cb15-380"><a href="#cb15-380" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb15-381"><a href="#cb15-381" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Contour lines of Maunga Whau's heights"</span></span>
-<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
-<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-385"><a href="#cb15-385" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="at">z =</span> volcano)</span>
+<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wide figure {expect-fit="height"}</span></span>
+<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a>A figure many times wider than tall would be too thin to read if it opened</span>
+<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a>whole, so it opens at screen height, at the spot you clicked. panzoom does this</span>
+<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a>on its own for very wide figures; here, <span class="in">`fit: height`</span> is set so this figure</span>
+<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a>always opens that way, whatever the window's shape. Click the highlighted panel,</span>
+<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a>and the viewer opens right on it.</span>
+<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
+<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a><span class="co">#|   fit: height</span></span>
+<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 16</span></span>
+<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 2</span></span>
+<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
+<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Eight line plots of random walks side by side; the sixth, titled Click</span></span>
+<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a><span class="co">#|   here, is highlighted in yellow and pink</span></span>
+<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &gt;-</span></span>
+<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="co">#|   Eight simulated random walks of 200 steps each, with the sixth highlighted.</span></span>
+<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">8</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="at">cex.main =</span> <span class="fl">1.3</span>)</span>
+<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>) {</span>
+<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(<span class="dv">200</span>))</span>
+<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">6</span>) {</span>
+<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(y, <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">main =</span> <span class="st">"Click here"</span>, <span class="at">col.main =</span> <span class="st">"#c2185b"</span>)</span>
+<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>    usr <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">"usr"</span>)</span>
+<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rect</span>(usr[<span class="dv">1</span>], usr[<span class="dv">3</span>], usr[<span class="dv">2</span>], usr[<span class="dv">4</span>], <span class="at">col =</span> <span class="st">"#fff3b0"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines</span>(y, <span class="at">col =</span> <span class="st">"#c2185b"</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"Panel"</span>, i))</span>
+<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a><span class="fu">## Math and code in captions</span></span>
+<span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a>Captions and descriptions keep their math and inline code, typeset as on the</span>
+<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a>page, along with citations, cross-references, and links.</span>
+<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-320"><a href="#cb15-320" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom:</span></span>
+<span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a><span class="co">#|   description: &gt;-</span></span>
+<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a><span class="co">#|     $\varphi(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}$, drawn with `dnorm(x)`.</span></span>
+<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a><span class="co">#|     The shaded area is $P(|X| &lt; 1) \approx 0.683$.</span></span>
+<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: &gt;-</span></span>
+<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a><span class="co">#|   The bell curve of the standard normal density, with the area between -1 and</span></span>
+<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a><span class="co">#|   1 shaded grey</span></span>
+<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "The standard normal density, $\\varphi(x)$."</span></span>
+<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">400</span>)</span>
+<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">dnorm</span>(x), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>)</span>
+<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a>inner <span class="ot">&lt;-</span> <span class="fu">abs</span>(x) <span class="sc">&lt;</span> <span class="dv">1</span></span>
+<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(</span>
+<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, x[inner], <span class="dv">1</span>),</span>
+<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">dnorm</span>(x[inner]), <span class="dv">0</span>),</span>
+<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"grey85"</span>,</span>
+<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="cn">NA</span></span>
+<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, <span class="fu">dnorm</span>(x), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a><span class="fu">## Untouched figure</span></span>
+<span id="cb15-342"><a href="#cb15-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-343"><a href="#cb15-343" aria-hidden="true" tabindex="-1"></a>Without the <span class="in">`#| panzoom:`</span> option, a figure is left as it is, and clicking it</span>
+<span id="cb15-344"><a href="#cb15-344" aria-hidden="true" tabindex="-1"></a>does nothing.</span>
+<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-349"><a href="#cb15-349" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Contour lines of Maunga Whau's heights"</span></span>
+<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-351"><a href="#cb15-351" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
+<span id="cb15-352"><a href="#cb15-352" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-353"><a href="#cb15-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-354"><a href="#cb15-354" aria-hidden="true" tabindex="-1"></a><span class="fu">## Opting out</span></span>
+<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a>Inside a <span class="in">`.panzoom`</span> div, every image gets the viewer except one with the</span>
+<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a><span class="in">`.nopanzoom`</span> class, so clicking the image below does nothing.</span>
+<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-359"><a href="#cb15-359" aria-hidden="true" tabindex="-1"></a><span class="in">```show-source</span></span>
+<span id="cb15-360"><a href="#cb15-360" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.panzoom}</span>
+<span id="cb15-361"><a href="#cb15-361" aria-hidden="true" tabindex="-1"></a><span class="ex">![Maunga</span> Whau <span class="er">(</span><span class="ex">Mount</span> Eden<span class="kw">)</span> <span class="er">in</span> <span class="ex">Auckland,</span> as a shaded 3D surface.]<span class="er">(</span><span class="ex">images/volcano.png</span><span class="kw">)</span><span class="ex">{.nopanzoom</span> width=40% fig-alt=<span class="st">"Perspective plot of Maunga Whau's heights, shaded green"</span>}</span>
+<span id="cb15-362"><a href="#cb15-362" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb15-363"><a href="#cb15-363" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-364"><a href="#cb15-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-365"><a href="#cb15-365" aria-hidden="true" tabindex="-1"></a>For a whole code cell, use <span class="in">`#| panzoom: false`</span>. Clicking the plot below does</span>
+<span id="cb15-366"><a href="#cb15-366" aria-hidden="true" tabindex="-1"></a>nothing either:</span>
+<span id="cb15-367"><a href="#cb15-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-368"><a href="#cb15-368" aria-hidden="true" tabindex="-1"></a><span class="in">````source</span></span>
+<span id="cb15-369"><a href="#cb15-369" aria-hidden="true" tabindex="-1"></a><span class="in">::: {.panzoom}</span></span>
+<span id="cb15-370"><a href="#cb15-370" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-371"><a href="#cb15-371" aria-hidden="true" tabindex="-1"></a><span class="in">#| panzoom: false</span></span>
+<span id="cb15-372"><a href="#cb15-372" aria-hidden="true" tabindex="-1"></a><span class="in">#| fig-alt: "Contour lines of Maunga Whau's heights"</span></span>
+<span id="cb15-373"><a href="#cb15-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-374"><a href="#cb15-374" aria-hidden="true" tabindex="-1"></a><span class="in">contour(volcano)</span></span>
+<span id="cb15-375"><a href="#cb15-375" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-376"><a href="#cb15-376" aria-hidden="true" tabindex="-1"></a><span class="in">:::</span></span>
+<span id="cb15-377"><a href="#cb15-377" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb15-378"><a href="#cb15-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-379"><a href="#cb15-379" aria-hidden="true" tabindex="-1"></a>::: {.panzoom}</span>
+<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a><span class="co">#| panzoom: false</span></span>
+<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb15-385"><a href="#cb15-385" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Contour lines of Maunga Whau's heights"</span></span>
+<span id="cb15-386"><a href="#cb15-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-387"><a href="#cb15-387" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(volcano)</span>
+<span id="cb15-388"><a href="#cb15-388" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-389"><a href="#cb15-389" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

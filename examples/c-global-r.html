@@ -71,6 +71,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../examples/d-selecting-r.html" rel="next">
+<link href="../examples/b-mixed-r.html" rel="prev">
 <link href="../assets/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -84,12 +86,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7018cc8867401cb480acf35f2ed2882d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-f157217e1616e2d29265d38c09db305d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-136ed1289dab47ef4dce1c2fbb43ff23.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.min.js"></script>
-<script src="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.js"></script>
-<link href="../site_libs/quarto-contrib/panzoom-0.1.0/panzoom.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-f590bd4fc3bbd6e13650ddcdf3230981.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-93c5cfd8706ae37010c4f3f71ce0b597.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.min.js"></script>
+<script src="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.js"></script>
+<link href="../site_libs/quarto-contrib/panzoom-0.3.0/panzoom.css" rel="stylesheet">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -354,10 +356,37 @@ window.Quarto = {
     <a class="nav-link" href="../reference.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../examples/b-mixed-r.html" aria-current="page"> 
-<span class="menu-text">Examples</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-examples" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Examples</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-examples">    
+        <li>
+    <a class="dropdown-item" href="../examples/a-lightbox-r.html">
+ <span class="dropdown-text">R examples</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/j-lightbox-python.html">
+ <span class="dropdown-text">Python examples</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/n-color-options-r.html">
+ <span class="dropdown-text">Styling</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/p-divs-r.html">
+ <span class="dropdown-text">Divs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../examples/r-dark-plots-r.html">
+ <span class="dropdown-text">Theme</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../formats/u-revealjs-r.html">
+ <span class="dropdown-text">Formats</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
@@ -399,7 +428,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/a-lightbox-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">A. <code>lightbox</code> comparison (R)</span></a>
+ <span class="menu-text">A. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -411,7 +440,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/c-global-r.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">C. Global <code>panzoom</code> (R)</span></a>
+ <span class="menu-text">C. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -429,7 +458,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/f-cell-options-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">F. Cell options (R)</span></a>
+ <span class="menu-text">F. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -461,19 +490,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/j-lightbox-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">J. <code>lightbox</code> comparison (Python)</span></a>
+ <span class="menu-text">J. <code>lightbox</code> reference</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/k-global-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">K. Global <code>panzoom</code> (Python)</span></a>
+ <span class="menu-text">K. Global <code>panzoom</code></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/l-cell-options-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">L. Cell options (Python)</span></a>
+ <span class="menu-text">L. Cell options</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -550,6 +579,26 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Formats</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../formats/u-revealjs-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">U. Slides (revealjs)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../formats/v-dashboard-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">V. Dashboard</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -599,7 +648,7 @@ window.Quarto = {
 </header>
 
 
-<p>panzoom takes every image lightbox would take on its own, so no image needs to be marked. The <code>lightbox:</code> option in the YAML header sets up lightbox too, but only cells that ask for it with the <code>#| lightbox: true</code> cell option, or with lightbox options such as <code>group</code>, open in it. The same cases open in lightbox alone on the <a href="a-lightbox-r.html"><code>lightbox</code> comparison</a>. The YAML header sets up both with the same caption position and gallery loop, and turns off the hint line:</p>
+<p>panzoom takes every image lightbox would take on its own, so no image needs to be marked. The <code>lightbox:</code> option in the YAML header sets up lightbox too, but only cells that ask for it with the <code>#| lightbox: true</code> cell option, or with lightbox options such as <code>group</code>, open in it. The same cases open in lightbox alone on the <a href="a-lightbox-r.html"><code>lightbox</code> reference page</a>. The YAML header sets up both with the same caption position and gallery loop, and turns off the hint line:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filters</span><span class="kw">:</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> panzoom</span></span>
@@ -849,7 +898,7 @@ Figure&nbsp;2: Vapor pressure of mercury, and stopping distances of cars.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="c-global-r_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-1;title:Ten random points against their index.;" data-gallery="r-graph" title="Ten random points against their index."><img src="c-global-r_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" alt="Scatter plot of ten random points" width="672"></a></p>
+<p><a href="c-global-r_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-gallery="r-graph" data-glightbox="description: .lightbox-desc-1;title:Ten random points against their index.;" title="Ten random points against their index."><img src="c-global-r_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" alt="Scatter plot of ten random points" width="672"></a></p>
 <figcaption>Ten random points against their index.</figcaption>
 </figure>
 </div>
@@ -869,7 +918,7 @@ Figure&nbsp;2: Vapor pressure of mercury, and stopping distances of cars.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="c-global-r_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2;title:Stopping distance against speed for 50 cars.;" data-gallery="r-graph" title="Stopping distance against speed for 50 cars."><img src="c-global-r_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" alt="Scatter plot of stopping distance against speed for 50 cars" width="672"></a></p>
+<p><a href="c-global-r_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-gallery="r-graph" data-glightbox="description: .lightbox-desc-2;title:Stopping distance against speed for 50 cars.;" title="Stopping distance against speed for 50 cars."><img src="c-global-r_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" alt="Scatter plot of stopping distance against speed for 50 cars" width="672"></a></p>
 <figcaption>Stopping distance against speed for 50 cars.</figcaption>
 </figure>
 </div>
@@ -901,7 +950,7 @@ Figure&nbsp;2: Vapor pressure of mercury, and stopping distances of cars.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="c-global-r_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-3;title:The mtcars data, each variable plotted against every other.;" data-gallery="cars" title="The mtcars data, each variable plotted against every other."><img src="c-global-r_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" alt="Scatterplot matrix of the mtcars data, each variable plotted against every other" width="672"></a></p>
+<p><a href="c-global-r_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-gallery="cars" data-glightbox="description: .lightbox-desc-3;title:The mtcars data, each variable plotted against every other.;" title="The mtcars data, each variable plotted against every other."><img src="c-global-r_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" alt="Scatterplot matrix of the mtcars data, each variable plotted against every other" width="672"></a></p>
 <figcaption>The mtcars data, each variable plotted against every other.</figcaption>
 </figure>
 </div>
@@ -909,7 +958,7 @@ Figure&nbsp;2: Vapor pressure of mercury, and stopping distances of cars.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="c-global-r_files/figure-html/unnamed-chunk-3-2.png" class="lightbox" data-glightbox="description: .lightbox-desc-4;title:Stopping distance against speed for 50 cars.;" data-gallery="cars" title="Stopping distance against speed for 50 cars."><img src="c-global-r_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" alt="Scatter plot of stopping distance against speed for 50 cars" width="672"></a></p>
+<p><a href="c-global-r_files/figure-html/unnamed-chunk-3-2.png" class="lightbox" data-gallery="cars" data-glightbox="description: .lightbox-desc-4;title:Stopping distance against speed for 50 cars.;" title="Stopping distance against speed for 50 cars."><img src="c-global-r_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" alt="Scatter plot of stopping distance against speed for 50 cars" width="672"></a></p>
 <figcaption>Stopping distance against speed for 50 cars.</figcaption>
 </figure>
 </div>
@@ -1572,7 +1621,19 @@ Figure&nbsp;3: Heights of Maunga Whau (Mount Eden), from pale yellow (low) to da
   </script>
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../examples/b-mixed-r.html" class="pagination-link" aria-label="B. Interaction with `lightbox`">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">B. Interaction with <code>lightbox</code></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../examples/d-selecting-r.html" class="pagination-link" aria-label="D. Selecting images">
+        <span class="nav-page-text">D. Selecting images</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Global `panzoom` (R)"</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
@@ -1598,9 +1659,9 @@ Figure&nbsp;3: Heights of Maunga Whau (Mount Eden), from pale yellow (low) to da
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>be marked. The <span class="in">`lightbox:`</span> option in the YAML header sets up lightbox too, but</span>
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>only cells that ask for it with the <span class="in">`#| lightbox: true`</span> cell option, or with</span>
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>lightbox options such as <span class="in">`group`</span>, open in it. The same cases open in lightbox</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>alone on the <span class="co">[</span><span class="ot">`lightbox` comparison</span><span class="co">](a-lightbox-r.html)</span>. The YAML header sets up</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>both with the same caption position and gallery loop, and turns off the hint</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>line:</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>alone on the <span class="co">[</span><span class="ot">`lightbox` reference page</span><span class="co">](a-lightbox-r.html)</span>. The YAML header</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>sets up both with the same caption position and gallery loop, and turns off the</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>hint line:</span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
 <span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
