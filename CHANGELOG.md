@@ -18,6 +18,8 @@
 
 ### Fixed
 
+- Captions in the viewer use the slide font in revealjs, and a sans-serif font
+  on pages without a theme, not the browser default serif.
 - Dragging an image past its end no longer shakes it.
 - Zooming out to the whole image no longer snaps on the last step, and the image
   stays inside the margins on the way.
