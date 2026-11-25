@@ -499,12 +499,14 @@
     return { x: 0, y: side === "top" ? bh : 0, w: w, h: h - bh };
   }
 
-  // Which ways the image is larger than that space (zoomed in, or a wide or
-  // tall figure opened at screen height or width). In either case Left/Right
-  // and horizontal drags pan rather than switch gallery images.
+  // Which ways the image is larger than that space less its margins (zoomed
+  // in, or a wide or tall figure opened at screen height or width): the
+  // size where containAxis() lets it pan. Drags on such an image pan
+  // rather than swipe.
   function overflow() {
     var a = area(), s = pz ? pz.getScale() : 0;
-    var x = img.naturalWidth * s > a.w + 1, y = img.naturalHeight * s > a.h + 1;
+    var x = img.naturalWidth * s > a.w - 2 * marginX + 1;
+    var y = img.naturalHeight * s > a.h - 2 * margin + 1;
     return { x: x, y: y, any: x || y };
   }
 

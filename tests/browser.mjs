@@ -836,6 +836,31 @@ async function checkGallery(page, handle) {
     await drag(await box(), 240, 0);
     out.swipeStopsAtStart = (await counter()) === first;
   }
+  // Zoomed in to between the screen width less the margins and the screen
+  // width: the image can pan there, so a sideways drag pans it, keeping
+  // the same image, instead of swiping to the next one.
+  const gap = () => page.evaluate(() => {
+    const o = document.querySelector(".panzoom-overlay"), a = window.__area(o);
+    const w = o.querySelector("img").getBoundingClientRect().width;
+    const mx = Math.max(0.025 * Math.min(a.w, a.h), o.querySelector(".panzoom-prev").offsetWidth + 16);
+    return { w, lo: a.w - 2 * mx + 1, hi: a.w };
+  });
+  let g = await gap();
+  const c = await box();
+  for (let i = 0; i < 40 && g.w <= g.lo + 2; i++) {
+    await page.mouse.move(c.x, c.y);
+    await page.mouse.wheel({ deltaY: -10 });
+    await settle(page);
+    g = await gap();
+  }
+  if (g.w > g.lo && g.w < g.hi) {
+    const p0 = await viewerTransform(page);
+    await drag(await box(), -45, 0);
+    const p1 = await viewerTransform(page);
+    out.gapDragPans = (await counter()) === first && !!(p0 && p1) && p1.x < p0.x - 1;
+  }
+  await page.keyboard.press("0");
+  await settle(page);
   // Zoomed in past the screen's width, Ctrl+Right pans, keeping the same
   // image; bare Right instead switches images regardless, abandoning the
   // zoom for the next image's own opening fit.
@@ -884,7 +909,7 @@ async function checkGallery(page, handle) {
     out.arrowNext === next && out.arrowBack && out.buttonNext === next &&
     out.swipeNext === next && out.shortDragStays && out.shortSwipeNext &&
     out.backgroundDragStays !== false && out.swipeStopsAtStart !== false &&
-    out.swipeDownCloses && out.zoomedCtrlArrowPans && out.zoomedBareArrowSwitches &&
+    out.gapDragPans !== false && out.swipeDownCloses && out.zoomedCtrlArrowPans && out.zoomedBareArrowSwitches &&
     out.prevDisabledAtStart !== false &&
     out.leftAtStartStill && out.focusAtEnd.startsWith("panzoom-") &&
     out.nextDisabledAtEnd && out.rightAtEndOk;
@@ -1914,6 +1939,8 @@ function report(file, errors, network, results, isolation, gallery, overflowGall
       ...(gallery.backgroundDragStays === undefined ? [] : [
         `- A drag on the background leaves the image as it is: ${yes(gallery.backgroundDragStays)}`]),
       `- A swipe down closes the viewer: ${yes(gallery.swipeDownCloses)}`,
+      ...(gallery.gapDragPans === undefined ? [] : [
+        `- Zoomed to just under the screen width, a drag pans: ${yes(gallery.gapDragPans)}`]),
       ...(gallery.swipeStopsAtStart === undefined ? [] : [
         `- Swipe right on the first image stays there${gallery.loop ? ", with loop" : ""}: ${yes(gallery.swipeStopsAtStart)}`]),
       `- Zoomed in, Ctrl+Right pans: ${yes(gallery.zoomedCtrlArrowPans)}; bare Right still switches: ${yes(gallery.zoomedBareArrowSwitches)}`,

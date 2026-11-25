@@ -22,6 +22,8 @@
   on pages without a theme, not the browser default serif.
 - In full screen (revealjs `f`), Escape closes the viewer along with full
   screen, and opening the viewer no longer leaves full screen in Firefox.
+- An image zoomed to just under the screen size pans when dragged, not
+  swipes to the next image.
 - Dragging an image past its end no longer shakes it.
 - Zooming out to the whole image no longer snaps on the last step, and the image
   stays inside the margins on the way.
