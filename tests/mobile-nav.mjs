@@ -35,7 +35,7 @@ const PHONES = [
   { width: 375, height: 560, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
 ];
 const PAGE = "examples/a-lightbox-r.html";
-const LAST_EXAMPLE = "t-renderings-python.html";
+const LAST_EXAMPLE = "v-dashboard-r.html";
 
 function serve(root) {
   const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".png": "image/png",
@@ -83,7 +83,8 @@ async function tapOpens(page, spot, file) {
     page.waitForNavigation({ timeout: 3000 }).catch(() => {}),
     page.touchscreen.tap(spot.x, spot.y),
   ]);
-  return page.url().endsWith("/" + file);
+  // Not the hash: the revealjs page adds one for its slide (#/).
+  return new URL(page.url()).pathname.endsWith("/" + file);
 }
 
 async function newPhonePage(browser, base, phone) {

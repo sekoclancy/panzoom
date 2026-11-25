@@ -7,6 +7,7 @@ project:
     - index.qmd
     - reference.qmd
     - examples/*.qmd
+    - formats/*.qmd
   preview:
     host: 127.0.0.1
     port: 4242
@@ -69,6 +70,8 @@ website:
             text: "Divs"
           - href: examples/r-dark-plots-r.qmd
             text: "Theme"
+          - href: formats/u-revealjs-r.qmd
+            text: "Formats"
     right:
       - icon: github
         href: https://github.com/sekoclancy/panzoom
@@ -131,3 +134,9 @@ website:
             text: "S. Renderings (R)"
           - href: examples/t-renderings-python.qmd
             text: "T. Renderings (Python)"
+      - section: "Formats"
+        contents:
+          - href: formats/u-revealjs-r.qmd
+            text: "U. Slides (revealjs)"
+          - href: formats/v-dashboard-r.qmd
+            text: "V. Dashboard"

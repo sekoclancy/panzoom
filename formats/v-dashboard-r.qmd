@@ -1,0 +1,91 @@
+---
+title: "Dashboard"
+format:
+  dashboard:
+    expandable: true
+    scrolling: true
+filters:
+  - panzoom
+panzoom: true
+execute:
+  echo: false
+---
+
+# Cards
+
+## Row
+
+::: {.card title="Single image"}
+![Sunset at Chilmark Beach, Martha's Vineyard.](../images/mv-0.jpg){fig-alt="Sunset over a sandy beach, with a tall rock stack against the sun"}
+:::
+
+::: {.card title="Plot"}
+```{r}
+#| fig-alt: >-
+#|   Heat map of the Maunga Whau volcano's heights, in yellow, orange, and red
+
+image(z = volcano)
+```
+:::
+
+## Row {.tabset}
+
+::: {.card title="Gallery"}
+::::: {layout-ncol="3"}
+![Aquinnah](../images/mv-1.jpg){group="cards" fig-alt="Waves breaking below grassy clay cliffs at Aquinnah"}
+
+![Edgartown Lighthouse](../images/mv-2.jpg){group="cards" fig-alt="A white lighthouse against a blue sky"}
+
+![A gingerbread cottage in Oak Bluffs](../images/mv-3.jpg){group="cards" fig-alt="A shingled gingerbread cottage with pink and green trim, behind a garden path"}
+:::::
+:::
+
+::: {.card title="Wide figure"}
+```{r}
+#| fig-width: 24
+#| fig-height: 2
+#| fig-alt: >-
+#|   A row of 12 small line plots of random walks, each in its own color
+
+set.seed(1)
+par(mfrow = c(1, 12), mar = c(2, 2, 1, 0.5))
+for (i in 1:12) {
+  plot(cumsum(rnorm(100)), type = "l", col = hcl.colors(12)[i], main = i)
+}
+```
+:::
+
+# Setup
+
+## Row
+
+::: {.card title="Setup"}
+panzoom works in dashboards as on any HTML page. The YAML header turns it on for
+every image:
+
+```yaml
+---
+format: dashboard
+filters:
+  - panzoom
+panzoom: true
+---
+```
+
+The viewer opens above an expanded card. Escape closes the viewer first, then
+the card.
+:::
+
+::: {.card title="Image on a second page"}
+![A sailboat off Edgartown](../images/mv-4.jpg){fig-alt="A sailboat with a flag-striped sail off a sandy beach"}
+:::
+
+::: {.card title="Credits"}
+The photos are from Unsplash, under the [Unsplash
+license](https://unsplash.com/license): [Chilmark
+Beach](https://unsplash.com/photos/VBDJGOMCwps),
+[Aquinnah](https://unsplash.com/photos/2iQnDPLIXwU), [Gingerbread
+House](https://unsplash.com/photos/HQEtvlNzUyA), [Edgartown
+Light](https://unsplash.com/photos/f59MyOfLpi8), and [Edgartown
+Sailboat](https://unsplash.com/photos/IiLiz7XpQpI).
+:::
