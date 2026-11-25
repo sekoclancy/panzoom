@@ -158,6 +158,12 @@
   // done. `stepping`: that step hasn't landed yet (history.back() is
   // asynchronous); a viewer opened meanwhile adds its entry once it has.
   var inHistory = false, leaving = null, stepping = false;
+  // Opened in full screen (e.g. revealjs `f`). Escape there belongs to the
+  // browser: it leaves full screen and never reaches the page, so the
+  // viewer closes along with full screen (see the fullscreenchange
+  // listener). It adds no history entry then: Firefox leaves full screen
+  // when a framed page changes its history.
+  var inFullscreen = false;
   // The page's scroll position right as the viewer opened. The viewer's
   // pushState keeps the page's URL, including any #anchor, so stepping back
   // over it returns to an entry with that same #anchor: the browser
@@ -809,8 +815,9 @@
         inerted.push({ el: el, was: el.inert });
         el.inert = true;
       });
+      inFullscreen = !!document.fullscreenElement;
     }
-    if (!inHistory && !stepping) {
+    if (!inHistory && !stepping && !inFullscreen) {
       history.pushState({ panzoom: true }, "");
       inHistory = true;
     }
@@ -1170,7 +1177,7 @@
     if (stepping && !ours) {
       stepping = false;
       // Opened again before the step back landed: add its entry now.
-      if (overlay.classList.contains("open")) {
+      if (overlay.classList.contains("open") && !inFullscreen) {
         history.pushState({ panzoom: true }, "");
         inHistory = true;
         return;
@@ -1186,6 +1193,11 @@
     }
     // Forward into the entry of a viewer since closed: step back over it.
     else if (ours && !inHistory) history.back();
+  });
+  // Full screen ended while a viewer opened in it is open: Escape, most
+  // likely (see `inFullscreen`), so close the viewer too.
+  document.addEventListener("fullscreenchange", function () {
+    if (inFullscreen && !document.fullscreenElement && overlay && overlay.classList.contains("open")) close();
   });
   // Reloaded with the viewer open: its entry stays, but the viewer doesn't.
   if (history.state && history.state.panzoom) history.replaceState(null, "");

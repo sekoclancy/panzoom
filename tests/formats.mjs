@@ -2,7 +2,8 @@
   Other output formats (the Formats pages, render first):
   - revealjs (the slides U embeds): images open from a slide, the slide keys go to the viewer
     while it is open, Escape closes the viewer without the slide overview,
-    the arrows move between slides again after it closes, a gallery steps
+    the arrows move between slides again after it closes, in full screen
+    the viewer adds no history entry and closes when full screen ends, a gallery steps
     within the slide, Back closes the viewer and keeps the slide, an image in
     a hidden fragment can't be clicked and opens once shown;
   - the frame on U: the slides load in it, an image there opens in the
@@ -124,6 +125,19 @@ async function checkDeck(browser, base) {
   await page.keyboard.press("ArrowRight");
   await wait(500);
   check(`${name}: arrows move between slides after closing`, (await slide()) === here + 1, await slide());
+
+  // Full screen: the browser takes Escape to leave it, so the page never
+  // sees the key; exitFullscreen() stands in for that.
+  await go("single-image");
+  await page.keyboard.press("f");
+  await wait(500);
+  const entries = await page.evaluate(() => history.length);
+  await open(page, "#single-image img");
+  check(`${name}: opens in full screen`, (await isOpen(page)) && (await page.evaluate(() => !!document.fullscreenElement)));
+  check(`${name}: no history entry in full screen`, (await page.evaluate(() => history.length)) === entries);
+  await page.evaluate(() => document.exitFullscreen());
+  await wait(500);
+  check(`${name}: leaving full screen closes`, !(await isOpen(page)));
 
   await go("gallery");
   const gallery = await slide();
