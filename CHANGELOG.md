@@ -1,20 +1,20 @@
 # Changelog
 
-## Unreleased
+## 0.3.0
 
 ### Added
 
 - A `{{< panzoom-version >}}` shortcode, which prints the installed version.
 - A swipe up or down closes the viewer: 65 px with a mouse, 30% of the screen
-  height with a finger, as in lightbox.
+  height with a finger, to match the behavior of lightbox.
 
 ### Changed
 
-- Swipes on an image that fits the screen work as in lightbox. The image follows
-  the swipe, and a swipe switches images from 40 px with a mouse (more than 30
-  px with a finger), not 50 px. A mouse swipes from the image only, so a drag on
-  the background no longer switches images. A swipe stops at the first and last
-  image even with `loop`, and only the buttons and arrow keys wrap.
+- Swipes on an image that fits the screen work like in lightbox. The image
+  follows the swipe, and a swipe switches images from 40 px with a mouse (more
+  than 30 px with a finger), not 50 px. A mouse swipes from the image only, so a
+  drag on the background no longer switches images. A swipe stops at the first
+  and last image even with `loop`, and only the buttons and arrow keys wrap.
 
 ### Fixed
 
