@@ -56,7 +56,11 @@ image(z = volcano)
 
 ## Wide figure {expect-open="panzoom"}
 
+With `fit: height`, it opens at the screen height, at the clicked spot.
+
 ```{r}
+#| panzoom:
+#|   fit: height
 #| fig-width: 24
 #| fig-height: 2
 #| fig-alt: >-
